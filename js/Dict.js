@@ -48,7 +48,6 @@ class Dict {
                 }
                 temp = new WordGroup(item.substring(3))
             } else if (item.indexOf('\t') > -1) { // 是词条
-                console.log(item)
                 temp.dict.push(getWordFromLine(item))
             } else if (item.indexOf('#') === 0) { // 注释
 

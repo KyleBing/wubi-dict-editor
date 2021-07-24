@@ -8,26 +8,24 @@
 <body>
 
 <div id="app" class="container">
-    <div class="show">{{ name }}</div>
-    <div class="search-bar">
+<!--    <div class="search-bar">
         <input type="text" placeholder="搜索" id="keyword">
         <div class="btn-group">
             <div class="btn btn-orange">载入内容</div>
         </div>
-    </div>
+    </div>-->
 
-    <div class="display">
-        <table class="table prototype">
+    <div class="display" v-if="dict">
+        <table class="table" v-for="(group, index) in dict.dictWithGroup" :key="index">
             <thead>
             <tr>
-                <td colspan="3"></td>
+                <td colspan="3">{{ group.groupName }}</td>
             </tr>
             </thead>
             <tbody>
-            <tr class="prototype">
-                <td class="id"></td>
-                <td class="code"></td>
-                <td class="word"></td>
+            <tr v-for="(item, index) in group.dict" :key="index">
+                <td class="code">{{ item.code }}</td>
+                <td class="word">{{ item.word }}</td>
             </tr>
             </tbody>
         </table>
