@@ -1,0 +1,60 @@
+{
+  "name": "elec",
+  "version": "0.1.0",
+  "private": true,
+  "author": {
+    "name": "KyleBing",
+    "email": "kylebing@163.com"
+  },
+  "description": "demo-electron",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron-forge start",
+    "package": "electron-forge package",
+    "make": "electron-forge make"
+  },
+  "dependencies": {
+    "core-js": "^3.6.5",
+    "electron-squirrel-startup": "^1.0.0",
+    "register-service-worker": "^1.7.1",
+    "bootstrap": "^5.0.2",
+    "fs-extra": "^10.0.0"
+  },
+  "devDependencies": {
+    "@electron-forge/cli": "^6.0.0-beta.58",
+    "@electron-forge/maker-deb": "^6.0.0-beta.58",
+    "@electron-forge/maker-rpm": "^6.0.0-beta.58",
+    "@electron-forge/maker-squirrel": "^6.0.0-beta.58",
+    "@electron-forge/maker-zip": "^6.0.0-beta.58",
+    "electron": "^13.1.7",
+    "sass": "^1.26.5",
+    "sass-loader": "^8.0.2"
+  },
+  "config": {
+    "forge": {
+      "packagerConfig": {},
+      "makers": [
+        {
+          "name": "@electron-forge/maker-squirrel",
+          "config": {
+            "name": "elec"
+          }
+        },
+        {
+          "name": "@electron-forge/maker-zip",
+          "platforms": [
+            "darwin"
+          ]
+        },
+        {
+          "name": "@electron-forge/maker-deb",
+          "config": {}
+        },
+        {
+          "name": "@electron-forge/maker-rpm",
+          "config": {}
+        }
+      ]
+    }
+  }
+}
