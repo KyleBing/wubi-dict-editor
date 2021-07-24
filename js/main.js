@@ -6,6 +6,6 @@ const {ipcRenderer} = require('electron')
 
 ipcRenderer.on('fileHasRead', (event, res) => {
     let dictUser = new Dict(res)
-    let table = new Table(dictUser.getDictWords(), $('tbody'))
+    let table = new Table(dictUser.dict, $('tbody'))
     table.showDict()
 })
