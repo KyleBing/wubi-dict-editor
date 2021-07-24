@@ -2,6 +2,7 @@
   padding: 0;
   margin: 0;
   border: 0;
+  font-size: inherit;
   font-family: inherit;
   color: inherit;
   -webkit-box-sizing: border-box;
@@ -9,15 +10,22 @@
   box-sizing: border-box; }
 
 body {
-  font-family: "PingFang SC", "Microsoft Yahei UI", "Microsoft Yahei", "Helvetica", sans-serif;
   width: 100%;
-  margin: 0 auto; }
+  margin: 0 auto;
+  font-family: "PingFang SC", "Microsoft Yahei UI", "Microsoft Yahei", "Helvetica", sans-serif;;
+}
 
 a {
   text-decoration: none; }
 
 table {
   border-collapse: collapse; }
+
+select{
+  -webkit-appearance: none;
+}
+
+
 
 code,
 kbd,
@@ -37,7 +45,6 @@ tt {
   height: 3px; }
 
 ::-webkit-scrollbar-track {
-  border-bottom: 1px solid #eeeeee;
   border-right: 1px solid #eeeeee;
   background-color: rgba(0, 0, 0, 0); }
 
@@ -45,12 +52,12 @@ tt {
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   border-radius: 5px;
-  background-color: #eee;
+  background-color: #ddd;
   transition: all .2s;
   height: 3px; }
 
 :hover::-webkit-scrollbar-thumb {
-  background-color: #dfdfdf;
+  background-color: #aaa;
   transition: all .2s; }
 
 ::-webkit-scrollbar-button {

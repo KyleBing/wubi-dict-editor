@@ -3,14 +3,14 @@ $green            : #4CD964;
 $cyan             : #5AC8FA;
 $blue             : #007AFF;
 $purple           : #5856D6;
-$magenta          : #FF2D70;
+$roseo          : #FF2D70;
 $red              : #FF3B30;
 $orange           : #FF9500;
 $yellow           : #FFCC00;
 $gray             : #8E8E93;
 
 //ELEMTENT COLORS
-$color-main       : $magenta;
+$color-main       : $roseo;
 $border-color-nav: transparentize($color-main, 0.8);
 
 
@@ -33,6 +33,6 @@ $gradient-green   : $green, darken($green, 15%);
 $gradient-orange  : $orange, darken($orange, 5%);
 $gradient-red     : $red, darken($red, 15%);
 $gradient-purple  : $purple, darken($purple, 15%);
-$gradient-magenta : $magenta, darken($magenta, 15%);
+$gradient-magenta : $roseo, darken($roseo, 15%);
 $gradient-yellow  : $yellow, darken($yellow, 15%);
 $gradient-time    : #79C1F0, #7E87EF;

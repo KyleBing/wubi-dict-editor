@@ -2,6 +2,8 @@
 import Word from "./Word.js";
 import WordGroup from "./WordGroup.js";
 
+// const RETURN_SYMBOL = '\r\n' // on windows
+const RETURN_SYMBOL = '\n' // on mac
 class Dict {
     constructor(yaml) {
         this.yaml = yaml // 原文件内容
@@ -9,7 +11,7 @@ class Dict {
         this.body = '' // 文件体
         this.dict = [] // 文件词条数组
         this.dictWithGroup = [] // 文件词条 分组
-        let indexEndOfHeader = this.yaml.indexOf('...')
+        let indexEndOfHeader = this.yaml.indexOf('...') + 3
         if (indexEndOfHeader < 0){
             console.log('文件格式错误，没有 ... 这一行')
         } else {
@@ -30,13 +32,13 @@ class Dict {
     }
     // 返回所有 word
     getDictWords(){
-        let lines = this.body.split('\r\n') // 拆分词条与编码成单行
+        let lines = this.body.split(RETURN_SYMBOL) // 拆分词条与编码成单行
         let linesValid = lines.filter(item => item.indexOf('\t') > -1) // 选取包含 \t 的行
         return linesValid.map(item => getWordFromLine(item))
     }
     // 返回 word 分组
     getDictWordsWithGroup(){
-        let lines = this.body.split('\r\n') // 拆分词条与编码成单行
+        let lines = this.body.split(RETURN_SYMBOL) // 拆分词条与编码成单行
         let dictGroup = [] // 总分组
         let temp = null // 第一个分组
         lines.forEach(item => {
@@ -46,6 +48,7 @@ class Dict {
                 }
                 temp = new WordGroup(item.substring(3))
             } else if (item.indexOf('\t') > -1) { // 是词条
+                console.log(item)
                 temp.dict.push(getWordFromLine(item))
             } else if (item.indexOf('#') === 0) { // 注释
 

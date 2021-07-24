@@ -1,0 +1,220 @@
+$padding-top: 3px;
+$padding-lr: 6px;
+$padding-lr-radio: 8px;
+$height-btn: 20px;
+$radius-btn: 3px;
+$radius-switch: 15px;
+
+$fz-btn: 13px;
+
+$fz-info: 13px;
+
+
+$btn-padding-tb: 6px;
+$btn-padding-lr: 8px;
+
+.tool-bar{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-flow: row wrap;
+}
+
+
+
+$btns: (
+        'green'  : $green,
+        'blue'   : $blue,
+        'orange' : $orange,
+        'roseo'  : $roseo,
+);
+
+.btn{
+  color: inherit;
+  line-height: 1;
+  cursor: pointer;
+  margin: 0;
+  @include border-radius(0);
+  border: none;
+  white-space: nowrap;
+  font-size: $fz-btn;
+  padding: $btn-padding-tb $btn-padding-lr ;
+  background-color: white;
+  @extend .unselectable;
+  &.no-action{
+    cursor: default;
+    &:hover{
+      background-color: white;
+    }
+    &:active{
+      @include transform(translateY(0px));
+      @include box-shadow(none);
+    }
+  }
+  &:hover{
+    background-color: darken(white, 5%);
+  }
+  &:active{
+    @include transform(translateY(2px));
+    @include box-shadow(inset 0 1px 2px rgba(0,0,0,0.1))
+  }
+  &.danger{
+    background-color: $red;
+    color: white;
+  }
+}
+
+.btn-sm{
+  padding: 2px 3px;
+  font-size: $fz-info;
+}
+
+@each $name, $color in $btns {
+  .btn-#{$name}{
+    color: white;
+    background-color: $color;
+    &:hover{
+      border-color: darken($color, 10%);
+    }
+    &:active{
+      background-color: darken($color, 10%);
+    }
+  }
+}
+
+input[type=checkbox],
+input[type=radio]
+{
+  display: none;
+}
+
+$height-radio: $fz-info;
+$radio-gap: 2px;
+
+input[type=checkbox] + label.switch
+{
+  position: relative;
+  display: block;
+  @include border-radius($radius-switch);
+  background-color: $color-border;
+  //border-bottom: 1px solid white;
+  @include box-shadow(inset 0 1px 2px rgba(0,0,0,0.1));
+  height: $height-radio + $radio-gap * 2;
+  width: $height-radio * 2;
+  @include transition(all 0.3s);
+  &:before{
+    content: '';
+    display: block;
+    position: absolute;
+    top: $radio-gap;
+    left: $radio-gap;
+    width: $height-radio;
+    height: $height-radio;
+    @include border-radius($radius-switch);
+    background-color: white;
+    @include box-shadow(1px 1px 2px rgba(0,0,0,0.2));
+    @include transition(all 0.3s);
+  }
+}
+
+input[type=checkbox]:checked + label.switch
+{
+  background-color: $green;
+  @include box-shadow(inset 0 1px 2px rgba(0,0,0,0.1));
+  @include transition(all 0.3s);
+  &:before{
+    content: '';
+    display: block;
+    position: absolute;
+    left: $height-radio * 2 - $radio-gap - $height-radio;
+    right: 0;
+    width: $height-radio;
+    height: $height-radio;
+    @include border-radius($radius-switch);
+    @include transition(all 0.3s);
+  }
+}
+
+input[type=checkbox] + label.checker {
+  @extend .unselectable;
+  cursor: pointer;
+  display: block;
+  border-color: $green;
+  @include transition(all 0.3s);
+}
+
+input[type=checkbox]:checked + label.checker {
+  color: white;
+  @include transition(all 0.3s);
+  background-color: $green;
+  @include box-shadow(0 1px 2px rgba(0,0,0,0.1));
+}
+
+.btn-group{
+  display: flex;
+  @include border-radius($radius-btn);
+  justify-content: flex-start;
+  overflow: hidden;
+  border: 1px solid $color-border;
+  margin: 0 5px 5px 0;
+  &.dash{
+    border-style: dashed;
+    > * {
+      border-color: inherit;
+      border-right-style: dashed;
+    }
+  }
+  > * {
+    border-right: 1px solid $color-border;
+    &:last-child{
+      border-right: none;
+    }
+  }
+  .btn-vertical{
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+    > *{
+      @extend .btn;
+      padding: 2px;
+      font-size: 7px;
+      text-align: center;
+      background-color: #fff;
+      border-bottom: 1px solid $color-border;
+      height: 50%;
+      width: 20px;
+      &:last-child{
+        border-bottom: none;
+      }
+    }
+  }
+  &:last-child{
+    margin-right: 0;
+  }
+  &.no-border{
+    border: none !important;
+  }
+}
+
+input[type=radio] + label{
+  background-color: white;
+}
+
+input[type=radio]:checked + label{
+  font-weight: bold;
+  background-color: $orange;
+  color: white !important;
+  &:hover{
+    background-color: lighten($orange, 5%);
+  }
+}
+
+
+label.btn{
+  min-width: 30px;
+  text-align: center;
+  padding-left: $btn-padding-lr - 2 !important;
+  padding-right: $btn-padding-lr - 2 !important;
+}
+
