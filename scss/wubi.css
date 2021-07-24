@@ -342,15 +342,17 @@
 tbody {
   color: #333;
 }
-
-td {
-  padding: 3px;
+tbody td {
+  font-size: 0.9rem;
+  padding: 3px 5px;
   border: 1px solid #eee;
 }
-td .id {
+tbody td tr .id {
   text-align: center;
 }
 thead td {
+  padding-top: 10px;
+  padding-bottom: 10px;
   text-align: center;
 }
 
@@ -368,4 +370,8 @@ input {
 
 .container {
   padding: 20px;
+}
+
+.hidden, .prototype {
+  display: none;
 }

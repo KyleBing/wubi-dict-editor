@@ -19,3 +19,11 @@ input{
 .container{
   padding: 20px;
 }
+
+.hidden{
+  display: none;
+}
+
+.prototype{
+  @extend .hidden;
+}

@@ -8,27 +8,31 @@
 
 tbody{
   color: $text-main;
+  td{
+    font-size: 0.9rem;
+    padding: 3px 5px;
+    border: 1px solid $color-border;
+    tr{
+      .id{
+        text-align: center;
+      }
+      .code{}
+      .word{
+
+      }
+    }
+  }
 }
 tr{
 
 }
 
-td{
-  padding: 3px;
-  border: 1px solid $color-border;
-  &{
-    .id{
-      text-align: center;
-    }
-    .code{}
-    .word{
 
-    }
-  }
-}
 
 thead{
   td{
+    padding-top: 10px;
+    padding-bottom: 10px;
     text-align: center;
   }
 }
