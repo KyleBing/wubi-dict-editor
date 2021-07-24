@@ -332,6 +332,11 @@
 
 .table {
   width: 100%;
+  margin-bottom: 20px;
+  border: 1px solid #eee;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
 }
 
 tbody {
@@ -341,4 +346,26 @@ tbody {
 td {
   padding: 3px;
   border: 1px solid #eee;
+}
+td .id {
+  text-align: center;
+}
+thead td {
+  text-align: center;
+}
+
+.search-bar {
+  margin-bottom: 20px;
+}
+
+input {
+  border: 1px solid #eee;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  padding: 3px 8px;
+}
+
+.container {
+  padding: 20px;
 }

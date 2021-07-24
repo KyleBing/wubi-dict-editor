@@ -1,27 +1,34 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <title>五笔词库管理</title>
-  <link rel="stylesheet" href="./scss/wubi.css">
+    <meta charset="UTF-8">
+    <title>五笔词库管理</title>
+    <link rel="stylesheet" href="./scss/wubi.css">
 </head>
 <body>
 
-<div class="search-bar">
-  <input type="text" placeholder="搜索" id="keyword">
+<div class="container">
+    <div class="search-bar">
+        <input type="text" placeholder="搜索" id="keyword">
+    </div>
+
+    <div class="display">
+        <table class="table prototype">
+            <thead>
+            <tr>
+                <td colspan="3"></td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="prototype">
+                <td class="id"></td>
+                <td class="code"></td>
+                <td class="word"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
-
-<table class="table">
-  <tbody>
-  <tr class="prototype">
-    <td class="id"></td>
-    <td class="code"></td>
-    <td class="word"></td>
-  </tr>
-  </tbody>
-</table>
-
-<div class="display"></div>
 
 <script type="module" src="js/main.js"></script>
 </body>

@@ -4,3 +4,18 @@
 @import "gutter";
 @import "animate.css";
 @import "table";
+
+.search-bar{
+  margin-bottom: 20px;
+
+}
+
+input{
+  border: 1px solid $color-border;
+  @include border-radius(3px);
+  padding: 3px 8px;
+}
+
+.container{
+  padding: 20px;
+}

@@ -1,8 +1,9 @@
 
-
 .table{
   width: 100%;
-
+  margin-bottom: 20px;
+  border: 1px solid $color-border;
+  @include border-radius(5px)
 }
 
 tbody{
@@ -15,4 +16,19 @@ tr{
 td{
   padding: 3px;
   border: 1px solid $color-border;
+  &{
+    .id{
+      text-align: center;
+    }
+    .code{}
+    .word{
+
+    }
+  }
+}
+
+thead{
+  td{
+    text-align: center;
+  }
 }
