@@ -53,6 +53,7 @@ class Dict {
 
             }
         })
+        dictGroup.push(temp) // 加上最后一个
         return dictGroup
     }
 }
