@@ -13,7 +13,7 @@ function $(selecter){
 const {ipcRenderer} = require('electron')
 
 ipcRenderer.on('fileHasRead', (event, res) => {
-    alert('ok')
     $('.display').innerText = res
 })
 
+ipcRenderer.send('setNewData', data)

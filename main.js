@@ -4,7 +4,6 @@ const url = require("url");
 const path = require("path");
 
 
-
 let mainWindow
 
 function createWindow() {
@@ -19,7 +18,7 @@ function createWindow() {
 
     mainWindow.loadURL(
         url.format({
-            pathname: path.join(__dirname, `index.html`),
+            pathname: path.join(__dirname, 'index.html'),
             protocol: "file:",
             slashes: true
         })
@@ -53,7 +52,6 @@ function createMenu() {
     Menu.setApplicationMenu(menu)
 }
 
-console.log(app);
 app.on('ready', ()=>{
     createWindow()
     createMenu()
@@ -62,9 +60,6 @@ app.on('ready', ()=>{
 app.on('window-all-closed', function () {
     if (process.platform !== 'darwin') app.quit()
 })
-
-
-
 
 app.on('activate', function () {
     if (mainWindow === null) {
@@ -82,7 +77,10 @@ function readFile(){
             console.log(err)
         } else {
             mainWindow.webContents.send('fileHasRead', res)
-            console.log(res)
         }
     })
 }
+
+ipcMain.on('setNewData', (event, data) => {
+
+})

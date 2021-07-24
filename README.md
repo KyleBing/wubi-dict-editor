@@ -1,19 +1,14 @@
-# elec
+# 五笔词库管理工具 for Rime
+一个管理 Rime 五笔词库的工具，添加、删除词条
 
-## Project setup
-```
-npm install
-```
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+## 支持平台：
+Windows, macOS
 
-### Compiles and minifies for production
-```
-npm run build
-```
+## 用到的技术
+- nodejs
+- electron
+- javascript
+- scss
+- html
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
