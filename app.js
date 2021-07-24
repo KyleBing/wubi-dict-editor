@@ -67,12 +67,12 @@ app.on('activate', function () {
     }
 })
 
-
+// 读取文件
 const fs = require('fs')
 function readFile(){
-    let file = 'wubi86_jidian_user.dict.yaml'
-    let fileFolder = 'C:/Users/Administrator/AppData/Roaming/Rime/'
-    fs.readFile(fileFolder + file, {encoding: 'utf-8'}, (err, res) => {
+    let file = 'source_file/wubi86_jidian_user.dict.yaml'
+    let fileFolder = path.join(__dirname, file)
+    fs.readFile(fileFolder, {encoding: 'utf-8'}, (err, res) => {
         if(err){
             console.log(err)
         } else {
@@ -80,7 +80,3 @@ function readFile(){
         }
     })
 }
-
-ipcMain.on('setNewData', (event, data) => {
-
-})
