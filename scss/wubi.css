@@ -330,6 +330,11 @@
   padding: 70px !important;
 }
 
+.table-item h3 {
+  line-height: 1.5;
+  margin-bottom: 10px;
+}
+
 .table {
   width: 100%;
   margin-bottom: 20px;
@@ -337,23 +342,25 @@
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   border-radius: 5px;
+  border-collapse: collapse;
+}
+
+td {
+  padding: 2px 5px;
+  border: 1px solid #eee;
 }
 
 tbody {
   color: #333;
 }
 tbody td {
-  font-size: 0.9rem;
-  padding: 3px 5px;
-  border: 1px solid #eee;
+  font-size: 0.8rem;
 }
-tbody td tr .id {
-  text-align: center;
+tbody td.code {
+  width: 20%;
 }
-thead td {
-  padding-top: 10px;
-  padding-bottom: 10px;
-  text-align: center;
+tbody tr:hover td {
+  background-color: #eee;
 }
 
 .tool-bar {

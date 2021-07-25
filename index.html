@@ -16,19 +16,18 @@
     </div>-->
 
     <div class="display" v-if="dict">
-        <table class="table" v-for="(group, index) in dict.dictWithGroup" :key="index">
-            <thead>
-            <tr>
-                <td colspan="3">{{ group.groupName }}</td>
-            </tr>
-            </thead>
-            <tbody>
-            <tr v-for="(item, index) in group.dict" :key="index">
-                <td class="code">{{ item.code }}</td>
-                <td class="word">{{ item.word }}</td>
-            </tr>
-            </tbody>
-        </table>
+        <div class="table-item"  v-for="(group, index) in dict.dictWithGroup" :key="index">
+            <h3>{{ group.groupName }}</h3>
+            <table class="table">
+                <tbody>
+                <tr v-for="(item, index) in group.dict" :key="index">
+                    <td class="code">{{ item.code }}</td>
+                    <td class="word">{{ item.word }}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
     </div>
 </div>
 

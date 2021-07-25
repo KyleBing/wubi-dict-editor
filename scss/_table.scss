@@ -1,38 +1,38 @@
-
+.table-item{
+  h3{
+    line-height: 1.5;
+    margin-bottom: 10px;
+  }
+}
 .table{
   width: 100%;
   margin-bottom: 20px;
   border: 1px solid $color-border;
-  @include border-radius(5px)
+  @include border-radius(5px);
+  border-collapse: collapse;
+}
+
+td{
+  padding: 2px 5px;
+  border: 1px solid $color-border;
 }
 
 tbody{
   color: $text-main;
   td{
-    font-size: 0.9rem;
-    padding: 3px 5px;
-    border: 1px solid $color-border;
-    tr{
-      .id{
-        text-align: center;
-      }
-      .code{}
-      .word{
+    font-size: 0.8rem;
+    &.code{
+      width: 20%;
+    }
+    &.word{
 
-      }
     }
   }
-}
-tr{
-
-}
-
-
-
-thead{
-  td{
-    padding-top: 10px;
-    padding-bottom: 10px;
-    text-align: center;
+  tr{
+    &:hover{
+      td{
+        background-color: $bg-td;
+      }
+    }
   }
 }

@@ -81,8 +81,8 @@ class Dict {
 // 从一条词条字符串中获取 word 对象
 function getWordFromLine(lineStr){
     let wordArray = lineStr.split('\t')
-    let code = wordArray[0]
-    let word = wordArray[1]
+    let code = wordArray[1]
+    let word = wordArray[0]
     return new Word(code, word)
 }
 export default Dict
