@@ -41,21 +41,39 @@ class Dict {
         let lines = this.body.split(RETURN_SYMBOL) // 拆分词条与编码成单行
         let dictGroup = [] // 总分组
         let temp = null // 第一个分组
-        lines.forEach(item => {
+        let lastItemIsEmptyLine = false // 上一条是空，用于循环中判断是否需要新起一个 WordGroup
+        lines.forEach((item, index) => {
             if (item.indexOf('##') === 0) { // 注释分组
                 if (temp && temp.groupName) { // 如果上一个已经有名字了，说明需要保存
                     dictGroup.push(temp)
                 }
-                temp = new WordGroup(item.substring(3))
+                temp = new WordGroup(item.substring(3).trim())
+                lastItemIsEmptyLine = false
             } else if (item.indexOf('\t') > -1) { // 是词条
+                if (!temp){ // 第一行是词条时，没有分组名时
+                    temp = new WordGroup()
+                }
                 temp.dict.push(getWordFromLine(item))
+                lastItemIsEmptyLine = false
             } else if (item.indexOf('#') === 0) { // 注释
-
+                lastItemIsEmptyLine = false
             } else {
-
+                // 为空行时
+                if (lastItemIsEmptyLine){
+                    // 上行和本行都是空行
+                } else {
+                    if (temp){
+                        temp.groupName = temp.groupName || '未命名'
+                        dictGroup.push(temp)
+                        temp = new WordGroup()
+                    }
+                }
+                lastItemIsEmptyLine = true
             }
         })
-        dictGroup.push(temp) // 加上最后一个
+        if (temp.dict.length > 0){
+            dictGroup.push(temp) // 加上最后一个
+        }
         return dictGroup
     }
 }

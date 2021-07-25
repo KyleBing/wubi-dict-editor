@@ -17,7 +17,7 @@ const app = {
         }
     },
     mounted() {
-        ipcRenderer.on('fileHasRead', (event, res) => {
+        ipcRenderer.on('showFileContent', (event, res) => {
             this.dict = new Dict(res)
         })
     }
