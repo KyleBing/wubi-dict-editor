@@ -1,4 +1,6 @@
-$fz-table: 12px;
+$fz-table: 13px;
+$table-padding-tb: 2px;
+$table-padding-lr: 5px;
 
 .table-item{
   h3{
@@ -15,8 +17,11 @@ $fz-table: 12px;
 }
 
 td{
-  padding: 2px 5px;
+  padding: $table-padding-tb $table-padding-lr;
   border-bottom: 1px solid $border-color;
+  &:first-child{
+    border-bottom: none;
+  }
 }
 
 tbody{
@@ -32,8 +37,26 @@ tbody{
     &.word{
       width: 60%;
     }
-    &.operation{
-      width: 20%;
+    .operation{
+      opacity: 0.3;
+      @extend .unselectable;
+      display: flex;
+      justify-content: flex-start;
+      > *{
+        cursor: pointer;
+        padding: 4px 5px;
+        @include border-radius(2px);
+        &:hover{
+          background-color: white;
+        }
+        &:active{
+          transform: translateY(1px);
+        }
+        img{
+          display: block;
+          width: 8px;
+        }
+      }
     }
   }
   tr{
@@ -41,10 +64,18 @@ tbody{
       td{
         //border-top: 1px solid $border-color;
       }
+      .operation{
+        .down{
+          margin-left: 19px;
+        }
+      }
     }
     &:hover{
       td{
         background-color: $bg-td;
+      }
+      .operation{
+        opacity: 1;
       }
     }
   }

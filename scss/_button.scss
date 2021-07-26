@@ -20,11 +20,16 @@ $btn-sm-padding-lr: 3px;
 
 
 $btns: (
-    'primary': white,
-    'green'  : $green,
-    'blue'   : $blue,
-    'orange' : $orange,
-    'roseo'  : $roseo,
+    'primary' : white,
+    'green'   : $green,
+    'cyan'    : $cyan,
+    'blue'    : $blue,
+    'purple'  : $purple,
+    'yellow'  : $yellow,
+    'orange'  : $orange,
+    'roseo'   : $roseo,
+    'red'     : $red,
+    'gray'    : $gray,
 );
 
 .btn{
@@ -66,7 +71,11 @@ $btns: (
       border: 1px solid $color;
     }
     &:hover{
-      border-color: darken($color, 10%);
+      @if $name == primary {
+        border-color: darken($border-color-input, 10%);
+      } @else {
+        border-color: darken($color, 10%);
+      }
     }
     &:active{
       background-color: darken($color, 10%);
@@ -81,19 +90,20 @@ input[type=radio]
 }
 
 $height-checkbox: 14px;
-
+$border-color-checkbox: #d6d6d6;
 input[type=checkbox] + label.checkbox{
   cursor: pointer;
   display: block;
   width: $height-checkbox;
+  background-color: white;
   height: $height-checkbox;
   @include border-radius(3px);
-  border: 1px solid $text-comment;
+  border: 1px solid $border-color-checkbox;
   position: relative;
 }
 
 label.checkbox:hover{
-  border-color: $blue !important;
+  border-color: $roseo !important;
 }
 
 input[type=checkbox]:checked + label.checkbox{
@@ -106,9 +116,9 @@ input[type=checkbox]:checked + label.checkbox{
     top: 2px;
     left: 2px;
     @include border-radius(3px);
-    background-color: $blue;
+    background-color: $roseo;
   }
-  border-color: $blue;
+  border-color: $roseo;
 }
 
 

@@ -12,20 +12,21 @@
         <input class="word" ref="domInputWord" v-model="word" type="text" placeholder="词条">
         <input class="code" ref="domInputCode" v-model="code" type="text" placeholder="编码">
         <select ref="domSelectGroupId" v-model="groupId">
-            <option value="" disabled>分组</option>
+            <option value="" disabled>选择分组</option>
             <option :value="index" v-for="(group, index) in dict.dictWithGroupOrigin" :key="index">{{ group.groupName }}</option>
         </select>
-        <div class="btn btn-orange" @click="clearInputs">清除</div>
-        <div class="btn btn-green" @click="addNewPhrase">添加</div>
-        <div class="btn btn-blue" @click="saveDictToFile">保存</div>
-        <input v-model="keyword" type="text" placeholder="关键字">
-        <div class="btn btn-primary" @click="search">搜索</div>
+        <div class="btn btn-primary" @click="clearInputs">清除</div>
+        <div class="btn btn-primary" @click="addNewPhrase">添加</div>
+        <div class="btn btn-primary" @click="saveDictToFile">保存</div>
+        <div class="btn btn-red" @click="deleteWords">删除</div>
+<!--        <input v-model="keyword" type="text" placeholder="关键字">-->
+<!--        <div class="btn btn-primary" @click="search">搜索</div>-->
     </div>
 
     <div class="container">
         <div class="display" v-if="dict">
             <div class="table-item" v-for="(group, groupIndex) in dict.dictWithGroup" :key="groupIndex">
-                <h3>{{ group.groupName }}</h3>
+                <h3 class="pl-7">{{ group.groupName }}</h3>
                 <table class="table">
                     <tbody>
                     <tr v-for="(item, index) in group.dict" :key="index">
@@ -35,8 +36,11 @@
                         </td>
                         <td class="code">{{ item.code }}</td>
                         <td class="word">{{ item.word }}</td>
-                        <td class="operation">
-                            <span class="btn btn-sm btn-primary no-border mr-1">up</span> <span class="btn btn-sm btn-primary no-border">down</span>
+                        <td>
+                            <div class="operation">
+                                <div v-if="index !== 0" class="up"><img src="./assets/up.svg" alt="move up"></div>
+                                <div v-if="index+1 !== group.dict.length" class="down"><img src="./assets/down.svg" alt="move down"></div>
+                            </div>
                         </td>
                     </tr>
                     </tbody>
