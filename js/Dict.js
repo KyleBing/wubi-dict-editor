@@ -1,9 +1,10 @@
 // 字典对象
 import Word from "./Word.js";
 import WordGroup from "./WordGroup.js";
+const os = require('os')
 
-// const RETURN_SYMBOL = '\r\n' // on windows
-const RETURN_SYMBOL = '\n' // on mac
+const RETURN_SYMBOL = getReturnSymbol()
+
 class Dict {
     constructor(yaml) {
         this.yaml = yaml // 原文件内容
@@ -84,5 +85,20 @@ function getWordFromLine(lineStr){
     let code = wordArray[1]
     let word = wordArray[0]
     return new Word(code, word)
+}
+
+
+// 根据系统返回对应文件系统的换行符
+function getReturnSymbol(){
+    switch (os.platform()){
+        case 'linux':
+        case 'darwin': return '\n' // macOS
+        case 'win32': return '\r\n' // windows
+        case 'aix':
+        case 'freebsd':
+        case 'openbsd':
+        case 'sunos':
+        default: return '\n'
+    }
 }
 export default Dict

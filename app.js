@@ -1,5 +1,6 @@
 const {app, BrowserWindow, Menu, ipcMain, ipcRenderer} = require('electron');
 const fs = require('fs')
+const os = require('os')
 
 const url = require("url");
 const path = require("path");
@@ -59,9 +60,12 @@ function readFile(filePath){
     })
 }
 
+
+// 设置菜单 - Rime 所有文件
 function setRimeFolderMenu(){
-    let folderPath = '/Users/Kyle/Library/Rime'
-    fs.readdir(folderPath,(err, filePaths) => {
+    let homeDir = os.homedir()
+    let rimeFolderPath = getRimeDirectoryPath(homeDir)
+    fs.readdir(rimeFolderPath,(err, filePaths) => {
         if (err) {
             console.log(err)
         } else {
@@ -71,7 +75,7 @@ function setRimeFolderMenu(){
                     filesMenu.push({
                         label: item,
                         click() {
-                            let filePath = path.join(folderPath, item)
+                            let filePath = path.join(rimeFolderPath, item)
                             readFile(filePath)
                         }
                     },)
@@ -82,17 +86,31 @@ function setRimeFolderMenu(){
     })
 }
 
+// 根据系统返回 rime 路径
+function getRimeDirectoryPath(userHome){
+    switch (os.platform()){
+        case 'aix': break
+        case 'darwin': return path.join(userHome + '/Library/Rime') // macOS
+        case 'freebsd': break
+        case 'linux': break
+        case 'openbsd': break
+        case 'sunos': break
+        case 'win32': return path.join(userHome + '/AppData/Roaming/Rime') // windows
+    }
+}
+
+// 创建 menu
 function createMenu(filesMenu) {
     let menuStructure = [
         {
-            label: '文件',
+            label: 'About',
             submenu: [
                 {label: '最小化', role: 'minimize'},
                 {label: '退出', role: 'quit'},
             ]
         },
         {
-            label: '文件',
+            label: 'Files',
             submenu: filesMenu
         }
     ]
