@@ -3,10 +3,7 @@ import {shakeDomFocus, IPC_TYPES} from "./Utility.js"
 import Word from "./Word.js";
 
 const Vue = require('vue')
-
 const {ipcRenderer} = require('electron')
-
-
 
 
 // Vue 3
