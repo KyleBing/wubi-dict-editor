@@ -7,6 +7,10 @@ $radius-switch: 15px;
 $btn-padding-tb: 2px;
 $btn-padding-lr: 8px;
 
+$height-btn-sm: $height-input - 4;
+$btn-sm-padding-tb: 1px;
+$btn-sm-padding-lr: 3px;
+
 .tool-bar{
   display: flex;
   justify-content: space-between;
@@ -39,6 +43,16 @@ $btns: (
   }
 }
 
+.btn-sm {
+  line-height: $height-btn-sm - $btn-sm-padding-tb * 2;
+  padding: $btn-sm-padding-tb $btn-sm-padding-lr ;
+}
+
+.no-border{
+  border: none !important;
+
+}
+
 
 @each $name, $color in $btns {
   .btn-#{$name}{
@@ -51,7 +65,6 @@ $btns: (
       background-color: $color;
       border: 1px solid $color;
     }
-
     &:hover{
       border-color: darken($color, 10%);
     }
@@ -66,6 +79,39 @@ input[type=radio]
 {
   display: none;
 }
+
+$height-checkbox: 14px;
+
+input[type=checkbox] + label.checkbox{
+  cursor: pointer;
+  display: block;
+  width: $height-checkbox;
+  height: $height-checkbox;
+  @include border-radius(3px);
+  border: 1px solid $text-comment;
+  position: relative;
+}
+
+label.checkbox:hover{
+  border-color: $blue !important;
+}
+
+input[type=checkbox]:checked + label.checkbox{
+  &:after{
+    content: '';
+    display: block;
+    position: absolute;
+    height: $height-checkbox - 6;
+    width: $height-checkbox - 6;
+    top: 2px;
+    left: 2px;
+    @include border-radius(3px);
+    background-color: $blue;
+  }
+  border-color: $blue;
+}
+
+
 
 $height-radio: $height-btn;
 $radio-gap: 2px;

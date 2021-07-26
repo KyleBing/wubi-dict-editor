@@ -23,11 +23,17 @@ tbody{
   color: $text-main;
   td{
     font-size: $fz-table;
+    &.checkbox{
+      width: 2rem;
+    }
     &.code{
-      width: $fz-table * 6;
+      width: 10%;
     }
     &.word{
-
+      width: 60%;
+    }
+    &.operation{
+      width: 20%;
     }
   }
   tr{
