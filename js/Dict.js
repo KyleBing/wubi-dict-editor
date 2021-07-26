@@ -105,6 +105,23 @@ class Dict {
             this.dictWithGroup = [...this.dictWithGroupOrigin]
         }
     }
+
+    /**
+     * 添加新 Word
+     * @param word Word
+     * @param groupIndex Number
+     */
+    addNewWord(word, groupIndex){
+        if (groupIndex !== ''){
+            this.dictWithGroupOrigin[groupIndex].dict.push(word)
+        } else {
+            let newWordGroup = new WordGroup('未命名',[word])
+            this.dictWithGroupOrigin.push(newWordGroup)
+        }
+        this.dictOrigin.push(word)
+        this.dict = [...this.dictOrigin]
+        this.dictWithGroup = [...this.dictWithGroupOrigin]
+    }
 }
 
 // 从一条词条字符串中获取 word 对象

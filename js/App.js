@@ -1,5 +1,6 @@
 import Dict from "./Dict.js"
-import {$} from "./Utility.js"
+import {$, shakeDomFocus} from "./Utility.js"
+import Word from "./Word.js";
 
 const Vue = require('vue')
 
@@ -12,9 +13,11 @@ const {ipcRenderer} = require('electron')
 const app = {
     data() {
         return {
-            name: '名字嘛',
-            dict: null,
-            keyword: '',
+            dict: null, // 当前词库对象 Dict
+            keyword: '', // 搜索关键字
+            code: '',
+            word: '',
+            groupId: '', // 组 index
             keywordUnwatch: null // keyword watch 方法的撤消方法
         }
     },
@@ -35,8 +38,25 @@ const app = {
     methods: {
         search(){
             this.dict.setKeyword(this.keyword)
+        },
+        addNewPhrase(){
+            if (!this.word){
+                console.log('addNewPhrase: no-word')
+                shakeDomFocus(this.$refs.domInputWord)
+            } else if (!this.code){
+                console.log('addNewPhrase: no-code')
+                shakeDomFocus(this.$refs.domInputCode)
+            } else {
+                this.dict.addNewWord(new Word(this.code, this.word) ,this.groupId)
+                console.log(this.code, this.word, this.groupId)
+            }
         }
     },
+    watch: {
+        code(newValue){
+            this.code = newValue.replaceAll(/[^A-Za-z]/g, '') // 只允许输入字母
+        }
+    }
 }
 
 Vue.createApp(app).mount('#app')

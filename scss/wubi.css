@@ -2,7 +2,6 @@
 /*
   Extension
 */
-@import "animate.css";
 .unselectable, input[type=checkbox] + label.checker, .btn, .btn-group .btn-vertical > * {
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -370,6 +369,64 @@
   padding: 40px !important;
 }
 
+.animated {
+  -webkit-animation-duration: 0.25s;
+  animation-duration: 0.25s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+}
+
+@-webkit-keyframes shake {
+  from, to {
+    -webkit-transform: translate3d(0, 0, 0);
+    -moz-transform: translate3d(0, 0, 0);
+    -ms-transform: translate3d(0, 0, 0);
+    -o-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+  0%, 50%, 100% {
+    -webkit-transform: translate3d(-5px, 0, 0);
+    -moz-transform: translate3d(-5px, 0, 0);
+    -ms-transform: translate3d(-5px, 0, 0);
+    -o-transform: translate3d(-5px, 0, 0);
+    transform: translate3d(-5px, 0, 0);
+  }
+  25%, 75% {
+    -webkit-transform: translate3d(5px, 0, 0);
+    -moz-transform: translate3d(5px, 0, 0);
+    -ms-transform: translate3d(5px, 0, 0);
+    -o-transform: translate3d(5px, 0, 0);
+    transform: translate3d(5px, 0, 0);
+  }
+}
+@keyframes shake {
+  from, to {
+    -webkit-transform: translate3d(0, 0, 0);
+    -moz-transform: translate3d(0, 0, 0);
+    -ms-transform: translate3d(0, 0, 0);
+    -o-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+  0%, 50%, 100% {
+    -webkit-transform: translate3d(-5px, 0, 0);
+    -moz-transform: translate3d(-5px, 0, 0);
+    -ms-transform: translate3d(-5px, 0, 0);
+    -o-transform: translate3d(-5px, 0, 0);
+    transform: translate3d(-5px, 0, 0);
+  }
+  25%, 75% {
+    -webkit-transform: translate3d(5px, 0, 0);
+    -moz-transform: translate3d(5px, 0, 0);
+    -ms-transform: translate3d(5px, 0, 0);
+    -o-transform: translate3d(5px, 0, 0);
+    transform: translate3d(5px, 0, 0);
+  }
+}
+.shake {
+  -webkit-animation-name: shake;
+  animation-name: shake;
+}
+
 .table-item h3 {
   line-height: 1.5;
   margin-bottom: 10px;
@@ -435,7 +492,7 @@ tbody tr:hover td {
 .btn-primary {
   color: #333;
   background-color: white;
-  border: 1px solid #eee;
+  border: 1px solid #ddd;
 }
 .btn-primary:hover {
   border-color: #e6e6e6;
@@ -678,14 +735,33 @@ body {
   display: flex;
   justify-content: flex-start;
 }
-.search-bar input {
+.search-bar > * {
+  margin-right: 5px;
+}
+.search-bar input, .search-bar select {
   font-size: inherit;
   line-height: 18px;
-  border: 1px solid #eee;
+  border: 1px solid #ddd;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   border-radius: 3px;
   padding: 3px 8px;
+  -webkit-transition: all, 0.5s;
+  -moz-transition: all, 0.5s;
+  -ms-transition: all, 0.5s;
+  -o-transition: all, 0.5s;
+  transition: all, 0.5s;
+}
+.search-bar input.code, .search-bar select.code {
+  width: 5rem;
+}
+.search-bar input.word, .search-bar select.word {
+  width: 12rem;
+}
+.search-bar input:focus, .search-bar select:focus {
+  -webkit-box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
 }
 
 .shadow {

@@ -45,7 +45,7 @@ $btns: (
     @if $name == primary {
       color: $text-main;
       background-color: $color;
-      border: 1px solid $border-color;
+      border: 1px solid $border-color-input;
     } @else {
       color: white;
       background-color: $color;
