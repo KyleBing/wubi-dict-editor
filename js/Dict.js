@@ -50,7 +50,7 @@ class Dict {
         let temp = null // 第一个分组
         let lastItemIsEmptyLine = false // 上一条是空，用于循环中判断是否需要新起一个 WordGroup
         lines.forEach((item, index) => {
-            if (item.indexOf('##') === 0) { // 注释分组
+            if (item.startsWith('##')) { // 注释分组
                 if (temp && temp.groupName) { // 如果上一个已经有名字了，说明需要保存
                     dictGroup.push(temp)
                 }
@@ -62,7 +62,8 @@ class Dict {
                 }
                 temp.dict.push(getWordFromLine(item))
                 lastItemIsEmptyLine = false
-            } else if (item.indexOf('#') === 0) { // 注释
+            } else if (item.startsWith('#')) { // 注释
+                console.log(item)
                 lastItemIsEmptyLine = false
             } else {
                 // 为空行时
@@ -121,6 +122,21 @@ class Dict {
         this.dictOrigin.push(word)
         this.dict = [...this.dictOrigin]
         this.dictWithGroup = [...this.dictWithGroupOrigin]
+    }
+
+    // 转为 yaml String
+    toYamlString(){
+        let yamlBody = ''
+        let returnSymbol = getReturnSymbol()
+        this.dictWithGroupOrigin.forEach(group => {
+            let tempGroupString = ''
+            tempGroupString = tempGroupString + `## ${group.groupName}${returnSymbol}` // + groupName
+            group.dict.forEach(item =>{
+                tempGroupString = tempGroupString + item.toString() + returnSymbol
+            })
+            yamlBody = yamlBody + tempGroupString + returnSymbol // 每组的末尾加个空行
+        })
+        return this.header + returnSymbol + yamlBody
     }
 }
 

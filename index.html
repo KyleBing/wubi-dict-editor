@@ -15,7 +15,9 @@
             <option value="" disabled>选择添加分组</option>
             <option :value="index" v-for="(group, index) in dict.dictWithGroupOrigin" :key="index">{{ group.groupName }}</option>
         </select>
+        <div class="btn btn-orange" @click="clearInputs">清除</div>
         <div class="btn btn-green" @click="addNewPhrase">添加</div>
+        <div class="btn btn-blue" @click="saveDictToFile">保存</div>
         <input v-model="keyword" type="text" placeholder="关键字">
         <div class="btn btn-primary" @click="search">搜索</div>
     </div>

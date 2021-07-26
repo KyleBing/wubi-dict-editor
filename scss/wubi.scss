@@ -61,3 +61,7 @@ body{
 .prototype{
   @extend .hidden;
 }
+
+[v-cloak] {
+  display: none
+}

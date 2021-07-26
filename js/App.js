@@ -1,5 +1,5 @@
 import Dict from "./Dict.js"
-import {$, shakeDomFocus} from "./Utility.js"
+import {shakeDomFocus, IPC_TYPES} from "./Utility.js"
 import Word from "./Word.js";
 
 const Vue = require('vue')
@@ -18,11 +18,13 @@ const app = {
             code: '',
             word: '',
             groupId: '', // 组 index
-            keywordUnwatch: null // keyword watch 方法的撤消方法
+            keywordUnwatch: null, // keyword watch 方法的撤消方法
+            currentFilePath: ''
         }
     },
     mounted() {
-        ipcRenderer.on('showFileContent', (event, res) => {
+        ipcRenderer.on(IPC_TYPES.showFileContent, (event, filePath, res) => {
+            this.currentFilePath = filePath
             this.dict = new Dict(res)
             if (this.dict.dict.length > 1000){ // 如果词条数量大于 1000 条，不进行实时筛选
                 if (this.keywordUnwatch){
@@ -50,6 +52,16 @@ const app = {
                 this.dict.addNewWord(new Word(this.code, this.word) ,this.groupId)
                 console.log(this.code, this.word, this.groupId)
             }
+        },
+        // 保存内容到文件
+        saveDictToFile(){
+            ipcRenderer.send(IPC_TYPES.saveFile, this.currentFilePath, this.dict.toYamlString())
+        },
+        // 清除内容
+        clearInputs(){
+            this.code = ''
+            this.word = ''
+            this.groupId = ''
         }
     },
     watch: {

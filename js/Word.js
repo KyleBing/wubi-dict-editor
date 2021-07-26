@@ -4,6 +4,9 @@ class Word{
         this.code = code
         this.word = word
     }
+    toString(){
+        return this.word + '\t' + this.code
+    }
 }
 
 export default Word

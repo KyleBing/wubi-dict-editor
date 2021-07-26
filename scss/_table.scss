@@ -3,6 +3,7 @@ $fz-table: 12px;
 .table-item{
   h3{
     line-height: 1.5;
+    font-size: 14px;
     margin-bottom: 10px;
   }
 }
@@ -30,6 +31,11 @@ tbody{
     }
   }
   tr{
+    &:first-child{
+      td{
+        //border-top: 1px solid $border-color;
+      }
+    }
     &:hover{
       td{
         background-color: $bg-td;

@@ -1,7 +1,11 @@
+const IPC_TYPES = {
+    saveFile: 'saveFile',
+    readFile: 'readFile',
+    showFileContent: 'showFileContent'
+}
 const {app, BrowserWindow, Menu, ipcMain, ipcRenderer} = require('electron');
 const fs = require('fs')
 const os = require('os')
-
 const url = require("url");
 const path = require("path");
 
@@ -55,7 +59,7 @@ function readFile(filePath){
         if(err){
             console.log(err)
         } else {
-            mainWindow.webContents.send('showFileContent', res)
+            mainWindow.webContents.send(IPC_TYPES.showFileContent, filePath ,res)
         }
     })
 }
@@ -117,3 +121,7 @@ function createMenu(filesMenu) {
     let menu = Menu.buildFromTemplate(menuStructure)
     Menu.setApplicationMenu(menu)
 }
+
+ipcMain.on('saveFile', (event, filePath, yamlString) => {
+    fs.writeFileSync(filePath, yamlString)
+})

@@ -429,6 +429,7 @@
 
 .table-item h3 {
   line-height: 1.5;
+  font-size: 14px;
   margin-bottom: 10px;
 }
 
@@ -771,5 +772,9 @@ body {
 }
 
 .hidden, .prototype {
+  display: none;
+}
+
+[v-cloak] {
   display: none;
 }
