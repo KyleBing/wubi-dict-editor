@@ -1,11 +1,13 @@
 {
-  "name": "elec",
+  "name": "wubi-dict-editor",
   "version": "0.1.0",
   "private": true,
   "author": {
     "name": "KyleBing",
     "email": "kylebing@163.com"
   },
+  "date": "2021-07-26",
+  "dateInit": "2021-07-24",
   "description": "demo-electron",
   "main": "main.js",
   "scripts": {

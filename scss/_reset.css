@@ -41,8 +41,9 @@ tt {
 
 ::-webkit-scrollbar {
   z-index: 50;
-  width: 3px;
-  height: 3px; }
+  width: 5px;
+  height: 3px;
+}
 
 ::-webkit-scrollbar-track {
   border-right: 1px solid #eeeeee;
@@ -57,7 +58,7 @@ tt {
   height: 3px; }
 
 :hover::-webkit-scrollbar-thumb {
-  background-color: #aaa;
+  background-color: #ccc;
   transition: all .2s; }
 
 ::-webkit-scrollbar-button {

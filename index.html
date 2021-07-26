@@ -12,7 +12,7 @@
         <input class="word" ref="domInputWord" v-model="word" type="text" placeholder="词条">
         <input class="code" ref="domInputCode" v-model="code" type="text" placeholder="编码">
         <select ref="domSelectGroupId" v-model="groupId">
-            <option value="" disabled>选择添加分组</option>
+            <option value="" disabled>分组</option>
             <option :value="index" v-for="(group, index) in dict.dictWithGroupOrigin" :key="index">{{ group.groupName }}</option>
         </select>
         <div class="btn btn-orange" @click="clearInputs">清除</div>

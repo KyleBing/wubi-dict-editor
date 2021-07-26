@@ -33,7 +33,7 @@ function createWindow() {
         mainWindow = null
     })
 
-    mainWindow.webContents.openDevTools()
+    mainWindow.webContents.openDevTools() // 打开调试窗口
 }
 
 
@@ -110,6 +110,7 @@ function createMenu(filesMenu) {
             label: 'About',
             submenu: [
                 {label: '最小化', role: 'minimize'},
+                {label: '关于', role: 'about'},
                 {label: '退出', role: 'quit'},
             ]
         },
