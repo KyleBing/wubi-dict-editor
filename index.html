@@ -9,8 +9,8 @@
 
 <div v-cloak id="app">
     <div class="search-bar">
-        <input type="text" placeholder="搜索" id="keyword">
-        <div class="btn btn-primary ml-1">搜索</div>
+        <input v-model="keyword" type="text" placeholder="关键字">
+        <div class="btn btn-primary ml-1" @click="search">搜索</div>
     </div>
 
     <div class="container">

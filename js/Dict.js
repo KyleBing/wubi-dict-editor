@@ -12,7 +12,10 @@ class Dict {
         this.header = null // 文件头部内容
         this.body = '' // 文件体
         this.dict = [] // 文件词条数组
+        this.dictOrigin = [] // 文件词条数组
         this.dictWithGroup = [] // 文件词条 分组
+        this.dictWithGroupOrigin = [] // 文件词条 分组
+        this.keyword = '' // 筛选词条用的 keyword
         let indexEndOfHeader = this.yaml.indexOf('...') + 3
         if (indexEndOfHeader < 0){
             console.log('文件格式错误，没有 ... 这一行')
@@ -20,8 +23,10 @@ class Dict {
             this.indexEndOfHeader = indexEndOfHeader
             this.header = this.getDictHeader()
             this.body = this.getDictBody()
-            this.dict = this.getDictWords()
-            this.dictWithGroup = this.getDictWordsWithGroup()
+            this.dictOrigin = this.getDictWords()
+            this.dict = [...this.dictOrigin]
+            this.dictWithGroupOrigin = this.getDictWordsWithGroup()
+            this.dictWithGroup = [...this.dictWithGroupOrigin]
             console.log(this.dictWithGroup)
         }
     }
@@ -77,6 +82,28 @@ class Dict {
             dictGroup.push(temp) // 加上最后一个
         }
         return dictGroup
+    }
+    // 设置 keyword 并筛选 dict dictWithGroup
+    setKeyword(keyword){
+        this.keyword = keyword
+        if (keyword){
+            this.dict = this.dictOrigin.filter(item => { // 获取包含 keyword 的记录
+                return item.code.includes(keyword) || item.word.includes(keyword)
+            })
+            this.dictWithGroup =[]
+            this.dictWithGroupOrigin.forEach(groupItem => { // 不能直接使用原 groupItem，不然会改变 dictWithGroupOrigin 的数据
+                let tempGroupItem = groupItem.clone()
+                tempGroupItem.dict = tempGroupItem.dict.filter(item => {
+                    return item.code.includes(keyword) || item.word.includes(keyword)
+                })
+                if (tempGroupItem.dict.length > 0){
+                    this.dictWithGroup.push(tempGroupItem)
+                }
+            })
+        } else { // 如果 keyword 为空，恢复原有数据
+            this.dict = [...this.dictOrigin]
+            this.dictWithGroup = [...this.dictWithGroupOrigin]
+        }
     }
 }
 
