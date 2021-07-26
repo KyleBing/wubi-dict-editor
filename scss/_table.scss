@@ -1,3 +1,5 @@
+$fz-table: 12px;
+
 .table-item{
   h3{
     line-height: 1.5;
@@ -7,20 +9,19 @@
 .table{
   width: 100%;
   margin-bottom: 20px;
-  border: 1px solid $color-border;
   @include border-radius(5px);
   border-collapse: collapse;
 }
 
 td{
   padding: 2px 5px;
-  border: 1px solid $color-border;
+  border-bottom: 1px solid $border-color;
 }
 
 tbody{
   color: $text-main;
   td{
-    font-size: 0.8rem;
+    font-size: $fz-table;
     &.code{
       width: 20%;
     }

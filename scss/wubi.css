@@ -51,283 +51,323 @@
 }
 
 .mt-1 {
-  margin-top: 10px !important;
+  margin-top: 5px !important;
 }
 
 .mb-1 {
-  margin-bottom: 10px !important;
+  margin-bottom: 5px !important;
 }
 
 .ml-1 {
-  margin-left: 10px !important;
+  margin-left: 5px !important;
 }
 
 .mr-1 {
-  margin-right: 10px !important;
+  margin-right: 5px !important;
 }
 
 .m-1 {
-  margin: 10px !important;
+  margin: 5px !important;
 }
 
 .pt-1 {
-  padding-top: 10px !important;
+  padding-top: 5px !important;
 }
 
 .pb-1 {
-  padding-bottom: 10px !important;
+  padding-bottom: 5px !important;
 }
 
 .pl-1 {
-  padding-left: 10px !important;
+  padding-left: 5px !important;
 }
 
 .pr-1 {
-  padding-right: 10px !important;
+  padding-right: 5px !important;
 }
 
 .p-1 {
-  padding: 10px !important;
+  padding: 5px !important;
 }
 
 .mt-2 {
-  margin-top: 20px !important;
+  margin-top: 10px !important;
 }
 
 .mb-2 {
-  margin-bottom: 20px !important;
+  margin-bottom: 10px !important;
 }
 
 .ml-2 {
-  margin-left: 20px !important;
+  margin-left: 10px !important;
 }
 
 .mr-2 {
-  margin-right: 20px !important;
+  margin-right: 10px !important;
 }
 
 .m-2 {
-  margin: 20px !important;
+  margin: 10px !important;
 }
 
 .pt-2 {
-  padding-top: 20px !important;
+  padding-top: 10px !important;
 }
 
 .pb-2 {
-  padding-bottom: 20px !important;
+  padding-bottom: 10px !important;
 }
 
 .pl-2 {
-  padding-left: 20px !important;
+  padding-left: 10px !important;
 }
 
 .pr-2 {
-  padding-right: 20px !important;
+  padding-right: 10px !important;
 }
 
 .p-2 {
-  padding: 20px !important;
+  padding: 10px !important;
 }
 
 .mt-3 {
-  margin-top: 30px !important;
+  margin-top: 15px !important;
 }
 
 .mb-3 {
-  margin-bottom: 30px !important;
+  margin-bottom: 15px !important;
 }
 
 .ml-3 {
-  margin-left: 30px !important;
+  margin-left: 15px !important;
 }
 
 .mr-3 {
-  margin-right: 30px !important;
+  margin-right: 15px !important;
 }
 
 .m-3 {
-  margin: 30px !important;
+  margin: 15px !important;
 }
 
 .pt-3 {
-  padding-top: 30px !important;
+  padding-top: 15px !important;
 }
 
 .pb-3 {
-  padding-bottom: 30px !important;
+  padding-bottom: 15px !important;
 }
 
 .pl-3 {
-  padding-left: 30px !important;
+  padding-left: 15px !important;
 }
 
 .pr-3 {
-  padding-right: 30px !important;
+  padding-right: 15px !important;
 }
 
 .p-3 {
-  padding: 30px !important;
+  padding: 15px !important;
 }
 
 .mt-4 {
-  margin-top: 40px !important;
+  margin-top: 20px !important;
 }
 
 .mb-4 {
-  margin-bottom: 40px !important;
+  margin-bottom: 20px !important;
 }
 
 .ml-4 {
-  margin-left: 40px !important;
+  margin-left: 20px !important;
 }
 
 .mr-4 {
-  margin-right: 40px !important;
+  margin-right: 20px !important;
 }
 
 .m-4 {
-  margin: 40px !important;
+  margin: 20px !important;
 }
 
 .pt-4 {
-  padding-top: 40px !important;
+  padding-top: 20px !important;
 }
 
 .pb-4 {
-  padding-bottom: 40px !important;
+  padding-bottom: 20px !important;
 }
 
 .pl-4 {
-  padding-left: 40px !important;
+  padding-left: 20px !important;
 }
 
 .pr-4 {
-  padding-right: 40px !important;
+  padding-right: 20px !important;
 }
 
 .p-4 {
-  padding: 40px !important;
+  padding: 20px !important;
 }
 
 .mt-5 {
-  margin-top: 50px !important;
+  margin-top: 25px !important;
 }
 
 .mb-5 {
-  margin-bottom: 50px !important;
+  margin-bottom: 25px !important;
 }
 
 .ml-5 {
-  margin-left: 50px !important;
+  margin-left: 25px !important;
 }
 
 .mr-5 {
-  margin-right: 50px !important;
+  margin-right: 25px !important;
 }
 
 .m-5 {
-  margin: 50px !important;
+  margin: 25px !important;
 }
 
 .pt-5 {
-  padding-top: 50px !important;
+  padding-top: 25px !important;
 }
 
 .pb-5 {
-  padding-bottom: 50px !important;
+  padding-bottom: 25px !important;
 }
 
 .pl-5 {
-  padding-left: 50px !important;
+  padding-left: 25px !important;
 }
 
 .pr-5 {
-  padding-right: 50px !important;
+  padding-right: 25px !important;
 }
 
 .p-5 {
-  padding: 50px !important;
+  padding: 25px !important;
 }
 
 .mt-6 {
-  margin-top: 60px !important;
+  margin-top: 30px !important;
 }
 
 .mb-6 {
-  margin-bottom: 60px !important;
+  margin-bottom: 30px !important;
 }
 
 .ml-6 {
-  margin-left: 60px !important;
+  margin-left: 30px !important;
 }
 
 .mr-6 {
-  margin-right: 60px !important;
+  margin-right: 30px !important;
 }
 
 .m-6 {
-  margin: 60px !important;
+  margin: 30px !important;
 }
 
 .pt-6 {
-  padding-top: 60px !important;
+  padding-top: 30px !important;
 }
 
 .pb-6 {
-  padding-bottom: 60px !important;
+  padding-bottom: 30px !important;
 }
 
 .pl-6 {
-  padding-left: 60px !important;
+  padding-left: 30px !important;
 }
 
 .pr-6 {
-  padding-right: 60px !important;
+  padding-right: 30px !important;
 }
 
 .p-6 {
-  padding: 60px !important;
+  padding: 30px !important;
 }
 
 .mt-7 {
-  margin-top: 70px !important;
+  margin-top: 35px !important;
 }
 
 .mb-7 {
-  margin-bottom: 70px !important;
+  margin-bottom: 35px !important;
 }
 
 .ml-7 {
-  margin-left: 70px !important;
+  margin-left: 35px !important;
 }
 
 .mr-7 {
-  margin-right: 70px !important;
+  margin-right: 35px !important;
 }
 
 .m-7 {
-  margin: 70px !important;
+  margin: 35px !important;
 }
 
 .pt-7 {
-  padding-top: 70px !important;
+  padding-top: 35px !important;
 }
 
 .pb-7 {
-  padding-bottom: 70px !important;
+  padding-bottom: 35px !important;
 }
 
 .pl-7 {
-  padding-left: 70px !important;
+  padding-left: 35px !important;
 }
 
 .pr-7 {
-  padding-right: 70px !important;
+  padding-right: 35px !important;
 }
 
 .p-7 {
-  padding: 70px !important;
+  padding: 35px !important;
+}
+
+.mt-8 {
+  margin-top: 40px !important;
+}
+
+.mb-8 {
+  margin-bottom: 40px !important;
+}
+
+.ml-8 {
+  margin-left: 40px !important;
+}
+
+.mr-8 {
+  margin-right: 40px !important;
+}
+
+.m-8 {
+  margin: 40px !important;
+}
+
+.pt-8 {
+  padding-top: 40px !important;
+}
+
+.pb-8 {
+  padding-bottom: 40px !important;
+}
+
+.pl-8 {
+  padding-left: 40px !important;
+}
+
+.pr-8 {
+  padding-right: 40px !important;
+}
+
+.p-8 {
+  padding: 40px !important;
 }
 
 .table-item h3 {
@@ -338,7 +378,6 @@
 .table {
   width: 100%;
   margin-bottom: 20px;
-  border: 1px solid #eee;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   border-radius: 5px;
@@ -347,14 +386,14 @@
 
 td {
   padding: 2px 5px;
-  border: 1px solid #eee;
+  border-bottom: 1px solid #eee;
 }
 
 tbody {
   color: #333;
 }
 tbody td {
-  font-size: 0.8rem;
+  font-size: 12px;
 }
 tbody td.code {
   width: 20%;
@@ -372,36 +411,15 @@ tbody tr:hover td {
 
 .btn, .btn-group .btn-vertical > * {
   color: inherit;
-  line-height: 1;
+  line-height: 20px;
   cursor: pointer;
   margin: 0;
-  -webkit-border-radius: 0;
-  -moz-border-radius: 0;
-  border-radius: 0;
-  border: none;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
   white-space: nowrap;
-  font-size: 13px;
-  padding: 6px 8px;
+  padding: 2px 8px;
   background-color: white;
-}
-.btn.no-action, .btn-group .btn-vertical > .no-action {
-  cursor: default;
-}
-.btn.no-action:hover, .btn-group .btn-vertical > .no-action:hover {
-  background-color: white;
-}
-.btn.no-action:active, .btn-group .btn-vertical > .no-action:active {
-  -webkit-transform: translateY(0px);
-  -moz-transform: translateY(0px);
-  -ms-transform: translateY(0px);
-  -o-transform: translateY(0px);
-  transform: translateY(0px);
-  -webkit-box-shadow: none;
-  -moz-box-shadow: none;
-  box-shadow: none;
-}
-.btn:hover, .btn-group .btn-vertical > :hover {
-  background-color: #f2f2f2;
 }
 .btn:active, .btn-group .btn-vertical > :active {
   -webkit-transform: translateY(2px);
@@ -413,19 +431,23 @@ tbody tr:hover td {
   -moz-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
   box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
 }
-.btn.danger, .btn-group .btn-vertical > .danger {
-  background-color: #FF3B30;
-  color: white;
-}
 
-.btn-sm {
-  padding: 2px 3px;
-  font-size: 13px;
+.btn-primary {
+  color: #333;
+  background-color: white;
+  border: 1px solid #eee;
+}
+.btn-primary:hover {
+  border-color: #e6e6e6;
+}
+.btn-primary:active {
+  background-color: #e6e6e6;
 }
 
 .btn-green {
   color: white;
   background-color: #4CD964;
+  border: 1px solid #4CD964;
 }
 .btn-green:hover {
   border-color: #2ac845;
@@ -437,6 +459,7 @@ tbody tr:hover td {
 .btn-blue {
   color: white;
   background-color: #007AFF;
+  border: 1px solid #007AFF;
 }
 .btn-blue:hover {
   border-color: #0062cc;
@@ -448,6 +471,7 @@ tbody tr:hover td {
 .btn-orange {
   color: white;
   background-color: #FF9500;
+  border: 1px solid #FF9500;
 }
 .btn-orange:hover {
   border-color: #cc7700;
@@ -459,6 +483,7 @@ tbody tr:hover td {
 .btn-roseo {
   color: white;
   background-color: #FF2D70;
+  border: 1px solid #FF2D70;
 }
 .btn-roseo:hover {
   border-color: #f9004f;
@@ -482,8 +507,8 @@ input[type=checkbox] + label.switch {
   -webkit-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
   -moz-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
   box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
-  height: 17px;
-  width: 26px;
+  height: 28px;
+  width: 48px;
   -webkit-transition: all 0.3s;
   -moz-transition: all 0.3s;
   -ms-transition: all 0.3s;
@@ -496,8 +521,8 @@ input[type=checkbox] + label.switch:before {
   position: absolute;
   top: 2px;
   left: 2px;
-  width: 13px;
-  height: 13px;
+  width: 24px;
+  height: 24px;
   -webkit-border-radius: 15px;
   -moz-border-radius: 15px;
   border-radius: 15px;
@@ -527,10 +552,10 @@ input[type=checkbox]:checked + label.switch:before {
   content: "";
   display: block;
   position: absolute;
-  left: 11px;
+  left: 22px;
   right: 0;
-  width: 13px;
-  height: 13px;
+  width: 24px;
+  height: 24px;
   -webkit-border-radius: 15px;
   -moz-border-radius: 15px;
   border-radius: 15px;
@@ -633,13 +658,29 @@ label.btn, .btn-group .btn-vertical > label {
   padding-right: 6px !important;
 }
 
+body {
+  font-size: 12px;
+}
+
+.container {
+  position: relative;
+  padding: 10px;
+}
+
 .search-bar {
-  margin-bottom: 20px;
+  z-index: 10;
+  border-bottom: 1px solid #eee;
+  background-color: white;
+  padding: 10px;
+  position: sticky;
+  top: 0;
+  left: 0;
   display: flex;
   justify-content: flex-start;
 }
-
-input {
+.search-bar input {
+  font-size: inherit;
+  line-height: 18px;
   border: 1px solid #eee;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
@@ -647,8 +688,10 @@ input {
   padding: 3px 8px;
 }
 
-.container {
-  padding: 20px;
+.shadow {
+  -webkit-box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.08);
+  -moz-box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.08);
+  box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.08);
 }
 
 .hidden, .prototype {

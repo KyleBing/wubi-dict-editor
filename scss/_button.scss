@@ -1,16 +1,10 @@
 $padding-top: 3px;
 $padding-lr: 6px;
 $padding-lr-radio: 8px;
-$height-btn: 20px;
-$radius-btn: 3px;
+$height-btn: $height-input;
+$radius-btn: $radius;
 $radius-switch: 15px;
-
-$fz-btn: 13px;
-
-$fz-info: 13px;
-
-
-$btn-padding-tb: 6px;
+$btn-padding-tb: 2px;
 $btn-padding-lr: 8px;
 
 .tool-bar{
@@ -21,58 +15,43 @@ $btn-padding-lr: 8px;
 }
 
 
-
 $btns: (
-        'green'  : $green,
-        'blue'   : $blue,
-        'orange' : $orange,
-        'roseo'  : $roseo,
+    'primary': white,
+    'green'  : $green,
+    'blue'   : $blue,
+    'orange' : $orange,
+    'roseo'  : $roseo,
 );
 
 .btn{
   color: inherit;
-  line-height: 1;
+  line-height: $height-btn - $btn-padding-tb * 2;
   cursor: pointer;
   margin: 0;
-  @include border-radius(0);
-  border: none;
+  @include border-radius($radius-btn);
   white-space: nowrap;
-  font-size: $fz-btn;
   padding: $btn-padding-tb $btn-padding-lr ;
   background-color: white;
   @extend .unselectable;
-  &.no-action{
-    cursor: default;
-    &:hover{
-      background-color: white;
-    }
-    &:active{
-      @include transform(translateY(0px));
-      @include box-shadow(none);
-    }
-  }
-  &:hover{
-    background-color: darken(white, 5%);
-  }
   &:active{
     @include transform(translateY(2px));
     @include box-shadow(inset 0 1px 2px rgba(0,0,0,0.1))
   }
-  &.danger{
-    background-color: $red;
-    color: white;
-  }
 }
 
-.btn-sm{
-  padding: 2px 3px;
-  font-size: $fz-info;
-}
 
 @each $name, $color in $btns {
   .btn-#{$name}{
-    color: white;
-    background-color: $color;
+    @if $name == primary {
+      color: $text-main;
+      background-color: $color;
+      border: 1px solid $border-color;
+    } @else {
+      color: white;
+      background-color: $color;
+      border: 1px solid $color;
+    }
+
     &:hover{
       border-color: darken($color, 10%);
     }
@@ -88,7 +67,7 @@ input[type=radio]
   display: none;
 }
 
-$height-radio: $fz-info;
+$height-radio: $height-btn;
 $radio-gap: 2px;
 
 input[type=checkbox] + label.switch
@@ -96,7 +75,7 @@ input[type=checkbox] + label.switch
   position: relative;
   display: block;
   @include border-radius($radius-switch);
-  background-color: $color-border;
+  background-color: $border-color;
   //border-bottom: 1px solid white;
   @include box-shadow(inset 0 1px 2px rgba(0,0,0,0.1));
   height: $height-radio + $radio-gap * 2;
@@ -155,7 +134,7 @@ input[type=checkbox]:checked + label.checker {
   @include border-radius($radius-btn);
   justify-content: flex-start;
   overflow: hidden;
-  border: 1px solid $color-border;
+  border: 1px solid $border-color;
   margin: 0 5px 5px 0;
   &.dash{
     border-style: dashed;
@@ -165,7 +144,7 @@ input[type=checkbox]:checked + label.checker {
     }
   }
   > * {
-    border-right: 1px solid $color-border;
+    border-right: 1px solid $border-color;
     &:last-child{
       border-right: none;
     }
@@ -181,7 +160,7 @@ input[type=checkbox]:checked + label.checker {
       font-size: 7px;
       text-align: center;
       background-color: #fff;
-      border-bottom: 1px solid $color-border;
+      border-bottom: 1px solid $border-color;
       height: 50%;
       width: 20px;
       &:last-child{

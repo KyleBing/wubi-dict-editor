@@ -6,22 +6,40 @@
 @import "table";
 @import "button";
 
-.search-bar{
-  margin-bottom: 20px;
-  display: flex;
-  justify-content: flex-start;
 
-}
 
-input{
-  border: 1px solid $color-border;
-  @include border-radius(3px);
-  padding: 3px 8px;
+body{
+  font-size: 12px;
 }
 
 .container{
-  padding: 20px;
+  position: relative;
+  padding: 10px;
 }
+
+.search-bar{
+  z-index: 10;
+  border-bottom: 1px solid $border-color;
+  background-color: white;
+  padding: 10px;
+  position: sticky;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: flex-start;
+  input{
+    font-size: inherit;
+    line-height: $height-input - $padding-input-tb * 2;
+    border: 1px solid $border-color;
+    @include border-radius($radius);
+    padding: $padding-input-tb 8px;
+  }
+}
+
+.shadow{
+  @include box-shadow(1px 2px 3px rgba(0,0,0,0.08))
+}
+
 
 .hidden{
   display: none;

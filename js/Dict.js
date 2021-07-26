@@ -1,6 +1,7 @@
 // 字典对象
 import Word from "./Word.js";
 import WordGroup from "./WordGroup.js";
+
 const os = require('os')
 
 const RETURN_SYMBOL = getReturnSymbol()
