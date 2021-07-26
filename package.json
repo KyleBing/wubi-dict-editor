@@ -7,7 +7,7 @@
     "email": "kylebing@163.com"
   },
   "description": "demo-electron",
-  "main": "app.js",
+  "main": "main.js",
   "scripts": {
     "start": "electron-forge start",
     "package": "electron-forge package",
