@@ -23,7 +23,7 @@ tbody{
   td{
     font-size: $fz-table;
     &.code{
-      width: 20%;
+      width: $fz-table * 6;
     }
     &.word{
 

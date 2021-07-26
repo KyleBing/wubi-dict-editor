@@ -447,13 +447,13 @@ td {
 }
 
 tbody {
-  color: #333;
+  color: #000;
 }
 tbody td {
   font-size: 12px;
 }
 tbody td.code {
-  width: 20%;
+  width: 72px;
 }
 tbody tr:hover td {
   background-color: #eee;
@@ -490,7 +490,7 @@ tbody tr:hover td {
 }
 
 .btn-primary {
-  color: #333;
+  color: #000;
   background-color: white;
   border: 1px solid #ddd;
 }
