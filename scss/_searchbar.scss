@@ -25,11 +25,15 @@
     }
     &:focus{
       border-color: $color-main;
-      @include box-shadow(0 0 0 3px transparentize($color-main, 0.7))
+      @include box-shadow(0 0 0 2px transparentize($color-main, 0.7))
     }
     @include transition(all, 0.5s)
   }
   select{
     min-width: 80px;
+    option{
+      padding: 10px;
+
+    }
   }
 }

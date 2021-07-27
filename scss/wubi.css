@@ -544,11 +544,12 @@ tbody tr:hover .operation {
 
 .btn-primary {
   color: #000;
-  background-color: white;
-  border: 1px solid #ccc;
+  background-color: #f2f2f2;
+  border: 1px solid #d9d9d9;
 }
 .btn-primary:hover {
-  border-color: #b3b3b3;
+  background-color: #ebebeb;
+  border-color: #b8b8b8;
 }
 .btn-primary:active {
   background-color: #e6e6e6;
@@ -560,7 +561,8 @@ tbody tr:hover .operation {
   border: 1px solid #4CD964;
 }
 .btn-green:hover {
-  border-color: #2ac845;
+  background-color: #2cd048;
+  border-color: #2cd048;
 }
 .btn-green:active {
   background-color: #2ac845;
@@ -572,7 +574,8 @@ tbody tr:hover .operation {
   border: 1px solid #5AC8FA;
 }
 .btn-cyan:hover {
-  border-color: #29b8f9;
+  background-color: #32bbf9;
+  border-color: #32bbf9;
 }
 .btn-cyan:active {
   background-color: #29b8f9;
@@ -584,7 +587,8 @@ tbody tr:hover .operation {
   border: 1px solid #007AFF;
 }
 .btn-blue:hover {
-  border-color: #0062cc;
+  background-color: #0066d6;
+  border-color: #0066d6;
 }
 .btn-blue:active {
   background-color: #0062cc;
@@ -596,7 +600,8 @@ tbody tr:hover .operation {
   border: 1px solid #5856D6;
 }
 .btn-purple:hover {
-  border-color: #3331c8;
+  background-color: #3835ce;
+  border-color: #3835ce;
 }
 .btn-purple:active {
   background-color: #3331c8;
@@ -608,7 +613,8 @@ tbody tr:hover .operation {
   border: 1px solid #FFCC00;
 }
 .btn-yellow:hover {
-  border-color: #cca300;
+  background-color: #d6ab00;
+  border-color: #d6ab00;
 }
 .btn-yellow:active {
   background-color: #cca300;
@@ -620,7 +626,8 @@ tbody tr:hover .operation {
   border: 1px solid #FF9500;
 }
 .btn-orange:hover {
-  border-color: #cc7700;
+  background-color: #d67d00;
+  border-color: #d67d00;
 }
 .btn-orange:active {
   background-color: #cc7700;
@@ -632,7 +639,8 @@ tbody tr:hover .operation {
   border: 1px solid #FF2D70;
 }
 .btn-roseo:hover {
-  border-color: #f9004f;
+  background-color: #ff0454;
+  border-color: #ff0454;
 }
 .btn-roseo:active {
   background-color: #f9004f;
@@ -644,7 +652,8 @@ tbody tr:hover .operation {
   border: 1px solid #FF3B30;
 }
 .btn-red:hover {
-  border-color: #fc0d00;
+  background-color: #ff1407;
+  border-color: #ff1407;
 }
 .btn-red:active {
   background-color: #fc0d00;
@@ -656,7 +665,8 @@ tbody tr:hover .operation {
   border: 1px solid #8E8E93;
 }
 .btn-gray:hover {
-  border-color: #74747a;
+  background-color: #79797f;
+  border-color: #79797f;
 }
 .btn-gray:active {
   background-color: #74747a;
@@ -898,12 +908,15 @@ label.btn, .btn-group .btn-vertical > label {
 }
 .search-bar input:focus, .search-bar select:focus {
   border-color: #FF2D70;
-  -webkit-box-shadow: 0 0 0 3px rgba(255, 45, 112, 0.3);
-  -moz-box-shadow: 0 0 0 3px rgba(255, 45, 112, 0.3);
-  box-shadow: 0 0 0 3px rgba(255, 45, 112, 0.3);
+  -webkit-box-shadow: 0 0 0 2px rgba(255, 45, 112, 0.3);
+  -moz-box-shadow: 0 0 0 2px rgba(255, 45, 112, 0.3);
+  box-shadow: 0 0 0 2px rgba(255, 45, 112, 0.3);
 }
 .search-bar select {
   min-width: 80px;
+}
+.search-bar select option {
+  padding: 10px;
 }
 
 body {

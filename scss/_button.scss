@@ -63,8 +63,8 @@ $btns: (
   .btn-#{$name}{
     @if $name == primary {
       color: $text-main;
-      background-color: $color;
-      border: 1px solid $border-color-input;
+      background-color: darken($color, 5%);
+      border: 1px solid darken($color, 15%);
     } @else {
       color: white;
       background-color: $color;
@@ -72,9 +72,11 @@ $btns: (
     }
     &:hover{
       @if $name == primary {
-        border-color: darken($border-color-input, 10%);
+        background-color: darken($color, 8%);
+        border-color: darken($border-color-input, 8%);
       } @else {
-        border-color: darken($color, 10%);
+        background-color: darken($color, 8%);
+        border-color: darken($color, 8%);
       }
     }
     &:active{
