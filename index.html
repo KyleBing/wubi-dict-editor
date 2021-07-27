@@ -31,7 +31,12 @@
                     <tbody>
                     <tr v-for="(item, index) in group.dict" :key="index">
                         <td class="checkbox">
-                            <input name="table" :id="`word${groupIndex}${index}`" type="checkbox" :value="`word${groupIndex}${index}`">
+                            <input
+                                v-model="selectedWordIds"
+                                name="table"
+                                :id="`word${groupIndex}${index}`"
+                                type="checkbox"
+                                :value="item.id">
                             <label class="checkbox" :for="`word${groupIndex}${index}`"></label>
                         </td>
                         <td class="code">{{ item.code }}</td>

@@ -16,7 +16,9 @@ const app = {
             word: '',
             groupId: '', // 组 index
             keywordUnwatch: null, // keyword watch 方法的撤消方法
-            currentFilePath: ''
+            currentFilePath: '', // 当前打开的文件路径
+
+            selectedWordIds: [], // 已选择的词条
         }
     },
     mounted() {
@@ -59,11 +61,18 @@ const app = {
             this.code = ''
             this.word = ''
             this.groupId = ''
+        },
+        // 删除词条
+        deleteWords(){
+            this.dict.deleteWords(this.selectedWordIds)
         }
     },
     watch: {
         code(newValue){
             this.code = newValue.replaceAll(/[^A-Za-z]/g, '') // 只允许输入字母
+        },
+        selectedWordIds(newValue){
+            console.log(JSON.stringify(newValue))
         }
     }
 }

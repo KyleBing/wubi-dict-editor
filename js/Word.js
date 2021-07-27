@@ -1,6 +1,13 @@
 // 词条对象
 class Word{
-    constructor(code, word) {
+    /**
+     *
+     * @param id String
+     * @param code String
+     * @param word String
+     */
+    constructor(id, code, word) {
+        this.id = String(id)
         this.code = code
         this.word = word
     }

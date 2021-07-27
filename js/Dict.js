@@ -4,6 +4,7 @@ import WordGroup from "./WordGroup.js";
 
 const os = require('os')
 
+
 const RETURN_SYMBOL = getReturnSymbol()
 
 class Dict {
@@ -23,26 +24,27 @@ class Dict {
             this.indexEndOfHeader = indexEndOfHeader
             this.header = this.getDictHeader()
             this.body = this.getDictBody()
-            this.dictOrigin = this.getDictWords()
-            this.dict = [...this.dictOrigin]
             this.dictWithGroupOrigin = this.getDictWordsWithGroup()
             this.dictWithGroup = [...this.dictWithGroupOrigin]
+            // 从 dictWithGroupOrigin 获取词条，对应词条的 id 不会变
+            this.dictWithGroupOrigin.forEach(group => {
+                this.dictOrigin = this.dict.concat([group.dict])
+            })
+            this.dict = [...this.dictOrigin]
             console.log(this.dictWithGroup)
         }
     }
 
+    // 获取 yaml 词库头部
     getDictHeader(){
         return this.yaml.substring(0, this.indexEndOfHeader)
     }
+
+    // 获取 yaml 词库内容
     getDictBody(){
         return this.yaml.substring(this.indexEndOfHeader)
     }
-    // 返回所有 word
-    getDictWords(){
-        let lines = this.body.split(RETURN_SYMBOL) // 拆分词条与编码成单行
-        let linesValid = lines.filter(item => item.indexOf('\t') > -1) // 选取包含 \t 的行
-        return linesValid.map(item => getWordFromLine(item))
-    }
+
     // 返回 word 分组
     getDictWordsWithGroup(){
         let lines = this.body.split(RETURN_SYMBOL) // 拆分词条与编码成单行
@@ -60,7 +62,7 @@ class Dict {
                 if (!temp){ // 第一行是词条时，没有分组名时
                     temp = new WordGroup()
                 }
-                temp.dict.push(getWordFromLine(item))
+                temp.dict.push(getWordFromLine(index, item))
                 lastItemIsEmptyLine = false
             } else if (item.startsWith('#')) { // 注释
                 console.log(item)
@@ -123,6 +125,13 @@ class Dict {
         this.dict = [...this.dictOrigin]
         this.dictWithGroup = [...this.dictWithGroupOrigin]
     }
+    // 删除词条
+    deleteWords(wordIds){
+        this.dictWithGroupOrigin.forEach(group => {
+            group.dict = group.dict.filter(item => !wordIds.includes(item.id))
+        })
+        this.dictOrigin = this.dictOrigin.filter(item => !wordIds.includes(item.id))
+    }
 
     // 转为 yaml String
     toYamlString(){
@@ -141,11 +150,11 @@ class Dict {
 }
 
 // 从一条词条字符串中获取 word 对象
-function getWordFromLine(lineStr){
+function getWordFromLine(index, lineStr){
     let wordArray = lineStr.split('\t')
     let code = wordArray[1]
     let word = wordArray[0]
-    return new Word(code, word)
+    return new Word(index, code, word)
 }
 
 
