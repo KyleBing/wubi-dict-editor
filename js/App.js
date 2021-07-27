@@ -84,11 +84,10 @@ const app = {
         // 绑定键盘事件： 键盘上下控制词条上下移动
         addKeyboardListener(){
             window.addEventListener('keydown', event => {
-                // let {ctrlKey,shiftKey,altKey, key } = event
-                // console.log(`${ctrlKey?'ctrl+': ''}${shiftKey?'shift+': ''}${altKey?'alt+': ''}${key}`)
+                console.log(event)
                 switch( event.key) {
                     case 's':
-                        if (event.ctrlKey){
+                        if (event.ctrlKey || event.metaKey){ // metaKey 是 macOS 的 Ctrl
                             this.saveDictToFile()
                         }
                         break
@@ -109,6 +108,7 @@ const app = {
                         }
                         break
                 }
+                event.preventDefault()
             })
         }
     },
