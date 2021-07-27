@@ -45,6 +45,8 @@ const app = {
             }, 2000)
         })
 
+        ipcRenderer.send('loadTestFile')
+
         this.addKeyboardListener()
     },
     methods: {

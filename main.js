@@ -45,11 +45,10 @@ function createWindow() {
         })
     })
 
-    // 测试用
-    setTimeout(()=>{
-        readFile(getRimeDirectoryPath() + '/test.dict.yaml')
-    }, 1500)
-
+    // 监听 window 的文件载入请求
+    ipcMain.on('loadTestFile', event => {
+        readFile(path.join(getRimeDirectoryPath(), 'test.dict.yaml'))
+    })
 }
 
 
