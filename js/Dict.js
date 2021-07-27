@@ -147,6 +147,26 @@ class Dict {
         })
         return this.header + returnSymbol + yamlBody
     }
+    // 词条位置移动
+    positionMove(wordId, direction){
+        this.dictWithGroupOrigin.forEach(group => {
+            for(let i=0; i<group.dict.length; i++){
+                if (wordId === group.dict[i].id){
+                    console.log(group.dict[i].id)
+                    let tempItem = group.dict[i]
+                    if (direction === 'up'){
+                        group.dict[i] = group.dict[i - 1]
+                        group.dict[i - 1] = tempItem
+                        break
+                    } else if (direction === 'down'){
+                        group.dict[i] = group.dict[i + 1]
+                        group.dict[i + 1] = tempItem
+                        break
+                    }
+                }
+            }
+        })
+    }
 }
 
 // 从一条词条字符串中获取 word 对象

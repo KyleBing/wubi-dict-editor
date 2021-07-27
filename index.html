@@ -23,7 +23,7 @@
 <!--        <div class="btn btn-primary" @click="search">搜索</div>-->
     </div>
 
-    <div class="container">
+    <div ref="container" class="container">
         <div class="display" v-if="dict">
             <div class="table-item" v-for="(group, groupIndex) in dict.dictWithGroup" :key="groupIndex">
                 <h3 class="pl-7">{{ group.groupName }}</h3>
@@ -41,10 +41,15 @@
                         </td>
                         <td class="code">{{ item.code }}</td>
                         <td class="word">{{ item.word }}</td>
+                        <td class="id">{{ item.id }}</td>
                         <td>
                             <div class="operation">
-                                <div v-if="index !== 0" class="up"><img src="./assets/up.svg" alt="move up"></div>
-                                <div v-if="index+1 !== group.dict.length" class="down"><img src="./assets/down.svg" alt="move down"></div>
+                                <div v-if="index !== 0" class="up" @click="moveUp(item.id)">
+                                    <img src="./assets/up.svg" alt="move up">
+                                </div>
+                                <div v-if="index+1 !== group.dict.length" class="down" @click="moveDown(item.id)">
+                                    <img src="./assets/down.svg" alt="move down">
+                                </div>
                             </div>
                         </td>
                     </tr>

@@ -65,7 +65,13 @@ const app = {
         // 删除词条
         deleteWords(){
             this.dict.deleteWords(this.selectedWordIds)
-        }
+        },
+        moveUp(id){
+            this.dict.positionMove(id, 'up')
+        },
+        moveDown(id){
+            this.dict.positionMove(id, 'down')
+        },
     },
     watch: {
         code(newValue){
