@@ -5,6 +5,7 @@
 @import "animate";
 @import "table";
 @import "button";
+@import "searchbar";
 
 
 
@@ -14,42 +15,7 @@ body{
 
 .container{
   position: relative;
-  padding: 10px;
-}
-
-.search-bar{
-  z-index: 10;
-  border-bottom: 1px solid $border-color;
-  background-color: white;
-  padding: 10px;
-  position: sticky;
-  top: 0;
-  left: 0;
-  display: flex;
-  justify-content: flex-start;
-  > *{
-    margin-right: 5px;
-  }
-  input, select{
-    font-size: inherit;
-    line-height: $height-input - $padding-input-tb * 2;
-    border: 1px solid $border-color-input;
-    @include border-radius($radius);
-    padding: $padding-input-tb 8px;
-    &.code{
-      width: 5rem;
-    }
-    &.word{
-      width: 12rem;
-    }
-    &:focus{
-      @include box-shadow(0 0 0 2px rgba(0,0,0,0.1))
-    }
-    @include transition(all, 0.5s)
-  }
-  select{
-    min-width: 80px;
-  }
+  padding: 10px 0;
 }
 
 .shadow{

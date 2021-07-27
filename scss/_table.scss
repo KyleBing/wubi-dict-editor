@@ -1,6 +1,7 @@
 $fz-table: 12px;
 $table-padding-tb: 2px;
 $table-padding-lr: 5px;
+$bg-td-highlighted: $bg-td;
 
 .table-item{
   h3{
@@ -28,6 +29,12 @@ tbody{
   color: $text-main;
   td{
     font-size: $fz-table;
+    &:first-child{
+      padding-left: 20px;
+    }
+    &:last-child{
+      padding-right: 20px;
+    }
     &.checkbox{
       width: 2rem;
     }
@@ -72,7 +79,8 @@ tbody{
     }
     &:hover{
       td{
-        background-color: $bg-td;
+        //color: white;
+        background-color: $bg-td-highlighted;
       }
       .operation{
         opacity: 1;

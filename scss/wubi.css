@@ -456,6 +456,12 @@ tbody {
 tbody td {
   font-size: 12px;
 }
+tbody td:first-child {
+  padding-left: 20px;
+}
+tbody td:last-child {
+  padding-right: 20px;
+}
 tbody td.checkbox {
   width: 2rem;
 }
@@ -856,15 +862,6 @@ label.btn, .btn-group .btn-vertical > label {
   padding-right: 6px !important;
 }
 
-body {
-  font-size: 12px;
-}
-
-.container {
-  position: relative;
-  padding: 10px;
-}
-
 .search-bar {
   z-index: 10;
   border-bottom: 1px solid #eee;
@@ -900,12 +897,22 @@ body {
   width: 12rem;
 }
 .search-bar input:focus, .search-bar select:focus {
-  -webkit-box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
-  -moz-box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
-  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+  border-color: #FF2D70;
+  -webkit-box-shadow: 0 0 0 3px rgba(255, 45, 112, 0.3);
+  -moz-box-shadow: 0 0 0 3px rgba(255, 45, 112, 0.3);
+  box-shadow: 0 0 0 3px rgba(255, 45, 112, 0.3);
 }
 .search-bar select {
   min-width: 80px;
+}
+
+body {
+  font-size: 12px;
+}
+
+.container {
+  position: relative;
+  padding: 10px 0;
 }
 
 .shadow {
