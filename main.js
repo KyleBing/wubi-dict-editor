@@ -45,7 +45,11 @@ function createWindow() {
         })
     })
 
-    readFile(getRimeDirectoryPath())
+    // 测试用
+    setTimeout(()=>{
+        readFile(getRimeDirectoryPath() + '/test.dict.yaml')
+    }, 1500)
+
 }
 
 
