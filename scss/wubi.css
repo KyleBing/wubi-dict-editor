@@ -497,7 +497,7 @@ tbody tr:first-child .operation .down {
   margin-left: 19px;
 }
 tbody tr:hover td {
-  background-color: #eee;
+  background-color: #fff8e6;
 }
 tbody tr:hover .operation {
   opacity: 1;
@@ -926,6 +926,7 @@ body {
 .container {
   position: relative;
   padding: 10px 0;
+  min-width: 500px;
 }
 
 .shadow {

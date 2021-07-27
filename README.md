@@ -3,13 +3,14 @@
 
 
 ## 支持平台：
-Windows, macOS
+Windows, macOS, (Linux 未测试)
 
 ## 用到的技术
 - nodejs
 - electron
 - javascript
 - scss
+- vue 3 
 - html
 
 ## 计划
