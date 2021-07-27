@@ -148,11 +148,10 @@ class Dict {
         return this.header + returnSymbol + yamlBody
     }
     // 词条位置移动
-    positionMove(wordId, direction){
+    move(wordId, direction){
         this.dictWithGroupOrigin.forEach(group => {
             for(let i=0; i<group.dict.length; i++){
                 if (wordId === group.dict[i].id){
-                    console.log(group.dict[i].id)
                     let tempItem = group.dict[i]
                     if (direction === 'up'){
                         group.dict[i] = group.dict[i - 1]
@@ -166,6 +165,29 @@ class Dict {
                 }
             }
         })
+    }
+
+    // 判断是否为第一个元素，在组中
+    isFirstItemInGroup(id){
+        for (let i=0; i<this.dictWithGroupOrigin.length; i++) {
+            for (let j = 0; j < this.dictWithGroupOrigin[i].dict.length; j++) {
+                if (this.dictWithGroupOrigin[i].dict[j].id === id){
+                    return j === 0
+                }
+            }
+        }
+        return false
+    }
+    // 判断是否为最后一个元素，在组中
+    isLastItemInGroup(id){
+        for (let i=0; i<this.dictWithGroupOrigin.length; i++) {
+            for (let j = 0; j < this.dictWithGroupOrigin[i].dict.length; j++) {
+                if (this.dictWithGroupOrigin[i].dict[j].id === id){
+                    return j + 1 === this.dictWithGroupOrigin[i].dict.length
+                }
+            }
+        }
+        return false
     }
 }
 

@@ -17,7 +17,6 @@ const app = {
             groupId: '', // 组 index
             keywordUnwatch: null, // keyword watch 方法的撤消方法
             currentFilePath: '', // 当前打开的文件路径
-
             selectedWordIds: [], // 已选择的词条
         }
     },
@@ -35,6 +34,7 @@ const app = {
                 })
             }
         })
+        this.addKeyboardListener()
     },
     methods: {
         search(){
@@ -67,18 +67,37 @@ const app = {
             this.dict.deleteWords(this.selectedWordIds)
         },
         moveUp(id){
-            this.dict.positionMove(id, 'up')
+            this.dict.move(id, 'up')
         },
         moveDown(id){
-            this.dict.positionMove(id, 'down')
+            this.dict.move(id, 'down')
         },
+        addKeyboardListener(){
+            window.addEventListener('keydown', event => {
+                if(this.selectedWordIds.length === 1){ // 只有一个元素时，键盘才起作用
+                    let id = this.selectedWordIds[0]
+                    switch( event.key) {
+                        case 'ArrowDown':
+                            if (!this.dict.isLastItemInGroup(id)){
+                                this.dict.move(id, 'down')
+                            }
+                            break
+                        case 'ArrowUp':
+                            if (!this.dict.isFirstItemInGroup(id)){
+                                this.dict.move(id, 'up')
+                            }
+                            break
+                    }
+                }
+            })
+        }
     },
     watch: {
         code(newValue){
             this.code = newValue.replaceAll(/[^A-Za-z]/g, '') // 只允许输入字母
         },
         selectedWordIds(newValue){
-            console.log(JSON.stringify(newValue))
+            console.log(newValue.toString())
         }
     }
 }
