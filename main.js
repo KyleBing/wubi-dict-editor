@@ -132,17 +132,17 @@ function getRimeDirectoryPath(userHome){
 function createMenu(filesMenu) {
     let menuStructure = [
         {
-            label: 'About',
+            label: '词库列表',
+            submenu: filesMenu
+        },
+        {
+            label: '关于',
             submenu: [
                 {label: '最小化', role: 'minimize'},
                 {label: '关于', role: 'about'},
                 {label: '退出', role: 'quit'},
             ]
         },
-        {
-            label: 'Files',
-            submenu: filesMenu
-        }
     ]
     let menu = Menu.buildFromTemplate(menuStructure)
     Menu.setApplicationMenu(menu)
