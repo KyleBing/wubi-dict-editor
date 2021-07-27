@@ -84,11 +84,11 @@ class Dict {
                 lastItemIsEmptyLine = true
             }
         })
-        console.log(temp)
         if (temp){
             if (temp.dict.length > 0){
                 dictGroup.push(temp) // 加上最后一个
             }
+            console.log(dictGroup)
             return dictGroup
         } else {
             return [] // 文件内容为空时
