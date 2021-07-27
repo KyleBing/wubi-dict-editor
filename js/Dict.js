@@ -32,7 +32,8 @@ class Dict {
                 this.dictOrigin = this.dict.concat([group.dict])
             })
             this.dict = [...this.dictOrigin]
-            console.log(this.dictWithGroup)
+            // console.log(this.dictWithGroup)
+            // TODO: remove all console.log()
         }
     }
 

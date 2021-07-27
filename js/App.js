@@ -18,6 +18,8 @@ const app = {
             keywordUnwatch: null, // keyword watch 方法的撤消方法
             currentFilePath: '', // 当前打开的文件路径
             selectedWordIds: [], // 已选择的词条
+
+            labelOfSaveBtn: '保存', // 保存按钮的文本
         }
     },
     mounted() {
@@ -34,6 +36,15 @@ const app = {
                 })
             }
         })
+        ipcRenderer.on('saveFileSuccess', () => {
+            this.labelOfSaveBtn = '保存成功'
+            this.$refs.domBtnSave.classList.add('btn-green')
+            setTimeout(()=>{
+                this.$refs.domBtnSave.classList.remove('btn-green')
+                this.labelOfSaveBtn = '保存'
+            }, 2000)
+        })
+
         this.addKeyboardListener()
     },
     methods: {
@@ -58,7 +69,6 @@ const app = {
         clearInputs(){
             this.code = ''
             this.word = ''
-            this.groupId = ''
         },
         // 删除词条
         deleteWords(){
@@ -73,20 +83,30 @@ const app = {
         // 绑定键盘事件： 键盘上下控制词条上下移动
         addKeyboardListener(){
             window.addEventListener('keydown', event => {
-                if(this.selectedWordIds.length === 1){ // 只有一个元素时，键盘才起作用
-                    let id = this.selectedWordIds[0]
-                    switch( event.key) {
-                        case 'ArrowDown':
+                // let {ctrlKey,shiftKey,altKey, key } = event
+                // console.log(`${ctrlKey?'ctrl+': ''}${shiftKey?'shift+': ''}${altKey?'alt+': ''}${key}`)
+                switch( event.key) {
+                    case 's':
+                        if (event.ctrlKey){
+                            this.saveDictToFile()
+                        }
+                        break
+                    case 'ArrowDown':
+                        if(this.selectedWordIds.length === 1) { // 只有一个元素时，键盘才起作用
+                            let id = this.selectedWordIds[0]
                             if (!this.dict.isLastItemInGroup(id)){
                                 this.dict.move(id, 'down')
                             }
-                            break
-                        case 'ArrowUp':
-                            if (!this.dict.isFirstItemInGroup(id)){
+                        }
+                        break
+                    case 'ArrowUp':
+                        if(this.selectedWordIds.length === 1) { // 只有一个元素时，键盘才起作用
+                            let id = this.selectedWordIds[0]
+                            if (!this.dict.isFirstItemInGroup(id)) {
                                 this.dict.move(id, 'up')
                             }
-                            break
-                    }
+                        }
+                        break
                 }
             })
         }

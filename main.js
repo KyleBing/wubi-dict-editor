@@ -34,6 +34,16 @@ function createWindow() {
     })
 
     mainWindow.webContents.openDevTools() // 打开调试窗口
+
+    // 保存词库到文件
+    ipcMain.on('saveFile', (event, filePath, yamlString) => {
+        fs.writeFile(filePath, yamlString, {encoding: "utf8"}, err => {
+            if (!err){
+                console.log('saveFileSuccess')
+                mainWindow.webContents.send('saveFileSuccess')
+            }
+        })
+    })
 }
 
 
@@ -123,6 +133,3 @@ function createMenu(filesMenu) {
     Menu.setApplicationMenu(menu)
 }
 
-ipcMain.on('saveFile', (event, filePath, yamlString) => {
-    fs.writeFileSync(filePath, yamlString)
-})
