@@ -84,12 +84,13 @@ const app = {
         // 绑定键盘事件： 键盘上下控制词条上下移动
         addKeyboardListener(){
             window.addEventListener('keydown', event => {
-                console.log(event)
+                // console.log(event)
                 switch( event.key) {
                     case 's':
                         if (event.ctrlKey || event.metaKey){ // metaKey 是 macOS 的 Ctrl
                             this.saveDictToFile()
                         }
+                        event.preventDefault()
                         break
                     case 'ArrowDown':
                         if(this.selectedWordIds.length === 1) { // 只有一个元素时，键盘才起作用
@@ -98,6 +99,7 @@ const app = {
                                 this.dict.move(id, 'down')
                             }
                         }
+                        event.preventDefault()
                         break
                     case 'ArrowUp':
                         if(this.selectedWordIds.length === 1) { // 只有一个元素时，键盘才起作用
@@ -106,9 +108,9 @@ const app = {
                                 this.dict.move(id, 'up')
                             }
                         }
+                        event.preventDefault()
                         break
                 }
-                event.preventDefault()
             })
         }
     },

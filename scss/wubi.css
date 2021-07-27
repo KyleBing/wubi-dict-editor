@@ -427,12 +427,13 @@
   animation-name: shake;
 }
 
-.table-item h3 {
-  line-height: 1.5;
-  font-size: 14px;
+.group-header {
+  padding-left: 35px;
   margin-bottom: 10px;
 }
-
+.group-header h3 {
+  line-height: 26px;
+}
 .table {
   width: 100%;
   margin-bottom: 20px;
@@ -886,7 +887,8 @@ label.btn, .btn-group .btn-vertical > label {
 .search-bar > * {
   margin-right: 5px;
 }
-.search-bar input, .search-bar select {
+
+input, select {
   font-size: inherit;
   line-height: 18px;
   border: 1px solid #ccc;
@@ -900,22 +902,23 @@ label.btn, .btn-group .btn-vertical > label {
   -o-transition: all, 0.5s;
   transition: all, 0.5s;
 }
-.search-bar input.code, .search-bar select.code {
+input.code, select.code {
   width: 5rem;
 }
-.search-bar input.word, .search-bar select.word {
+input.word, select.word {
   width: 12rem;
 }
-.search-bar input:focus, .search-bar select:focus {
+input:focus, select:focus {
   border-color: #FF2D70;
   -webkit-box-shadow: 0 0 0 2px rgba(255, 45, 112, 0.3);
   -moz-box-shadow: 0 0 0 2px rgba(255, 45, 112, 0.3);
   box-shadow: 0 0 0 2px rgba(255, 45, 112, 0.3);
 }
-.search-bar select {
+
+select {
   min-width: 80px;
 }
-.search-bar select option {
+select option {
   padding: 10px;
 }
 

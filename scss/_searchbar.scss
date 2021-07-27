@@ -11,29 +11,30 @@
   > *{
     margin-right: 5px;
   }
-  input, select{
-    font-size: inherit;
-    line-height: $height-input - $padding-input-tb * 2;
-    border: 1px solid $border-color-input;
-    @include border-radius($radius);
-    padding: $padding-input-tb 8px;
-    &.code{
-      width: 5rem;
-    }
-    &.word{
-      width: 12rem;
-    }
-    &:focus{
-      border-color: $color-main;
-      @include box-shadow(0 0 0 2px transparentize($color-main, 0.7))
-    }
-    @include transition(all, 0.5s)
-  }
-  select{
-    min-width: 80px;
-    option{
-      padding: 10px;
+}
 
-    }
+input, select{
+  font-size: inherit;
+  line-height: $height-input - $padding-input-tb * 2;
+  border: 1px solid $border-color-input;
+  @include border-radius($radius);
+  padding: $padding-input-tb 8px;
+  &.code{
+    width: 5rem;
+  }
+  &.word{
+    width: 12rem;
+  }
+  &:focus{
+    border-color: $color-main;
+    @include box-shadow(0 0 0 2px transparentize($color-main, 0.7))
+  }
+  @include transition(all, 0.5s)
+}
+select{
+  min-width: 80px;
+  option{
+    padding: 10px;
+
   }
 }
