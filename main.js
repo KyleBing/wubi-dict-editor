@@ -44,6 +44,8 @@ function createWindow() {
             }
         })
     })
+
+    readFile(getRimeDirectoryPath())
 }
 
 
@@ -76,8 +78,7 @@ function readFile(filePath){
 
 // 设置菜单 - Rime 所有文件
 function setRimeFolderMenu(){
-    let homeDir = os.homedir()
-    let rimeFolderPath = getRimeDirectoryPath(homeDir)
+    let rimeFolderPath = getRimeDirectoryPath()
     fs.readdir(rimeFolderPath,(err, filePaths) => {
         if (err) {
             console.log(err)
@@ -115,7 +116,8 @@ function getLabelNameFromFileName(fileName){
 }
 
 // 根据系统返回 rime 路径
-function getRimeDirectoryPath(userHome){
+function getRimeDirectoryPath(){
+    let userHome = os.homedir()
     switch (os.platform()){
         case 'aix': break
         case 'darwin': return path.join(userHome + '/Library/Rime') // macOS
@@ -130,6 +132,9 @@ function getRimeDirectoryPath(userHome){
 // 创建 menu
 function createMenu(filesMenu) {
     let menuStructure = [
+        {
+            label: '词库工具',
+        },
         {
             label: '词库列表',
             submenu: filesMenu
