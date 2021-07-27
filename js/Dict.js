@@ -84,10 +84,15 @@ class Dict {
                 lastItemIsEmptyLine = true
             }
         })
-        if (temp.dict.length > 0){
-            dictGroup.push(temp) // 加上最后一个
+        console.log(temp)
+        if (temp){
+            if (temp.dict.length > 0){
+                dictGroup.push(temp) // 加上最后一个
+            }
+            return dictGroup
+        } else {
+            return [] // 文件内容为空时
         }
-        return dictGroup
     }
     // 设置 keyword 并筛选 dict dictWithGroup
     setKeyword(keyword){
