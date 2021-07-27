@@ -17,6 +17,7 @@ class Dict {
         this.dictWithGroup = [] // 文件词条 分组
         this.dictWithGroupOrigin = [] // 文件词条 分组
         this.keyword = '' // 筛选词条用的 keyword
+        this.lastIndex = '' // 最后一个 Index 的值，用于新添加词时，作为唯一的 id 传入
         let indexEndOfHeader = this.yaml.indexOf('...') + 3
         if (indexEndOfHeader < 0){
             console.log('文件格式错误，没有 ... 这一行')
@@ -51,6 +52,7 @@ class Dict {
         let dictGroup = [] // 总分组
         let temp = null // 第一个分组
         let lastItemIsEmptyLine = false // 上一条是空，用于循环中判断是否需要新起一个 WordGroup
+        this.lastIndex = lines.length
         lines.forEach((item, index) => {
             if (item.startsWith('##')) { // 注释分组
                 if (temp && temp.groupName) { // 如果上一个已经有名字了，说明需要保存
@@ -124,6 +126,7 @@ class Dict {
         this.dictOrigin.push(word)
         this.dict = [...this.dictOrigin]
         this.dictWithGroup = [...this.dictWithGroupOrigin]
+        this.lastIndex = this.lastIndex + 1 // 新加的词添加后， lastIndex + 1
     }
     // 删除词条
     deleteWords(wordIds){
@@ -172,7 +175,7 @@ class Dict {
         for (let i=0; i<this.dictWithGroupOrigin.length; i++) {
             for (let j = 0; j < this.dictWithGroupOrigin[i].dict.length; j++) {
                 if (this.dictWithGroupOrigin[i].dict[j].id === id){
-                    return j === 0
+                    return j === 0 // 使用 array.forEach() 无法跳出循环
                 }
             }
         }

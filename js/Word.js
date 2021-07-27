@@ -2,12 +2,12 @@
 class Word{
     /**
      *
-     * @param id String
+     * @param id Number
      * @param code String
      * @param word String
      */
     constructor(id, code, word) {
-        this.id = String(id)
+        this.id = id
         this.code = code
         this.word = word
     }

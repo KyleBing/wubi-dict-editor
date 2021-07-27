@@ -42,13 +42,11 @@ const app = {
         },
         addNewPhrase(){
             if (!this.word){
-                console.log('addNewPhrase: no-word')
                 shakeDomFocus(this.$refs.domInputWord)
             } else if (!this.code){
-                console.log('addNewPhrase: no-code')
                 shakeDomFocus(this.$refs.domInputCode)
             } else {
-                this.dict.addNewWord(new Word(this.code, this.word) ,this.groupId)
+                this.dict.addNewWord(new Word(this.dict.lastIndex, this.code, this.word) ,this.groupId)
                 console.log(this.code, this.word, this.groupId)
             }
         },
@@ -72,6 +70,7 @@ const app = {
         moveDown(id){
             this.dict.move(id, 'down')
         },
+        // 绑定键盘事件： 键盘上下控制词条上下移动
         addKeyboardListener(){
             window.addEventListener('keydown', event => {
                 if(this.selectedWordIds.length === 1){ // 只有一个元素时，键盘才起作用
