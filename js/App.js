@@ -25,6 +25,7 @@ const app = {
     mounted() {
         ipcRenderer.on(IPC_TYPES.showFileContent, (event, filePath, res) => {
             this.currentFilePath = filePath
+            this.clearInputs()
             this.dict = new Dict(res)
             if (this.dict.dict.length > 1000){ // 如果词条数量大于 1000 条，不进行实时筛选
                 if (this.keywordUnwatch){
@@ -71,6 +72,7 @@ const app = {
         clearInputs(){
             this.code = ''
             this.word = ''
+            this.selectedWordIds = []
         },
         // 删除词条
         deleteWords(){

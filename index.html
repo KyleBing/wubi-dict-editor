@@ -27,8 +27,13 @@
         <div class="display" v-if="dict">
             <div class="table-item" v-for="(group, groupIndex) in dict.dictWithGroup" :key="groupIndex">
                 <div class="group-header">
-                    <input v-model="group.groupName" v-if="group.isEditingTitle" @keydown.enter="group.isEditingTitle = false" />
-                    <h3 v-else @click.right="group.isEditingTitle = true">{{ group.groupName }}</h3>
+                    <input v-model="group.groupName"
+                           v-if="group.isEditingTitle"
+                           @click.right="group.isEditingTitle = false"
+                           @keydown.enter="group.isEditingTitle = false" />
+                    <h3
+                        v-else
+                        @click.right="group.isEditingTitle = true">{{ group.groupName }}</h3>
                 </div>
                 <table class="table">
                     <tbody>
