@@ -87,7 +87,7 @@ function setRimeFolderMenu(){
             filePaths.forEach(item => {
                 if (item.indexOf('.dict.yaml') > 0){
                     filesMenu.push({
-                        label: item,
+                        label: getLabelNameFromFileName(item),
                         click() {
                             let filePath = path.join(rimeFolderPath, item)
                             readFile(filePath)
@@ -98,6 +98,21 @@ function setRimeFolderMenu(){
             createMenu(filesMenu)
         }
     })
+}
+
+// 匹配文件名，返回对应文件的名字
+function getLabelNameFromFileName(fileName){
+    const map = [
+        {name: '拼音词库', path: 'pinyin_simp.dict.yaml'},
+        {name: '测试词库', path: 'test.dict.yaml'},
+        {name: '五笔极点 - 主词库 ⭐', path: 'wubi86_jidian.dict.yaml'},
+        {name: '五笔极点 - 分词库', path: 'wubi86_jidian_addition.dict.yaml'},
+        {name: '五笔极点 - 附加词库', path: 'wubi86_jidian_extra.dict.yaml'},
+        {name: '五笔极点 - 用户词库', path: 'wubi86_jidian_user.dict.yaml'},
+    ]
+    let matchedPath = map.filter(item => item.path === fileName)
+    // 返回匹配的名字，或者返回原文件名
+    return matchedPath.length > 0 ? matchedPath[0].name: fileName
 }
 
 // 根据系统返回 rime 路径

@@ -73,6 +73,7 @@ const app = {
         // 删除词条
         deleteWords(){
             this.dict.deleteWords(this.selectedWordIds)
+            this.selectedWordIds = [] // 清空选中 wordID
         },
         moveUp(id){
             this.dict.move(id, 'up')
