@@ -428,8 +428,18 @@
 }
 
 .group-header {
+  cursor: pointer;
   padding-left: 35px;
   margin-bottom: 10px;
+}
+.group-header.active {
+  background-color: rgba(255, 45, 112, 0.1);
+}
+.group-header.active h3 {
+  color: #FF2D70;
+}
+.group-header:hover {
+  background-color: rgba(255, 45, 112, 0.05);
 }
 .group-header h3 {
   line-height: 26px;
@@ -498,7 +508,7 @@ tbody tr:first-child .operation .down {
   margin-left: 19px;
 }
 tbody tr:hover td {
-  background-color: #fff8e6;
+  background-color: rgba(255, 45, 112, 0.05);
 }
 tbody tr:hover .operation {
   opacity: 1;

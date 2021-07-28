@@ -11,10 +11,10 @@
     <div class="search-bar" v-if="dict">
         <input class="word" ref="domInputWord" v-model="word" type="text" placeholder="词条">
         <input class="code" ref="domInputCode" v-model="code" type="text" placeholder="编码">
-        <select ref="domSelectGroupId" v-model="groupId">
+<!--        <select ref="domSelectGroupId" v-model="activeGroupId">
             <option value="" disabled>选择分组</option>
             <option :value="index" v-for="(group, index) in dict.dictWithGroupOrigin" :key="index">{{ group.groupName }}</option>
-        </select>
+        </select>-->
         <div class="btn btn-primary" @click="clearInputs">清除</div>
         <div class="btn btn-primary" @click="addNewPhrase">添加</div>
         <div class="btn btn-primary" ref="domBtnSave" @click="saveDictToFile">{{ labelOfSaveBtn }}</div>
@@ -26,14 +26,15 @@
     <div ref="container" class="container">
         <div class="display" v-if="dict">
             <div class="table-item" v-for="(group, groupIndex) in dict.dictWithGroup" :key="groupIndex">
-                <div class="group-header">
+                <div :class="['group-header', {active: activeGroupId === groupIndex}]"
+                     @click.right="group.isEditingTitle = !group.isEditingTitle">
                     <input v-model="group.groupName"
                            v-if="group.isEditingTitle"
-                           @click.right="group.isEditingTitle = false"
                            @keydown.enter="group.isEditingTitle = false" />
                     <h3
                         v-else
-                        @click.right="group.isEditingTitle = true">{{ group.groupName }}</h3>
+                        @click="activeGroupId = groupIndex"
+                        >{{ group.groupName }}</h3>
                 </div>
                 <table class="table">
                     <tbody>

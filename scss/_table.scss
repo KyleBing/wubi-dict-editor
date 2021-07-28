@@ -1,12 +1,22 @@
 $fz-table: 12px;
 $table-padding-tb: 2px;
 $table-padding-lr: 5px;
-$bg-td-highlighted: #fff8e6;
+$bg-td-highlighted: transparentize($color-main, 0.95);
 
 
 .group-header{
+  cursor: pointer;
   padding-left: 35px;
   margin-bottom: 10px;
+  &.active{
+    background-color: transparentize($color-main, 0.9);
+    h3{
+      color: $color-main;
+    }
+  }
+  &:hover{
+    background-color: transparentize($color-main, 0.95);
+  }
   h3{
     line-height: $height-input + 2;
   }

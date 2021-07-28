@@ -14,7 +14,7 @@ const app = {
             keyword: '', // 搜索关键字
             code: '',
             word: '',
-            groupId: '', // 组 index
+            activeGroupId: '', // 组 index
             keywordUnwatch: null, // keyword watch 方法的撤消方法
             currentFilePath: '', // 当前打开的文件路径
             selectedWordIds: [], // 已选择的词条
@@ -60,8 +60,8 @@ const app = {
             } else if (!this.code){
                 shakeDomFocus(this.$refs.domInputCode)
             } else {
-                this.dict.addNewWord(new Word(this.dict.lastIndex, this.code, this.word) ,this.groupId)
-                console.log(this.code, this.word, this.groupId)
+                this.dict.addNewWord(new Word(this.dict.lastIndex, this.code, this.word) ,this.activeGroupId)
+                console.log(this.code, this.word, this.activeGroupId)
             }
         },
         // 保存内容到文件

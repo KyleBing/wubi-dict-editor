@@ -9,47 +9,35 @@ const RETURN_SYMBOL = getReturnSymbol()
 
 class Dict {
     constructor(yaml) {
-        this.yaml = yaml // 原文件内容
         this.header = null // 文件头部内容
-        this.body = '' // 文件体
         this.dict = [] // 文件词条数组
         this.dictOrigin = [] // 文件词条数组
         this.dictWithGroup = [] // 文件词条 分组
         this.dictWithGroupOrigin = [] // 文件词条 分组
         this.keyword = '' // 筛选词条用的 keyword
         this.lastIndex = '' // 最后一个 Index 的值，用于新添加词时，作为唯一的 id 传入
-        let indexEndOfHeader = this.yaml.indexOf('...') + 3
+        let indexEndOfHeader = yaml.indexOf('...') + 3
         if (indexEndOfHeader < 0){
             console.log('文件格式错误，没有 ... 这一行')
         } else {
             this.indexEndOfHeader = indexEndOfHeader
-            this.header = this.getDictHeader()
-            this.body = this.getDictBody()
-            this.dictWithGroupOrigin = this.getDictWordsWithGroup()
+            this.header = yaml.substring(0, this.indexEndOfHeader)
+            let body = yaml.substring(this.indexEndOfHeader)
+            this.dictWithGroupOrigin = this.getDictWordsWithGroup(body)
             this.dictWithGroup = [...this.dictWithGroupOrigin]
+
             // 从 dictWithGroupOrigin 获取词条，对应词条的 id 不会变
             this.dictWithGroupOrigin.forEach(group => {
                 this.dictOrigin = this.dict.concat([group.dict])
             })
             this.dict = [...this.dictOrigin]
             // console.log(this.dictWithGroup)
-            // TODO: remove all console.log()
         }
     }
 
-    // 获取 yaml 词库头部
-    getDictHeader(){
-        return this.yaml.substring(0, this.indexEndOfHeader)
-    }
-
-    // 获取 yaml 词库内容
-    getDictBody(){
-        return this.yaml.substring(this.indexEndOfHeader)
-    }
-
     // 返回 word 分组
-    getDictWordsWithGroup(){
-        let lines = this.body.split(RETURN_SYMBOL) // 拆分词条与编码成单行
+    getDictWordsWithGroup(body){
+        let lines = body.split(RETURN_SYMBOL) // 拆分词条与编码成单行
         let dictGroup = [] // 总分组
         let temp = null // 第一个分组
         let lastItemIsEmptyLine = false // 上一条是空，用于循环中判断是否需要新起一个 WordGroup
