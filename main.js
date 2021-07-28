@@ -41,6 +41,7 @@ function createWindow() {
         fs.writeFile(filePath, yamlString, {encoding: "utf8"}, err => {
             if (!err){
                 console.log('saveFileSuccess')
+                applyRime() // 布署
                 mainWindow.webContents.send('saveFileSuccess')
             }
         })
@@ -139,10 +140,7 @@ function createMenu(filesMenu) {
                 {
                     label: '重新布署',
                     click() {
-                        // macOS
-                        exec('"/Library/Input Methods/Squirrel.app/Contents/MacOS/Squirrel" --reload', error => {
-                            console.log(error)
-                        })
+                        applyRime()
                     }
                 },
             ]
@@ -185,3 +183,9 @@ function setRimeFolderMenu(){
     })
 }
 
+function applyRime(){
+    // macOS
+    exec('"/Library/Input Methods/Squirrel.app/Contents/MacOS/Squirrel" --reload', error => {
+        console.log(error)
+    })
+}
