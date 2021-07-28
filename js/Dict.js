@@ -28,9 +28,10 @@ class Dict {
 
             // 从 dictWithGroupOrigin 获取词条，对应词条的 id 不会变
             this.dictWithGroupOrigin.forEach(group => {
-                this.dictOrigin = this.dict.concat([group.dict])
+                this.dictOrigin = this.dictOrigin.concat([...group.dict])
             })
             this.dict = [...this.dictOrigin]
+            console.log(`处理yaml码表文件：完成，共：${this.dictOrigin.length }条`)
             // console.log(this.dictWithGroup)
         }
     }

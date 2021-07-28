@@ -66,7 +66,7 @@ const app = {
         },
         // 保存内容到文件
         saveDictToFile(){
-            ipcRenderer.send(IPC_TYPES.saveFile, this.currentFilePath, this.dict.toYamlString())
+            ipcRenderer.send('saveFile', this.currentFilePath, this.dict.toYamlString())
         },
         // 清除内容
         clearInputs(){

@@ -15,13 +15,13 @@
             <option value="" disabled>选择分组</option>
             <option :value="index" v-for="(group, index) in dict.dictWithGroupOrigin" :key="index">{{ group.groupName }}</option>
         </select>-->
-        <div class="btn btn-primary" @click="clearInputs">清除</div>
+        <div class="btn btn-primary" @click="clearInputs">清空</div>
         <div class="btn btn-primary" @click="addNewPhrase">添加</div>
         <div class="btn btn-primary" ref="domBtnSave" @click="saveDictToFile">{{ labelOfSaveBtn }}</div>
-        <div class="btn btn-red" v-show="selectedWordIds.length > 0" @click="deleteWords">删除</div>
         <div class="btn btn-blue" @click="openCurrentYaml">打开源文件</div>
+        <div class="btn btn-red" v-show="selectedWordIds.length > 0" @click="deleteWords">删除</div>
 <!--        <input v-model="keyword" type="text" placeholder="关键字">-->
-<!--        <div class="btn btn-primary" @click="search">搜索</div>-->
+        <div class="btn btn-primary" @click="search">搜索</div>
     </div>
 
     <div ref="container" class="container">
