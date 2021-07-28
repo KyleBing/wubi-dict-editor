@@ -10,7 +10,7 @@ const {ipcRenderer} = require('electron')
 const app = {
     data() {
         return {
-            dict: null, // 当前词库对象 Dict
+            dict: {}, // 当前词库对象 Dict
             keyword: '', // 搜索关键字
             code: '',
             word: '',

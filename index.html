@@ -13,7 +13,7 @@
         <input class="code" ref="domInputCode" v-model="code" type="text" placeholder="编码">
 <!--        <select ref="domSelectGroupId" v-model="activeGroupId">
             <option value="" disabled>选择分组</option>
-            <option :value="index" v-for="(group, index) in dict.dictWithGroupOrigin" :key="index">{{ group.groupName }}</option>
+            <option :value="index" v-for="(group, index) in dict.dict" :key="index">{{ group.groupName }}</option>
         </select>-->
         <div class="btn btn-primary" @click="clearInputs">清空</div>
         <div class="btn btn-primary" @click="addNewPhrase">添加</div>
@@ -25,8 +25,9 @@
     </div>
 
     <div ref="container" class="container">
-        <div class="display" v-if="dict">
-            <div class="table-item" v-for="(group, groupIndex) in dict.dictWithGroup" :key="groupIndex">
+        <!-- group-mode-->
+        <div class="display" v-if="dict.isGroupMode">
+            <div class="table-item" v-for="(group, groupIndex) in dict.dict" :key="groupIndex">
                 <div :class="['group-header', {active: activeGroupId === groupIndex}]"
                      @click.right="group.isEditingTitle = !group.isEditingTitle">
                     <input v-model="group.groupName"
@@ -58,6 +59,43 @@
                                     <img src="./assets/up.svg" alt="move up">
                                 </div>
                                 <div v-if="index+1 !== group.dict.length" class="down" @click="moveDown(item.id)">
+                                    <img src="./assets/down.svg" alt="move down">
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!--  normal-mode-->
+        <div class="display" v-else>
+            <div class="table-item">
+                <div class="group-header">
+                    <h3>{{ currentFilePath }}</h3>
+                </div>
+                <table class="table">
+                    <tbody>
+                    <tr v-for="(item, index) in dict.dict" :key="index">
+                        <td class="checkbox">
+                            <input
+                                v-model="selectedWordIds"
+                                name="table"
+                                :id="`word${index}`"
+                                type="checkbox"
+                                :value="item.id">
+                            <label class="checkbox" :for="`word${index}`"></label>
+                        </td>
+                        <td class="code">{{ item.code }}</td>
+                        <td class="word">{{ item.word }}</td>
+                        <td class="id">{{ item.id }}</td>
+                        <td>
+                            <div class="operation">
+                                <div v-if="index !== 0" class="up" @click="moveUp(item.id)">
+                                    <img src="./assets/up.svg" alt="move up">
+                                </div>
+                                <div v-if="index+1 !== dict.length" class="down" @click="moveDown(item.id)">
                                     <img src="./assets/down.svg" alt="move down">
                                 </div>
                             </div>
