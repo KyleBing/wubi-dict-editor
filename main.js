@@ -3,7 +3,7 @@ const IPC_TYPES = {
     readFile: 'readFile',
     showFileContent: 'showFileContent'
 }
-const {app, BrowserWindow, Menu, ipcMain, ipcRenderer} = require('electron');
+const {app, BrowserWindow, Menu, ipcMain, ipcRenderer, shell} = require('electron');
 const fs = require('fs')
 const os = require('os')
 const url = require("url");
@@ -49,6 +49,12 @@ function createWindow() {
     ipcMain.on('loadTestFile', event => {
         readFile(path.join(getRimeDirectoryPath(), 'test.dict.yaml'))
     })
+
+    // 外部打开当前码表文件
+    ipcMain.on('openFileOutside', (event, filePath) => {
+        console.log(filePath)
+        shell.openPath(filePath)
+    })
 }
 
 
@@ -79,29 +85,7 @@ function readFile(filePath){
 }
 
 
-// 设置菜单 - Rime 所有文件
-function setRimeFolderMenu(){
-    let rimeFolderPath = getRimeDirectoryPath()
-    fs.readdir(rimeFolderPath,(err, filePaths) => {
-        if (err) {
-            console.log(err)
-        } else {
-            let filesMenu = []
-            filePaths.forEach(item => {
-                if (item.indexOf('.dict.yaml') > 0){
-                    filesMenu.push({
-                        label: getLabelNameFromFileName(item),
-                        click() {
-                            let filePath = path.join(rimeFolderPath, item)
-                            readFile(filePath)
-                        }
-                    },)
-                }
-            })
-            createMenu(filesMenu)
-        }
-    })
-}
+
 
 // 匹配文件名，返回对应文件的名字
 function getLabelNameFromFileName(fileName){
@@ -143,6 +127,17 @@ function createMenu(filesMenu) {
             submenu: filesMenu
         },
         {
+            label: '文件夹',
+            submenu: [
+                {
+                    label: '打开Rime文件夹',
+                    click() {
+                        shell.openPath(getRimeDirectoryPath())
+                    }
+                }
+            ]
+        },
+        {
             label: '关于',
             submenu: [
                 {label: '最小化', role: 'minimize'},
@@ -155,3 +150,26 @@ function createMenu(filesMenu) {
     Menu.setApplicationMenu(menu)
 }
 
+// 设置菜单 - Rime 所有文件
+function setRimeFolderMenu(){
+    let rimeFolderPath = getRimeDirectoryPath()
+    fs.readdir(rimeFolderPath,(err, filePaths) => {
+        if (err) {
+            console.log(err)
+        } else {
+            let filesMenu = []
+            filePaths.forEach(item => {
+                if (item.indexOf('.dict.yaml') > 0){
+                    filesMenu.push({
+                        label: getLabelNameFromFileName(item),
+                        click() {
+                            let filePath = path.join(rimeFolderPath, item)
+                            readFile(filePath)
+                        }
+                    },)
+                }
+            })
+            createMenu(filesMenu)
+        }
+    })
+}

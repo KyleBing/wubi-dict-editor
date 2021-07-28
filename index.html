@@ -19,6 +19,7 @@
         <div class="btn btn-primary" @click="addNewPhrase">添加</div>
         <div class="btn btn-primary" ref="domBtnSave" @click="saveDictToFile">{{ labelOfSaveBtn }}</div>
         <div class="btn btn-red" v-show="selectedWordIds.length > 0" @click="deleteWords">删除</div>
+        <div class="btn btn-blue" @click="openCurrentYaml">打开源文件</div>
 <!--        <input v-model="keyword" type="text" placeholder="关键字">-->
 <!--        <div class="btn btn-primary" @click="search">搜索</div>-->
     </div>

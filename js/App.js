@@ -23,7 +23,7 @@ const app = {
         }
     },
     mounted() {
-        ipcRenderer.on(IPC_TYPES.showFileContent, (event, filePath, res) => {
+        ipcRenderer.on('showFileContent', (event, filePath, res) => {
             this.currentFilePath = filePath
             this.clearInputs()
             this.dict = new Dict(res)
@@ -116,7 +116,10 @@ const app = {
                         break
                 }
             })
-        }
+        },
+        openCurrentYaml(){
+            ipcRenderer.send('openFileOutside', this.currentFilePath)
+        },
     },
     watch: {
         code(newValue){
