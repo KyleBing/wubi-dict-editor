@@ -152,7 +152,7 @@ function createMenu(filesMenu) {
             submenu: [
                 {label: '最小化', role: 'minimize'},
                 {label: '关于', role: 'about'},
-                {role: 'separator'},
+                {type: 'separator'},
                 {label: '退出', role: 'quit'},
             ]
         },
