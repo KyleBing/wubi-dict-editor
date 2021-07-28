@@ -4,6 +4,7 @@ const IPC_TYPES = {
     showFileContent: 'showFileContent'
 }
 const {app, BrowserWindow, Menu, ipcMain, ipcRenderer, shell} = require('electron');
+const { exec } = require('child_process')
 const fs = require('fs')
 const os = require('os')
 const url = require("url");
@@ -127,14 +128,23 @@ function createMenu(filesMenu) {
             submenu: filesMenu
         },
         {
-            label: '文件夹',
+            label: '其它操作',
             submenu: [
                 {
-                    label: '打开Rime文件夹',
+                    label: 'Rime文件夹',
                     click() {
                         shell.openPath(getRimeDirectoryPath())
                     }
-                }
+                },
+                {
+                    label: '重新布署',
+                    click() {
+                        // macOS
+                        exec('"/Library/Input Methods/Squirrel.app/Contents/MacOS/Squirrel" --reload', error => {
+                            console.log(error)
+                        })
+                    }
+                },
             ]
         },
         {
@@ -142,6 +152,7 @@ function createMenu(filesMenu) {
             submenu: [
                 {label: '最小化', role: 'minimize'},
                 {label: '关于', role: 'about'},
+                {role: 'separator'},
                 {label: '退出', role: 'quit'},
             ]
         },
@@ -173,3 +184,4 @@ function setRimeFolderMenu(){
         }
     })
 }
+
