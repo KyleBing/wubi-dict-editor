@@ -126,7 +126,7 @@ const app = {
             this.code = newValue.replaceAll(/[^A-Za-z]/g, '') // 只允许输入字母
         },
         selectedWordIds(newValue){
-            console.log(newValue.toString())
+            console.log('已选词条id: ', JSON.stringify(newValue))
         }
     }
 }
