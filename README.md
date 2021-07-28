@@ -2,16 +2,17 @@
 一个管理 Rime 五笔词库的工具，添加、删除词条
 
 
+<img width="1512" alt="Screen Shot 2021-07-28 at 22 47 49" src="https://user-images.githubusercontent.com/12215982/127344607-ac651eb6-dcc7-4f39-8ce5-9f30418f7eb7.png">
+
+
 ## 支持平台：
 Windows, macOS, (Linux 未测试)
 
+
 ## 用到的技术
-- nodejs
-- electron
-- javascript
-- scss
-- vue 3 
-- html
+- `nodejs`
+- `javascript` `scss` `html`
+- `vue 3` [`electron`](https://github.com/electron/electron)
 
 ## 开发计划
 
