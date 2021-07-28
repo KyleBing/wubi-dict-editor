@@ -43,3 +43,16 @@ Windows, macOS, (Linux 未测试)
 
 #### 其它
 - [ ] 关于窗口
+
+## 布署指令
+
+macOS
+```bash
+"/Library/Input Methods/Squirrel.app/Contents/MacOS/Squirrel" --reload
+```
+
+windows
+```bash
+cd C:\Program Files (x86)\Rime\weasel-0.14.3
+WeaselDeployer.exe /deploy
+```
