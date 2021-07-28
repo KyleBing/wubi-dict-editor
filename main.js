@@ -125,6 +125,10 @@ function createMenu(filesMenu) {
             label: '词库工具',
         },
         {
+            label: '编辑',
+            role: 'editMenu'
+        },
+        {
             label: '词库列表',
             submenu: filesMenu
         },
