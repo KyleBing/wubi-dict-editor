@@ -20,6 +20,7 @@ input, select{
   @include border-radius($radius);
   padding: $padding-input-tb 8px;
   &.code{
+    font-family: monospace;
     width: 5rem;
   }
   &.word{

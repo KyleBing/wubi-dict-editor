@@ -442,6 +442,7 @@
   background-color: rgba(255, 45, 112, 0.05);
 }
 .group-header h3 {
+  font-size: 13px;
   line-height: 26px;
 }
 .table {
@@ -465,7 +466,7 @@ tbody {
   color: #000;
 }
 tbody td {
-  font-size: 12px;
+  font-size: 13px;
 }
 tbody td:first-child {
   padding-left: 20px;
@@ -477,10 +478,15 @@ tbody td.checkbox {
   width: 2rem;
 }
 tbody td.code {
+  color: #333;
+  font-family: monospace;
   width: 10%;
 }
 tbody td.word {
   width: 60%;
+}
+tbody td.id {
+  color: #848484;
 }
 tbody td .operation {
   opacity: 0.3;
@@ -913,6 +919,7 @@ input, select {
   transition: all, 0.5s;
 }
 input.code, select.code {
+  font-family: monospace;
   width: 5rem;
 }
 input.word, select.word {

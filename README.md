@@ -1,4 +1,4 @@
-# 五笔词库管理工具 for Rime
+# 五笔词库管理工具 for [Rime](https://github.com/rime)
 一个管理 Rime 五笔词库的工具，添加、删除词条
 
 
