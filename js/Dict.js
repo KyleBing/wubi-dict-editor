@@ -184,13 +184,26 @@ class Dict {
                 }
             })
         } else {
-            console.log('TODO: 没分组时的移动')
+            for(let i=0; i<this.dictOrigin.length; i++){
+                if (wordId === this.dictOrigin[i].id){
+                    let tempItem = this.dictOrigin[i]
+                    if (direction === 'up'){
+                        this.dictOrigin[i] = this.dictOrigin[i - 1]
+                        this.dictOrigin[i - 1] = tempItem
+                        break
+                    } else if (direction === 'down'){
+                        this.dictOrigin[i] = this.dictOrigin[i + 1]
+                        this.dictOrigin[i + 1] = tempItem
+                        break
+                    }
+                }
+            }
         }
     }
 
-    // 判断是否为第一个元素，在组中
+    // 判断是否为第一个元素
     isFirstItemInGroup(id){
-        if (this.isGroupMode){
+        if (this.isGroupMode){ // 分组
             for (let i=0; i<this.dictOrigin.length; i++) {
                 for (let j = 0; j < this.dictOrigin[i].dict.length; j++) {
                     if (this.dictOrigin[i].dict[j].id === id){
@@ -200,24 +213,32 @@ class Dict {
             }
             return false
         } else {
-            console.log('TODO: 非分组时的判断：是否为第一个元素')
+            for (let i = 0; i < this.dictOrigin.length; i++) {
+                if (this.dictOrigin[i].id === id){
+                    return i === 0 // 使用 array.forEach() 无法跳出循环
+                }
+            }
             return false
         }
 
     }
-    // 判断是否为最后一个元素，在组中
+    // 判断是否为最后一个元素
     isLastItemInGroup(id){
-        if (this.isGroupMode){
+        if (this.isGroupMode){ // 分组
             for (let i=0; i<this.dictOrigin.length; i++) {
                 for (let j = 0; j < this.dictOrigin[i].dict.length; j++) {
-                    if (this.dictOrigin[i].dict[j].id === id){
-                        return j + 1 === this.dictOrigin[i].dict.length
+                    if (this.dictOrigin[i].id === id){
+                        return j + 1 === this.dictOrigin.length
                     }
                 }
             }
             return false
         } else {
-            console.log('TODO: 非分组时的判断：是否为最后一个元素')
+            for (let i = 0; i < this.dictOrigin.length; i++) {
+                if (this.dictOrigin[i].id === id){
+                    return i + 1 === this.dictOrigin.length
+                }
+            }
             return false
         }
     }

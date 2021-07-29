@@ -27,15 +27,6 @@ const app = {
             this.currentFilePath = filePath
             this.clearInputs()
             this.dict = new Dict(res)
-            if (this.dict.dict.length > 1000){ // 如果词条数量大于 1000 条，不进行实时筛选
-                if (this.keywordUnwatch){
-                    this.keywordUnwatch()
-                }
-            } else {
-                this.keywordUnwatch = this.$watch('keyword', newValue => {
-                    this.dict.setKeyword(newValue)
-                })
-            }
         })
         ipcRenderer.on('saveFileSuccess', () => {
             this.labelOfSaveBtn = '保存成功'
@@ -52,7 +43,9 @@ const app = {
     },
     methods: {
         search(){
-            this.dict.search(this.code, this.word)
+            if (this.dict){
+                this.dict.search(this.code, this.word)
+            }
         },
         addNewPhrase(){
             if (!this.word){
