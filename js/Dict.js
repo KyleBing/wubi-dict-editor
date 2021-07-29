@@ -8,7 +8,8 @@ const os = require('os')
 const RETURN_SYMBOL = getReturnSymbol()
 
 class Dict {
-    constructor(yaml) {
+    constructor(yaml, filePath) {
+        this.filePath = filePath // 文件路径
         this.header = null // 文件头部内容
         this.dict = [] // 文件词条数组
         this.dictOrigin = [] // 文件词条数组

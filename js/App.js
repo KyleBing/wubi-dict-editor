@@ -16,16 +16,14 @@ const app = {
             word: '',
             activeGroupId: '', // 组 index
             keywordUnwatch: null, // keyword watch 方法的撤消方法
-            currentFilePath: '', // 当前打开的文件路径
             selectedWordIds: [], // 已选择的词条
-
             labelOfSaveBtn: '保存', // 保存按钮的文本
         }
     },
     mounted() {
         ipcRenderer.on('showFileContent', (event, filePath, res) => {
-            this.currentFilePath = filePath
-            this.dict = new Dict(res)
+            this.dict = new Dict(res, filePath)
+            document.title = filePath // 窗口 title
             this.clearInputs()
         })
         ipcRenderer.on('saveFileSuccess', () => {
@@ -57,7 +55,7 @@ const app = {
         },
         // 保存内容到文件
         saveDictToFile(){
-            ipcRenderer.send('saveFile', this.currentFilePath, this.dict.toYamlString())
+            ipcRenderer.send('saveFile', this.dict.filePath, this.dict.toYamlString())
         },
         // 清除内容
         clearInputs(){
@@ -110,7 +108,7 @@ const app = {
             })
         },
         openCurrentYaml(){
-            ipcRenderer.send('openFileOutside', this.currentFilePath)
+            ipcRenderer.send('openFileOutside', this.dict.filePath)
         },
     },
     watch: {
