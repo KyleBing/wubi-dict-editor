@@ -91,7 +91,7 @@ const app = {
                     case 'ArrowDown':
                         if(this.selectedWordIds.length === 1) { // 只有一个元素时，键盘才起作用
                             let id = this.selectedWordIds[0]
-                            if (!this.dict.isLastItemInGroup(id)){
+                            if (!this.dict.isLastItem(id)){
                                 this.dict.move(id, 'down')
                             }
                         }
@@ -100,7 +100,7 @@ const app = {
                     case 'ArrowUp':
                         if(this.selectedWordIds.length === 1) { // 只有一个元素时，键盘才起作用
                             let id = this.selectedWordIds[0]
-                            if (!this.dict.isFirstItemInGroup(id)) {
+                            if (!this.dict.isFirstItem(id)) {
                                 this.dict.move(id, 'up')
                             }
                         }

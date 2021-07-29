@@ -166,7 +166,7 @@ class Dict {
     // 词条位置移动
     move(wordId, direction){
         if (this.isGroupMode){
-            this.dictOrigin.forEach(group => {
+            this.dict.forEach(group => {
                 for(let i=0; i<group.dict.length; i++){
                     if (wordId === group.dict[i].id){
                         let tempItem = group.dict[i]
@@ -183,16 +183,16 @@ class Dict {
                 }
             })
         } else {
-            for(let i=0; i<this.dictOrigin.length; i++){
-                if (wordId === this.dictOrigin[i].id){
-                    let tempItem = this.dictOrigin[i]
+            for(let i=0; i<this.dict.length; i++){
+                if (wordId === this.dict[i].id){
+                    let tempItem = this.dict[i]
                     if (direction === 'up'){
-                        this.dictOrigin[i] = this.dictOrigin[i - 1]
-                        this.dictOrigin[i - 1] = tempItem
+                        this.dict[i] = this.dict[i - 1]
+                        this.dict[i - 1] = tempItem
                         break
                     } else if (direction === 'down'){
-                        this.dictOrigin[i] = this.dictOrigin[i + 1]
-                        this.dictOrigin[i + 1] = tempItem
+                        this.dict[i] = this.dict[i + 1]
+                        this.dict[i + 1] = tempItem
                         break
                     }
                 }
@@ -201,19 +201,19 @@ class Dict {
     }
 
     // 判断是否为第一个元素
-    isFirstItemInGroup(id){
-        if (this.isGroupMode){ // 分组
-            for (let i=0; i<this.dictOrigin.length; i++) {
-                for (let j = 0; j < this.dictOrigin[i].dict.length; j++) {
-                    if (this.dictOrigin[i].dict[j].id === id){
+    isFirstItem(id){
+        if (this.isGroupMode){ // 分组时的第一个元素
+            for (let i=0; i<this.dict.length; i++) {
+                for (let j = 0; j < this.dict[i].dict.length; j++) {
+                    if (this.dict[i].dict[j].id === id){
                         return j === 0 // 使用 array.forEach() 无法跳出循环
                     }
                 }
             }
             return false
         } else {
-            for (let i = 0; i < this.dictOrigin.length; i++) {
-                if (this.dictOrigin[i].id === id){
+            for (let i = 0; i < this.dict.length; i++) {
+                if (this.dict[i].id === id){
                     return i === 0 // 使用 array.forEach() 无法跳出循环
                 }
             }
@@ -222,20 +222,20 @@ class Dict {
 
     }
     // 判断是否为最后一个元素
-    isLastItemInGroup(id){
-        if (this.isGroupMode){ // 分组
-            for (let i=0; i<this.dictOrigin.length; i++) {
-                for (let j = 0; j < this.dictOrigin[i].dict.length; j++) {
-                    if (this.dictOrigin[i].id === id){
-                        return j + 1 === this.dictOrigin.length
+    isLastItem(id){
+        if (this.isGroupMode){ // 分组时的最后一个元素
+            for (let i=0; i<this.dict.length; i++) {
+                for (let j = 0; j < this.dict[i].dict.length; j++) {
+                    if (this.dict[i].id === id){
+                        return j + 1 === this.dict.length
                     }
                 }
             }
             return false
         } else {
-            for (let i = 0; i < this.dictOrigin.length; i++) {
-                if (this.dictOrigin[i].id === id){
-                    return i + 1 === this.dictOrigin.length
+            for (let i = 0; i < this.dict.length; i++) {
+                if (this.dict[i].id === id){
+                    return i + 1 === this.dict.length
                 }
             }
             return false

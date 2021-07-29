@@ -88,7 +88,8 @@ function readFile(filePath){
 function getLabelNameFromFileName(fileName){
     const map = [
         {name: '拼音词库', path: 'pinyin_simp.dict.yaml'},
-        {name: '测试词库 ⛳️', path: 'test.dict.yaml'},
+        {name: '测试词库 ⛳', path: 'test.dict.yaml'},
+        {name: '测试词库 - 分组️ ⛳️', path: 'test_group.dict.yaml'},
         {name: '五笔极点 - 主词库', path: 'wubi86_jidian.dict.yaml'},
         {name: '五笔极点 - 分词库', path: 'wubi86_jidian_addition.dict.yaml'},
         {name: '五笔极点 - 附加词库', path: 'wubi86_jidian_extra.dict.yaml'},
