@@ -85,24 +85,23 @@ class Dict {
         }
     }
 
-    // 设置 keyword 并筛选 dict
-    setKeyword(keyword){
-        this.keyword = keyword
-        if (keyword){
+    // 通过 code, word 筛选词条
+    search(code, word){
+        if (code || word){
             if (this.isGroupMode){
                 this.dict =[]
-                this.dictOrigin.forEach(groupItem => { // 不能直接使用原 groupItem，不然会改变 dictOrigin 的数据
-                    let tempGroupItem = groupItem.clone()
+                this.dictOrigin.forEach(groupItem => {
+                    let tempGroupItem = groupItem.clone() // 不能直接使用原 groupItem，不然会改变 dictOrigin 的数据
                     tempGroupItem.dict = tempGroupItem.dict.filter(item => {
-                        return item.code.includes(keyword) || item.word.includes(keyword)
+                        return item.code.includes(code) && item.word.includes(word)
                     })
-                    if (tempGroupItem.dict.length > 0){
+                    if (tempGroupItem.dict.length > 0){ // 当前分组中有元素，添加到结果中
                         this.dict.push(tempGroupItem)
                     }
                 })
             } else {
-                this.dict = this.dictOrigin.filter(item => { // 获取包含 keyword 的记录
-                    return item.code.includes(keyword) || item.word.includes(keyword)
+                this.dict = this.dictOrigin.filter(item => { // 获取包含 code 的记录
+                    return item.code.includes(code) && item.word.includes(word)
                 })
             }
 

@@ -52,7 +52,7 @@ const app = {
     },
     methods: {
         search(){
-            this.dict.setKeyword(this.keyword)
+            this.dict.search(this.code, this.word)
         },
         addNewPhrase(){
             if (!this.word){
@@ -73,6 +73,7 @@ const app = {
             this.code = ''
             this.word = ''
             this.selectedWordIds = []
+            this.search()
         },
         // 删除词条
         deleteWords(){
