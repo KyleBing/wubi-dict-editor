@@ -63,6 +63,16 @@ function createWindow() {
 app.on('ready', ()=>{
     createWindow()
     setRimeFolderMenu()
+
+    let pathRimeDir = 'C:/Program Files (x86)/Rime'
+    fs.opendir(pathRimeDir, (err, rimeDir)=>{
+        rimeDir.read().then(res=>{
+            if (res.isDirectory()){
+
+            }
+            console.log(JSON.stringify(res), res.name)
+        })
+    })
 })
 
 app.on('window-all-closed', function () {
