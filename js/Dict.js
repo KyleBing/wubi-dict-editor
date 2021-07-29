@@ -157,10 +157,13 @@ class Dict {
                 })
                 yamlBody = yamlBody + tempGroupString + returnSymbol // 每组的末尾加个空行
             })
-            return this.header + returnSymbol + yamlBody
+            return this.header + returnSymbol
         } else {
-            console.log('TODO: 没有分组时生成文件内容')
-            return ''
+            let yamlBody = ''
+            this.dict.forEach(item =>{
+                yamlBody = yamlBody + item.toString() + returnSymbol
+            })
+            return this.header + returnSymbol + yamlBody
         }
     }
 
