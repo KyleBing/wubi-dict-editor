@@ -61,18 +61,22 @@ function createWindow() {
 
 
 app.on('ready', ()=>{
-    createWindow()
+    // createWindow()
     setRimeFolderMenu()
 
+    // 获取指定路径的程序
     let pathRimeDir = 'C:/Program Files (x86)/Rime'
-    fs.opendir(pathRimeDir, (err, rimeDir)=>{
-        rimeDir.read().then(res=>{
-            if (res.isDirectory()){
-
-            }
-            console.log(JSON.stringify(res), res.name)
+    let rimeBinDir = '/Library/Input Methods/'
+    fs.readdir(rimeBinDir, {withFileTypes: true},(err, files)=>{
+        let rimeDir = files.filter(item => item.name.includes('Squirrel'))[0]
+        let execFilePath = path.join(rimeBinDir,rimeDir.name,'Contents/MacOS/Squirrel')
+        console.log(execFilePath)
+        exec(`"${execFilePath}" --reload`, error => {
+            console.log(error)
         })
     })
+
+
 })
 
 app.on('window-all-closed', function () {
