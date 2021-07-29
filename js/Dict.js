@@ -12,7 +12,6 @@ class Dict {
         this.header = null // 文件头部内容
         this.dict = [] // 文件词条数组
         this.dictOrigin = [] // 文件词条数组
-        this.keyword = '' // 筛选词条用的 keyword
         this.lastIndex = '' // 最后一个 Index 的值，用于新添加词时，作为唯一的 id 传入
         this.isGroupMode = false // 识别码表是否为分组形式的
         let indexEndOfHeader = yaml.indexOf('...') + 3
@@ -25,7 +24,7 @@ class Dict {
             let body = yaml.substring(this.indexEndOfHeader)
             this.dictOrigin = this.isGroupMode? this.getDictWordsInGroupMode(body): this.getDictWordsInNormalMode(body)
             console.log(this.dictOrigin)
-            this.dict = [...this.dictOrigin]
+            this.dict = [...this.dictOrigin] // dict 中的数据元素指向跟 Origin 里的是一样的，所以编辑 dict 也会改变 origin 数据
             console.log(`处理yaml码表文件：完成，共：${this.dictOrigin.length }条`)
             // console.log(this.dictWithGroup)
         }
@@ -105,7 +104,7 @@ class Dict {
                 })
             }
 
-        } else { // 如果 keyword 为空，恢复原有数据
+        } else { // 如果 code, word 为空，恢复原有数据
             this.dict = [...this.dictOrigin]
         }
     }

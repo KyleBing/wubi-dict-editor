@@ -25,8 +25,8 @@ const app = {
     mounted() {
         ipcRenderer.on('showFileContent', (event, filePath, res) => {
             this.currentFilePath = filePath
-            this.clearInputs()
             this.dict = new Dict(res)
+            this.clearInputs()
         })
         ipcRenderer.on('saveFileSuccess', () => {
             this.labelOfSaveBtn = '保存成功'
@@ -43,9 +43,7 @@ const app = {
     },
     methods: {
         search(){
-            if (this.dict){
-                this.dict.search(this.code, this.word)
-            }
+            this.dict.search(this.code, this.word)
         },
         addNewPhrase(){
             if (!this.word){
