@@ -1,14 +1,9 @@
-const IPC_TYPES = {
-    saveFile: 'saveFile',
-    readFile: 'readFile',
-    showFileContent: 'showFileContent'
-}
-const {app, BrowserWindow, Menu, ipcMain, ipcRenderer, shell} = require('electron');
+const {app, BrowserWindow, Menu, ipcMain, ipcRenderer, shell} = require('electron')
 const { exec } = require('child_process')
 const fs = require('fs')
 const os = require('os')
-const url = require("url");
-const path = require("path");
+const url = require("url")
+const path = require("path")
 
 
 let mainWindow
@@ -63,10 +58,6 @@ function createWindow() {
 app.on('ready', ()=>{
     createWindow()
     setRimeFolderMenu()
-
-
-
-
 })
 
 app.on('window-all-closed', function () {
@@ -85,7 +76,7 @@ function readFile(filePath){
         if(err){
             console.log(err)
         } else {
-            mainWindow.webContents.send(IPC_TYPES.showFileContent, filePath ,res)
+            mainWindow.webContents.send('showFileContent', filePath ,res)
         }
     })
 }
@@ -179,7 +170,9 @@ function setRimeFolderMenu(){
                 if (item.indexOf('.dict.yaml') > 0){
                     filesMenu.push({
                         label: getLabelNameFromFileName(item),
-                        click() {
+                        click(sender, window, content) {
+                            window.title = sender.label // 点击对应菜单时，显示当前编辑词库的名字
+                            currentFilePath = item
                             let filePath = path.join(rimeFolderPath, item)
                             readFile(filePath)
                         }
