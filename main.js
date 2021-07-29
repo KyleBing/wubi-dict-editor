@@ -61,20 +61,10 @@ function createWindow() {
 
 
 app.on('ready', ()=>{
-    // createWindow()
+    createWindow()
     setRimeFolderMenu()
 
-    // 获取指定路径的程序
-    let pathRimeDir = 'C:/Program Files (x86)/Rime'
-    let rimeBinDir = '/Library/Input Methods/'
-    fs.readdir(rimeBinDir, {withFileTypes: true},(err, files)=>{
-        let rimeDir = files.filter(item => item.name.includes('Squirrel'))[0]
-        let execFilePath = path.join(rimeBinDir,rimeDir.name,'Contents/MacOS/Squirrel')
-        console.log(execFilePath)
-        exec(`"${execFilePath}" --reload`, error => {
-            console.log(error)
-        })
-    })
+
 
 
 })
@@ -202,8 +192,25 @@ function setRimeFolderMenu(){
 }
 
 function applyRime(){
-    // macOS
-    exec('"/Library/Input Methods/Squirrel.app/Contents/MacOS/Squirrel" --reload', error => {
-        console.log(error)
-    })
+    switch (os.platform()){
+        case 'darwin':
+            // macOS
+            exec('"/Library/Input Methods/Squirrel.app/Contents/MacOS/Squirrel" --reload', error => {
+                console.log(error)
+            })
+            break
+        case 'win32':
+            // windows
+            // 获取指定路径的程序
+            let pathRimeDir = 'C:/Program Files (x86)/Rime'
+            let rimeBinDir = '/Library/Input Methods/'
+            fs.readdir(rimeBinDir, {withFileTypes: true},(err, files)=>{
+                let rimeDir = files.filter(item => item.name.includes('Squirrel'))[0]
+                let execFilePath = path.join(rimeBinDir,rimeDir.name,'Contents/MacOS/Squirrel')
+                console.log(execFilePath)
+                exec(`"${execFilePath}" --reload`, error => {
+                    console.log(error)
+                })
+            })
+    }
 }
