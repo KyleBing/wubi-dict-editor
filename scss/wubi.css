@@ -442,7 +442,7 @@
   background-color: rgba(255, 45, 112, 0.05);
 }
 .group-header h3 {
-  font-size: 13px;
+  font-size: 12px;
   line-height: 26px;
 }
 .table {
@@ -466,7 +466,7 @@ tbody {
   color: #000;
 }
 tbody td {
-  font-size: 13px;
+  font-size: 12px;
 }
 tbody td:first-child {
   padding-left: 20px;
@@ -479,7 +479,6 @@ tbody td.checkbox {
 }
 tbody td.code {
   color: #333;
-  font-family: monospace;
   width: 10%;
 }
 tbody td.word {
@@ -919,7 +918,6 @@ input, select {
   transition: all, 0.5s;
 }
 input.code, select.code {
-  font-family: monospace;
   width: 5rem;
 }
 input.word, select.word {

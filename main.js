@@ -189,6 +189,7 @@ function applyRime(){
     switch (os.platform()){
         case 'darwin':
             // macOS
+            // let rimeBinDir = '/Library/Input Methods/'
             exec('"/Library/Input Methods/Squirrel.app/Contents/MacOS/Squirrel" --reload', error => {
                 console.log(error)
             })
@@ -196,14 +197,17 @@ function applyRime(){
         case 'win32':
             // windows
             // 获取指定路径的程序
-            let pathRimeDir = 'C:/Program Files (x86)/Rime'
-            let rimeBinDir = '/Library/Input Methods/'
+            let rimeBinDir = 'C:/Program Files (x86)/Rime'
             fs.readdir(rimeBinDir, {withFileTypes: true},(err, files)=>{
-                let rimeDir = files.filter(item => item.name.includes('Squirrel'))[0]
-                let execFilePath = path.join(rimeBinDir,rimeDir.name,'Contents/MacOS/Squirrel')
+                // 获取路径中 weasel 版本文件夹
+                // TODO：后续可能需要处理多版本的时候获取最新版本
+                let rimeDirEnt = files.filter(item => item.name.includes('weasel'))[0]
+                let execFilePath = path.join(rimeBinDir,rimeDirEnt.name,'WeaselDeployer.exe')
                 console.log(execFilePath)
-                exec(`"${execFilePath}" --reload`, error => {
-                    console.log(error)
+                exec(`"${execFilePath}" /deploy`, err => {
+                    if (err){
+                        console.log(err)
+                    }
                 })
             })
     }

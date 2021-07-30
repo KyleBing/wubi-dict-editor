@@ -1,4 +1,4 @@
-$fz-table: 13px;
+$fz-table: 12px;
 $table-padding-tb: 2px;
 $table-padding-lr: 5px;
 $bg-td-highlighted: transparentize($color-main, 0.95);
@@ -56,7 +56,7 @@ tbody{
     }
     &.code{
       color: $text-title;
-      font-family: monospace;
+      //font-family: monospace;
       width: 10%;
     }
     &.word{

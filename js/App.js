@@ -23,7 +23,7 @@ const app = {
     mounted() {
         ipcRenderer.on('showFileContent', (event, filePath, res) => {
             this.dict = new Dict(res, filePath)
-            document.title = filePath // 窗口 title
+            // document.title = filePath // 窗口 title
             this.clearInputs()
         })
         ipcRenderer.on('saveFileSuccess', () => {
