@@ -4,9 +4,6 @@ import WordGroup from "./WordGroup.js";
 
 const os = require('os')
 
-
-const RETURN_SYMBOL = getReturnSymbol()
-
 class Dict {
     constructor(yaml, filePath) {
         this.filePath = filePath // 文件路径
@@ -33,14 +30,14 @@ class Dict {
 
     // 返回所有 word
     getDictWordsInNormalMode(body){
-        let lines = body.split(RETURN_SYMBOL) // 拆分词条与编码成单行
+        let lines = body.split(os.EOL) // 拆分词条与编码成单行
         let linesValid = lines.filter(item => item.indexOf('\t') > -1) // 选取包含 \t 的行
         return linesValid.map((item, index) => getWordFromLine(index,item))
     }
 
     // 返回 word 分组
     getDictWordsInGroupMode(body){
-        let lines = body.split(RETURN_SYMBOL) // 拆分词条与编码成单行
+        let lines = body.split(os.EOL) // 拆分词条与编码成单行
         let dictGroup = [] // 总分组
         let temp = null // 第一个分组
         let lastItemIsEmptyLine = false // 上一条是空，用于循环中判断是否需要新起一个 WordGroup
@@ -147,23 +144,22 @@ class Dict {
     // 转为 yaml String
     toYamlString(){
         let yamlBody = ''
-        let returnSymbol = getReturnSymbol()
         if (this.isGroupMode){
             this.dictOrigin.forEach(group => {
                 let tempGroupString = ''
-                tempGroupString = tempGroupString + `## ${group.groupName}${returnSymbol}` // + groupName
+                tempGroupString = tempGroupString + `## ${group.groupName}${os.EOL}` // + groupName
                 group.dict.forEach(item =>{
-                    tempGroupString = tempGroupString + item.toString() + returnSymbol
+                    tempGroupString = tempGroupString + item.toString() + os.EOL
                 })
-                yamlBody = yamlBody + tempGroupString + returnSymbol // 每组的末尾加个空行
+                yamlBody = yamlBody + tempGroupString + os.EOL // 每组的末尾加个空行
             })
-            return this.header + returnSymbol
+            return this.header + os.EOL
         } else {
             let yamlBody = ''
             this.dict.forEach(item =>{
-                yamlBody = yamlBody + item.toString() + returnSymbol
+                yamlBody = yamlBody + item.toString() + os.EOL
             })
-            return this.header + returnSymbol + yamlBody
+            return this.header + os.EOL + yamlBody
         }
     }
 
@@ -253,20 +249,5 @@ function getWordFromLine(index, lineStr){
     let code = wordArray[1]
     let word = wordArray[0]
     return new Word(index, code, word)
-}
-
-
-// 根据系统返回对应文件系统的换行符
-function getReturnSymbol(){
-    switch (os.platform()){
-        case 'linux':
-        case 'darwin': return '\n' // macOS
-        case 'win32': return '\r\n' // windows
-        case 'aix':
-        case 'freebsd':
-        case 'openbsd':
-        case 'sunos':
-        default: return '\n'
-    }
 }
 export default Dict
