@@ -153,7 +153,7 @@ class Dict {
                 })
                 yamlBody = yamlBody + tempGroupString + os.EOL // 每组的末尾加个空行
             })
-            return this.header + yamlBody + os.EOL
+            return this.header + os.EOL + yamlBody
         } else {
             let yamlBody = ''
             this.dict.forEach(item =>{

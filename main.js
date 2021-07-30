@@ -8,6 +8,7 @@ const path = require("path")
 
 let mainWindow
 
+
 function createWindow() {
     mainWindow = new BrowserWindow({
         width: 1400, height: 600,
@@ -44,7 +45,7 @@ function createWindow() {
 
     // 监听 window 的文件载入请求
     ipcMain.on('loadTestFile', event => {
-        readFile(path.join(getRimeDirectoryPath(), 'test.dict.yaml'))
+        readFile(path.join(getRimeConfigDir(), 'test.dict.yaml'))
     })
 
     // 外部打开当前码表文件
@@ -82,8 +83,6 @@ function readFile(filePath){
 }
 
 
-
-
 // 匹配文件名，返回对应文件的名字
 function getLabelNameFromFileName(fileName){
     const map = [
@@ -100,19 +99,7 @@ function getLabelNameFromFileName(fileName){
     return matchedPath.length > 0 ? matchedPath[0].name: fileName
 }
 
-// 根据系统返回 rime 路径
-function getRimeDirectoryPath(){
-    let userHome = os.homedir()
-    switch (os.platform()){
-        case 'aix': break
-        case 'darwin': return path.join(userHome + '/Library/Rime') // macOS
-        case 'freebsd': break
-        case 'linux': break
-        case 'openbsd': break
-        case 'sunos': break
-        case 'win32': return path.join(userHome + '/AppData/Roaming/Rime') // windows
-    }
-}
+
 
 // 创建 menu
 function createMenu(filesMenu) {
@@ -132,9 +119,15 @@ function createMenu(filesMenu) {
             label: '其它操作',
             submenu: [
                 {
-                    label: 'Rime文件夹',
+                    label: '打开配置文件夹',
                     click() {
-                        shell.openPath(getRimeDirectoryPath())
+                        shell.openPath(getRimeConfigDir())
+                    }
+                },
+                {
+                    label: '打开程序文件夹',
+                    click() {
+                        shell.openPath(getRimeExecDir())
                     }
                 },
                 {
@@ -161,7 +154,7 @@ function createMenu(filesMenu) {
 
 // 设置菜单 - Rime 所有文件
 function setRimeFolderMenu(){
-    let rimeFolderPath = getRimeDirectoryPath()
+    let rimeFolderPath = getRimeConfigDir()
     fs.readdir(rimeFolderPath,(err, filePaths) => {
         if (err) {
             console.log(err)
@@ -185,30 +178,59 @@ function setRimeFolderMenu(){
     })
 }
 
+// 布署 Rime
 function applyRime(){
+    let rimeBinDir = getRimeExecDir()
+    console.log(path.join(rimeBinDir,'WeaselDeployer.exe'))
     switch (os.platform()){
         case 'darwin':
             // macOS
-            // let rimeBinDir = '/Library/Input Methods/'
-            exec('"/Library/Input Methods/Squirrel.app/Contents/MacOS/Squirrel" --reload', error => {
+            exec(`"${rimeBinDir}/Squirrel" --reload`, error => {
                 console.log(error)
             })
             break
         case 'win32':
             // windows
-            // 获取指定路径的程序
-            let rimeBinDir = 'C:/Program Files (x86)/Rime'
-            fs.readdir(rimeBinDir, {withFileTypes: true},(err, files)=>{
-                // 获取路径中 weasel 版本文件夹
-                // TODO：后续可能需要处理多版本的时候获取最新版本
-                let rimeDirEnt = files.filter(item => item.name.includes('weasel'))[0]
-                let execFilePath = path.join(rimeBinDir,rimeDirEnt.name,'WeaselDeployer.exe')
-                console.log(execFilePath)
-                exec(`"${execFilePath}" /deploy`, err => {
-                    if (err){
-                        console.log(err)
-                    }
-                })
+            let execFilePath = path.join(rimeBinDir,'WeaselDeployer.exe')
+            exec(`"${execFilePath}" /deploy`, err => {
+                if (err){
+                    console.log(err)
+                }
             })
     }
+}
+
+// 根据系统返回 rime 配置路径
+function getRimeConfigDir(){
+    let userHome = os.homedir()
+    switch (os.platform()){
+        case 'aix': break
+        case 'darwin': return path.join(userHome + '/Library/Rime') // macOS
+        case 'freebsd': break
+        case 'linux': break
+        case 'openbsd': break
+        case 'sunos': break
+        case 'win32': return path.join(userHome + '/AppData/Roaming/Rime') // windows
+    }
+}
+
+// 返回  Rime 可执行文件夹
+function getRimeExecDir(){
+    switch (os.platform()){
+        case 'aix': break
+        case 'darwin':  // macOS
+            return path.join('/Library/Input Methods/Squirrel.app', 'Contents/MacOS')
+        case 'freebsd': break
+        case 'linux': break
+        case 'openbsd': break
+        case 'sunos': break
+        case 'win32': // windows
+            const PATH_RIME_BIN_WIN = 'C:/Program Files (x86)/Rime'
+            let execDirEntes = fs.readdirSync(PATH_RIME_BIN_WIN, {withFileTypes: true})
+            // 获取路径中 weasel 版本文件夹
+            // TODO：后续可能需要处理多版本的时候获取最新版本
+            let rimeDirEntes = execDirEntes.filter(item => item.name.includes('weasel'))
+            return path.join(PATH_RIME_BIN_WIN, rimeDirEntes[0].name)
+    }
+
 }
