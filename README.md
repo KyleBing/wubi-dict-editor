@@ -1,7 +1,6 @@
 # 五笔词库管理工具 for [Rime](https://github.com/rime)
 一个管理 Rime 五笔词库的工具，添加、删除词条
 
-
 <img width="1512" alt="Screen Shot 2021-07-28 at 22 47 49" src="https://user-images.githubusercontent.com/12215982/127344607-ac651eb6-dcc7-4f39-8ce5-9f30418f7eb7.png">
 
 
@@ -15,6 +14,10 @@ Windows, macOS, (Linux 未测试)
 - `vue 3` [`electron`](https://github.com/electron/electron)
 
 ## 开发计划
+
+#### 进程截图记录：
+
+[https://github.com/KyleBing/wubi-dict-editor/discussions/2](https://github.com/KyleBing/wubi-dict-editor/discussions/2)
 
 #### 词条
 - [x] 展示词库内容 `2021-07-25`
