@@ -21,22 +21,28 @@ class Dict {
             this.isGroupMode = this.header.includes('dict_grouped: true') // 根据有没有这一段文字进行判断，是否为分组形式的码表
             let body = yaml.substring(this.indexEndOfHeader)
             this.dictOrigin = this.isGroupMode? this.getDictWordsInGroupMode(body): this.getDictWordsInNormalMode(body)
-            console.log(this.dictOrigin)
+
             this.dict = [...this.dictOrigin] // dict 中的数据元素指向跟 Origin 里的是一样的，所以编辑 dict 也会改变 origin 数据
-            console.log(`处理yaml码表文件：完成，共：${this.dictOrigin.length }条`)
+            if(this.dict.length < 1000){
+                console.log(this.dictOrigin)
+            }
             // console.log(this.dictWithGroup)
         }
     }
 
     // 返回所有 word
     getDictWordsInNormalMode(body){
+        let startPoint = new Date().getTime()
         let lines = body.split(os.EOL) // 拆分词条与编码成单行
         let linesValid = lines.filter(item => item.indexOf('\t') > -1) // 选取包含 \t 的行
-        return linesValid.map((item, index) => getWordFromLine(index,item))
+        let dicts = linesValid.map((item, index) => getWordFromLine(index,item))
+        console.log(`处理yaml码表文件：完成，共：${dicts.length }`, this.isGroupMode? '组': '条', '用时: ', new Date().getTime() - startPoint, 'ms')
+        return dicts
     }
 
     // 返回 word 分组
     getDictWordsInGroupMode(body){
+        let startPoint = new Date().getTime()
         let lines = body.split(os.EOL) // 拆分词条与编码成单行
         let dictGroup = [] // 总分组
         let temp = null // 第一个分组
@@ -72,6 +78,7 @@ class Dict {
                 lastItemIsEmptyLine = true
             }
         })
+        console.log('用时: ', new Date().getTime() - startPoint, 'ms')
         if (temp){
             if (temp.dict.length > 0){
                 dictGroup.push(temp) // 加上最后一个
@@ -84,6 +91,7 @@ class Dict {
 
     // 通过 code, word 筛选词条
     search(code, word){
+        let startPoint = new Date().getTime()
         if (code || word){
             if (this.isGroupMode){
                 this.dict =[]
@@ -96,10 +104,12 @@ class Dict {
                         this.dict.push(tempGroupItem)
                     }
                 })
+                console.log('用时: ', new Date().getTime() - startPoint, 'ms')
             } else {
                 this.dict = this.dictOrigin.filter(item => { // 获取包含 code 的记录
                     return item.code.includes(code) && item.word.includes(word)
                 })
+                console.log(`${code} ${word}: ` ,'搜索出', this.dict.length, '条，', '用时: ', new Date().getTime() - startPoint, 'ms')
             }
 
         } else { // 如果 code, word 为空，恢复原有数据

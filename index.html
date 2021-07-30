@@ -24,7 +24,7 @@
     </div>
 
     <div ref="container" class="container">
-        <!-- group-mode-->
+<!--        &lt;!&ndash; group-mode&ndash;&gt;
         <div class="display" v-if="dict.isGroupMode">
             <div class="table-item" v-for="(group, groupIndex) in dict.dict" :key="groupIndex">
                 <div :class="['group-header', {active: activeGroupId === groupIndex}]"
@@ -68,7 +68,7 @@
             </div>
         </div>
 
-        <!--  normal-mode-->
+        &lt;!&ndash;  normal-mode&ndash;&gt;
         <div class="display" v-else>
             <div class="table-item">
                 <table class="table">
@@ -100,7 +100,7 @@
                     </tbody>
                 </table>
             </div>
-        </div>
+        </div>-->
     </div>
 </div>
 

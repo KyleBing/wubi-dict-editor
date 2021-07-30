@@ -42,6 +42,7 @@ const app = {
     methods: {
         search(){
             this.dict.search(this.code, this.word)
+            console.log(this.dict.length)
         },
         addNewPhrase(){
             if (!this.word){
