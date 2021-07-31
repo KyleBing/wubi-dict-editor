@@ -427,6 +427,10 @@
   animation-name: shake;
 }
 
+.virtual-list {
+  height: 100%;
+}
+
 .group-header {
   cursor: pointer;
   padding-left: 35px;

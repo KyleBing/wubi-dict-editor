@@ -26,13 +26,15 @@
         <div class="btn btn-roseo" v-show="selectedWordIds.length > 0" @click="deleteWords">删除</div>
     </div>
 
-    <div ref="container" class="container">
+    <div ref="container"
+         :style="`height: ${heightContent}px`"
+         class="container">
         <recycle-scroller
             :min-item-size="40"
             class="virtual-list"
             :item-height="100"
             :items="arr">
-            <template slot-scope="{item}">
+            <template v-slot="{ item }">
                 <div class="list-item" :key="item.id">
                     <p class="mr-2">{{ item.id }}</p>
                     <p>{{ item.name }}</p>

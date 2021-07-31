@@ -5,8 +5,11 @@ import Word from "./Word.js";
 const Vue = require('vue')
 const {ipcRenderer} = require('electron')
 
+const VirtualScroller = require('vue-virtual-scroller')
+
 // Vue 3
 const app = {
+    components: {RecycleScroller: VirtualScroller.RecycleScroller},
     data() {
         return {
             arr: [],
@@ -18,12 +21,14 @@ const app = {
             keywordUnwatch: null, // keyword watch 方法的撤消方法
             selectedWordIds: [], // 已选择的词条
             labelOfSaveBtn: '保存', // 保存按钮的文本
+            heightContent: 0, // content 高度
         }
     },
     mounted() {
         for (let i = 0; i < 100000; i++) {
             this.arr.push({id: i, name: Math.random()})
         }
+        this.heightContent = innerHeight - 50
         ipcRenderer.on('showFileContent', (event, filePath, res) => {
             this.dict = new Dict(res, filePath)
             // document.title = filePath // 窗口 title

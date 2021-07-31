@@ -3,6 +3,9 @@ $table-padding-tb: 2px;
 $table-padding-lr: 5px;
 $bg-td-highlighted: transparentize($color-main, 0.95);
 
+.virtual-list{
+  height: 100%;
+}
 
 .group-header{
   cursor: pointer;
