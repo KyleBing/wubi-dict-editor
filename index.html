@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <title>五笔词库管理</title>
     <link rel="stylesheet" href="./scss/wubi.css">
+    <link rel="stylesheet" href="node_modules/vue-virtual-scroller/dist/vue-virtual-scroller.css">
+    <script src="node_modules/vue/dist/vue.runtime.global.prod.js"></script>
+    <script src="node_modules/vue-virtual-scroller/dist/vue-virtual-scroller.min.js"></script>
 </head>
 <body>
 
@@ -24,6 +27,18 @@
     </div>
 
     <div ref="container" class="container">
+        <recycle-scroller
+            :min-item-size="40"
+            class="virtual-list"
+            :item-height="100"
+            :items="arr">
+            <template slot-scope="{item}">
+                <div class="list-item" :key="item.id">
+                    <p class="mr-2">{{ item.id }}</p>
+                    <p>{{ item.name }}</p>
+                </div>
+            </template>
+        </recycle-scroller>
 <!--        &lt;!&ndash; group-mode&ndash;&gt;
         <div class="display" v-if="dict.isGroupMode">
             <div class="table-item" v-for="(group, groupIndex) in dict.dict" :key="groupIndex">

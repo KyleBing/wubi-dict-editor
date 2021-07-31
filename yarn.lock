@@ -2948,6 +2948,11 @@ sax@^1.2.4:
   resolved "https://registry.nlark.com/sax/download/sax-1.2.4.tgz#2816234e2378bddc4e5354fab5caa895df7100d9"
   integrity sha1-KBYjTiN4vdxOU1T6tcqold9xANk=
 
+scrollparent@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.nlark.com/scrollparent/download/scrollparent-2.0.1.tgz#715d5b9cc57760fb22bdccc3befb5bfe06b1a317"
+  integrity sha1-cV1bnMV3YPsivczDvvtb/gaxoxc=
+
 semver-compare@^1.0.0:
   version "1.0.0"
   resolved "https://registry.npm.taobao.org/semver-compare/download/semver-compare-1.0.0.tgz#0dee216a1c941ab37e9efb1788f6afc5ff5537fc"
@@ -3420,6 +3425,25 @@ verror@1.10.0:
     assert-plus "^1.0.0"
     core-util-is "1.0.2"
     extsprintf "^1.2.0"
+
+vue-observe-visibility@^0.4.4:
+  version "0.4.6"
+  resolved "https://registry.nlark.com/vue-observe-visibility/download/vue-observe-visibility-0.4.6.tgz#878cb8ebcf3078e40807af29774e97105ebd519e"
+  integrity sha1-h4y4688weOQIB68pd06XEF69UZ4=
+
+vue-resize@^0.4.5:
+  version "0.4.5"
+  resolved "https://registry.nlark.com/vue-resize/download/vue-resize-0.4.5.tgz#4777a23042e3c05620d9cbda01c0b3cc5e32dcea"
+  integrity sha1-R3eiMELjwFYg2cvaAcCzzF4y3Oo=
+
+vue-virtual-scroller@^1.0.10:
+  version "1.0.10"
+  resolved "https://registry.nlark.com/vue-virtual-scroller/download/vue-virtual-scroller-1.0.10.tgz#fdf243240001f05bd79aa77f2e2e60403760e2fb"
+  integrity sha1-/fJDJAAB8FvXmqd/Li5gQDdg4vs=
+  dependencies:
+    scrollparent "^2.0.1"
+    vue-observe-visibility "^0.4.4"
+    vue-resize "^0.4.5"
 
 vue@^3.1.5:
   version "3.1.5"

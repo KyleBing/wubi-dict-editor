@@ -1,15 +1,15 @@
 import Dict from "./Dict.js"
-import {shakeDomFocus, IPC_TYPES} from "./Utility.js"
+import {shakeDomFocus} from "./Utility.js"
 import Word from "./Word.js";
 
 const Vue = require('vue')
 const {ipcRenderer} = require('electron')
 
-
 // Vue 3
 const app = {
     data() {
         return {
+            arr: [],
             dict: {}, // 当前词库对象 Dict
             keyword: '', // 搜索关键字
             code: '',
@@ -21,6 +21,9 @@ const app = {
         }
     },
     mounted() {
+        for (let i = 0; i < 100000; i++) {
+            this.arr.push({id: i, name: Math.random()})
+        }
         ipcRenderer.on('showFileContent', (event, filePath, res) => {
             this.dict = new Dict(res, filePath)
             // document.title = filePath // 窗口 title
