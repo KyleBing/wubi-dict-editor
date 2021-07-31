@@ -96,7 +96,7 @@ $border-color-checkbox: #d6d6d6;
 input[type=checkbox] + label.checkbox{
   cursor: pointer;
   display: block;
-  width: $height-checkbox;
+  width: $height-checkbox * 2;
   background-color: white;
   height: $height-checkbox;
   @include border-radius(3px);
@@ -114,10 +114,10 @@ input[type=checkbox]:checked + label.checkbox{
     display: block;
     position: absolute;
     height: $height-checkbox - 6;
-    width: $height-checkbox - 6;
+    width: $height-checkbox * 2 - 6;
     top: 2px;
     left: 2px;
-    @include border-radius(3px);
+    @include border-radius(2px);
     background-color: $roseo;
   }
   border-color: $roseo;

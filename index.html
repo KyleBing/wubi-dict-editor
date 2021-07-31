@@ -5,8 +5,6 @@
     <title>五笔词库管理</title>
     <link rel="stylesheet" href="./scss/wubi.css">
     <link rel="stylesheet" href="node_modules/vue-virtual-scroller/dist/vue-virtual-scroller.css">
-    <script src="node_modules/vue/dist/vue.runtime.global.prod.js"></script>
-    <script src="node_modules/vue-virtual-scroller/dist/vue-virtual-scroller.min.js"></script>
 </head>
 <body>
 
@@ -26,21 +24,50 @@
         <div class="btn btn-roseo" v-show="selectedWordIds.length > 0" @click="deleteWords">删除</div>
     </div>
 
-    <div ref="container"
-         :style="`height: ${heightContent}px`"
-         class="container">
-        <recycle-scroller
-            :min-item-size="40"
-            class="virtual-list"
-            :item-height="100"
-            :items="arr">
-            <template v-slot="{ item }">
-                <div class="list-item" :key="item.id">
-                    <p class="mr-2">{{ item.id }}</p>
-                    <p>{{ item.name }}</p>
+    <div ref="container" class="container">
+        <!--  normal-mode-->
+        <div class="display">
+            <div class="list-container">
+                <div class="group">
+                    <recycle-scroller
+                        :buffer="1000"
+                        :prerender="200"
+                        :style="`height: ${heightContent}px`"
+                        v-if="dict.dict"
+                        :min-item-size="29"
+                        class="virtual-list"
+                        :item-height="100"
+                        :items="dict.dict">
+                        <template v-slot="{ item, index }">
+                            <div class="word-item">
+                                <div class="checkbox-cell">
+                                    <input
+                                        v-model="selectedWordIds"
+                                        name="table"
+                                        :id="`word${index}`"
+                                        type="checkbox"
+                                        :value="item.id">
+                                    <label class="checkbox" :for="`word${index}`"></label>
+                                </div>
+                                <div class="code">{{ item.code }}</div>
+                                <div class="word">{{ item.word }}</div>
+                                <div class="id">{{ item.id }}</div>
+                                <div class="operation">
+                                    <div v-if="index !== 0" class="up" @click="moveUp(item.id)">
+                                        <img src="./assets/up.svg" alt="move up">
+                                    </div>
+                                    <div v-if="index+1 !== dict.length" class="down" @click="moveDown(item.id)">
+                                        <img src="./assets/down.svg" alt="move down">
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+                    </recycle-scroller>
                 </div>
-            </template>
-        </recycle-scroller>
+            </div>
+        </div>
+
+
 <!--        &lt;!&ndash; group-mode&ndash;&gt;
         <div class="display" v-if="dict.isGroupMode">
             <div class="table-item" v-for="(group, groupIndex) in dict.dict" :key="groupIndex">

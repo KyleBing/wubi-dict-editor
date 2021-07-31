@@ -1,0 +1,124 @@
+$fz-table: 13px;
+$table-padding-tb: 2px;
+$table-padding-lr: 5px;
+$bg-td-highlighted: transparentize($color-main, 0.95);
+$height-word-item: 28px;
+
+.virtual-list{
+  height: 100%;
+}
+
+.list-container{
+  width: 100%;
+  margin-bottom: 20px;
+  @include border-radius(5px);
+  border-collapse: collapse;
+}
+
+.group{
+  font-size: $fz-table;
+  color: $text-main;
+  .group-header{
+    cursor: pointer;
+    padding-left: 35px;
+    margin-bottom: 10px;
+    &.active{
+      background-color: transparentize($color-main, 0.9);
+      h3{
+        color: $color-main;
+      }
+    }
+    &:hover{
+      background-color: transparentize($color-main, 0.95);
+    }
+    h3{
+      font-size: $fz-table;
+      line-height: $height-input + 2;
+    }
+    input{
+
+    }
+  }
+}
+.word-item{
+  height: $height-word-item;
+  align-items: center;
+  display: flex;
+  justify-content: flex-start;
+  position: relative;
+  &:after{
+    content: '';
+    height: 1px;
+    width: 100%;
+    position: absolute;
+    bottom: -1px;
+    left: 50px;
+    background-color: $border-color;
+  }
+  .checkbox-cell{
+    flex-grow: 0;
+    flex-shrink: 0;
+    padding: 0 20px;
+  }
+  .code{
+    width: 10%;
+    color: $text-title;
+    //font-family: monospace;
+  }
+  .word{
+    width: 60%;
+  }
+  .id{
+    flex-grow: 1;
+    margin-right: 10px;
+    color: $text-subtitle;
+  }
+  .operation{
+    flex-grow: 0;
+    flex-shrink: 0;
+    opacity: 0.3;
+    @extend .unselectable;
+    display: flex;
+    justify-content: flex-start;
+    .up, .down{
+      cursor: pointer;
+      padding: 5px 6px;
+      @include border-radius(2px);
+      &:hover{
+        background-color: white;
+      }
+      &:active{
+        transform: translateY(1px);
+      }
+      img{
+        display: block;
+        width: 8px;
+      }
+    }
+  }
+  &:first-child{
+    div{
+      //border-top: 1px solid $border-color;
+    }
+    .operation{
+      .down{
+        margin-left: 19px;
+      }
+    }
+  }
+  &:hover{
+    background-color: $bg-td-highlighted;
+    .operation{
+      opacity: 1;
+    }
+  }
+}
+
+.list-group{
+
+}
+
+.list-word{
+
+}
+
