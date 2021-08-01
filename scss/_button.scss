@@ -6,6 +6,7 @@ $radius-btn: $radius;
 $radius-switch: 15px;
 $btn-padding-tb: 2px;
 $btn-padding-lr: 8px;
+$fz-button: 12px;
 
 $height-btn-sm: $height-input - 4;
 $btn-sm-padding-tb: 1px;
@@ -20,19 +21,20 @@ $btn-sm-padding-lr: 3px;
 
 
 $btns: (
-    'primary' : white,
-    'green'   : $green,
-    'cyan'    : $cyan,
-    'blue'    : $blue,
-    'purple'  : $purple,
-    'yellow'  : $yellow,
-    'orange'  : $orange,
-    'roseo'   : $roseo,
-    'red'     : $red,
-    'gray'    : $gray,
+        'primary' : white,
+        'green'   : $green,
+        'cyan'    : $cyan,
+        'blue'    : $blue,
+        'purple'  : $purple,
+        'yellow'  : $yellow,
+        'orange'  : $orange,
+        'roseo'   : $roseo,
+        'red'     : $red,
+        'gray'    : $gray,
 );
 
 .btn{
+  font-size: $fz-button;
   color: inherit;
   line-height: $height-btn - $btn-padding-tb * 2;
   cursor: pointer;
@@ -96,7 +98,7 @@ $border-color-checkbox: #d6d6d6;
 input[type=checkbox] + label.checkbox{
   cursor: pointer;
   display: block;
-  width: $height-checkbox * 2;
+  width: $height-checkbox;
   background-color: white;
   height: $height-checkbox;
   @include border-radius(3px);
@@ -114,10 +116,10 @@ input[type=checkbox]:checked + label.checkbox{
     display: block;
     position: absolute;
     height: $height-checkbox - 6;
-    width: $height-checkbox * 2 - 6;
+    width: $height-checkbox - 6;
     top: 2px;
     left: 2px;
-    @include border-radius(2px);
+    @include border-radius(3px);
     background-color: $roseo;
   }
   border-color: $roseo;

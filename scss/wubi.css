@@ -429,11 +429,11 @@
 
 .virtual-list {
   height: 100%;
+  padding-bottom: 10px;
 }
 
 .list-container {
   width: 100%;
-  margin-bottom: 20px;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   border-radius: 5px;
@@ -441,13 +441,12 @@
 }
 
 .group {
-  font-size: 13px;
+  font-size: 12px;
   color: #000;
 }
 .group .group-header {
   cursor: pointer;
   padding-left: 35px;
-  margin-bottom: 10px;
 }
 .group .group-header.active {
   background-color: rgba(255, 45, 112, 0.1);
@@ -459,23 +458,30 @@
   background-color: rgba(255, 45, 112, 0.05);
 }
 .group .group-header h3 {
-  font-size: 13px;
+  font-size: 12px;
   line-height: 26px;
 }
+.word-list {
+  padding-bottom: 10px;
+}
+
 .word-item {
-  height: 28px;
+  height: 26px;
   align-items: center;
   display: flex;
   justify-content: flex-start;
   position: relative;
 }
+.word-item:first-child .operation {
+  justify-content: flex-end;
+}
 .word-item:after {
   content: "";
   height: 1px;
-  width: 100%;
   position: absolute;
   bottom: -1px;
-  left: 50px;
+  width: calc(100% - 45px);
+  right: 0;
   background-color: #eee;
 }
 .word-item .checkbox-cell {
@@ -496,6 +502,8 @@
   color: #848484;
 }
 .word-item .operation {
+  width: 60px;
+  padding-right: 10px;
   flex-grow: 0;
   flex-shrink: 0;
   opacity: 0.3;
@@ -509,18 +517,15 @@
   -moz-border-radius: 2px;
   border-radius: 2px;
 }
+.word-item .operation .up img, .word-item .operation .down img {
+  display: block;
+  width: 8px;
+}
 .word-item .operation .up:hover, .word-item .operation .down:hover {
   background-color: white;
 }
 .word-item .operation .up:active, .word-item .operation .down:active {
   transform: translateY(1px);
-}
-.word-item .operation .up img, .word-item .operation .down img {
-  display: block;
-  width: 8px;
-}
-.word-item:first-child .operation .down {
-  margin-left: 19px;
 }
 .word-item:hover {
   background-color: rgba(255, 45, 112, 0.05);
@@ -537,6 +542,7 @@
 }
 
 .btn, .btn-group .btn-vertical > * {
+  font-size: 12px;
   color: inherit;
   line-height: 20px;
   cursor: pointer;
@@ -706,7 +712,7 @@ input[type=radio] {
 input[type=checkbox] + label.checkbox {
   cursor: pointer;
   display: block;
-  width: 28px;
+  width: 14px;
   background-color: white;
   height: 14px;
   -webkit-border-radius: 3px;
@@ -728,12 +734,12 @@ input[type=checkbox]:checked + label.checkbox:after {
   display: block;
   position: absolute;
   height: 8px;
-  width: 22px;
+  width: 8px;
   top: 2px;
   left: 2px;
-  -webkit-border-radius: 2px;
-  -moz-border-radius: 2px;
-  border-radius: 2px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
   background-color: #FF2D70;
 }
 
@@ -929,8 +935,10 @@ input, select {
 }
 input.code, select.code {
   width: 5rem;
+  flex-shrink: 0;
 }
 input.word, select.word {
+  flex-shrink: 0;
   width: 12rem;
 }
 input:focus, select:focus {
@@ -953,8 +961,6 @@ body {
 
 .container {
   position: relative;
-  padding: 10px 0;
-  min-width: 500px;
 }
 
 .shadow {

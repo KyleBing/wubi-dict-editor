@@ -12,7 +12,6 @@ const app = {
     components: {RecycleScroller: VirtualScroller.RecycleScroller},
     data() {
         return {
-            arr: [],
             dict: {}, // 当前词库对象 Dict
             keyword: '', // 搜索关键字
             code: '',
@@ -25,10 +24,7 @@ const app = {
         }
     },
     mounted() {
-        for (let i = 0; i < 100000; i++) {
-            this.arr.push({id: i, name: Math.random()})
-        }
-        this.heightContent = innerHeight - 47 - 40
+        this.heightContent = innerHeight - 47
         ipcRenderer.on('showFileContent', (event, filePath, res) => {
             this.dict = new Dict(res, filePath)
             // document.title = filePath // 窗口 title

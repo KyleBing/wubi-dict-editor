@@ -1,16 +1,16 @@
-$fz-table: 13px;
+$fz-table: 12px;
 $table-padding-tb: 2px;
 $table-padding-lr: 5px;
 $bg-td-highlighted: transparentize($color-main, 0.95);
-$height-word-item: 28px;
+$height-word-item: 26px;
 
 .virtual-list{
   height: 100%;
+  padding-bottom: 10px; // virtual-scroller 时的末尾 padding
 }
 
 .list-container{
   width: 100%;
-  margin-bottom: 20px;
   @include border-radius(5px);
   border-collapse: collapse;
 }
@@ -21,7 +21,6 @@ $height-word-item: 28px;
   .group-header{
     cursor: pointer;
     padding-left: 35px;
-    margin-bottom: 10px;
     &.active{
       background-color: transparentize($color-main, 0.9);
       h3{
@@ -40,19 +39,27 @@ $height-word-item: 28px;
     }
   }
 }
+.word-list{
+  padding-bottom: 10px; // dict_grouped 时 末尾 padding
+}
 .word-item{
   height: $height-word-item;
   align-items: center;
   display: flex;
   justify-content: flex-start;
   position: relative;
+  &:first-child{
+    .operation{
+      justify-content: flex-end;
+    }
+  }
   &:after{
     content: '';
     height: 1px;
-    width: 100%;
     position: absolute;
     bottom: -1px;
-    left: 50px;
+    width: calc(100% - 45px);
+    right: 0;
     background-color: $border-color;
   }
   .checkbox-cell{
@@ -74,6 +81,8 @@ $height-word-item: 28px;
     color: $text-subtitle;
   }
   .operation{
+    width: 60px;
+    padding-right: 10px;
     flex-grow: 0;
     flex-shrink: 0;
     opacity: 0.3;
@@ -84,28 +93,19 @@ $height-word-item: 28px;
       cursor: pointer;
       padding: 5px 6px;
       @include border-radius(2px);
+      img{
+        display: block;
+        width: 8px;
+      }
       &:hover{
         background-color: white;
       }
       &:active{
         transform: translateY(1px);
       }
-      img{
-        display: block;
-        width: 8px;
-      }
     }
   }
-  &:first-child{
-    div{
-      //border-top: 1px solid $border-color;
-    }
-    .operation{
-      .down{
-        margin-left: 19px;
-      }
-    }
-  }
+
   &:hover{
     background-color: $bg-td-highlighted;
     .operation{
@@ -113,12 +113,3 @@ $height-word-item: 28px;
     }
   }
 }
-
-.list-group{
-
-}
-
-.list-word{
-
-}
-

@@ -22,8 +22,10 @@ input, select{
   &.code{
     //font-family: monospace;
     width: 5rem;
+    flex-shrink: 0;
   }
   &.word{
+    flex-shrink: 0;
     width: 12rem;
   }
   &:focus{
