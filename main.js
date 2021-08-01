@@ -18,6 +18,9 @@ function createWindow() {
         }
     })
 
+    mainWindow.webContents.openDevTools() // 打开调试窗口
+
+
     mainWindow.loadURL(
         url.format({
             pathname: path.join(__dirname, 'index.html'),
@@ -29,7 +32,6 @@ function createWindow() {
         mainWindow = null
     })
 
-    mainWindow.webContents.openDevTools() // 打开调试窗口
 
     // 保存词库到文件
     ipcMain.on('saveFile', (event, filePath, yamlString) => {
