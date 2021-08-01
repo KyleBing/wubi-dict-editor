@@ -11,7 +11,7 @@
 <div v-cloak id="app">
     <div class="search-bar" v-if="dict">
         <div class="btn btn-primary" @click="clearInputs">清空已选</div>
-        <div class="btn btn-primary" @click="selectAll">全选</div>
+        <div class="btn btn-primary" ref="domBtnSelectAll" @click="selectAll">全选</div>
         <input class="word" ref="domInputWord" v-model="word" type="text" placeholder="词条">
         <input class="code" ref="domInputCode" v-model="code" type="text" placeholder="编码">
         <div class="btn btn-primary" @click="addNewPhrase">添加</div>
@@ -31,10 +31,10 @@
                     :buffer="1000"
                     :prerender="200"
                     :style="`height: ${heightContent}px`"
-                    v-if="dict.dict"
+                    v-if="dict.words"
                     :min-item-size="26"
                     class="virtual-list"
-                    :items="dict.dict">
+                    :items="dict.words">
                     <template v-slot="{ item, index }">
                         <div class="word-item">
                             <div class="checkbox-cell">
@@ -53,7 +53,7 @@
                                 <div v-if="index !== 0" class="up" @click="moveUp(item.id)">
                                     <img src="./assets/up.svg" alt="move up">
                                 </div>
-                                <div v-if="index+1 < dict.dict.length" class="down" @click="moveDown(item.id)">
+                                <div v-if="index+1 < dict.words.length" class="down" @click="moveDown(item.id)">
                                     <img src="./assets/down.svg" alt="move down">
                                 </div>
                             </div>
@@ -64,8 +64,10 @@
         </div>
 
         <!-- group-mode-->
-        <div class="list-container" v-else>
-            <div class="group" v-for="(group, groupIndex) in dict.dict" :key="groupIndex">
+        <div class="list-container"
+             :style="`height: ${heightContent}px`"
+             v-else>
+            <div class="group" v-for="(group, groupIndex) in dict.words" :key="groupIndex">
                 <div :class="['group-header', {active: activeGroupId === groupIndex}]"
                      @click.right="group.isEditingTitle = !group.isEditingTitle">
                     <input v-model="group.groupName"
@@ -105,8 +107,9 @@
 
     </div>
     <div class="footer">
-<!--        <div class="count">{{dict.getCount().origin}}|{{dict.getCount().current}}</div>-->
-        <div class="display">{{display}}</div>
+        <div class="count">总数：<span class="number">{{dict.countDictOrigin}}</span> 条</div>
+        <div class="count">当前：<span class="number">{{dict.countDict}}</span> 条</div>
+        <div class="display">提示： {{display}}</div>
     </div>
 </div>
 

@@ -1,5 +1,5 @@
 import Dict from "./Dict.js"
-import {shakeDomFocus} from "./Utility.js"
+import {shakeDom, shakeDomFocus} from "./Utility.js"
 import Word from "./Word.js";
 
 const Vue = require('vue')
@@ -12,6 +12,7 @@ const app = {
     components: {RecycleScroller: VirtualScroller.RecycleScroller},
     data() {
         return {
+            display: '', // 提示信息
             dict: {}, // 当前词库对象 Dict
             keyword: '', // 搜索关键字
             code: '',
@@ -24,7 +25,7 @@ const app = {
         }
     },
     mounted() {
-        this.heightContent = innerHeight - 47 - 30
+        this.heightContent = innerHeight - 47 - 20 - 20
         ipcRenderer.on('showFileContent', (event, filePath, res) => {
             this.dict = new Dict(res, filePath)
             // document.title = filePath // 窗口 title
@@ -64,17 +65,20 @@ const app = {
         },
         // 选中全部展示的词条
         selectAll(){
+            console.log(this.dict.getCount())
             if(this.dict.getCount().current < 1000){
                 if (this.isGroupMode){
                     this.selectedWordIds = []
-                    this.dict.dict.forEach(group => {
+                    this.dict.words.forEach(group => {
                         this.selectedWordIds = this.selectedWordIds.concat(group.dict.map(item => item.id))
                     })
                 } else {
-                    this.selectedWordIds = this.dict.dict.map(item => item.id)
+                    this.selectedWordIds = this.dict.words.map(item => item.id)
                 }
             } else {
                 // 提示不能同时选择太多内容
+                this.display = '不能同时选择大于 1000条 的词条内容'
+                shakeDom(this.$refs.domBtnSelectAll)
             }
         },
         // 清除内容

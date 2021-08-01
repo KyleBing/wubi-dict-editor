@@ -45,7 +45,7 @@ function createWindow() {
 
     // 监听 window 的文件载入请求
     ipcMain.on('loadTestFile', event => {
-        readFile(path.join(getRimeConfigDir(), 'test.dict.yaml'))
+        readFile(path.join(getRimeConfigDir(), 'test.words.yaml'))
     })
 
     // 外部打开当前码表文件
@@ -86,13 +86,13 @@ function readFile(filePath){
 // 匹配文件名，返回对应文件的名字
 function getLabelNameFromFileName(fileName){
     const map = [
-        {name: '拼音词库', path: 'pinyin_simp.dict.yaml'},
-        {name: '测试词库 ⛳', path: 'test.dict.yaml'},
-        {name: '测试词库 - 分组️ ⛳️', path: 'test_group.dict.yaml'},
-        {name: '五笔极点 - 主词库', path: 'wubi86_jidian.dict.yaml'},
-        {name: '五笔极点 - 分词库', path: 'wubi86_jidian_addition.dict.yaml'},
-        {name: '五笔极点 - 附加词库', path: 'wubi86_jidian_extra.dict.yaml'},
-        {name: '五笔极点 - 用户词库', path: 'wubi86_jidian_user.dict.yaml'},
+        {name: '拼音词库', path: 'pinyin_simp.words.yaml'},
+        {name: '测试词库 ⛳', path: 'test.words.yaml'},
+        {name: '测试词库 - 分组️ ⛳️', path: 'test_group.words.yaml'},
+        {name: '五笔极点 - 主词库', path: 'wubi86_jidian.words.yaml'},
+        {name: '五笔极点 - 分词库', path: 'wubi86_jidian_addition.words.yaml'},
+        {name: '五笔极点 - 附加词库', path: 'wubi86_jidian_extra.words.yaml'},
+        {name: '五笔极点 - 用户词库', path: 'wubi86_jidian_user.words.yaml'},
     ]
     let matchedPath = map.filter(item => item.path === fileName)
     // 返回匹配的名字，或者返回原文件名
@@ -161,7 +161,7 @@ function setRimeFolderMenu(){
         } else {
             let filesMenu = []
             filePaths.forEach(item => {
-                if (item.indexOf('.dict.yaml') > 0){
+                if (item.indexOf('.words.yaml') > 0){
                     filesMenu.push({
                         label: getLabelNameFromFileName(item),
                         click(sender, window, content) {

@@ -17,7 +17,7 @@ Windows, macOS, (Linux 未测试)
 
 #### 进程截图记录：
 
-[https://github.com/KyleBing/wubi-dict-editor/discussions/2](https://github.com/KyleBing/wubi-dict-editor/discussions/2)
+[https://github.com/KyleBing/wubi-words-editor/discussions/2](https://github.com/KyleBing/wubi-dict-editor/discussions/2)
 
 #### 词条
 - [x] 展示词库内容 `2021-07-25`

@@ -8,10 +8,11 @@ class Dict {
     constructor(yaml, filePath) {
         this.filePath = filePath // 文件路径
         this.header = null // 文件头部内容
-        this.dict = [] // 文件词条数组
-        this.dictOrigin = [] // 文件词条数组
+        this.words = [] // 文件词条数组
+        this.wordsOrigin = [] // 文件词条数组
         this.lastIndex = '' // 最后一个 Index 的值，用于新添加词时，作为唯一的 id 传入
         this.isGroupMode = false // 识别码表是否为分组形式的
+
         let indexEndOfHeader = yaml.indexOf('...') + 3
         if (indexEndOfHeader < 0){
             console.log('文件格式错误，没有 ... 这一行')
@@ -20,15 +21,40 @@ class Dict {
             this.header = yaml.substring(0, this.indexEndOfHeader)
             this.isGroupMode = this.header.includes('dict_grouped: true') // 根据有没有这一段文字进行判断，是否为分组形式的码表
             let body = yaml.substring(this.indexEndOfHeader)
-            this.dictOrigin = this.isGroupMode? this.getDictWordsInGroupMode(body): this.getDictWordsInNormalMode(body)
+            this.wordsOrigin = this.isGroupMode? this.getDictWordsInGroupMode(body): this.getDictWordsInNormalMode(body)
 
-            this.dict = [...this.dictOrigin] // dict 中的数据元素指向跟 Origin 里的是一样的，所以编辑 dict 也会改变 origin 数据
-            if(this.dict.length < 1000){
-                console.log(this.dictOrigin)
+            this.words = [...this.wordsOrigin] // words 中的数据元素指向跟 Origin 里的是一样的，所以编辑 words 也会改变 origin 数据
+            if(this.words.length < 1000){
+                console.log(this.wordsOrigin)
             }
             // console.log(this.dictWithGroup)
         }
     }
+    // 展示的词条数量
+    get countDict(){
+        if (this.isGroupMode){
+            let countCurrent = 0
+            this.words.forEach(group => {
+                countCurrent = countCurrent + group.dict.length
+            })
+            return countCurrent
+        } else {
+            return this.words.length
+        }
+    }
+    // 总的词条数量
+    get countDictOrigin(){
+        if (this.isGroupMode){
+            let countOrigin = 0
+            this.wordsOrigin.forEach(group => {
+                countOrigin = countOrigin + group.dict.length
+            })
+            return countOrigin
+        } else {
+            return this.wordsOrigin.length
+        }
+    }
+
 
     // 返回所有 word
     getDictWordsInNormalMode(body){
@@ -94,26 +120,26 @@ class Dict {
         let startPoint = new Date().getTime()
         if (code || word){
             if (this.isGroupMode){
-                this.dict =[]
-                this.dictOrigin.forEach(groupItem => {
-                    let tempGroupItem = groupItem.clone() // 不能直接使用原 groupItem，不然会改变 dictOrigin 的数据
+                this.words =[]
+                this.wordsOrigin.forEach(groupItem => {
+                    let tempGroupItem = groupItem.clone() // 不能直接使用原 groupItem，不然会改变 wordsOrigin 的数据
                     tempGroupItem.dict = tempGroupItem.dict.filter(item => {
                         return item.code.includes(code) && item.word.includes(word)
                     })
                     if (tempGroupItem.dict.length > 0){ // 当前分组中有元素，添加到结果中
-                        this.dict.push(tempGroupItem)
+                        this.words.push(tempGroupItem)
                     }
                 })
                 console.log('用时: ', new Date().getTime() - startPoint, 'ms')
             } else {
-                this.dict = this.dictOrigin.filter(item => { // 获取包含 code 的记录
+                this.words = this.wordsOrigin.filter(item => { // 获取包含 code 的记录
                     return item.code.includes(code) && item.word.includes(word)
                 })
-                console.log(`${code} ${word}: ` ,'搜索出', this.dict.length, '条，', '用时: ', new Date().getTime() - startPoint, 'ms')
+                console.log(`${code} ${word}: ` ,'搜索出', this.words.length, '条，', '用时: ', new Date().getTime() - startPoint, 'ms')
             }
 
         } else { // 如果 code, word 为空，恢复原有数据
-            this.dict = [...this.dictOrigin]
+            this.words = [...this.wordsOrigin]
         }
     }
 
@@ -125,16 +151,16 @@ class Dict {
     addNewWord(word, groupIndex){
         if(this.isGroupMode){
             if (groupIndex !== ''){
-                this.dictOrigin[groupIndex].dict.push(word)
+                this.wordsOrigin[groupIndex].dict.push(word)
             } else {
                 let newWordGroup = new WordGroup('未命名',[word])
-                this.dictOrigin.unshift(newWordGroup) // 添加到第一组
+                this.wordsOrigin.unshift(newWordGroup) // 添加到第一组
             }
         } else {
             console.log('TODO: 确定插入的位置')
-            this.dictOrigin.push(word)
+            this.wordsOrigin.push(word)
         }
-        this.dict = [...this.dictOrigin]
+        this.words = [...this.wordsOrigin]
         this.lastIndex = this.lastIndex + 1 // 新加的词添加后， lastIndex + 1
     }
 
@@ -142,20 +168,20 @@ class Dict {
     // 删除词条
     deleteWords(wordIds){
         if (this.isGroupMode){
-            this.dictOrigin.forEach(group => {
+            this.wordsOrigin.forEach(group => {
                 group.dict = group.dict.filter(item => !wordIds.includes(item.id))
             })
         } else {
-            this.dictOrigin = this.dictOrigin.filter(item => !wordIds.includes(item.id))
+            this.wordsOrigin = this.wordsOrigin.filter(item => !wordIds.includes(item.id))
         }
-        this.dict = [...this.dictOrigin]
+        this.words = [...this.wordsOrigin]
     }
 
     // 转为 yaml String
     toYamlString(){
         let yamlBody = ''
         if (this.isGroupMode){
-            this.dictOrigin.forEach(group => {
+            this.wordsOrigin.forEach(group => {
                 let tempGroupString = ''
                 tempGroupString = tempGroupString + `## ${group.groupName}${os.EOL}` // + groupName
                 group.dict.forEach(item =>{
@@ -166,7 +192,7 @@ class Dict {
             return this.header + os.EOL + yamlBody
         } else {
             let yamlBody = ''
-            this.dict.forEach(item =>{
+            this.words.forEach(item =>{
                 yamlBody = yamlBody + item.toString() + os.EOL
             })
             return this.header + os.EOL + yamlBody
@@ -176,7 +202,7 @@ class Dict {
     // 词条位置移动
     move(wordId, direction){
         if (this.isGroupMode){
-            this.dict.forEach(group => {
+            this.words.forEach(group => {
                 for(let i=0; i<group.dict.length; i++){
                     if (wordId === group.dict[i].id){
                         let tempItem = group.dict[i]
@@ -193,16 +219,16 @@ class Dict {
                 }
             })
         } else {
-            for(let i=0; i<this.dict.length; i++){
-                if (wordId === this.dict[i].id){
-                    let tempItem = this.dict[i]
+            for(let i=0; i<this.words.length; i++){
+                if (wordId === this.words[i].id){
+                    let tempItem = this.words[i]
                     if (direction === 'up'){
-                        this.dict[i] = this.dict[i - 1]
-                        this.dict[i - 1] = tempItem
+                        this.words[i] = this.words[i - 1]
+                        this.words[i - 1] = tempItem
                         break
                     } else if (direction === 'down'){
-                        this.dict[i] = this.dict[i + 1]
-                        this.dict[i + 1] = tempItem
+                        this.words[i] = this.words[i + 1]
+                        this.words[i + 1] = tempItem
                         break
                     }
                 }
@@ -213,17 +239,17 @@ class Dict {
     // 判断是否为第一个元素
     isFirstItem(id){
         if (this.isGroupMode){ // 分组时的第一个元素
-            for (let i=0; i<this.dict.length; i++) {
-                for (let j = 0; j < this.dict[i].dict.length; j++) {
-                    if (this.dict[i].dict[j].id === id){
+            for (let i=0; i<this.words.length; i++) {
+                for (let j = 0; j < this.words[i].dict.length; j++) {
+                    if (this.words[i].dict[j].id === id){
                         return j === 0 // 使用 array.forEach() 无法跳出循环
                     }
                 }
             }
             return false
         } else {
-            for (let i = 0; i < this.dict.length; i++) {
-                if (this.dict[i].id === id){
+            for (let i = 0; i < this.words.length; i++) {
+                if (this.words[i].id === id){
                     return i === 0 // 使用 array.forEach() 无法跳出循环
                 }
             }
@@ -234,44 +260,21 @@ class Dict {
     // 判断是否为最后一个元素
     isLastItem(id){
         if (this.isGroupMode){ // 分组时的最后一个元素
-            for (let i=0; i<this.dict.length; i++) {
-                for (let j = 0; j < this.dict[i].dict.length; j++) {
-                    if (this.dict[i].id === id){
-                        return j + 1 === this.dict.length
+            for (let i=0; i<this.words.length; i++) {
+                for (let j = 0; j < this.words[i].dict.length; j++) {
+                    if (this.words[i].id === id){
+                        return j + 1 === this.words.length
                     }
                 }
             }
             return false
         } else {
-            for (let i = 0; i < this.dict.length; i++) {
-                if (this.dict[i].id === id){
-                    return i + 1 === this.dict.length
+            for (let i = 0; i < this.words.length; i++) {
+                if (this.words[i].id === id){
+                    return i + 1 === this.words.length
                 }
             }
             return false
-        }
-    }
-    // 获取词条总数
-    // origin: dictOrigin count
-    // current: dict count
-    getCount(){
-        if (this.isGroupMode){
-            let countCurrent, countOrigin = 0
-            this.dict.forEach(group => {
-                countCurrent = countCurrent + group.dict.length
-            })
-            this.dictOrigin.forEach(group => {
-                countOrigin = countOrigin + group.dict.length
-            })
-            return {
-                origin: countOrigin,
-                current: countCurrent
-            }
-        } else {
-            return {
-                origin: this.dictOrigin.length,
-                current: this.dict.length
-            }
         }
     }
 }

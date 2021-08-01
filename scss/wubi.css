@@ -433,10 +433,8 @@
 }
 
 .list-container {
+  overflow-y: auto;
   width: 100%;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  border-radius: 5px;
   border-collapse: collapse;
 }
 
@@ -967,14 +965,21 @@ body {
 }
 
 .footer {
-  position: sticky;
   background-color: #fff;
+  width: 100%;
+  position: absolute;
   bottom: 0;
   border-top: 1px solid #eee;
-  padding: 10px;
+  padding: 5px 15px;
   font-size: 12px;
   display: flex;
   justify-content: flex-start;
+}
+.footer > * {
+  margin-right: 20px;
+}
+.footer .number {
+  color: #FF2D70;
 }
 
 .shadow {

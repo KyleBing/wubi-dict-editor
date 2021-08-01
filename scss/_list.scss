@@ -10,8 +10,8 @@ $height-word-item: 26px;
 }
 
 .list-container{
+  overflow-y: auto;
   width: 100%;
-  @include border-radius(5px);
   border-collapse: collapse;
 }
 
