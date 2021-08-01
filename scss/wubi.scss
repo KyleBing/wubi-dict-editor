@@ -26,12 +26,17 @@ body{
   padding: 5px 15px;
   font-size: $fz-button;
   display: flex;
-  justify-content: flex-start;
-  > *{
-    margin-right: 20px;
-  }
+  justify-content: space-between;
+
   .number{
     color: $roseo;
+  }
+  .footer-toolbar{
+    > *{
+      margin-right: 10px;
+    }
+    display: flex;
+    justify-content: flex-start;
   }
 }
 
@@ -40,6 +45,10 @@ body{
   @include box-shadow(1px 2px 3px rgba(0,0,0,0.08))
 }
 
+.link{
+  cursor: pointer;
+  color: $roseo;
+}
 
 .hidden{
   display: none;

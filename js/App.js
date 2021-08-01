@@ -65,8 +65,7 @@ const app = {
         },
         // 选中全部展示的词条
         selectAll(){
-            console.log(this.dict.getCount())
-            if(this.dict.getCount().current < 1000){
+            if(this.dict.countDict < 1000){
                 if (this.isGroupMode){
                     this.selectedWordIds = []
                     this.dict.words.forEach(group => {

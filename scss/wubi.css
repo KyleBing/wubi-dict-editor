@@ -973,19 +973,28 @@ body {
   padding: 5px 15px;
   font-size: 12px;
   display: flex;
-  justify-content: flex-start;
-}
-.footer > * {
-  margin-right: 20px;
+  justify-content: space-between;
 }
 .footer .number {
   color: #FF2D70;
+}
+.footer .footer-toolbar {
+  display: flex;
+  justify-content: flex-start;
+}
+.footer .footer-toolbar > * {
+  margin-right: 10px;
 }
 
 .shadow {
   -webkit-box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.08);
   -moz-box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.08);
   box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.08);
+}
+
+.link {
+  cursor: pointer;
+  color: #FF2D70;
 }
 
 .hidden, .prototype {
