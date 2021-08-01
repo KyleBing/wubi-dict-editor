@@ -11,6 +11,7 @@ function createWindow() {
     mainWindow = new BrowserWindow({
         width: 1400, height: 600,
         // width: 600, height: 600,
+        icon: __dirname + '/assets/appIcon/appicon.ico',
         webPreferences: {
             nodeIntegration: true,
             contextIsolation: false
