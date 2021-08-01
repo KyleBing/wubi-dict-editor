@@ -168,9 +168,14 @@ class Dict {
     // 删除词条
     deleteWords(wordIds){
         if (this.isGroupMode){
-            this.wordsOrigin.forEach(group => {
+            let deleteGroupIds = [] // 记录 words 为 0 的 group，最后删除分组
+            this.wordsOrigin.forEach((group, index) => {
                 group.dict = group.dict.filter(item => !wordIds.includes(item.id))
+                if (group.dict.length === 0){
+                    deleteGroupIds.push(index)
+                }
             })
+            this.wordsOrigin = this.wordsOrigin.filter((group, index) => !deleteGroupIds.includes(index))
         } else {
             this.wordsOrigin = this.wordsOrigin.filter(item => !wordIds.includes(item.id))
         }
