@@ -1,0 +1,45 @@
+.footer{
+  background-color: $bg-panel;
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  border-top: 1px solid $color-border;
+  padding: 5px 15px;
+  font-size: $fz-button;
+  display: flex;
+  justify-content: space-between;
+
+  .footer-toolbar{
+    > *{
+      margin-right: 30px;
+    }
+    display: flex;
+    justify-content: flex-start;
+    .link-list{
+      .link{
+        margin-right: 10px;
+        cursor: pointer;
+        color: $text-main;
+        transition: all 0.3s;
+        &:hover{
+          transition: all 0.1s;
+          color: $color-main;
+        }
+      }
+      display: flex;
+      justify-content: flex-start;
+    }
+    .info-list{
+      color: $text-main;
+      .number{
+        color: $text-main;
+        font-weight: bold;
+      }
+      > *{
+        margin-right: 15px;
+      }
+      display: flex;
+      justify-content: flex-start;
+    }
+  }
+}

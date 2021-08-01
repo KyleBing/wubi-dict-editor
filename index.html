@@ -108,14 +108,17 @@
     <!--FOOTER-->
     <div class="footer">
         <div class="footer-toolbar">
-            <div class="link" @click="openCurrentYaml">打开源文件</div>
-            <div class="link" ref="domBtnSelectAll" @click="selectAll">全选</div>
-
-            <div class="count">总数：<span class="number">{{dict.countDictOrigin}}</span> 条</div>
-            <div class="count">当前：<span class="number">{{dict.countDict}}</span> 条</div>
-            <div class="count">已选：<span class="number">{{selectedWordIds.length}}</span> 条</div>
-
+            <div class="link-list">
+                <div class="link" @click="openCurrentYaml">打开源文件</div>
+                <div class="link" ref="domBtnSelectAll" @click="selectAll">全选</div>
+            </div>
+            <div class="info-list">
+                <div class="count">总 <span class="number">{{dict.countDictOrigin}}</span></div>
+                <div class="count">显 <span class="number">{{dict.countDict}}</span></div>
+                <div class="count">选 <span class="number">{{selectedWordIds.length}}</span></div>
+            </div>
         </div>
+
         <div class="display">{{display}}</div>
     </div>
 </div>
