@@ -61,9 +61,9 @@ class Dict {
         let startPoint = new Date().getTime()
         let lines = body.split(os.EOL) // 拆分词条与编码成单行
         let linesValid = lines.filter(item => item.indexOf('\t') > -1) // 选取包含 \t 的行
-        let dicts = linesValid.map((item, index) => getWordFromLine(index,item))
-        console.log(`处理yaml码表文件：完成，共：${dicts.length }`, this.isGroupMode? '组': '条', '用时: ', new Date().getTime() - startPoint, 'ms')
-        return dicts
+        let words = linesValid.map((item, index) => getWordFromLine(index,item))
+        console.log(`处理yaml码表文件：完成，共：${words.length }`, this.isGroupMode? '组': '条', '用时: ', new Date().getTime() - startPoint, 'ms')
+        return words
     }
 
     // 返回 word 分组
