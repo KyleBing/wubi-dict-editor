@@ -439,7 +439,7 @@
 }
 
 .group {
-  font-size: 12px;
+  font-size: 13px;
   color: #000;
 }
 .group .group-header {
@@ -457,7 +457,7 @@
   background-color: rgba(255, 45, 112, 0.05);
 }
 .group .group-header h3 {
-  font-size: 12px;
+  font-size: 13px;
   line-height: 26px;
 }
 .word-item {
@@ -466,6 +466,7 @@
   display: flex;
   justify-content: flex-start;
   position: relative;
+  padding: 0 20px;
 }
 .word-item:first-child .operation {
   justify-content: flex-end;
@@ -480,12 +481,12 @@
   background-color: #eee;
 }
 .word-item .checkbox-cell {
+  padding-right: 20px;
   flex-grow: 0;
   flex-shrink: 0;
-  padding: 0 20px;
 }
 .word-item .code {
-  min-width: 48px;
+  min-width: 52px;
   width: 10%;
   color: #333;
 }
@@ -495,7 +496,7 @@
   flex-grow: 1;
 }
 .word-item .id {
-  width: 36px;
+  width: 39px;
   margin-right: 10px;
   color: #848484;
 }
@@ -723,10 +724,16 @@ input[type=checkbox] + label.checkbox {
   border-radius: 3px;
   border: 1px solid #d6d6d6;
   position: relative;
+  -webkit-box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.12);
+  -moz-box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.12);
+  box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.12);
 }
 
 label.checkbox:hover {
   border-color: #FF2D70 !important;
+  -webkit-box-shadow: inset 1px 1px 2px rgba(255, 45, 112, 0.2) !important;
+  -moz-box-shadow: inset 1px 1px 2px rgba(255, 45, 112, 0.2) !important;
+  box-shadow: inset 1px 1px 2px rgba(255, 45, 112, 0.2) !important;
 }
 
 input[type=checkbox]:checked + label.checkbox {

@@ -1,4 +1,4 @@
-$fz-list: 12px;
+$fz-list: 13px;
 $table-padding-tb: 2px;
 $table-padding-lr: 5px;
 $bg-td-highlighted: transparentize($color-main, 0.95);
@@ -48,6 +48,7 @@ $height-word-item: 26px;
   display: flex;
   justify-content: flex-start;
   position: relative;
+  padding: 0 20px;
   &:first-child{
     .operation{
       justify-content: flex-end;
@@ -63,9 +64,9 @@ $height-word-item: 26px;
     background-color: $color-border;
   }
   .checkbox-cell{
+    padding-right: 20px;
     flex-grow: 0;
     flex-shrink: 0;
-    padding: 0 20px;
   }
   .code{
     min-width: $fz-list * 4;
