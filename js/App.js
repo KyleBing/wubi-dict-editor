@@ -13,7 +13,9 @@ const app = {
     data() {
         return {
             display: '', // 提示信息
-            dict: {}, // 当前词库对象 Dict
+            dict: {
+                deep: true
+            }, // 当前词库对象 Dict
             keyword: '', // 搜索关键字
             code: '',
             word: '',
@@ -66,7 +68,7 @@ const app = {
         // 选中全部展示的词条
         selectAll(){
             if(this.dict.countDict < 1000){
-                if (this.isGroupMode){
+                if (this.dict.isGroupMode){
                     this.selectedWordIds = []
                     this.dict.words.forEach(group => {
                         this.selectedWordIds = this.selectedWordIds.concat(group.dict.map(item => item.id))
@@ -94,10 +96,10 @@ const app = {
             this.selectedWordIds = [] // 清空选中 wordID
         },
         moveUp(id){
-            this.dict.move(id, 'up')
+            this.display = this.dict.move(id, 'up')
         },
         moveDown(id){
-            this.dict.move(id, 'down')
+            this.display = this.dict.move(id, 'down')
         },
         // 绑定键盘事件： 键盘上下控制词条上下移动
         addKeyboardListener(){
@@ -113,18 +115,14 @@ const app = {
                     case 'ArrowDown':
                         if(this.selectedWordIds.length === 1) { // 只有一个元素时，键盘才起作用
                             let id = this.selectedWordIds[0]
-                            if (!this.dict.isLastItem(id)){
-                                this.dict.move(id, 'down')
-                            }
+                            this.display = this.dict.move(id, 'down')
                         }
                         event.preventDefault()
                         break
                     case 'ArrowUp':
                         if(this.selectedWordIds.length === 1) { // 只有一个元素时，键盘才起作用
                             let id = this.selectedWordIds[0]
-                            if (!this.dict.isFirstItem(id)) {
-                                this.dict.move(id, 'up')
-                            }
+                            this.display = this.dict.move(id, 'up')
                         }
                         event.preventDefault()
                         break

@@ -207,13 +207,21 @@ class Dict {
                     if (wordId === group.dict[i].id){
                         let tempItem = group.dict[i]
                         if (direction === 'up'){
-                            group.dict[i] = group.dict[i - 1]
-                            group.dict[i - 1] = tempItem
-                            break
+                            if (i !==0){
+                                group.dict[i] = group.dict[i - 1]
+                                group.dict[i - 1] = tempItem
+                                return ''
+                            } else {
+                                return '已到顶'
+                            }
                         } else if (direction === 'down'){
-                            group.dict[i] = group.dict[i + 1]
-                            group.dict[i + 1] = tempItem
-                            break
+                            if (i+1 !== group.dict.length){
+                                group.dict[i] = group.dict[i + 1]
+                                group.dict[i + 1] = tempItem
+                                return ''
+                            } else {
+                                return '已到底'
+                            }
                         }
                     }
                 }
@@ -223,13 +231,21 @@ class Dict {
                 if (wordId === this.words[i].id){
                     let tempItem = this.words[i]
                     if (direction === 'up'){
-                        this.words[i] = this.words[i - 1]
-                        this.words[i - 1] = tempItem
-                        break
+                        if (i !==0) {
+                            this.words[i] = this.words[i - 1]
+                            this.words[i - 1] = tempItem
+                            return ''
+                        } else {
+                            return '已到顶'
+                        }
                     } else if (direction === 'down'){
-                        this.words[i] = this.words[i + 1]
-                        this.words[i + 1] = tempItem
-                        break
+                        if (i+1 !== this.words.length) {
+                            this.words[i] = this.words[i + 1]
+                            this.words[i + 1] = tempItem
+                            return ''
+                        } else {
+                            return '已到底'
+                        }
                     }
                 }
             }

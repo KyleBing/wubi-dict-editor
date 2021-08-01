@@ -5,9 +5,7 @@ const os = require('os')
 const url = require("url")
 const path = require("path")
 
-
 let mainWindow
-
 
 function createWindow() {
     mainWindow = new BrowserWindow({
