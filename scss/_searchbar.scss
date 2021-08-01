@@ -1,7 +1,7 @@
 .search-bar{
   z-index: 10;
   border-bottom: 1px solid $color-border;
-  background-color: white;
+  background-color: $bg-panel;
   padding: 10px;
   position: sticky;
   top: 0;

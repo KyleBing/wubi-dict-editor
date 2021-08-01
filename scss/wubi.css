@@ -908,7 +908,7 @@ label.btn, .btn-group .btn-vertical > label {
 .search-bar {
   z-index: 10;
   border-bottom: 1px solid #eee;
-  background-color: white;
+  background-color: #fafafa;
   padding: 10px;
   position: sticky;
   top: 0;
@@ -965,7 +965,7 @@ body {
 }
 
 .footer {
-  background-color: #fff;
+  background-color: #fafafa;
   width: 100%;
   position: absolute;
   bottom: 0;
