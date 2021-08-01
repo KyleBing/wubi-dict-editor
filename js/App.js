@@ -109,8 +109,10 @@ const app = {
                     case 's':
                         if (event.ctrlKey || event.metaKey){ // metaKey 是 macOS 的 Ctrl
                             this.saveDictToFile()
+                            event.preventDefault()
+                        } else {
+
                         }
-                        event.preventDefault()
                         break
                     case 'ArrowDown':
                         if(this.selectedWordIds.length === 1) { // 只有一个元素时，键盘才起作用
