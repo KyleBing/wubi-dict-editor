@@ -12,6 +12,8 @@ $height-btn-sm: $height-input - 4;
 $btn-sm-padding-tb: 1px;
 $btn-sm-padding-lr: 3px;
 
+$checkbox-shadow: false;
+
 .tool-bar{
   display: flex;
   justify-content: space-between;
@@ -109,12 +111,16 @@ input[type=checkbox] + label.checkbox{
   @include border-radius(3px);
   border: 1px solid $border-color-checkbox;
   position: relative;
-  @include box-shadow(inset 1px 1px 2px rgb(0 0 0 / 12%))
+  @if $checkbox-shadow{
+    @include box-shadow(inset 1px 1px 2px rgb(0 0 0 / 12%))
+  }
 }
 
 label.checkbox:hover{
   border-color: $roseo !important;
-  @include box-shadow(inset 1px 1px 2px transparentize($color-main, 0.8) !important) ;
+  @if $checkbox-shadow {
+    @include box-shadow(inset 1px 1px 2px transparentize($color-main, 0.8) !important) ;
+  }
 }
 
 input[type=checkbox]:checked + label.checkbox{

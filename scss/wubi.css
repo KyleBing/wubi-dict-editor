@@ -724,16 +724,10 @@ input[type=checkbox] + label.checkbox {
   border-radius: 3px;
   border: 1px solid #d6d6d6;
   position: relative;
-  -webkit-box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.12);
-  -moz-box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.12);
-  box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.12);
 }
 
 label.checkbox:hover {
   border-color: #FF2D70 !important;
-  -webkit-box-shadow: inset 1px 1px 2px rgba(255, 45, 112, 0.2) !important;
-  -moz-box-shadow: inset 1px 1px 2px rgba(255, 45, 112, 0.2) !important;
-  box-shadow: inset 1px 1px 2px rgba(255, 45, 112, 0.2) !important;
 }
 
 input[type=checkbox]:checked + label.checkbox {
