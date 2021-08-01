@@ -29,7 +29,7 @@ const app = {
         ipcRenderer.on('showFileContent', (event, filePath, res) => {
             this.dict = new Dict(res, filePath)
             // document.title = filePath // 窗口 title
-            this.clearInputs()
+            this.resetInputs()
         })
         ipcRenderer.on('saveFileSuccess', () => {
             this.labelOfSaveBtn = '保存成功'
@@ -81,11 +81,12 @@ const app = {
             }
         },
         // 清除内容
-        clearInputs(){
+        resetInputs(){
             this.code = ''
             this.word = ''
             this.selectedWordIds = []
             this.search()
+            this.display = ''
         },
         // 删除词条
         deleteWords(){

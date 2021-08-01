@@ -443,6 +443,7 @@
   color: #000;
 }
 .group .group-header {
+  margin-top: 10px;
   cursor: pointer;
   padding-left: 35px;
 }
@@ -459,10 +460,6 @@
   font-size: 12px;
   line-height: 26px;
 }
-.word-list {
-  padding-bottom: 10px;
-}
-
 .word-item {
   height: 26px;
   align-items: center;
@@ -1000,7 +997,6 @@ select option {
 }
 .footer .footer-toolbar .info-list .number {
   color: #000;
-  font-weight: bold;
 }
 .footer .footer-toolbar .info-list > * {
   margin-right: 15px;

@@ -10,7 +10,7 @@
 
 <div v-cloak id="app">
     <div class="search-bar" v-if="dict">
-        <div class="btn btn-primary" @click="clearInputs">重置</div>
+        <div class="btn btn-primary" @click="resetInputs">重置</div>
         <input class="word" ref="domInputWord" v-model="word" type="text" placeholder="词条">
         <input class="code" ref="domInputCode" v-model="code" type="text" placeholder="编码">
         <div class="btn btn-primary" @click="addNewPhrase">添加</div>
