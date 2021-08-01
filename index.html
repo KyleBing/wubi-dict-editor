@@ -11,12 +11,9 @@
 <div v-cloak id="app">
     <div class="search-bar" v-if="dict">
         <div class="btn btn-primary" @click="clearInputs">清空已选</div>
+        <div class="btn btn-primary" @click="selectAll">全选</div>
         <input class="word" ref="domInputWord" v-model="word" type="text" placeholder="词条">
         <input class="code" ref="domInputCode" v-model="code" type="text" placeholder="编码">
-<!--        <select ref="domSelectGroupId" v-model="activeGroupId">
-            <option value="" disabled>选择分组</option>
-            <option :value="index" v-for="(group, index) in dict.dict" :key="index">{{ group.groupName }}</option>
-        </select>-->
         <div class="btn btn-primary" @click="addNewPhrase">添加</div>
         <div class="btn btn-cyan" ref="domBtnSave" @click="saveDictToFile">{{ labelOfSaveBtn }}</div>
         <div class="btn btn-purple" @click="openCurrentYaml">打开源文件</div>
@@ -24,70 +21,30 @@
         <div class="btn btn-roseo" v-show="selectedWordIds.length > 0" @click="deleteWords">删除</div>
     </div>
 
-    <div ref="container" class="container">
+    <div ref="container"
+         :style="`height: ${heightContent}px`"
+         class="container">
         <!--  normal-mode-->
-        <div class="display">
-            <div class="list-container" v-if="!dict.isGroupMode">
-                <div class="group">
-                    <recycle-scroller
-                        :buffer="1000"
-                        :prerender="200"
-                        :style="`height: ${heightContent}px`"
-                        v-if="dict.dict"
-                        :min-item-size="26"
-                        class="virtual-list"
-                        :items="dict.dict">
-                        <template v-slot="{ item, index }">
-                            <div class="word-item">
-                                <div class="checkbox-cell">
-                                    <input
-                                        v-model="selectedWordIds"
-                                        name="table"
-                                        :id="`word${index}`"
-                                        type="checkbox"
-                                        :value="item.id">
-                                    <label class="checkbox" :for="`word${index}`"></label>
-                                </div>
-                                <div class="code">{{ item.code }}</div>
-                                <div class="word">{{ item.word }}</div>
-                                <div class="id">{{ item.id }}</div>
-                                <div class="operation">
-                                    <div v-if="index !== 0" class="up" @click="moveUp(item.id)">
-                                        <img src="./assets/up.svg" alt="move up">
-                                    </div>
-                                    <div v-if="index+1 < dict.dict.length" class="down" @click="moveDown(item.id)">
-                                        <img src="./assets/down.svg" alt="move down">
-                                    </div>
-                                </div>
-                            </div>
-                        </template>
-                    </recycle-scroller>
-                </div>
-            </div>
-
-            <!-- group-mode-->
-            <div class="list-container" v-else>
-                <div class="group" v-for="(group, groupIndex) in dict.dict" :key="groupIndex">
-                    <div :class="['group-header', {active: activeGroupId === groupIndex}]"
-                         @click.right="group.isEditingTitle = !group.isEditingTitle">
-                        <input v-model="group.groupName"
-                               v-if="group.isEditingTitle"
-                               @keydown.enter="group.isEditingTitle = false" />
-                        <h3
-                            v-else
-                            @click="activeGroupId = groupIndex"
-                        >{{ group.groupName }}</h3>
-                    </div>
-                    <div class="word-list">
-                        <div class="word-item" v-for="(item, index) in group.dict" :key="item.id">
+        <div class="list-container" v-if="!dict.isGroupMode">
+            <div class="group">
+                <recycle-scroller
+                    :buffer="1000"
+                    :prerender="200"
+                    :style="`height: ${heightContent}px`"
+                    v-if="dict.dict"
+                    :min-item-size="26"
+                    class="virtual-list"
+                    :items="dict.dict">
+                    <template v-slot="{ item, index }">
+                        <div class="word-item">
                             <div class="checkbox-cell">
                                 <input
                                     v-model="selectedWordIds"
-                                    name="selectedIds"
-                                    :id="`${groupIndex}-${index}`"
+                                    name="table"
+                                    :id="`word${index}`"
                                     type="checkbox"
                                     :value="item.id">
-                                <label class="checkbox" :for="`${groupIndex}-${index}`"></label>
+                                <label class="checkbox" :for="`word${index}`"></label>
                             </div>
                             <div class="code">{{ item.code }}</div>
                             <div class="word">{{ item.word }}</div>
@@ -96,20 +53,19 @@
                                 <div v-if="index !== 0" class="up" @click="moveUp(item.id)">
                                     <img src="./assets/up.svg" alt="move up">
                                 </div>
-                                <div v-if="index+1 < group.dict.length" class="down" @click="moveDown(item.id)">
+                                <div v-if="index+1 < dict.dict.length" class="down" @click="moveDown(item.id)">
                                     <img src="./assets/down.svg" alt="move down">
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
+                    </template>
+                </recycle-scroller>
             </div>
         </div>
 
-
-<!--        &lt;!&ndash; group-mode&ndash;&gt;
-        <div class="display" v-if="dict.isGroupMode">
-            <div class="table-item" v-for="(group, groupIndex) in dict.dict" :key="groupIndex">
+        <!-- group-mode-->
+        <div class="list-container" v-else>
+            <div class="group" v-for="(group, groupIndex) in dict.dict" :key="groupIndex">
                 <div :class="['group-header', {active: activeGroupId === groupIndex}]"
                      @click.right="group.isEditingTitle = !group.isEditingTitle">
                     <input v-model="group.groupName"
@@ -118,72 +74,39 @@
                     <h3
                         v-else
                         @click="activeGroupId = groupIndex"
-                        >{{ group.groupName }}</h3>
+                    >{{ group.groupName }}</h3>
                 </div>
-                <table class="table">
-                    <tbody>
-                    <tr v-for="(item, index) in group.dict" :key="index">
-                        <td class="checkbox">
+                <div class="word-list">
+                    <div class="word-item" v-for="(item, index) in group.dict" :key="item.id">
+                        <div class="checkbox-cell">
                             <input
                                 v-model="selectedWordIds"
-                                name="table"
-                                :id="`word${groupIndex}${index}`"
+                                name="selectedIds"
+                                :id="`${groupIndex}-${index}`"
                                 type="checkbox"
                                 :value="item.id">
-                            <label class="checkbox" :for="`word${groupIndex}${index}`"></label>
-                        </td>
-                        <td class="code">{{ item.code }}</td>
-                        <td class="word">{{ item.word }}</td>
-                        <td class="id">{{ item.id }}</td>
-                        <td>
-                            <div class="operation">
-                                <div v-if="index !== 0" class="up" @click="moveUp(item.id)">
-                                    <img src="./assets/up.svg" alt="move up">
-                                </div>
-                                <div v-if="index+1 !== group.dict.length" class="down" @click="moveDown(item.id)">
-                                    <img src="./assets/down.svg" alt="move down">
-                                </div>
+                            <label class="checkbox" :for="`${groupIndex}-${index}`"></label>
+                        </div>
+                        <div class="code">{{ item.code }}</div>
+                        <div class="word">{{ item.word }}</div>
+                        <div class="id">{{ item.id }}</div>
+                        <div class="operation">
+                            <div v-if="index !== 0" class="up" @click="moveUp(item.id)">
+                                <img src="./assets/up.svg" alt="move up">
                             </div>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+                            <div v-if="index+1 < group.dict.length" class="down" @click="moveDown(item.id)">
+                                <img src="./assets/down.svg" alt="move down">
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
-        &lt;!&ndash;  normal-mode&ndash;&gt;
-        <div class="display" v-else>
-            <div class="table-item">
-                <table class="table">
-                    <tbody>
-                    <tr v-for="(item, index) in dict.dict" :key="index">
-                        <td class="checkbox">
-                            <input
-                                v-model="selectedWordIds"
-                                name="table"
-                                :id="`word${index}`"
-                                type="checkbox"
-                                :value="item.id">
-                            <label class="checkbox" :for="`word${index}`"></label>
-                        </td>
-                        <td class="code">{{ item.code }}</td>
-                        <td class="word">{{ item.word }}</td>
-                        <td class="id">{{ item.id }}</td>
-                        <td>
-                            <div class="operation">
-                                <div v-if="index !== 0" class="up" @click="moveUp(item.id)">
-                                    <img src="./assets/up.svg" alt="move up">
-                                </div>
-                                <div v-if="index+1 !== dict.length" class="down" @click="moveDown(item.id)">
-                                    <img src="./assets/down.svg" alt="move down">
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>-->
+    </div>
+    <div class="footer">
+<!--        <div class="count">{{dict.getCount().origin}}|{{dict.getCount().current}}</div>-->
+        <div class="display">{{display}}</div>
     </div>
 </div>
 

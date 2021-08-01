@@ -490,14 +490,17 @@
   padding: 0 20px;
 }
 .word-item .code {
+  min-width: 48px;
   width: 10%;
   color: #333;
 }
 .word-item .word {
-  width: 60%;
+  line-height: 1.1;
+  flex-shrink: 0;
+  flex-grow: 1;
 }
 .word-item .id {
-  flex-grow: 1;
+  width: 36px;
   margin-right: 10px;
   color: #848484;
 }
@@ -961,6 +964,17 @@ body {
 
 .container {
   position: relative;
+}
+
+.footer {
+  position: sticky;
+  background-color: #fff;
+  bottom: 0;
+  border-top: 1px solid #eee;
+  padding: 10px;
+  font-size: 12px;
+  display: flex;
+  justify-content: flex-start;
 }
 
 .shadow {

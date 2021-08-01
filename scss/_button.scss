@@ -135,7 +135,7 @@ input[type=checkbox] + label.switch
   position: relative;
   display: block;
   @include border-radius($radius-switch);
-  background-color: $border-color;
+  background-color: $color-border;
   //border-bottom: 1px solid white;
   @include box-shadow(inset 0 1px 2px rgba(0,0,0,0.1));
   height: $height-radio + $radio-gap * 2;
@@ -194,7 +194,7 @@ input[type=checkbox]:checked + label.checker {
   @include border-radius($radius-btn);
   justify-content: flex-start;
   overflow: hidden;
-  border: 1px solid $border-color;
+  border: 1px solid $color-border;
   margin: 0 5px 5px 0;
   &.dash{
     border-style: dashed;
@@ -204,7 +204,7 @@ input[type=checkbox]:checked + label.checker {
     }
   }
   > * {
-    border-right: 1px solid $border-color;
+    border-right: 1px solid $color-border;
     &:last-child{
       border-right: none;
     }
@@ -220,7 +220,7 @@ input[type=checkbox]:checked + label.checker {
       font-size: 7px;
       text-align: center;
       background-color: #fff;
-      border-bottom: 1px solid $border-color;
+      border-bottom: 1px solid $color-border;
       height: 50%;
       width: 20px;
       &:last-child{

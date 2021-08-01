@@ -251,6 +251,29 @@ class Dict {
             return false
         }
     }
+    // 获取词条总数
+    // origin: dictOrigin count
+    // current: dict count
+    getCount(){
+        if (this.isGroupMode){
+            let countCurrent, countOrigin = 0
+            this.dict.forEach(group => {
+                countCurrent = countCurrent + group.dict.length
+            })
+            this.dictOrigin.forEach(group => {
+                countOrigin = countOrigin + group.dict.length
+            })
+            return {
+                origin: countOrigin,
+                current: countCurrent
+            }
+        } else {
+            return {
+                origin: this.dictOrigin.length,
+                current: this.dict.length
+            }
+        }
+    }
 }
 
 // 从一条词条字符串中获取 word 对象

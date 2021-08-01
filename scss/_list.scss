@@ -1,4 +1,4 @@
-$fz-table: 12px;
+$fz-list: 12px;
 $table-padding-tb: 2px;
 $table-padding-lr: 5px;
 $bg-td-highlighted: transparentize($color-main, 0.95);
@@ -16,7 +16,7 @@ $height-word-item: 26px;
 }
 
 .group{
-  font-size: $fz-table;
+  font-size: $fz-list;
   color: $text-main;
   .group-header{
     cursor: pointer;
@@ -31,7 +31,7 @@ $height-word-item: 26px;
       background-color: transparentize($color-main, 0.95);
     }
     h3{
-      font-size: $fz-table;
+      font-size: $fz-list;
       line-height: $height-input + 2;
     }
     input{
@@ -60,7 +60,7 @@ $height-word-item: 26px;
     bottom: -1px;
     width: calc(100% - 45px);
     right: 0;
-    background-color: $border-color;
+    background-color: $color-border;
   }
   .checkbox-cell{
     flex-grow: 0;
@@ -68,15 +68,18 @@ $height-word-item: 26px;
     padding: 0 20px;
   }
   .code{
+    min-width: $fz-list * 4;
     width: 10%;
     color: $text-title;
     //font-family: monospace;
   }
   .word{
-    width: 60%;
+    line-height: 1.1;
+    flex-shrink: 0;
+    flex-grow: 1;
   }
   .id{
-    flex-grow: 1;
+    width: $fz-list * 3;
     margin-right: 10px;
     color: $text-subtitle;
   }

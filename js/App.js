@@ -24,7 +24,7 @@ const app = {
         }
     },
     mounted() {
-        this.heightContent = innerHeight - 47
+        this.heightContent = innerHeight - 47 - 30
         ipcRenderer.on('showFileContent', (event, filePath, res) => {
             this.dict = new Dict(res, filePath)
             // document.title = filePath // 窗口 title
@@ -61,6 +61,21 @@ const app = {
         // 保存内容到文件
         saveDictToFile(){
             ipcRenderer.send('saveFile', this.dict.filePath, this.dict.toYamlString())
+        },
+        // 选中全部展示的词条
+        selectAll(){
+            if(this.dict.getCount().current < 1000){
+                if (this.isGroupMode){
+                    this.selectedWordIds = []
+                    this.dict.dict.forEach(group => {
+                        this.selectedWordIds = this.selectedWordIds.concat(group.dict.map(item => item.id))
+                    })
+                } else {
+                    this.selectedWordIds = this.dict.dict.map(item => item.id)
+                }
+            } else {
+                // 提示不能同时选择太多内容
+            }
         },
         // 清除内容
         clearInputs(){
@@ -112,13 +127,14 @@ const app = {
                 }
             })
         },
+        // 打开当前码表源文件
         openCurrentYaml(){
             ipcRenderer.send('openFileOutside', this.dict.filePath)
         },
     },
     watch: {
         code(newValue){
-            this.code = newValue.replaceAll(/[^A-Za-z]/g, '') // 只允许输入字母
+            this.code = newValue.replaceAll(/[^A-Za-z ]/g, '') // 只允许输入字母
         },
         selectedWordIds(newValue){
             console.log('已选词条id: ', JSON.stringify(newValue))
