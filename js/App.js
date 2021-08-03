@@ -16,6 +16,7 @@ const app = {
             dict: {
                 deep: true
             }, // 当前词库对象 Dict
+            dictMain: {}, // 主码表 Dict
             keyword: '', // 搜索关键字
             code: '',
             word: '',
@@ -43,6 +44,10 @@ const app = {
         })
 
         ipcRenderer.send('loadTestFile')
+        ipcRenderer.send('loadMainDict')
+        ipcRenderer.on('setMainDict', (event, filePath, res) => {
+            this.dictMain = new Dict(res, filePath)
+        })
 
         this.addKeyboardListener()
     },
@@ -129,6 +134,22 @@ const app = {
                         break
                 }
             })
+        },
+        // 将选中的词条添加到主码表
+        addToMain(){
+            // get words
+            let wordsTransferring = [] // 被转移的 words
+            if (this.isGroupMode){
+                this.dict.wordsOrigin.forEach((group, index) => {
+                    wordsTransferring = group.dict.filter(item => this.selectedWordIds.includes(item.id))
+                })
+            } else {
+                wordsTransferring = this.dict.wordsOrigin.filter(item => this.selectedWordIds.includes(item.id))
+            }
+            console.log('words about to transferring：',wordsTransferring)
+            this.dictMain.addWordsInOrder(wordsTransferring)
+            console.log('after insert to main: ', this.dictMain.wordsOrigin)
+            this.dict.deleteWords(this.selectedWordIds)
         },
         // 打开当前码表源文件
         openCurrentYaml(){

@@ -1,4 +1,4 @@
-const {app, BrowserWindow, Menu, ipcMain, ipcRenderer, shell} = require('electron')
+const {app, BrowserWindow, Menu, ipcMain, nativeTheme, ipcRenderer, shell} = require('electron')
 const { exec } = require('child_process')
 const fs = require('fs')
 const os = require('os')
@@ -49,12 +49,29 @@ function createWindow() {
         readFile(path.join(getRimeConfigDir(), 'test.dict.yaml'))
     })
 
+    // 监听载入主文件内容的请求
+    ipcMain.on('loadMainDict', event => {
+        fs.readFile(path.join(getRimeConfigDir(), 'main.dict.yaml'), {encoding: 'utf-8'}, (err, res) => {
+            if(err){
+                console.log(err)
+            } else {
+                mainWindow.webContents.send('setMainDict', path.join(getRimeConfigDir(), 'main.dict.yaml') ,res)
+            }
+        })
+    })
+
     // 外部打开当前码表文件
     ipcMain.on('openFileOutside', (event, filePath) => {
         console.log(filePath)
         shell.openPath(filePath)
     })
+
+    ipcMain.handle('dark-mode:system', () => {
+        nativeTheme.themeSource = 'system'
+    })
 }
+
+
 
 
 app.on('ready', ()=>{

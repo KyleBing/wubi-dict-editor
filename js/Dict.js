@@ -10,7 +10,7 @@ class Dict {
         this.header = null // 文件头部内容
         this.words = [] // 文件词条数组
         this.wordsOrigin = [] // 文件词条数组
-        this.lastIndex = '' // 最后一个 Index 的值，用于新添加词时，作为唯一的 id 传入
+        this.lastIndex = 0 // 最后一个 Index 的值，用于新添加词时，作为唯一的 id 传入
         this.isGroupMode = false // 识别码表是否为分组形式的
 
         let indexEndOfHeader = yaml.indexOf('...') + 3
@@ -24,10 +24,6 @@ class Dict {
             this.wordsOrigin = this.isGroupMode? this.getDictWordsInGroupMode(body): this.getDictWordsInNormalMode(body)
 
             this.words = [...this.wordsOrigin] // words 中的数据元素指向跟 Origin 里的是一样的，所以编辑 words 也会改变 origin 数据
-            if(this.words.length < 1000){
-                console.log(this.wordsOrigin)
-            }
-            // console.log(this.dictWithGroup)
         }
     }
     // 展示的词条数量
@@ -55,14 +51,14 @@ class Dict {
         }
     }
 
-
     // 返回所有 word
     getDictWordsInNormalMode(body){
         let startPoint = new Date().getTime()
         let lines = body.split(os.EOL) // 拆分词条与编码成单行
+        this.lastIndex = lines.length
         let linesValid = lines.filter(item => item.indexOf('\t') > -1) // 选取包含 \t 的行
         let words = linesValid.map((item, index) => getWordFromLine(index,item))
-        console.log(`处理yaml码表文件：完成，共：${words.length }`, this.isGroupMode? '组': '条', '用时: ', new Date().getTime() - startPoint, 'ms')
+        console.log(`处理yaml码表文件：完成，共：${words.length } ${this.isGroupMode? '组': '条'}，用时 ${new Date().getTime() - startPoint} ms`)
         return words
     }
 
@@ -104,7 +100,7 @@ class Dict {
                 lastItemIsEmptyLine = true
             }
         })
-        console.log('用时: ', new Date().getTime() - startPoint, 'ms')
+        console.log(`用时 ${new Date().getTime() - startPoint} ms`)
         if (temp){
             if (temp.dict.length > 0){
                 dictGroup.push(temp) // 加上最后一个
@@ -163,6 +159,36 @@ class Dict {
         this.words = [...this.wordsOrigin]
         this.lastIndex = this.lastIndex + 1 // 新加的词添加后， lastIndex + 1
     }
+
+    // 依次序添加 words
+    addWordsInOrder(words){
+        let startPoint = new Date().getTime()
+        if (this.isGroupMode){
+            console.log('TODO: add to group')
+        } else {
+            words.forEach(word => {
+                this.addWordToDict(word)
+            })
+        }
+        console.log(`添加 ${words.length } 条词条到主码表, '用时 ${new Date().getTime() - startPoint} ms`)
+    }
+
+    // 依次序添加 word
+    addWordToDict(word){
+        let insetPosition = 0 // 插入位置 index
+        for (let i=0; i<this.wordsOrigin.length-1; i++){ // -1 为了避免下面 i+1 为 undefined
+            if (word.code >= this.wordsOrigin[i]  && word.code <= this.wordsOrigin[i+1].code){
+                insetPosition = i
+                break
+            }
+        }
+        word.id = this.wordsOrigin.length + 1 // 给新的 words 一个新的唯一 id
+        this.wordsOrigin.splice(insetPosition, 0, word)
+        this.words = [...this.wordsOrigin]
+    }
+
+    // 依次序添加 word groupMode
+    addWordToDictWithGroup(word){}
 
 
     // 删除词条
