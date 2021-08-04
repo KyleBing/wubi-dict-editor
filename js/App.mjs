@@ -141,10 +141,11 @@ const app = {
         // 将选中的词条添加到主码表
         addToMain(){
             // get words
-            let wordsTransferring = [] // 被转移的 words
-            if (this.isGroupMode){
+            let wordsTransferring = [] // 被转移的 [Word]
+            if (this.dict.isGroupMode){
                 this.dict.wordsOrigin.forEach((group, index) => {
-                    wordsTransferring = group.dict.filter(item => this.selectedWordIds.includes(item.id))
+                    let matchedWords = group.dict.filter(item => this.selectedWordIds.includes(item.id))
+                    wordsTransferring = wordsTransferring.concat(matchedWords)
                 })
             } else {
                 wordsTransferring = this.dict.wordsOrigin.filter(item => this.selectedWordIds.includes(item.id))
