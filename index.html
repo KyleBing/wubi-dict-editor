@@ -70,19 +70,23 @@
             <div class="group" v-for="(group, groupIndex) in dict.words" :key="groupIndex">
                 <div :class="['group-header', {active: activeGroupId === groupIndex}]"
                      @click.right="group.isEditingTitle = !group.isEditingTitle">
-                    <input :key="groupIndex" v-model="group.groupName"
-                           v-if="group.isEditingTitle"
-                           @keydown.enter="group.isEditingTitle = false" />
-                    <h3
-                        v-else
-                        :key="groupIndex"
-                        @click="activeGroupId = groupIndex"
-                    >{{ group.groupName }}</h3>
-                    <div class="operation">
-                        <div class="btn btn-primary">编辑</div>
-                        <div class="btn btn-primary">保存</div>
-                        <div class="btn btn-roseo" @click="dict.deleteGroup(groupIndex)">删除</div>
-                    </div>
+                    <template v-if="group.isEditingTitle">
+                        <input :key="groupIndex"
+                               v-model="group.groupName"
+                               @keydown.enter="group.isEditingTitle = false" />
+                        <div class="btn btn-primary" @click="group.isEditingTitle = false">保存</div>
+                    </template>
+                    <template v-else>
+                        <h3 :key="groupIndex"
+                            @click="activeGroupId = groupIndex"
+                        >{{ group.groupName }}</h3>
+                        <div class="operation">
+                            <div class="btn btn-primary" @click="group.isEditingTitle = true">编辑</div>
+                            <div class="btn btn-roseo" @click="dict.deleteGroup(groupIndex)">删除</div>
+                        </div>
+                    </template>
+
+
                 </div>
                 <div class="word-list">
                     <div class="word-item" v-for="(item, index) in group.dict" :key="item.id">
