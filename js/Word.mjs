@@ -14,6 +14,10 @@ class Word{
     toString(){
         return this.word + '\t' + this.code
     }
+    // 复制一个对象
+    clone(){
+        return new Word(this.id, this.code, this.word)
+    }
 }
 
 export default Word

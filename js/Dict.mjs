@@ -175,17 +175,22 @@ class Dict {
 
     // 依次序添加 word
     addWordToDict(word){
-        let insetPosition = 0 // 插入位置 index
+        let insetPosition = null // 插入位置 index
         for (let i=0; i<this.wordsOrigin.length-1; i++){ // -1 为了避免下面 i+1 为 undefined
             if (word.code >= this.wordsOrigin[i]  && word.code <= this.wordsOrigin[i+1].code){
-                insetPosition = i
+                insetPosition = i + 1
                 break
             }
         }
-        word.id = this.wordsOrigin.length + 1 // 给新的 words 一个新的唯一 id
-        this.wordsOrigin.splice(insetPosition, 0, word)
+        if (!insetPosition){  // 没有匹配到任何位置，添加到结尾
+            insetPosition = this.wordsOrigin.length
+        }
+        let wordInsert = word.clone() // 断开与别一个 dict 的引用链接，新建一个 word 对象，不然两个 dict 引用同一个 word
+        wordInsert.id = this.wordsOrigin.length + 1 // 给新的 words 一个新的唯一 id
+        this.wordsOrigin.splice(insetPosition, 0, wordInsert)
         this.words = [...this.wordsOrigin]
     }
+
 
     // 依次序添加 word groupMode
     addWordToDictWithGroup(word){}

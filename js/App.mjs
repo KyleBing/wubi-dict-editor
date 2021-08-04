@@ -151,8 +151,8 @@ const app = {
             }
             console.log('words about to transferring：',wordsTransferring)
             this.dictMain.addWordsInOrder(wordsTransferring)
-            console.log('after insert to main: ', this.dictMain.wordsOrigin)
-            this.dict.deleteWords(this.selectedWordIds)
+            console.log('after insert:(main:wordOrigin):\n ', JSON.stringify(this.dictMain.wordsOrigin))
+            this.deleteWords()
         },
         // 打开当前码表源文件
         openCurrentYaml(){
