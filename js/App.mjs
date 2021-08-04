@@ -1,14 +1,17 @@
-import Dict from "./Dict.js"
-import {shakeDom, shakeDomFocus} from "./Utility.js"
-import Word from "./Word.js";
+import Dict from "./Dict.mjs"
+import {shakeDom, shakeDomFocus} from "./Utility.mjs"
+import Word from "./Word.mjs";
 
-const Vue = require('vue')
+import Vue from '../node_modules/vue/dist/vue.esm.browser.min.js'
+
+// const Vue = require('vue/dist/vue.esm.browser.min.js')
 const {ipcRenderer} = require('electron')
 
 const VirtualScroller = require('vue-virtual-scroller')
 
-// Vue 3
+// Vue 2
 const app = {
+    el: '#app',
     components: {RecycleScroller: VirtualScroller.RecycleScroller},
     data() {
         return {
@@ -166,4 +169,4 @@ const app = {
     }
 }
 
-Vue.createApp(app).mount('#app')
+new Vue(app)

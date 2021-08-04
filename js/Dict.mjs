@@ -1,6 +1,6 @@
 // 字典对象
-import Word from "./Word.js";
-import WordGroup from "./WordGroup.js";
+import Word from "./Word.mjs";
+import WordGroup from "./WordGroup.mjs";
 
 const os = require('os')
 
@@ -66,14 +66,14 @@ class Dict {
     getDictWordsInGroupMode(body){
         let startPoint = new Date().getTime()
         let lines = body.split(os.EOL) // 拆分词条与编码成单行
-        let dictGroup = [] // 总分组
+        let wordsGroup = [] // 总分组
         let temp = null // 第一个分组
         let lastItemIsEmptyLine = false // 上一条是空，用于循环中判断是否需要新起一个 WordGroup
         this.lastIndex = lines.length
         lines.forEach((item, index) => {
             if (item.startsWith('##')) { // 注释分组
                 if (temp && temp.groupName) { // 如果上一个已经有名字了，说明需要保存
-                    dictGroup.push(temp)
+                    wordsGroup.push(temp)
                 }
                 temp = new WordGroup(item.substring(3).trim())
                 lastItemIsEmptyLine = false
@@ -93,19 +93,19 @@ class Dict {
                 } else {
                     if (temp){
                         temp.groupName = temp.groupName || '未命名'
-                        dictGroup.push(temp)
+                        wordsGroup.push(temp)
                         temp = new WordGroup()
                     }
                 }
                 lastItemIsEmptyLine = true
             }
         })
-        console.log(`用时 ${new Date().getTime() - startPoint} ms`)
+        console.log(`处理yaml码表文件：完成，共：${wordsGroup.length } ${this.isGroupMode? '组': '条'}，用时 ${new Date().getTime() - startPoint} ms`)
         if (temp){
             if (temp.dict.length > 0){
-                dictGroup.push(temp) // 加上最后一个
+                wordsGroup.push(temp) // 加上最后一个
             }
-            return dictGroup
+            return wordsGroup
         } else {
             return [] // 文件内容为空时
         }
