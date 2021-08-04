@@ -69,8 +69,8 @@ const app = {
             }
         },
         // 保存内容到文件
-        saveDictToFile(){
-            ipcRenderer.send('saveFile', this.dict.filePath, this.dict.toYamlString())
+        saveToFile(dict){
+            ipcRenderer.send('saveFile', dict.filePath, dict.toYamlString())
         },
         // 选中全部展示的词条
         selectAll(){
@@ -115,7 +115,7 @@ const app = {
                 switch( event.key) {
                     case 's':
                         if (event.ctrlKey || event.metaKey){ // metaKey 是 macOS 的 Ctrl
-                            this.saveDictToFile()
+                            this.saveToFile(this.dict)
                             event.preventDefault()
                         } else {
 
@@ -153,6 +153,8 @@ const app = {
             this.dictMain.addWordsInOrder(wordsTransferring)
             console.log('after insert:(main:wordOrigin):\n ', JSON.stringify(this.dictMain.wordsOrigin))
             this.deleteWords()
+            this.saveToFile(this.dictMain)
+            this.saveToFile(this.dict)
         },
         // 打开当前码表源文件
         openCurrentYaml(){
