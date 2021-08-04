@@ -8,9 +8,7 @@ $btn-padding-tb: 2px;
 $btn-padding-lr: 8px;
 $fz-button: 12px;
 
-$height-btn-sm: $height-input - 4;
-$btn-sm-padding-tb: 1px;
-$btn-sm-padding-lr: 3px;
+
 
 $checkbox-shadow: false;
 
@@ -60,14 +58,20 @@ $btns: (
   }
 }
 
+$height-btn-sm: $height-input - 6;
+$btn-sm-padding-tb: 2px;
+$btn-sm-padding-lr: 3px;
+
+
 .btn-sm {
+  font-size: $fz-button - 2;
   line-height: $height-btn-sm - $btn-sm-padding-tb * 2;
   padding: $btn-sm-padding-tb $btn-sm-padding-lr ;
 }
 
 .no-border{
   border: none !important;
-
+  @include box-shadow(0 0 1px rgba(0,0,0,0.4))
 }
 
 

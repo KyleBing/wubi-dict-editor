@@ -74,15 +74,15 @@
                         <input :key="groupIndex"
                                v-model="group.groupName"
                                @keydown.enter="group.isEditingTitle = false" />
-                        <div class="btn btn-primary" @click="group.isEditingTitle = false">保存</div>
+                        <div class="btn no-border btn-sm btn-primary" @click="group.isEditingTitle = false">保存</div>
                     </template>
                     <template v-else>
                         <h3 :key="groupIndex"
                             @click="activeGroupId = groupIndex"
                         >{{ group.groupName }}</h3>
                         <div class="operation">
-                            <div class="btn btn-primary" @click="group.isEditingTitle = true">编辑</div>
-                            <div class="btn btn-roseo" @click="dict.deleteGroup(groupIndex)">删除</div>
+                            <div class="btn no-border btn-sm btn-primary" @click="group.isEditingTitle = true">编辑</div>
+                            <div class="btn no-border btn-sm btn-roseo" @click="dict.deleteGroup(groupIndex)">删除</div>
                         </div>
                     </template>
 

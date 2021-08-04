@@ -19,11 +19,12 @@ $height-word-item: 26px;
   font-size: $fz-list;
   color: $text-main;
   .group-header{
+    padding: 5px 10px 5px 35px;
     margin-top: 10px;
     cursor: pointer;
-    padding-left: 35px;
     display: flex;
     justify-content: space-between;
+    align-items: center;
     &.active{
       background-color: transparentize($color-main, 0.9);
       h3{
@@ -50,6 +51,7 @@ $height-word-item: 26px;
       flex-shrink: 0;
       display: flex;
       justify-content: flex-end;
+      align-items: center;
       > * {
         margin-left:5px;
       }

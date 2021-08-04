@@ -443,11 +443,12 @@
   color: #000;
 }
 .group .group-header {
+  padding: 5px 10px 5px 35px;
   margin-top: 10px;
   cursor: pointer;
-  padding-left: 35px;
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 .group .group-header.active {
   background-color: rgba(255, 45, 112, 0.1);
@@ -476,6 +477,7 @@
   flex-shrink: 0;
   display: flex;
   justify-content: flex-end;
+  align-items: center;
   -webkit-transition: all 0.3s;
   -moz-transition: all 0.3s;
   -ms-transition: all 0.3s;
@@ -614,12 +616,16 @@
 }
 
 .btn-sm {
-  line-height: 18px;
-  padding: 1px 3px;
+  font-size: 10px;
+  line-height: 14px;
+  padding: 2px 3px;
 }
 
 .no-border {
   border: none !important;
+  -webkit-box-shadow: 0 0 1px rgba(0, 0, 0, 0.4);
+  -moz-box-shadow: 0 0 1px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0.4);
 }
 
 .btn-primary {
