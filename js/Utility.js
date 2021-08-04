@@ -25,13 +25,6 @@ function shakeDomFocus(dom){
     dom.focus()
 }
 
-// ipc 事件类型
-const IPC_TYPES = {
-    saveFile: 'saveFile',
-    readFile: 'readFile',
-    showFileContent: 'showFileContent'
-}
-
 export {
-    shakeDom, shakeDomFocus, IPC_TYPES
+    shakeDom, shakeDomFocus
 }
