@@ -20,7 +20,6 @@ $height-word-item: 24px;
     padding: 5px 10px 5px 35px;
     cursor: pointer;
     display: flex;
-    justify-content: space-between;
     align-items: center;
     &.active{
       background-color: transparentize($color-main, 0.95);
@@ -35,19 +34,20 @@ $height-word-item: 24px;
         opacity: 1;
       }
     }
+    input{
+      margin-right: 10px;
+    }
     h3{
-      flex-grow: 1;
+      //flex-grow: 1;
       font-size: $fz-list;
       line-height: $height-input + 2;
-    }
-    input{
-
+      margin-right: 10px;
     }
     .operation{
       opacity: 0;
       flex-shrink: 0;
       display: flex;
-      justify-content: flex-end;
+      justify-content: flex-start;
       align-items: center;
       > * {
         margin-left:5px;
@@ -129,6 +129,11 @@ $height-word-item: 24px;
 
   &:hover{
     background-color: $bg-td-highlighted;
+    .checkbox-cell{
+      label{
+        border-color: $color-main;
+      }
+    }
     .operation{
       opacity: 1;
     }

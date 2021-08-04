@@ -18,7 +18,7 @@
         <div class="btn btn-cyan" ref="domBtnSave" @click="saveToFile(dict)">{{ labelOfSaveBtn }}</div>
         <div class="btn btn-primary" @click="search">搜索</div>
         <div class="btn btn-roseo" v-show="selectedWordIds.length > 0" @click="deleteWords">删除</div>
-        <div class="btn btn-blue" v-show="selectedWordIds.length > 0" @click="addToMain">添加到主码表</div>
+        <div class="btn btn-alt-blue" v-show="selectedWordIds.length > 0" @click="addToMain">添加到主码表</div>
     </div>
 
     <div ref="container"

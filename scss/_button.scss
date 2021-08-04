@@ -106,7 +106,7 @@ $btn-sm-padding-lr: 3px;
     @if $name == primary {
       color: $text-main;
       background-color: $color;
-      border: 1px solid $text-subtitle;
+      border: 1px solid darken($color, 30%);
     } @else {
       color: $color;
       background-color: white;
@@ -121,7 +121,11 @@ $btn-sm-padding-lr: 3px;
       }
     }
     &:active{
-      color: $text-main;
+      @if $name == primary {
+        color: $text-main;
+      } @else {
+        color: $color;
+      }
     }
   }
 }
@@ -149,7 +153,7 @@ input[type=checkbox] + label.checkbox{
 }
 
 label.checkbox:hover{
-  border-color: $roseo !important;
+  border-color: $color-main !important;
   @if $checkbox-shadow {
     @include box-shadow(inset 1px 1px 2px transparentize($color-main, 0.8) !important) ;
   }
@@ -165,9 +169,9 @@ input[type=checkbox]:checked + label.checkbox{
     top: 2px;
     left: 2px;
     @include border-radius(3px);
-    background-color: $roseo;
+    background-color: $color-main;
   }
-  border-color: $roseo;
+  border-color: $color-main;
 }
 
 

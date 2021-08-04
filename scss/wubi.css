@@ -446,7 +446,6 @@
   padding: 5px 10px 5px 35px;
   cursor: pointer;
   display: flex;
-  justify-content: space-between;
   align-items: center;
 }
 .group .group-header.active {
@@ -466,16 +465,19 @@
 .group .group-header:hover .operation {
   opacity: 1;
 }
+.group .group-header input {
+  margin-right: 10px;
+}
 .group .group-header h3 {
-  flex-grow: 1;
   font-size: 13px;
   line-height: 26px;
+  margin-right: 10px;
 }
 .group .group-header .operation {
   opacity: 0;
   flex-shrink: 0;
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-start;
   align-items: center;
   -webkit-transition: all 0.3s;
   -moz-transition: all 0.3s;
@@ -559,6 +561,9 @@
 }
 .word-item:hover {
   background-color: rgba(255, 45, 112, 0.05);
+}
+.word-item:hover .checkbox-cell label {
+  border-color: #FF2D70;
 }
 .word-item:hover .operation {
   opacity: 1;
@@ -765,7 +770,7 @@
 .btn-alt-primary {
   color: #000;
   background-color: white;
-  border: 1px solid #848484;
+  border: 1px solid #b3b3b3;
 }
 .btn-alt-primary:hover {
   color: #000;
@@ -784,7 +789,7 @@
   border-color: #26b33e;
 }
 .btn-alt-green:active {
-  color: #000;
+  color: #4CD964;
 }
 
 .btn-alt-cyan {
@@ -797,7 +802,7 @@
   border-color: #10aff8;
 }
 .btn-alt-cyan:active {
-  color: #000;
+  color: #5AC8FA;
 }
 
 .btn-alt-blue {
@@ -810,7 +815,7 @@
   border-color: #0055b3;
 }
 .btn-alt-blue:active {
-  color: #000;
+  color: #007AFF;
 }
 
 .btn-alt-purple {
@@ -823,7 +828,7 @@
   border-color: #2e2cb4;
 }
 .btn-alt-purple:active {
-  color: #000;
+  color: #5856D6;
 }
 
 .btn-alt-yellow {
@@ -836,7 +841,7 @@
   border-color: #b38f00;
 }
 .btn-alt-yellow:active {
-  color: #000;
+  color: #FFCC00;
 }
 
 .btn-alt-orange {
@@ -849,7 +854,7 @@
   border-color: #b36800;
 }
 .btn-alt-orange:active {
-  color: #000;
+  color: #FF9500;
 }
 
 .btn-alt-roseo {
@@ -862,7 +867,7 @@
   border-color: #e00047;
 }
 .btn-alt-roseo:active {
-  color: #000;
+  color: #FF2D70;
 }
 
 .btn-alt-red {
@@ -875,7 +880,7 @@
   border-color: #e30c00;
 }
 .btn-alt-red:active {
-  color: #000;
+  color: #FF3B30;
 }
 
 .btn-alt-gray {
@@ -888,7 +893,7 @@
   border-color: #68686d;
 }
 .btn-alt-gray:active {
-  color: #000;
+  color: #8E8E93;
 }
 
 input[type=checkbox],
