@@ -213,6 +213,12 @@ class Dict {
         this.words = [...this.wordsOrigin]
     }
 
+    // 分组模式：删除分组
+    deleteGroup(groupIndex){
+        this.wordsOrigin.splice(groupIndex, 1)
+        this.words = [...this.wordsOrigin]
+    }
+
     // 转为 yaml String
     toYamlString(){
         let yamlBody = ''

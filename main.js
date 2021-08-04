@@ -46,7 +46,7 @@ function createWindow() {
 
     // 监听 window 的文件载入请求
     ipcMain.on('loadTestFile', event => {
-        readFile(path.join(getRimeConfigDir(), 'test.dict.yaml'))
+        readFile(path.join(getRimeConfigDir(), 'test_group.dict.yaml'))
     })
 
     // 监听载入主文件内容的请求

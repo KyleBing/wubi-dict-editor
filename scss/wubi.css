@@ -446,6 +446,8 @@
   margin-top: 10px;
   cursor: pointer;
   padding-left: 35px;
+  display: flex;
+  justify-content: space-between;
 }
 .group .group-header.active {
   background-color: rgba(255, 45, 112, 0.1);
@@ -454,12 +456,36 @@
   color: #FF2D70;
 }
 .group .group-header:hover {
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  -ms-transition: all 0.3s;
+  -o-transition: all 0.3s;
+  transition: all 0.3s;
   background-color: rgba(255, 45, 112, 0.05);
 }
+.group .group-header:hover .operation {
+  opacity: 1;
+}
 .group .group-header h3 {
+  flex-grow: 1;
   font-size: 13px;
   line-height: 26px;
 }
+.group .group-header .operation {
+  opacity: 0;
+  flex-shrink: 0;
+  display: flex;
+  justify-content: flex-end;
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  -ms-transition: all 0.3s;
+  -o-transition: all 0.3s;
+  transition: all 0.3s;
+}
+.group .group-header .operation > * {
+  margin-left: 5px;
+}
+
 .word-item {
   height: 26px;
   align-items: center;

@@ -150,9 +150,9 @@ const app = {
             } else {
                 wordsTransferring = this.dict.wordsOrigin.filter(item => this.selectedWordIds.includes(item.id))
             }
-            console.log('words about to transferring：',wordsTransferring)
+            console.log('words transferring：', JSON.stringify(wordsTransferring))
             this.dictMain.addWordsInOrder(wordsTransferring)
-            console.log('after insert:(main:wordOrigin):\n ', JSON.stringify(this.dictMain.wordsOrigin))
+            console.log('after insert:( main:wordOrigin ):\n ', JSON.stringify(this.dictMain.wordsOrigin))
             this.deleteWords()
             this.saveToFile(this.dictMain)
             this.saveToFile(this.dict)
@@ -161,6 +161,7 @@ const app = {
         openCurrentYaml(){
             ipcRenderer.send('openFileOutside', this.dict.filePath)
         },
+
     },
     watch: {
         code(newValue){

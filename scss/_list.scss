@@ -22,6 +22,8 @@ $height-word-item: 26px;
     margin-top: 10px;
     cursor: pointer;
     padding-left: 35px;
+    display: flex;
+    justify-content: space-between;
     &.active{
       background-color: transparentize($color-main, 0.9);
       h3{
@@ -29,14 +31,29 @@ $height-word-item: 26px;
       }
     }
     &:hover{
+      @include transition(all 0.3s);
       background-color: transparentize($color-main, 0.95);
+      .operation{
+        opacity: 1;
+      }
     }
     h3{
+      flex-grow: 1;
       font-size: $fz-list;
       line-height: $height-input + 2;
     }
     input{
 
+    }
+    .operation{
+      opacity: 0;
+      flex-shrink: 0;
+      display: flex;
+      justify-content: flex-end;
+      > * {
+        margin-left:5px;
+      }
+      @include transition(all 0.3s);
     }
   }
 }
