@@ -1,8 +1,6 @@
 $fz-list: 13px;
-$table-padding-tb: 2px;
-$table-padding-lr: 5px;
 $bg-td-highlighted: transparentize($color-main, 0.95);
-$height-word-item: 26px;
+$height-word-item: 24px;
 
 .virtual-list{
   height: 100%;
@@ -20,13 +18,12 @@ $height-word-item: 26px;
   color: $text-main;
   .group-header{
     padding: 5px 10px 5px 35px;
-    margin-top: 10px;
     cursor: pointer;
     display: flex;
     justify-content: space-between;
     align-items: center;
     &.active{
-      background-color: transparentize($color-main, 0.9);
+      background-color: transparentize($color-main, 0.95);
       h3{
         color: $color-main;
       }
@@ -60,6 +57,7 @@ $height-word-item: 26px;
   }
 }
 .word-list{
+  padding-bottom: 10px;
 }
 .word-item{
   height: $height-word-item;
@@ -88,13 +86,14 @@ $height-word-item: 26px;
     flex-shrink: 0;
   }
   .code{
+    line-height: $height-word-item;
     min-width: $fz-list * 4;
     width: 10%;
     color: $text-title;
     //font-family: monospace;
   }
   .word{
-    line-height: 1.1;
+    line-height: $height-word-item;
     flex-shrink: 0;
     flex-grow: 1;
   }

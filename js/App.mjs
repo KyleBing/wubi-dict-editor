@@ -31,7 +31,7 @@ const app = {
         }
     },
     mounted() {
-        this.heightContent = innerHeight - 47 - 20 - 20
+        this.heightContent = innerHeight - 47 - 20 - 10
         ipcRenderer.on('showFileContent', (event, filePath, res) => {
             this.dict = new Dict(res, filePath)
             // document.title = filePath // 窗口 title
@@ -53,6 +53,10 @@ const app = {
         })
 
         this.addKeyboardListener()
+
+        onresize = ()=>{
+            this.heightContent = innerHeight - 47 - 20 - 10
+        }
     },
     methods: {
         search(){

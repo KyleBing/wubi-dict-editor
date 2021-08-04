@@ -101,6 +101,31 @@ $btn-sm-padding-lr: 3px;
   }
 }
 
+@each $name, $color in $btns {
+  .btn-alt-#{$name}{
+    @if $name == primary {
+      color: $text-main;
+      background-color: $color;
+      border: 1px solid $text-subtitle;
+    } @else {
+      color: $color;
+      background-color: white;
+      border: 1px solid $color;
+    }
+    &:hover{
+      @if $name == primary {
+        color: $text-main;
+      } @else {
+        color: darken($color, 15%);
+        border-color: darken($color, 15%);
+      }
+    }
+    &:active{
+      color: $text-main;
+    }
+  }
+}
+
 input[type=checkbox],
 input[type=radio]
 {

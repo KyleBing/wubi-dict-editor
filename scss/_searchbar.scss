@@ -1,4 +1,6 @@
 .search-bar{
+  width: 100%;
+  overflow-x: auto;
   z-index: 10;
   border-bottom: 1px solid $color-border;
   background-color: $bg-panel;
@@ -29,7 +31,7 @@ input, select{
     width: 12rem;
   }
   &:focus{
-    border-color: $color-main;
+    border-color: transparentize($color-main, 0.4);
     @include box-shadow(0 0 0 2px transparentize($color-main, 0.7))
   }
   @include transition(all, 0.5s)
