@@ -56,6 +56,9 @@
                                 <div class="down" @click="moveDown(item.id)">
                                     <img src="./assets/down.svg" alt="move down">
                                 </div>
+                                <div  class="down" @click="deleteWord(item.id)">
+                                    <img src="./assets/down.svg" alt="move down">
+                                </div>
                             </div>
                         </div>
                     </template>
@@ -69,6 +72,7 @@
              v-else>
             <div class="group" v-for="(group, groupIndex) in dict.words" :key="groupIndex">
                 <div :class="['group-header', {active: activeGroupId === groupIndex}]"
+                     @click="activeGroupId = groupIndex"
                      @click.right="group.isEditingTitle = !group.isEditingTitle">
                     <template v-if="group.isEditingTitle">
                         <input :key="groupIndex"
@@ -78,16 +82,16 @@
                     </template>
                     <template v-else>
                         <h3 :key="groupIndex"
-                            @click="activeGroupId = groupIndex"
                         >{{ group.groupName }}</h3>
                         <div class="operation">
-                            <div class="btn btn-sm btn-alt-primary" @click="group.isEditingTitle = true">编辑</div>
-                            <div class="btn btn-sm btn-alt-roseo" @click="dict.deleteGroup(groupIndex)">删除</div>
+                            <div class="btn btn-sm btn-alt-green" @click="dict.addGroupBefore(groupIndex)">添加分组</div>
+                            <div class="btn btn-sm btn-alt-primary" @click="group.isEditingTitle = true">编辑分组</div>
+                            <div class="btn btn-sm btn-alt-roseo" @click="dict.deleteGroup(groupIndex)">删除分组</div>
                         </div>
                     </template>
-
-
+                    <p class="tip" v-if="activeGroupId === groupIndex">将添加词条到该组</p>
                 </div>
+
                 <div class="word-list">
                     <div class="word-item" v-for="(item, index) in group.dict" :key="item.id">
                         <div class="checkbox-cell">
@@ -107,6 +111,9 @@
                                 <img src="./assets/up.svg" alt="move up">
                             </div>
                             <div  class="down" @click="moveDown(item.id)">
+                                <img src="./assets/down.svg" alt="move down">
+                            </div>
+                            <div  class="down" @click="deleteWord(item.id)">
                                 <img src="./assets/down.svg" alt="move down">
                             </div>
                         </div>

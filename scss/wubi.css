@@ -474,6 +474,7 @@
   margin-right: 10px;
 }
 .group .group-header .operation {
+  margin-right: 10px;
   opacity: 0;
   flex-shrink: 0;
   display: flex;
@@ -488,6 +489,10 @@
 .group .group-header .operation > * {
   margin-left: 5px;
 }
+.group .group-header .tip {
+  font-size: 11px;
+  color: #FF2D70;
+}
 
 .word-list {
   padding-bottom: 10px;
@@ -500,9 +505,6 @@
   justify-content: flex-start;
   position: relative;
   padding: 0 20px;
-}
-.word-item:first-child .operation {
-  justify-content: flex-end;
 }
 .word-item:after {
   content: "";
@@ -535,7 +537,7 @@
   color: #848484;
 }
 .word-item .operation {
-  width: 40px;
+  width: 60px;
   flex-grow: 0;
   flex-shrink: 0;
   opacity: 0.3;

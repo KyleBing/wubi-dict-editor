@@ -213,6 +213,11 @@ class Dict {
         this.words = [...this.wordsOrigin]
     }
 
+    addGroupBefore(groupIndex){
+        this.wordsOrigin.splice(groupIndex,0,new WordGroup('',[],true))
+        this.words = [...this.wordsOrigin]
+    }
+
     // 分组模式：删除分组
     deleteGroup(groupIndex){
         this.wordsOrigin.splice(groupIndex, 1)

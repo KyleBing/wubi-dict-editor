@@ -60,6 +60,7 @@ const app = {
     },
     methods: {
         search(){
+            this.selectedWordIds = []
             this.dict.search(this.code, this.word)
         },
         addNewPhrase(){
@@ -101,7 +102,12 @@ const app = {
             this.search()
             this.display = ''
         },
-        // 删除词条
+        // 删除词条：单
+        deleteWord(wordId){
+            this.selectedWordIds = this.selectedWordIds.filter(item => item !== wordId)
+            this.dict.deleteWords([wordId])
+        },
+        // 删除词条：多
         deleteWords(){
             this.dict.deleteWords(this.selectedWordIds)
             this.selectedWordIds = [] // 清空选中 wordID

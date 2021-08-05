@@ -44,6 +44,7 @@ $height-word-item: 24px;
       margin-right: 10px;
     }
     .operation{
+      margin-right: 10px;
       opacity: 0;
       flex-shrink: 0;
       display: flex;
@@ -53,6 +54,10 @@ $height-word-item: 24px;
         margin-left:5px;
       }
       @include transition(all 0.3s);
+    }
+    .tip{
+      font-size: $fz-list - 2;
+      color: $color-main;
     }
   }
 }
@@ -66,11 +71,6 @@ $height-word-item: 24px;
   justify-content: flex-start;
   position: relative;
   padding: 0 20px;
-  &:first-child{
-    .operation{
-      justify-content: flex-end;
-    }
-  }
   &:after{
     content: '';
     height: 1px;
@@ -103,7 +103,7 @@ $height-word-item: 24px;
     color: $text-subtitle;
   }
   .operation{
-    width: 40px;
+    width: 60px;
     flex-grow: 0;
     flex-shrink: 0;
     opacity: 0.3;
