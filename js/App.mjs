@@ -106,13 +106,17 @@ const app = {
             this.dict.deleteWords(this.selectedWordIds)
             this.selectedWordIds = [] // 清空选中 wordID
         },
+        // 上移词条
         moveUp(id){
             this.display = this.dict.move(id, 'up')
-            this.$forceUpdate()
+            let temp = this.dict.words.pop()
+            this.dict.words.push(temp)
         },
+        // 下移词条
         moveDown(id){
             this.display = this.dict.move(id, 'down')
-            this.$forceUpdate()
+            let temp = this.dict.words.pop()
+            this.dict.words.push(temp)
         },
         // 绑定键盘事件： 键盘上下控制词条上下移动
         addKeyboardListener(){
@@ -130,16 +134,14 @@ const app = {
                     case 'ArrowDown':
                         if(this.selectedWordIds.length === 1) { // 只有一个元素时，键盘才起作用
                             let id = this.selectedWordIds[0]
-                            this.display = this.dict.move(id, 'down')
-                            this.$forceUpdate()
+                            this.moveDown(id)
                         }
                         event.preventDefault()
                         break
                     case 'ArrowUp':
                         if(this.selectedWordIds.length === 1) { // 只有一个元素时，键盘才起作用
                             let id = this.selectedWordIds[0]
-                            this.display = this.dict.move(id, 'up')
-                            this.$forceUpdate()
+                            this.moveUp(id)
                         }
                         event.preventDefault()
                         break

@@ -278,6 +278,7 @@ class Dict {
                             this.words[i - 1] = tempItem
                             return ''
                         } else {
+                            console.log('已到顶')
                             return '已到顶'
                         }
                     } else if (direction === 'down'){
@@ -286,6 +287,7 @@ class Dict {
                             this.words[i + 1] = tempItem
                             return ''
                         } else {
+                            console.log('已到底')
                             return '已到底'
                         }
                     }
