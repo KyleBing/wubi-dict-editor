@@ -108,9 +108,11 @@ const app = {
         },
         moveUp(id){
             this.display = this.dict.move(id, 'up')
+            this.$forceUpdate()
         },
         moveDown(id){
             this.display = this.dict.move(id, 'down')
+            this.$forceUpdate()
         },
         // 绑定键盘事件： 键盘上下控制词条上下移动
         addKeyboardListener(){
@@ -129,6 +131,7 @@ const app = {
                         if(this.selectedWordIds.length === 1) { // 只有一个元素时，键盘才起作用
                             let id = this.selectedWordIds[0]
                             this.display = this.dict.move(id, 'down')
+                            this.$forceUpdate()
                         }
                         event.preventDefault()
                         break
@@ -136,6 +139,7 @@ const app = {
                         if(this.selectedWordIds.length === 1) { // 只有一个元素时，键盘才起作用
                             let id = this.selectedWordIds[0]
                             this.display = this.dict.move(id, 'up')
+                            this.$forceUpdate()
                         }
                         event.preventDefault()
                         break
