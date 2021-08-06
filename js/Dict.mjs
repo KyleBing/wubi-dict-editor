@@ -249,30 +249,33 @@ class Dict {
     // 词条位置移动
     move(wordId, direction){
         if (this.isGroupMode){
-            this.words.forEach(group => {
-                for(let i=0; i<group.dict.length; i++){
-                    if (wordId === group.dict[i].id){
-                        let tempItem = group.dict[i]
+            for(let i=0; i<this.words.length; i++){
+                let group = this.words[i]
+                for(let j=0; j<group.dict.length; j++){
+                    if (wordId === group.dict[j].id){
+                        let tempItem = group.dict[j]
                         if (direction === 'up'){
-                            if (i !==0){
-                                group.dict[i] = group.dict[i - 1]
-                                group.dict[i - 1] = tempItem
+                            if (j !==0){
+                                group.dict[j] = group.dict[j - 1]
+                                group.dict[j - 1] = tempItem
                                 return ''
                             } else {
+                                console.log('已到顶')
                                 return '已到顶'
                             }
                         } else if (direction === 'down'){
-                            if (i+1 !== group.dict.length){
-                                group.dict[i] = group.dict[i + 1]
-                                group.dict[i + 1] = tempItem
+                            if (j+1 !== group.dict.length){
+                                group.dict[j] = group.dict[j + 1]
+                                group.dict[j + 1] = tempItem
                                 return ''
                             } else {
+                                console.log('已到底')
                                 return '已到底'
                             }
                         }
                     }
                 }
-            })
+            }
         } else {
             for(let i=0; i<this.words.length; i++){
                 if (wordId === this.words[i].id){
