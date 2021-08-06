@@ -56,13 +56,15 @@ $height-word-item: 24px;
       @include transition(all 0.3s);
     }
     .tip{
+      flex-grow: 1;
+      text-align: right;
       font-size: $fz-list - 2;
       color: $color-main;
     }
   }
 }
 .word-list{
-  padding-bottom: 10px;
+  padding-bottom: 20px;
 }
 .word-item{
   height: $height-word-item;

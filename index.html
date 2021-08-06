@@ -12,10 +12,10 @@
 <div v-cloak id="app">
     <div class="search-bar" v-if="dict">
         <div class="btn btn-primary" @click="resetInputs">重置</div>
+        <div :class="['btn', {'btn-green': labelOfSaveBtn === '保存成功'}, {'btn-cyan': labelOfSaveBtn !== '保存成功'} ]" ref="domBtnSave" @click="saveToFile(dict)">{{ labelOfSaveBtn }}</div>
         <input class="word" ref="domInputWord" v-model="word" type="text" placeholder="词条">
         <input class="code" ref="domInputCode" v-model="code" type="text" placeholder="编码">
         <div class="btn btn-primary" @click="addNewPhrase">添加</div>
-        <div class="btn btn-cyan" ref="domBtnSave" @click="saveToFile(dict)">{{ labelOfSaveBtn }}</div>
         <div class="btn btn-primary" @click="search">搜索</div>
         <div class="btn btn-roseo" v-show="selectedWordIds.length > 0" @click="deleteWords">删除</div>
         <div class="btn btn-alt-blue" v-show="selectedWordIds.length > 0" @click="addToMain">添加到主码表</div>
@@ -78,18 +78,20 @@
                         <input :key="groupIndex"
                                v-model="group.groupName"
                                @keydown.enter="group.isEditingTitle = false" />
-                        <div class="btn btn-sm btn-alt-primary" @click="group.isEditingTitle = false">保存</div>
+                        <div class="operation">
+                            <div class="btn btn-sm btn-alt-primary" @click="group.isEditingTitle = false">保存</div>
+                        </div>
                     </template>
                     <template v-else>
                         <h3 :key="groupIndex"
                         >{{ group.groupName }}</h3>
                         <div class="operation">
-                            <div class="btn btn-sm btn-alt-green" @click="dict.addGroupBefore(groupIndex)">添加分组</div>
                             <div class="btn btn-sm btn-alt-primary" @click="group.isEditingTitle = true">编辑分组</div>
+                            <div class="btn btn-sm btn-alt-green" @click="dict.addGroupBefore(groupIndex)">添加分组</div>
                             <div class="btn btn-sm btn-alt-roseo" @click="dict.deleteGroup(groupIndex)">删除分组</div>
                         </div>
                     </template>
-                    <p class="tip" v-if="activeGroupId === groupIndex">将添加词条到该组</p>
+                    <p class="tip" v-if="activeGroupId === groupIndex">新词将添加到该分组</p>
                 </div>
 
                 <div class="word-list">

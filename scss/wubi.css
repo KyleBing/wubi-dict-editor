@@ -490,12 +490,14 @@
   margin-left: 5px;
 }
 .group .group-header .tip {
+  flex-grow: 1;
+  text-align: right;
   font-size: 11px;
   color: #FF2D70;
 }
 
 .word-list {
-  padding-bottom: 10px;
+  padding-bottom: 20px;
 }
 
 .word-item {
