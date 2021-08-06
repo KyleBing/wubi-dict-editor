@@ -5,6 +5,8 @@ const os = require('os')
 const url = require("url")
 const path = require("path")
 
+const IS_IN_DEVELOP = false
+
 let mainWindow
 
 function createWindow() {
@@ -18,7 +20,9 @@ function createWindow() {
         }
     })
 
-    mainWindow.webContents.openDevTools() // 打开调试窗口
+    if (IS_IN_DEVELOP){
+        mainWindow.webContents.openDevTools() // 打开调试窗口
+    }
 
 
     mainWindow.loadURL(

@@ -469,7 +469,7 @@
   margin-right: 10px;
 }
 .group .group-header h3 {
-  font-size: 13px;
+  font-size: 14px;
   line-height: 26px;
   margin-right: 10px;
 }
@@ -542,7 +542,7 @@
   width: 60px;
   flex-grow: 0;
   flex-shrink: 0;
-  opacity: 0.3;
+  opacity: 0.2;
   display: flex;
   justify-content: flex-start;
 }
@@ -629,7 +629,7 @@
 }
 
 .btn-sm {
-  font-size: 10px;
+  font-size: 11px;
   line-height: 14px;
   padding: 2px 3px;
 }

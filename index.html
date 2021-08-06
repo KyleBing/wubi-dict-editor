@@ -57,7 +57,7 @@
                                     <img src="./assets/down.svg" alt="move down">
                                 </div>
                                 <div  class="down" @click="deleteWord(item.id)">
-                                    <img src="./assets/down.svg" alt="move down">
+                                    <img src="./assets/delete.svg" alt="move down">
                                 </div>
                             </div>
                         </div>
@@ -86,9 +86,9 @@
                         <h3 :key="groupIndex"
                         >{{ group.groupName }}</h3>
                         <div class="operation">
-                            <div class="btn btn-sm btn-alt-primary" @click="group.isEditingTitle = true">编辑分组</div>
-                            <div class="btn btn-sm btn-alt-green" @click="dict.addGroupBefore(groupIndex)">添加分组</div>
-                            <div class="btn btn-sm btn-alt-roseo" @click="dict.deleteGroup(groupIndex)">删除分组</div>
+                            <div class="btn btn-sm btn-alt-primary" @click="group.isEditingTitle = true">编辑</div>
+                            <div class="btn btn-sm btn-alt-green" @click="dict.addGroupBefore(groupIndex)">添加</div>
+                            <div class="btn btn-sm btn-alt-roseo" @click="dict.deleteGroup(groupIndex)">删除</div>
                         </div>
                     </template>
                     <p class="tip" v-if="activeGroupId === groupIndex">新词将添加到该分组</p>
@@ -116,7 +116,7 @@
                                 <img src="./assets/down.svg" alt="move down">
                             </div>
                             <div  class="down" @click="deleteWord(item.id)">
-                                <img src="./assets/down.svg" alt="move down">
+                                <img src="./assets/delete.svg" alt="move down">
                             </div>
                         </div>
                     </div>
@@ -138,7 +138,7 @@
                 <div class="count">总 <span class="number">{{dict.countDictOrigin}}</span></div>
                 <div class="count"
                      v-if="dict.countDictOrigin !== dict.countDict">显 <span class="number">{{dict.countDict}}</span></div>
-                <div class="count">选 <span class="number">{{selectedWordIds.length}}</span></div>
+                <div class="count">已选 <span class="number">{{selectedWordIds.length}}</span></div>
             </div>
         </div>
 

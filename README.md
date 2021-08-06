@@ -10,7 +10,7 @@ Windows, macOS, (Linux 未测试)
 ## 用到的技术
 - `nodejs`
 - `javascript` `scss` `html`
-- `vue 3` [`electron`](https://github.com/electron/electron)
+- `vue 2` [`electron`](https://github.com/electron/electron)
 
 ## 开发计划
 
