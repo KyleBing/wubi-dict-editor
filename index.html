@@ -11,13 +11,16 @@
 
 <div v-cloak id="app">
     <div class="search-bar" v-if="dict">
-        <div :class="['btn', {'btn-green': labelOfSaveBtn === '保存成功'}, {'btn-cyan': labelOfSaveBtn !== '保存成功'} ]" ref="domBtnSave" @click="saveToFile(dict)">{{ labelOfSaveBtn }}</div>
+        <div
+            :class="['btn', {'btn-green': labelOfSaveBtn === '保存成功'}, {'btn-primary': labelOfSaveBtn !== '保存成功'} ]"
+            ref="domBtnSave"
+            @click="saveToFile(dict)">{{ labelOfSaveBtn }}</div>
         <input class="word" ref="domInputWord" v-model="word" @keyup.enter="addNewPhrase" type="text" placeholder="词条">
         <input class="code" ref="domInputCode" v-model="code" @keyup.enter="addNewPhrase" type="text" placeholder="编码">
         <div class="btn btn-primary" @click="addNewPhrase">添加</div>
         <div class="btn btn-primary" @click="search">搜索</div>
         <div class="btn btn-roseo" v-show="selectedWordIds.length > 0" @click="deleteWords">删除</div>
-        <div class="btn btn-alt-blue" v-show="selectedWordIds.length > 0" @click="addToMain">移至主词库</div>
+        <div class="btn btn-orange" v-show="selectedWordIds.length > 0" @click="addToMain">移至主词库</div>
     </div>
 
     <div ref="container"
@@ -129,9 +132,9 @@
     <div class="footer">
         <div class="footer-toolbar">
             <div class="link-list">
-                <div class="link" @click="openCurrentYaml">打开源文件</div>
-                <div class="link" ref="domBtnSelectAll" @click="selectAll">全选</div>
                 <div class="link" @click="resetInputs">重置</div>
+                <div class="link" ref="domBtnSelectAll" @click="selectAll">全选</div>
+                <div class="link" @click="openCurrentYaml">打开源文件</div>
             </div>
             <div class="info-list">
                 <div class="count" v-if="this.dict.isGroupMode"><span>分组模式</span></div>

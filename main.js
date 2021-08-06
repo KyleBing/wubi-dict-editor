@@ -5,7 +5,7 @@ const os = require('os')
 const url = require("url")
 const path = require("path")
 
-const IS_IN_DEVELOP = false
+const IS_IN_DEVELOP = true
 
 let mainWindow
 
@@ -122,7 +122,7 @@ function getLabelNameFromFileName(fileName){
         {name: '五笔极点 - 用户词库', path: 'wubi86_jidian_user.dict.yaml'},
     ]
     if (IS_IN_DEVELOP){
-        map.concat([
+        map = map.concat([
             {name: '测试 ⛳', path: 'test.dict.yaml'},
             {name: '测试- 分组️ ⛳️', path: 'test_group.dict.yaml'},
             {name: '测试- 主 ⛳️', path: 'main.dict.yaml'},
@@ -176,7 +176,7 @@ function createMenu(filesMenu) {
             label: '关于',
             submenu: [
                 {label: '最小化', role: 'minimize'},
-                {label: '关于', role: 'about'},
+                {label: 'v1.0.0(beta)'},
                 {type: 'separator'},
                 {label: '退出', role: 'quit'},
             ]
