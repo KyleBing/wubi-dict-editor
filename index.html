@@ -13,8 +13,8 @@
     <div class="search-bar" v-if="dict">
         <div class="btn btn-primary" @click="resetInputs">重置</div>
         <div :class="['btn', {'btn-green': labelOfSaveBtn === '保存成功'}, {'btn-cyan': labelOfSaveBtn !== '保存成功'} ]" ref="domBtnSave" @click="saveToFile(dict)">{{ labelOfSaveBtn }}</div>
-        <input class="word" ref="domInputWord" v-model="word" type="text" placeholder="词条">
-        <input class="code" ref="domInputCode" v-model="code" type="text" placeholder="编码">
+        <input class="word" ref="domInputWord" v-model="word" @keyup.enter="addNewPhrase" type="text" placeholder="词条">
+        <input class="code" ref="domInputCode" v-model="code" @keyup.enter="addNewPhrase" type="text" placeholder="编码">
         <div class="btn btn-primary" @click="addNewPhrase">添加</div>
         <div class="btn btn-primary" @click="search">搜索</div>
         <div class="btn btn-roseo" v-show="selectedWordIds.length > 0" @click="deleteWords">删除</div>
