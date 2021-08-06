@@ -5,13 +5,13 @@ const os = require('os')
 const url = require("url")
 const path = require("path")
 
-const IS_IN_DEVELOP = true
+const IS_IN_DEVELOP = false
 
 let mainWindow
 
 function createWindow() {
     let width = IS_IN_DEVELOP ? 1400: 600
-    let height = IS_IN_DEVELOP ? 600: 600
+    let height = IS_IN_DEVELOP ? 800: 600
     mainWindow = new BrowserWindow({
         width,
         height,
