@@ -10,9 +10,11 @@ const IS_IN_DEVELOP = false
 let mainWindow
 
 function createWindow() {
+    let width = IS_IN_DEVELOP ? 1400: 600
+    let height = IS_IN_DEVELOP ? 600: 600
     mainWindow = new BrowserWindow({
-        width: 1400, height: 600,
-        // width: 600, height: 600,
+        width,
+        height,
         icon: __dirname + '/assets/appIcon/appicon.ico',
         webPreferences: {
             nodeIntegration: true,
@@ -51,6 +53,11 @@ function createWindow() {
     // 监听 window 的文件载入请求
     ipcMain.on('loadTestFile', event => {
         readFile(path.join(getRimeConfigDir(), 'test_group.dict.yaml'))
+    })
+
+    // 监听 window 的文件载入请求
+    ipcMain.on('loadUserDictFile', event => {
+        readFile(path.join(getRimeConfigDir(), 'wubi86_jidian_user.dict.yaml'))
     })
 
     // 监听载入主文件内容的请求
@@ -107,15 +114,20 @@ function readFile(filePath){
 
 // 匹配文件名，返回对应文件的名字
 function getLabelNameFromFileName(fileName){
-    const map = [
+    let map = [
         {name: '拼音词库', path: 'pinyin_simp.dict.yaml'},
-        {name: '测试词库 ⛳', path: 'test.dict.yaml'},
-        {name: '测试词库 - 分组️ ⛳️', path: 'test_group.dict.yaml'},
         {name: '五笔极点 - 主词库', path: 'wubi86_jidian.dict.yaml'},
         {name: '五笔极点 - 分词库', path: 'wubi86_jidian_addition.dict.yaml'},
         {name: '五笔极点 - 附加词库', path: 'wubi86_jidian_extra.dict.yaml'},
         {name: '五笔极点 - 用户词库', path: 'wubi86_jidian_user.dict.yaml'},
     ]
+    if (IS_IN_DEVELOP){
+        map.concat([
+            {name: '测试 ⛳', path: 'test.dict.yaml'},
+            {name: '测试- 分组️ ⛳️', path: 'test_group.dict.yaml'},
+            {name: '测试- 主 ⛳️', path: 'main.dict.yaml'},
+        ])
+    }
     let matchedPath = map.filter(item => item.path === fileName)
     // 返回匹配的名字，或者返回原文件名
     return matchedPath.length > 0 ? matchedPath[0].name: fileName

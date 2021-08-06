@@ -15,6 +15,7 @@ const app = {
     components: {RecycleScroller: VirtualScroller.RecycleScroller},
     data() {
         return {
+            IS_IN_DEVELOP: false,
             display: '', // 提示信息
             dict: {
                 deep: true
@@ -46,7 +47,8 @@ const app = {
             }, 2000)
         })
 
-        ipcRenderer.send('loadTestFile')
+        // ipcRenderer.send('loadTestFile')
+        ipcRenderer.send('loadUserDictFile')
         ipcRenderer.send('loadMainDict')
         ipcRenderer.on('setMainDict', (event, filePath, res) => {
             this.dictMain = new Dict(res, filePath)
