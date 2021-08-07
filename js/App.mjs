@@ -46,8 +46,11 @@ const app = {
             }, 2000)
         })
 
-        // ipcRenderer.send('loadTestFile')
-        ipcRenderer.send('loadUserDictFile')
+        if (IS_IN_DEVELOP){
+            ipcRenderer.send('loadTestFile')
+        } else {
+            ipcRenderer.send('loadUserDictFile')
+        }
         ipcRenderer.send('loadMainDict')
         ipcRenderer.on('setMainDict', (event, filePath, res) => {
             this.dictMain = new Dict(res, filePath)

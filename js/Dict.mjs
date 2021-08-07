@@ -251,6 +251,8 @@ class Dict {
     // 词条位置移动
     move(wordId, direction){
         if (this.isGroupMode){
+            // group 时，移动 调换 word 位置，是直接调动的 wordsOrigin 中的word
+            // 因为 group 时数据为： [{word, word},{word,word}]，是 wordGroup 的索引
             for(let i=0; i<this.words.length; i++){
                 let group = this.words[i]
                 for(let j=0; j<group.dict.length; j++){
@@ -279,11 +281,14 @@ class Dict {
                 }
             }
         } else {
+            // 非分组模式时，调换位置并不能直接改变 wordsOrigin 因为 与 words 已经断开连接
+            // [word, word]
             for(let i=0; i<this.words.length; i++){
                 if (wordId === this.words[i].id){
                     let tempItem = this.words[i]
                     if (direction === 'up'){
                         if (i !==0) {
+                            this.exchangePositionInOrigin(tempItem, this.words[i-1]) // 调换 wordsOrigin 中的词条位置
                             this.words[i] = this.words[i - 1]
                             this.words[i - 1] = tempItem
                             return ''
@@ -293,6 +298,7 @@ class Dict {
                         }
                     } else if (direction === 'down'){
                         if (i+1 !== this.words.length) {
+                            this.exchangePositionInOrigin(tempItem, this.words[i+1]) // 调换 wordsOrigin 中的词条位置
                             this.words[i] = this.words[i + 1]
                             this.words[i + 1] = tempItem
                             return ''
@@ -302,6 +308,25 @@ class Dict {
                         }
                     }
                 }
+            }
+        }
+    }
+
+    // 在 origin 中调换两个词条的位置
+    exchangePositionInOrigin(word1, word2){
+        // 确保 word1 在前
+        if (parseInt(word1.id) > parseInt(word2.id)){
+            let temp = word1
+            word1 = word2
+            word2 = temp
+        }
+        for(let i=0; i<this.wordsOrigin.length; i++){
+            let tempWord = this.wordsOrigin[i]
+            if (tempWord.isEqualTo(word1)){
+                this.wordsOrigin[i] = word2
+            }
+            if (tempWord.isEqualTo(word2)){
+                this.wordsOrigin[i] = word1
             }
         }
     }

@@ -18,6 +18,9 @@ class Word{
     clone(){
         return new Word(this.id, this.code, this.word)
     }
+    isEqualTo(word){
+        return this.id === word.id
+    }
 }
 
 export default Word
