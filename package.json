@@ -8,7 +8,7 @@
   },
   "date": "2021-07-26",
   "dateInit": "2021-07-24",
-  "description": "demo-electron",
+  "description": "五笔码表管理工具",
   "main": "main.js",
   "scripts": {
     "start": "electron-forge start",
@@ -35,7 +35,7 @@
         {
           "name": "@electron-forge/maker-squirrel",
           "config": {
-            "name": "elec"
+            "name": "WubiDictEditor"
           }
         },
         {
