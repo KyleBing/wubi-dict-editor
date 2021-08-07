@@ -11,7 +11,7 @@ let mainWindow
 
 function createWindow() {
     let width = IS_IN_DEVELOP ? 1400: 600
-    let height = IS_IN_DEVELOP ? 800: 600
+    let height = IS_IN_DEVELOP ? 600: 600
     mainWindow = new BrowserWindow({
         width,
         height,
@@ -147,11 +147,22 @@ function createMenu(filesMenu) {
             role: 'editMenu'
         },
         {
-            label: '词库列表',
+            label: '词库',
             submenu: filesMenu
         },
         {
-            label: '其它操作',
+            label: '布署',
+            submenu: [
+                {
+                    label: '重新布署',
+                    click() {
+                        applyRime()
+                    }
+                },
+            ]
+        },
+        {
+            label: '文件夹',
             submenu: [
                 {
                     label: '打开配置文件夹',
@@ -163,12 +174,6 @@ function createMenu(filesMenu) {
                     label: '打开程序文件夹',
                     click() {
                         shell.openPath(getRimeExecDir())
-                    }
-                },
-                {
-                    label: '重新布署',
-                    click() {
-                        applyRime()
                     }
                 },
             ]
