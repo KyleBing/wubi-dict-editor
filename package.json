@@ -35,8 +35,7 @@
         {
           "name": "@electron-forge/maker-squirrel",
           "config": {
-            "name": "elec",
-            "exe": "五笔词库管理工具"
+            "name": "elec"
           }
         },
         {

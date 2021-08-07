@@ -164,7 +164,7 @@ class Dict {
     addWordsInOrder(words){
         let startPoint = new Date().getTime()
         if (this.isGroupMode){
-            console.log('TODO: add to group')
+            this.addWordToDictWithGroup()
         } else {
             words.forEach(word => {
                 this.addWordToDict(word)
@@ -193,7 +193,9 @@ class Dict {
 
 
     // 依次序添加 word groupMode
-    addWordToDictWithGroup(word){}
+    addWordToDictWithGroup(word){
+        console.log('TODO: add to group')
+    }
 
 
     // 删除词条

@@ -1,11 +1,11 @@
-const {app, BrowserWindow, Menu, ipcMain, nativeTheme, ipcRenderer, shell} = require('electron')
+const {app, BrowserWindow, Menu, ipcMain, nativeTheme, shell} = require('electron')
 const { exec } = require('child_process')
 const fs = require('fs')
 const os = require('os')
 const url = require("url")
 const path = require("path")
 
-const IS_IN_DEVELOP = false
+const IS_IN_DEVELOP = false // 是否为开发模式
 
 let mainWindow
 
@@ -15,7 +15,7 @@ function createWindow() {
     mainWindow = new BrowserWindow({
         width,
         height,
-        icon: __dirname + '/assets/appIcon/appicon.ico',
+        icon: __dirname + '/assets/appIcon/appicon.ico', // windows icon
         webPreferences: {
             nodeIntegration: true,
             contextIsolation: false
