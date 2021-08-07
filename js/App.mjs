@@ -1,13 +1,12 @@
 import Dict from "./Dict.mjs"
 import {shakeDom, shakeDomFocus} from "./Utility.mjs"
 import Word from "./Word.mjs";
-
 import Vue from '../node_modules/vue/dist/vue.esm.browser.min.js'
 
-// const Vue = require('vue/dist/vue.esm.browser.min.js')
 const {ipcRenderer} = require('electron')
-
+const {IS_IN_DEVELOP} =  require('./js/Global')
 const VirtualScroller = require('vue-virtual-scroller')
+
 
 // Vue 2
 const app = {
@@ -15,7 +14,7 @@ const app = {
     components: {RecycleScroller: VirtualScroller.RecycleScroller},
     data() {
         return {
-            IS_IN_DEVELOP: false, // 是否为开发模式
+            IS_IN_DEVELOP: IS_IN_DEVELOP, // 是否为开发模式
             display: '', // 提示信息
             dict: {
                 deep: true

@@ -5,7 +5,7 @@ const os = require('os')
 const url = require("url")
 const path = require("path")
 
-const IS_IN_DEVELOP = false // 是否为开发模式
+const { IS_IN_DEVELOP } =  require('./js/Global')
 
 let mainWindow
 
