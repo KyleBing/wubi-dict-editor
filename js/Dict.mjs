@@ -239,7 +239,7 @@ class Dict {
             return this.header + os.EOL + yamlBody
         } else {
             let yamlBody = ''
-            this.words.forEach(item =>{
+            this.wordsOrigin.forEach(item =>{
                 yamlBody = yamlBody + item.toString() + os.EOL
             })
             return this.header + os.EOL + yamlBody

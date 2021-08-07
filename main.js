@@ -62,11 +62,12 @@ function createWindow() {
 
     // 监听载入主文件内容的请求
     ipcMain.on('loadMainDict', event => {
-        fs.readFile(path.join(getRimeConfigDir(), 'main.dict.yaml'), {encoding: 'utf-8'}, (err, res) => {
+        let mainDictFileName = IS_IN_DEVELOP? 'main.dict.yaml' : 'wubi86_jidian.dict.yaml'
+        fs.readFile(path.join(getRimeConfigDir(), mainDictFileName), {encoding: 'utf-8'}, (err, res) => {
             if(err){
                 console.log(err)
             } else {
-                mainWindow.webContents.send('setMainDict', path.join(getRimeConfigDir(), 'main.dict.yaml') ,res)
+                mainWindow.webContents.send('setMainDict', path.join(getRimeConfigDir(), mainDictFileName) ,res)
             }
         })
     })
