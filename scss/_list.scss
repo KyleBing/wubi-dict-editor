@@ -21,10 +21,10 @@ $height-word-item: 24px;
     cursor: pointer;
     display: flex;
     align-items: center;
+    color: $color-main;
     &.active{
       background-color: transparentize($color-main, 0.95);
       h3{
-        color: $color-main;
       }
     }
     &:hover{
@@ -59,7 +59,6 @@ $height-word-item: 24px;
       flex-grow: 1;
       text-align: right;
       font-size: $fz-list - 2;
-      color: $color-main;
     }
   }
 }

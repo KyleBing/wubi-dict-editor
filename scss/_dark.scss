@@ -1,8 +1,146 @@
+$black-color-border-highlight : lighten(black, 22%);
+$black-body-bg                : #0f0f13;
+$black-bg                     : #1c1f24;
+$black-bg-hover               : lighten(#1c1f24, 5%);
+$black-bg-highlight           : #383f4a;
+$black-color-border           : lighten($black-bg, 5%);
+$black-color-text             : lighten(black, 90%);
+$black-color-text-info        : lighten(black, 65%);
+$black-color-text-subtitle    : lighten(black, 70%);
+$black-color-text-comment     : lighten(black, 55%);
+$black-btn-bg                 : lighten(black, 25%);
+
+$black-color-main: #81fffa;
+
 @media (prefers-color-scheme: dark) {
+
   body{
-    background-color: #333;
+    background-color: $black-bg !important;
   }
   .list-container{
-    background-color: #aaa;
+  }
+  .search-bar{
+    background-color: $black-bg;
+    border-bottom-color: $black-color-border;
+  }
+  .group {
+    color: $black-color-text;
+    .group-header{
+      color: $black-color-main;
+      &:hover{
+        background-color: $black-bg-hover;
+      }
+      &.active{
+        background-color: $black-bg-highlight;
+      }
+    }
+  }
+  .word-item{
+    &:hover{
+      background: $black-bg-hover;
+      .checkbox-cell{
+        label{
+          border-color: $black-color-main;
+        }
+      }
+    }
+    &:after{
+      background-color: $black-color-border;
+    }
+    .code{
+      color: $black-color-text-subtitle;
+    }
+    .word{
+
+    }
+
+  }
+  .footer{
+    background-color: $black-bg;
+    border-top-color: $black-color-border-highlight;
+    color: $black-color-text;
+    .link {
+      &:hover {
+        color: $black-color-main !important;
+      }
+    }
+  }
+
+
+
+  input, select{
+    color: $black-color-text;
+    &:focus{
+      border-color: $black-color-main;
+      @include box-shadow(0 0 0 2px transparentize($black-color-main, 0.5))
+    }
+  }
+  input[type=checkbox] + label.checkbox{
+    background-color: $black-body-bg;
+    border-color: $black-color-border;
+  }
+  input[type=checkbox]:checked + label.checkbox {
+    border-color: $black-color-main;
+  }
+  label.checkbox:hover{
+    border-color: $black-color-main !important;
+  }
+  input[type=checkbox]:checked + label.checkbox{
+    &:after{
+      background-color: $black-color-main;
+    }
+  }
+  input {
+    background-color: $black-body-bg;
+    border-color: $black-color-border-highlight;
+  }
+
+
+  @each $name, $color in $btns {
+    .btn-#{$name}{
+      @if $name == primary {
+        color: $black-color-text;
+        background-color: $black-btn-bg;
+        border: 1px solid $black-color-border-highlight;
+      } @else {
+        color: white;
+        background-color: $color;
+        border: 1px solid $color;
+      }
+      &:hover{
+        @if $name == primary {
+          color: $black-color-text;
+          background-color: $black-btn-bg;
+          border: 1px solid $black-color-border-highlight;
+        } @else {
+          background-color: darken($color, 8%);
+          border-color: darken($color, 8%);
+        }
+      }
+      &:active{
+        @if $name == primary {
+
+        } @else {
+          background-color: darken($color, 10%);
+        }
+      }
+    }
+  }
+
+
+
+  @each $name, $color in $btns {
+    .btn-alt-#{$name}{
+      border-color: transparent;
+      background-color: transparent;
+      color: $color;
+      &:hover{
+        border-color: $color;
+        color: $color;
+      }
+      &:active{
+        color: $color;
+      }
+    }
   }
 }

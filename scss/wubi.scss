@@ -7,11 +7,13 @@
 @import "button";
 @import "searchbar";
 @import "footer";
+@import "dark";
 
 
 
 body{
   font-size: 12px;
+  background-color: white;
 }
 
 .container{

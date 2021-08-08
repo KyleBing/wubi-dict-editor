@@ -75,11 +75,11 @@ function createWindow() {
     // 外部打开当前码表文件
     ipcMain.on('openFileOutside', (event, filePath) => {
         console.log(filePath)
-        shell.openPath(filePath)
-    })
-
-    ipcMain.handle('dark-mode:system', () => {
-        nativeTheme.themeSource = 'system'
+        shell.openPath(filePath).then(res => {
+            console.log(res)
+        }).catch(err => {
+            console.log(err)
+        })
     })
 }
 

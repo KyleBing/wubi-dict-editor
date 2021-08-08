@@ -1,68 +1,74 @@
 * {
-  padding: 0;
-  margin: 0;
-  border: 0;
-  font-size: inherit;
-  font-family: inherit;
-  color: inherit;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box; }
-
+    padding: 0;
+    margin: 0;
+    border: 0;
+    font-size: inherit;
+    font-family: inherit;
+    color: inherit;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
 body {
-  width: 100%;
-  margin: 0 auto;
-  font-family: "PingFang SC", "Microsoft Yahei UI", "Microsoft Yahei", "Helvetica", sans-serif;;
+    width: 100%;
+    margin: 0 auto;
+    font-family: "PingFang SC", "Microsoft Yahei UI", "Microsoft Yahei", "Helvetica", sans-serif;;
 }
-
 a {
-  text-decoration: none; }
-
-table {
-  border-collapse: collapse; }
-
-select{
-  -webkit-appearance: none;
+    text-decoration: none;
 }
-
-
-
+table {
+    border-collapse: collapse;
+}
+select {
+    -webkit-appearance: none;
+}
 code,
 kbd,
 pre,
 samp,
 tt {
-  font-family: "Courier New", Courier, monospace; }
-
+    font-family: "Courier New", Courier, monospace;
+}
 :focus,
 :active {
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-  outline: none; }
-
-::-webkit-scrollbar {
-  z-index: 50;
-  width: 5px;
-  height: 3px;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    outline: none;
 }
-
+::-webkit-scrollbar {
+    z-index: 50;
+    width: 5px;
+    height: 3px;
+}
 ::-webkit-scrollbar-track {
-  border-right: 1px solid #eeeeee;
-  background-color: rgba(0, 0, 0, 0); }
-
+    background-color: rgba(0, 0, 0, 0);
+}
 ::-webkit-scrollbar-thumb {
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  border-radius: 5px;
-  background-color: #ddd;
-  transition: all .2s;
-  height: 3px; }
-
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    background-color: #ccc;
+    transition: all .2s;
+    height: 3px;
+}
 :hover::-webkit-scrollbar-thumb {
-  background-color: #ccc;
-  transition: all .2s; }
-
+    background-color: #bbb;
+    transition: all .2s;
+}
 ::-webkit-scrollbar-button {
-  display: none; }
-
+    display: none;
+}
 ::-webkit-scrollbar-corner {
-  display: none; }
+    display: none;
+}
+@media (prefers-color-scheme: dark) {
+    ::-webkit-scrollbar-track {
+        background-color: rgba(0, 0, 0, 0);
+    }
+    ::-webkit-scrollbar-thumb {
+        background-color: #ddd;
+    }
+    :hover::-webkit-scrollbar-thumb {
+        background-color: #ccc;
+    }
+}
