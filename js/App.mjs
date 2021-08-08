@@ -28,6 +28,7 @@ const app = {
             selectedWordIds: [], // 已选择的词条
             labelOfSaveBtn: '保存', // 保存按钮的文本
             heightContent: 0, // content 高度
+            currentGroupId: 0, // 当前显示的分组 ID
         }
     },
     mounted() {
@@ -63,6 +64,9 @@ const app = {
         }
     },
     methods: {
+        setGroupId(id){
+            this.currentGroupId = id
+        },
         search(){
             this.selectedWordIds = []
             this.dict.search(this.code, this.word)
@@ -189,7 +193,7 @@ const app = {
         },
         selectedWordIds(newValue){
             console.log('已选词条id: ', JSON.stringify(newValue))
-        }
+        },
     }
 }
 

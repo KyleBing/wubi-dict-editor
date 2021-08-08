@@ -1,0 +1,36 @@
+$catalog-height: 30px;
+$catalog-pd-tb: 5px;
+$catalog-pd-lr: 10px;
+
+.group-container{
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+}
+.catalog-list{
+  border-right: 1px solid $color-border;
+  width: 100px;
+  flex-shrink: 0;
+  overflow-y: auto;
+  .catalog-item{
+    text-align: center;
+    line-height: $catalog-height - $catalog-pd-tb * 2;
+    padding: $catalog-pd-tb $catalog-pd-lr;
+    cursor: pointer;
+    &:hover{
+      background-color: $bg-td-highlighted;
+    }
+    &.active{
+      background-color: $color-main;
+      color: white;
+    }
+  }
+  ::-webkit-scrollbar-thumb{
+    width: 2px;
+    background-color: $color-border;
+  }
+}
+.group-list{
+  flex-grow: 1;
+  overflow-y: auto;
+}

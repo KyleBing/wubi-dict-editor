@@ -1524,6 +1524,41 @@ select option {
     color: #8E8E93;
   }
 }
+.group-container {
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+}
+
+.catalog-list {
+  border-right: 1px solid #eee;
+  width: 100px;
+  flex-shrink: 0;
+  overflow-y: auto;
+}
+.catalog-list .catalog-item {
+  text-align: center;
+  line-height: 20px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+.catalog-list .catalog-item:hover {
+  background-color: rgba(255, 45, 112, 0.05);
+}
+.catalog-list .catalog-item.active {
+  background-color: #FF2D70;
+  color: white;
+}
+.catalog-list ::-webkit-scrollbar-thumb {
+  width: 2px;
+  background-color: #eee;
+}
+
+.group-list {
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
 body {
   font-size: 12px;
   background-color: white;

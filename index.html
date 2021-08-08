@@ -23,11 +23,12 @@
         <div class="btn btn-orange" v-show="selectedWordIds.length > 0" @click="addToMain">移至主词库</div>
     </div>
 
+    <!--  normal-mode-->
     <div ref="container"
+         v-if="!dict.isGroupMode"
          :style="`height: ${heightContent}px`"
          class="container">
-        <!--  normal-mode-->
-        <div class="list-container" v-if="!dict.isGroupMode">
+        <div class="list-container">
             <div class="group">
                 <recycle-scroller
                     :buffer="1000"
@@ -67,65 +68,84 @@
                 </recycle-scroller>
             </div>
         </div>
+    </div>
 
-        <!-- group-mode-->
-        <div class="list-container"
-             :style="`height: ${heightContent}px`"
-             v-else>
-            <div class="group" v-for="(group, groupIndex) in dict.words" :key="groupIndex">
-                <div :class="['group-header', {active: activeGroupId === groupIndex}]"
-                     @click="activeGroupId = groupIndex"
-                     @click.right="group.isEditingTitle = !group.isEditingTitle">
-                    <template v-if="group.isEditingTitle">
-                        <input :key="groupIndex"
-                               v-model="group.groupName"
-                               @keydown.enter="group.isEditingTitle = false" />
-                        <div class="operation">
-                            <div class="btn btn-sm btn-alt-primary" @click="group.isEditingTitle = false">保存</div>
-                        </div>
-                    </template>
-                    <template v-else>
-                        <h3 :key="groupIndex"
-                        >{{ group.groupName }}</h3>
-                        <div class="operation">
-                            <div class="btn btn-sm btn-alt-primary" @click="group.isEditingTitle = true">编辑</div>
-                            <div class="btn btn-sm btn-alt-primary" @click="dict.addGroupBefore(groupIndex)">添加</div>
-                            <div class="btn btn-sm btn-alt-roseo" @click="dict.deleteGroup(groupIndex)">删除</div>
-                        </div>
-                    </template>
-                    <p class="tip" v-if="activeGroupId === groupIndex">+  新词将添加到该分组</p>
+    <!-- group-mode-->
+    <div v-else
+         :style="`height: ${heightContent}px`"
+         class="container">
+        <div class="group-container"
+             :style="`height: ${heightContent}px`">
+<!--目录-->
+            <div class="catalog-list"
+                 :style="`height: ${heightContent}px`">
+                <div :class="['catalog-item', {active: 0 === currentGroupId}]"
+                     @click="setGroupId(0)"><div>全部</div></div>
+                <div :class="['catalog-item', {active: groupIndex+1 === currentGroupId}]"
+                     @click="setGroupId(groupIndex + 1)"
+                     v-for="(group, groupIndex) in dict.words"
+                     :key="groupIndex">
+                    <div>{{group.groupName}}</div>
                 </div>
+            </div>
+<!-- 分组列表-->
+            <div class="group-list"
+                 :style="`height: ${heightContent}px`">
+                <div class="group" v-for="(group, groupIndex) in dict.words" :key="groupIndex">
+                    <div :class="['group-header', {active: activeGroupId === groupIndex}]"
+                         @click="activeGroupId = groupIndex"
+                         @click.right="group.isEditingTitle = !group.isEditingTitle">
+                        <template v-if="group.isEditingTitle">
+                            <input :key="groupIndex"
+                                   v-model="group.groupName"
+                                   @keydown.enter="group.isEditingTitle = false" />
+                            <div class="operation">
+                                <div class="btn btn-sm btn-alt-primary" @click="group.isEditingTitle = false">保存</div>
+                            </div>
+                        </template>
+                        <template v-else>
+                            <h3 :key="groupIndex"
+                            >{{ group.groupName }}</h3>
+                            <div class="operation">
+                                <div class="btn btn-sm btn-alt-primary" @click="group.isEditingTitle = true">编辑</div>
+                                <div class="btn btn-sm btn-alt-primary" @click="dict.addGroupBefore(groupIndex)">添加</div>
+                                <div class="btn btn-sm btn-alt-roseo" @click="dict.deleteGroup(groupIndex)">删除</div>
+                            </div>
+                        </template>
+                        <p class="tip" v-if="activeGroupId === groupIndex">+  新词将添加到该分组</p>
+                    </div>
 
-                <div class="word-list">
-                    <div class="word-item" v-for="(item, index) in group.dict" :key="item.id">
-                        <div class="checkbox-cell">
-                            <input
-                                v-model="selectedWordIds"
-                                name="selectedIds"
-                                :id="`${groupIndex}-${index}`"
-                                type="checkbox"
-                                :value="item.id">
-                            <label class="checkbox" :for="`${groupIndex}-${index}`"></label>
-                        </div>
-                        <div class="code">{{ item.code }}</div>
-                        <div class="word">{{ item.word }}</div>
-                        <div v-if="IS_IN_DEVELOP" class="id">{{ item.id }}</div>
-                        <div class="operation">
-                            <div class="up" @click="moveUp(item.id)">
-                                <img src="./assets/up.svg" alt="move up">
+                    <div class="word-list">
+                        <div class="word-item" v-for="(item, index) in group.dict" :key="item.id">
+                            <div class="checkbox-cell">
+                                <input
+                                    v-model="selectedWordIds"
+                                    name="selectedIds"
+                                    :id="`${groupIndex}-${index}`"
+                                    type="checkbox"
+                                    :value="item.id">
+                                <label class="checkbox" :for="`${groupIndex}-${index}`"></label>
                             </div>
-                            <div  class="down" @click="moveDown(item.id)">
-                                <img src="./assets/down.svg" alt="move down">
-                            </div>
-                            <div  class="down" @click="deleteWord(item.id)">
-                                <img src="./assets/delete.svg" alt="move down">
+                            <div class="code">{{ item.code }}</div>
+                            <div class="word">{{ item.word }}</div>
+                            <div v-if="IS_IN_DEVELOP" class="id">{{ item.id }}</div>
+                            <div class="operation">
+                                <div class="up" @click="moveUp(item.id)">
+                                    <img src="./assets/up.svg" alt="move up">
+                                </div>
+                                <div  class="down" @click="moveDown(item.id)">
+                                    <img src="./assets/down.svg" alt="move down">
+                                </div>
+                                <div  class="down" @click="deleteWord(item.id)">
+                                    <img src="./assets/delete.svg" alt="move down">
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
-
     </div>
 
     <!--FOOTER-->
