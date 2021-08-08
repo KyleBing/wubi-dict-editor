@@ -103,21 +103,20 @@ $btn-sm-padding-lr: 3px;
 
 @each $name, $color in $btns {
   .btn-alt-#{$name}{
+    border: 1px solid transparent;
+    background-color: transparent;
     @if $name == primary {
       color: $text-main;
-      background-color: $color;
-      border: 1px solid darken($color, 30%);
     } @else {
       color: $color;
-      background-color: white;
-      border: 1px solid $color;
     }
     &:hover{
       @if $name == primary {
+        border-color: $text-main;
         color: $text-main;
       } @else {
-        color: darken($color, 15%);
-        border-color: darken($color, 15%);
+        color: $color;
+        border-color: $color;
       }
     }
     &:active{

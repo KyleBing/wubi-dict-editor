@@ -769,11 +769,12 @@
 }
 
 .btn-alt-primary {
+  border: 1px solid transparent;
+  background-color: transparent;
   color: #000;
-  background-color: white;
-  border: 1px solid #b3b3b3;
 }
 .btn-alt-primary:hover {
+  border-color: #000;
   color: #000;
 }
 .btn-alt-primary:active {
@@ -781,117 +782,117 @@
 }
 
 .btn-alt-green {
+  border: 1px solid transparent;
+  background-color: transparent;
   color: #4CD964;
-  background-color: white;
-  border: 1px solid #4CD964;
 }
 .btn-alt-green:hover {
-  color: #26b33e;
-  border-color: #26b33e;
+  color: #4CD964;
+  border-color: #4CD964;
 }
 .btn-alt-green:active {
   color: #4CD964;
 }
 
 .btn-alt-cyan {
+  border: 1px solid transparent;
+  background-color: transparent;
   color: #5AC8FA;
-  background-color: white;
-  border: 1px solid #5AC8FA;
 }
 .btn-alt-cyan:hover {
-  color: #10aff8;
-  border-color: #10aff8;
+  color: #5AC8FA;
+  border-color: #5AC8FA;
 }
 .btn-alt-cyan:active {
   color: #5AC8FA;
 }
 
 .btn-alt-blue {
+  border: 1px solid transparent;
+  background-color: transparent;
   color: #007AFF;
-  background-color: white;
-  border: 1px solid #007AFF;
 }
 .btn-alt-blue:hover {
-  color: #0055b3;
-  border-color: #0055b3;
+  color: #007AFF;
+  border-color: #007AFF;
 }
 .btn-alt-blue:active {
   color: #007AFF;
 }
 
 .btn-alt-purple {
+  border: 1px solid transparent;
+  background-color: transparent;
   color: #5856D6;
-  background-color: white;
-  border: 1px solid #5856D6;
 }
 .btn-alt-purple:hover {
-  color: #2e2cb4;
-  border-color: #2e2cb4;
+  color: #5856D6;
+  border-color: #5856D6;
 }
 .btn-alt-purple:active {
   color: #5856D6;
 }
 
 .btn-alt-yellow {
+  border: 1px solid transparent;
+  background-color: transparent;
   color: #FFCC00;
-  background-color: white;
-  border: 1px solid #FFCC00;
 }
 .btn-alt-yellow:hover {
-  color: #b38f00;
-  border-color: #b38f00;
+  color: #FFCC00;
+  border-color: #FFCC00;
 }
 .btn-alt-yellow:active {
   color: #FFCC00;
 }
 
 .btn-alt-orange {
+  border: 1px solid transparent;
+  background-color: transparent;
   color: #FF9500;
-  background-color: white;
-  border: 1px solid #FF9500;
 }
 .btn-alt-orange:hover {
-  color: #b36800;
-  border-color: #b36800;
+  color: #FF9500;
+  border-color: #FF9500;
 }
 .btn-alt-orange:active {
   color: #FF9500;
 }
 
 .btn-alt-roseo {
+  border: 1px solid transparent;
+  background-color: transparent;
   color: #FF2D70;
-  background-color: white;
-  border: 1px solid #FF2D70;
 }
 .btn-alt-roseo:hover {
-  color: #e00047;
-  border-color: #e00047;
+  color: #FF2D70;
+  border-color: #FF2D70;
 }
 .btn-alt-roseo:active {
   color: #FF2D70;
 }
 
 .btn-alt-red {
+  border: 1px solid transparent;
+  background-color: transparent;
   color: #FF3B30;
-  background-color: white;
-  border: 1px solid #FF3B30;
 }
 .btn-alt-red:hover {
-  color: #e30c00;
-  border-color: #e30c00;
+  color: #FF3B30;
+  border-color: #FF3B30;
 }
 .btn-alt-red:active {
   color: #FF3B30;
 }
 
 .btn-alt-gray {
+  border: 1px solid transparent;
+  background-color: transparent;
   color: #8E8E93;
-  background-color: white;
-  border: 1px solid #8E8E93;
 }
 .btn-alt-gray:hover {
-  color: #68686d;
-  border-color: #68686d;
+  color: #8E8E93;
+  border-color: #8E8E93;
 }
 .btn-alt-gray:active {
   color: #8E8E93;
