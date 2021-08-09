@@ -114,19 +114,22 @@ const app = {
         // 添加新组
         addGroupBeforeId(groupIndex){
             this.dict.addGroupBeforeId(groupIndex)
-            this.words = [...this.dict.wordsOrigin]
+            this.refreshShowingWords()
         },
         deleteGroup(groupIndex){
             this.dict.deleteGroup(groupIndex)
-            this.words = [...this.dict.wordsOrigin]
+            this.refreshShowingWords()
         },
         // 设置当前显示的 分组
         setGroupId(groupId){ // groupId 全部的 id 是 -1
             this.activeGroupId = groupId
-            if (groupId === -1){
+            this.refreshShowingWords()
+        },
+        refreshShowingWords(){
+            if (this.activeGroupId === -1){
                 this.words = [...this.dict.wordsOrigin]
             } else {
-                this.words = new Array(this.dict.wordsOrigin[groupId])
+                this.words = new Array(this.dict.wordsOrigin[this.activeGroupId])
             }
         },
         addNewWord(){
@@ -173,12 +176,12 @@ const app = {
         deleteWord(wordId){
             this.selectedWordIds = this.selectedWordIds.filter(item => item !== wordId)
             this.dict.deleteWords([wordId])
-            this.words = [...this.dict.wordsOrigin]
+            this.refreshShowingWords()
         },
         // 删除词条：多
         deleteWords(){
             this.dict.deleteWords(this.selectedWordIds)
-            this.words = [...this.dict.wordsOrigin]
+            this.refreshShowingWords()
             this.selectedWordIds = [] // 清空选中 wordID
         },
 
