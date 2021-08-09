@@ -85,7 +85,7 @@
                      @click="setGroupId(groupIndex)"
                      v-for="(group, groupIndex) in dict.wordsOrigin"
                      :key="groupIndex">
-                    <div>{{group.groupName}}</div>
+                    <div>{{group.groupName || '- 未命名 -'}}</div>
                 </div>
             </div>
 <!-- 分组列表-->
@@ -106,9 +106,9 @@
                         <template v-else>
                             <h3 :key="groupIndex"
                             >{{ group.groupName }}</h3>
-                            <div class="operation" v-if="activeGroupId === -1">
+                            <div class="operation" >
                                 <div class="btn btn-sm btn-alt-primary" @click="group.isEditingTitle = true">编辑</div>
-                                <div class="btn btn-sm btn-alt-primary" @click="addGroupBeforeId(groupIndex)">添加</div>
+                                <div v-if="activeGroupId === -1" class="btn btn-sm btn-alt-primary" @click="addGroupBeforeId(groupIndex)">添加分组</div>
                                 <div class="btn btn-sm btn-alt-roseo" @click="deleteGroup(groupIndex)">删除</div>
                             </div>
                         </template>
