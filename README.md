@@ -53,6 +53,9 @@ sudo xattr -rd com.apple.quarantine /Applications/wubi-dict-editor.app/
 - [ ] 任意词条移动到任意码表中
 - [ ] 右击编辑任意词条内容
 - [ ] 按输入码排序
+- [ ] 提醒
+  - [ ] 未保存时
+  - [ ] 删除词组时
 
 #### 2. 主码表文件
 - [x] 词条添加到主码表文件 `2021-08-04`
@@ -71,7 +74,7 @@ sudo xattr -rd com.apple.quarantine /Applications/wubi-dict-editor.app/
 - [x] 删除词条后，如果组内词条为空，删除该组 `2021-08-01`
 - [x] 分组添加 `2021-08-06`
 - [x] 分组删除 `2021-08-06`
-- [x] 分组列表，切换展示内容 `2021-08-08`
+- [x] 分组列表，切换展示内容 `2021-08-09`
   - [ ] 适配暗黑模式
   - [ ] 列表滚动条样式
 - [ ] 词条在分组之间移动
@@ -96,7 +99,8 @@ sudo xattr -rd com.apple.quarantine /Applications/wubi-dict-editor.app/
 
 
 #### 7. 其它
-- [x] 暗黑模式适配 `2021-08-08`
+- [x] macOS 暗黑模式适配 `2021-08-08`
+- [ ] 使用帮助页面
 - [ ] 关于窗口信息
 
 #### 8. 其它想法

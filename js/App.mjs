@@ -93,7 +93,6 @@ const app = {
                         let tempGroupItem = groupItem.clone() // 不能直接使用原 groupItem，不然会改变 wordsOrigin 的数据
                         console.log(tempGroupItem)
                         tempGroupItem.dict = tempGroupItem.dict.filter(item => {
-                            console.log(item)
                             return item.code.includes(this.code) && item.word.includes(this.word)
                         })
                         if (tempGroupItem.dict.length > 0){ // 当前分组中有元素，添加到结果中

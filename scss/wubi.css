@@ -1529,7 +1529,7 @@ select option {
 
 .catalog-list {
   border-right: 1px solid #eee;
-  width: 100px;
+  width: 110px;
   flex-shrink: 0;
   overflow-y: auto;
 }

@@ -1,4 +1,4 @@
-const {app, BrowserWindow, Menu, ipcMain, nativeTheme, shell} = require('electron')
+const {app, BrowserWindow, Menu, ipcMain, shell} = require('electron')
 const { exec } = require('child_process')
 const fs = require('fs')
 const os = require('os')
@@ -10,7 +10,7 @@ const { IS_IN_DEVELOP } =  require('./js/Global')
 let mainWindow
 
 function createWindow() {
-    let width = IS_IN_DEVELOP ? 1400: 600
+    let width = IS_IN_DEVELOP ? 1400: 700
     let height = IS_IN_DEVELOP ? 600: 600
     mainWindow = new BrowserWindow({
         width,
