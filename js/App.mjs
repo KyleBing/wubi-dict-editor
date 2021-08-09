@@ -70,7 +70,6 @@ const app = {
         wordsCount(){
             if (this.dict.isGroupMode){
                 let countCurrent = 0
-                console.log(typeof this.words)
                 this.words.forEach(group => {
                     countCurrent = countCurrent + group.dict.length
                 })
@@ -127,18 +126,17 @@ const app = {
             if (groupId === -1){
                 this.words = [...this.dict.wordsOrigin]
             } else {
-                this.words = [...[this.dict.wordsOrigin[groupId]]]
-                console.log(this.words)
+                this.words = new Array(this.dict.wordsOrigin[groupId])
             }
         },
-        addNewPhrase(){
+        addNewWord(){
             if (!this.word){
                 shakeDomFocus(this.$refs.domInputWord)
             } else if (!this.code){
                 shakeDomFocus(this.$refs.domInputCode)
             } else {
                 this.dict.addNewWord(new Word(this.dict.lastIndex, this.code, this.word) ,this.activeGroupId)
-                this.words = this.dict.wordsOrigin[this.activeGroupId]
+                this.words = new Array(this.dict.wordsOrigin[this.activeGroupId])
                 console.log(this.code, this.word, this.activeGroupId)
             }
         },
