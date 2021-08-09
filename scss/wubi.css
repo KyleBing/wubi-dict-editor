@@ -1539,6 +1539,9 @@ select option {
   padding: 5px 10px;
   cursor: pointer;
 }
+.catalog-list .catalog-item > div {
+  height: 20px;
+}
 .catalog-list .catalog-item:hover {
   background-color: rgba(255, 45, 112, 0.05);
 }

@@ -8,7 +8,6 @@ class Dict {
     constructor(yaml, filePath) {
         this.filePath = filePath // 文件路径
         this.header = null // 文件头部内容
-        this.words = [] // 文件词条数组
         this.wordsOrigin = [] // 文件词条数组
         this.lastIndex = 0 // 最后一个 Index 的值，用于新添加词时，作为唯一的 id 传入
         this.isGroupMode = false // 识别码表是否为分组形式的
@@ -22,20 +21,6 @@ class Dict {
             this.isGroupMode = this.header.includes('dict_grouped: true') // 根据有没有这一段文字进行判断，是否为分组形式的码表
             let body = yaml.substring(this.indexEndOfHeader)
             this.wordsOrigin = this.isGroupMode? this.getDictWordsInGroupMode(body): this.getDictWordsInNormalMode(body)
-
-            this.words = [...this.wordsOrigin] // words 中的数据元素指向跟 Origin 里的是一样的，所以编辑 words 也会改变 origin 数据
-        }
-    }
-    // 展示的词条数量
-    get countDict(){
-        if (this.isGroupMode){
-            let countCurrent = 0
-            this.words.forEach(group => {
-                countCurrent = countCurrent + group.dict.length
-            })
-            return countCurrent
-        } else {
-            return this.words.length
         }
     }
     // 总的词条数量
@@ -111,34 +96,6 @@ class Dict {
         }
     }
 
-    // 通过 code, word 筛选词条
-    search(code, word){
-        let startPoint = new Date().getTime()
-        if (code || word){
-            if (this.isGroupMode){
-                this.words =[]
-                this.wordsOrigin.forEach(groupItem => {
-                    let tempGroupItem = groupItem.clone() // 不能直接使用原 groupItem，不然会改变 wordsOrigin 的数据
-                    tempGroupItem.dict = tempGroupItem.dict.filter(item => {
-                        return item.code.includes(code) && item.word.includes(word)
-                    })
-                    if (tempGroupItem.dict.length > 0){ // 当前分组中有元素，添加到结果中
-                        this.words.push(tempGroupItem)
-                    }
-                })
-                console.log('用时: ', new Date().getTime() - startPoint, 'ms')
-            } else {
-                this.words = this.wordsOrigin.filter(item => { // 获取包含 code 的记录
-                    return item.code.includes(code) && item.word.includes(word)
-                })
-                console.log(`${code} ${word}: ` ,'搜索出', this.words.length, '条，', '用时: ', new Date().getTime() - startPoint, 'ms')
-            }
-
-        } else { // 如果 code, word 为空，恢复原有数据
-            this.words = [...this.wordsOrigin]
-        }
-    }
-
     /**
      * 添加新 Word
      * @param word Word
@@ -156,7 +113,6 @@ class Dict {
             console.log('TODO: 确定插入的位置')
             this.wordsOrigin.push(word)
         }
-        this.words = [...this.wordsOrigin]
         this.lastIndex = this.lastIndex + 1 // 新加的词添加后， lastIndex + 1
     }
 
@@ -188,7 +144,6 @@ class Dict {
         let wordInsert = word.clone() // 断开与别一个 dict 的引用链接，新建一个 word 对象，不然两个 dict 引用同一个 word
         wordInsert.id = this.wordsOrigin.length + 1 // 给新的 words 一个新的唯一 id
         this.wordsOrigin.splice(insetPosition, 0, wordInsert)
-        this.words = [...this.wordsOrigin]
     }
 
 
@@ -212,20 +167,16 @@ class Dict {
         } else {
             this.wordsOrigin = this.wordsOrigin.filter(item => !wordIds.includes(item.id))
         }
-        this.words = [...this.wordsOrigin]
     }
 
-    addGroupBefore(groupIndex){
+    addGroupBeforeId(groupIndex){
         this.wordsOrigin.splice(groupIndex,0,new WordGroup('',[],true))
-        this.words = [...this.wordsOrigin]
     }
 
     // 分组模式：删除分组
     deleteGroup(groupIndex){
         this.wordsOrigin.splice(groupIndex, 1)
-        this.words = [...this.wordsOrigin]
     }
-
     // 转为 yaml String
     toYamlString(){
         let yamlBody = ''
@@ -248,69 +199,6 @@ class Dict {
         }
     }
 
-    // 词条位置移动
-    move(wordId, direction){
-        if (this.isGroupMode){
-            // group 时，移动 调换 word 位置，是直接调动的 wordsOrigin 中的word
-            // 因为 group 时数据为： [{word, word},{word,word}]，是 wordGroup 的索引
-            for(let i=0; i<this.words.length; i++){
-                let group = this.words[i]
-                for(let j=0; j<group.dict.length; j++){
-                    if (wordId === group.dict[j].id){
-                        let tempItem = group.dict[j]
-                        if (direction === 'up'){
-                            if (j !==0){
-                                group.dict[j] = group.dict[j - 1]
-                                group.dict[j - 1] = tempItem
-                                return ''
-                            } else {
-                                console.log('已到顶')
-                                return '已到顶'
-                            }
-                        } else if (direction === 'down'){
-                            if (j+1 !== group.dict.length){
-                                group.dict[j] = group.dict[j + 1]
-                                group.dict[j + 1] = tempItem
-                                return ''
-                            } else {
-                                console.log('已到底')
-                                return '已到底'
-                            }
-                        }
-                    }
-                }
-            }
-        } else {
-            // 非分组模式时，调换位置并不能直接改变 wordsOrigin 因为 与 words 已经断开连接
-            // [word, word]
-            for(let i=0; i<this.words.length; i++){
-                if (wordId === this.words[i].id){
-                    let tempItem = this.words[i]
-                    if (direction === 'up'){
-                        if (i !==0) {
-                            this.exchangePositionInOrigin(tempItem, this.words[i-1]) // 调换 wordsOrigin 中的词条位置
-                            this.words[i] = this.words[i - 1]
-                            this.words[i - 1] = tempItem
-                            return ''
-                        } else {
-                            console.log('已到顶')
-                            return '已到顶'
-                        }
-                    } else if (direction === 'down'){
-                        if (i+1 !== this.words.length) {
-                            this.exchangePositionInOrigin(tempItem, this.words[i+1]) // 调换 wordsOrigin 中的词条位置
-                            this.words[i] = this.words[i + 1]
-                            this.words[i + 1] = tempItem
-                            return ''
-                        } else {
-                            console.log('已到底')
-                            return '已到底'
-                        }
-                    }
-                }
-            }
-        }
-    }
 
     // 在 origin 中调换两个词条的位置
     exchangePositionInOrigin(word1, word2){
@@ -331,47 +219,6 @@ class Dict {
         }
     }
 
-    // 判断是否为第一个元素
-    isFirstItem(id){
-        if (this.isGroupMode){ // 分组时的第一个元素
-            for (let i=0; i<this.words.length; i++) {
-                for (let j = 0; j < this.words[i].dict.length; j++) {
-                    if (this.words[i].dict[j].id === id){
-                        return j === 0 // 使用 array.forEach() 无法跳出循环
-                    }
-                }
-            }
-            return false
-        } else {
-            for (let i = 0; i < this.words.length; i++) {
-                if (this.words[i].id === id){
-                    return i === 0 // 使用 array.forEach() 无法跳出循环
-                }
-            }
-            return false
-        }
-
-    }
-    // 判断是否为最后一个元素
-    isLastItem(id){
-        if (this.isGroupMode){ // 分组时的最后一个元素
-            for (let i=0; i<this.words.length; i++) {
-                for (let j = 0; j < this.words[i].dict.length; j++) {
-                    if (this.words[i].id === id){
-                        return j + 1 === this.words.length
-                    }
-                }
-            }
-            return false
-        } else {
-            for (let i = 0; i < this.words.length; i++) {
-                if (this.words[i].id === id){
-                    return i + 1 === this.words.length
-                }
-            }
-            return false
-        }
-    }
 }
 
 // 从一条词条字符串中获取 word 对象

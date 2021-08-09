@@ -23,18 +23,20 @@ const app = {
             keyword: '', // 搜索关键字
             code: '',
             word: '',
-            activeGroupId: '', // 组 index
+            activeGroupId: -1, // 组 index
             keywordUnwatch: null, // keyword watch 方法的撤消方法
             selectedWordIds: [], // 已选择的词条
             labelOfSaveBtn: '保存', // 保存按钮的文本
             heightContent: 0, // content 高度
-            currentGroupId: 0, // 当前显示的分组 ID
+
+            words: [] // words showing
         }
     },
     mounted() {
         this.heightContent = innerHeight - 47 - 20 - 10
         ipcRenderer.on('showFileContent', (event, filePath, res) => {
             this.dict = new Dict(res, filePath)
+            this.words = [...this.dict.wordsOrigin]
             // document.title = filePath // 窗口 title
             this.resetInputs()
         })
@@ -63,18 +65,71 @@ const app = {
             this.heightContent = innerHeight - 47 - 20 - 10
         }
     },
-    methods: {
-        setGroupId(groupId){ // groupId 是在原 index 基础上 +1 的值，使用需要 —1
-            this.currentGroupId = groupId
-            if (groupId === 0){
-                this.dict.words = [...this.dict.wordsOrigin]
+    computed: {
+        // 当前显示的 words 数量
+        wordsCount(){
+            if (this.dict.isGroupMode){
+                let countCurrent = 0
+                console.log(typeof this.words)
+                this.words.forEach(group => {
+                    countCurrent = countCurrent + group.dict.length
+                })
+                return countCurrent
             } else {
-                this.dict.words = [...[this.dict.wordsOrigin[groupId - 1]]]
+                return this.words.length
             }
-        },
+        }
+    },
+
+    methods: {
+        // 通过 code, word 筛选词条
         search(){
             this.selectedWordIds = []
-            this.dict.search(this.code, this.word)
+            let startPoint = new Date().getTime()
+            if (this.code || this.word){
+                if (this.dict.isGroupMode){
+                    this.words =[]
+                    this.dict.wordsOrigin.forEach(groupItem => {
+                        let tempGroupItem = groupItem.clone() // 不能直接使用原 groupItem，不然会改变 wordsOrigin 的数据
+                        tempGroupItem.dict = tempGroupItem.dict.filter(item => {
+                            return item.code.includes(code) && item.word.includes(word)
+                        })
+                        if (tempGroupItem.dict.length > 0){ // 当前分组中有元素，添加到结果中
+                            this.words.push(tempGroupItem)
+                        }
+                    })
+                    console.log('用时: ', new Date().getTime() - startPoint, 'ms')
+                } else {
+                    this.words = this.dict.wordsOrigin.filter(item => { // 获取包含 code 的记录
+                        return item.code.includes(this.code) && item.word.includes(this.word)
+                    })
+                    console.log(`${this.code} ${this.word}: ` ,'搜索出', this.words.length, '条，', '用时: ', new Date().getTime() - startPoint, 'ms')
+                }
+
+            } else { // 如果 code, word 为空，恢复原有数据
+                this.words = [...this.dict.wordsOrigin]
+            }
+        },
+
+        // GROUP Operation
+        // 添加新组
+        addGroupBeforeId(groupIndex){
+            this.dict.addGroupBeforeId(groupIndex)
+            this.words = [...this.dict.wordsOrigin]
+        },
+        deleteGroup(groupIndex){
+            this.dict.deleteGroup(groupIndex)
+            this.words = [...this.dict.wordsOrigin]
+        },
+        // 设置当前显示的 分组
+        setGroupId(groupId){ // groupId 全部的 id 是 -1
+            this.activeGroupId = groupId
+            if (groupId === -1){
+                this.words = [...this.dict.wordsOrigin]
+            } else {
+                this.words = [...[this.dict.wordsOrigin[groupId]]]
+                console.log(this.words)
+            }
         },
         addNewPhrase(){
             if (!this.word){
@@ -83,6 +138,7 @@ const app = {
                 shakeDomFocus(this.$refs.domInputCode)
             } else {
                 this.dict.addNewWord(new Word(this.dict.lastIndex, this.code, this.word) ,this.activeGroupId)
+                this.words = this.dict.wordsOrigin[this.activeGroupId]
                 console.log(this.code, this.word, this.activeGroupId)
             }
         },
@@ -95,11 +151,11 @@ const app = {
             if(this.dict.countDict < 1000){
                 if (this.dict.isGroupMode){
                     this.selectedWordIds = []
-                    this.dict.words.forEach(group => {
+                    this.words.forEach(group => {
                         this.selectedWordIds = this.selectedWordIds.concat(group.dict.map(item => item.id))
                     })
                 } else {
-                    this.selectedWordIds = this.dict.words.map(item => item.id)
+                    this.selectedWordIds = this.words.map(item => item.id)
                 }
             } else {
                 // 提示不能同时选择太多内容
@@ -119,23 +175,130 @@ const app = {
         deleteWord(wordId){
             this.selectedWordIds = this.selectedWordIds.filter(item => item !== wordId)
             this.dict.deleteWords([wordId])
+            this.words = [...this.dict.wordsOrigin]
         },
         // 删除词条：多
         deleteWords(){
             this.dict.deleteWords(this.selectedWordIds)
+            this.words = [...this.dict.wordsOrigin]
             this.selectedWordIds = [] // 清空选中 wordID
         },
+
+        // 词条位置移动
+        move(wordId, direction){
+            if (this.dict.isGroupMode){
+                // group 时，移动 调换 word 位置，是直接调动的 wordsOrigin 中的word
+                // 因为 group 时数据为： [{word, word},{word,word}]，是 wordGroup 的索引
+                for(let i=0; i<this.words.length; i++){
+                    let group = this.words[i]
+                    for(let j=0; j<group.dict.length; j++){
+                        if (wordId === group.dict[j].id){
+                            let tempItem = group.dict[j]
+                            if (direction === 'up'){
+                                if (j !==0){
+                                    group.dict[j] = group.dict[j - 1]
+                                    group.dict[j - 1] = tempItem
+                                    return ''
+                                } else {
+                                    console.log('已到顶')
+                                    return '已到顶'
+                                }
+                            } else if (direction === 'down'){
+                                if (j+1 !== group.dict.length){
+                                    group.dict[j] = group.dict[j + 1]
+                                    group.dict[j + 1] = tempItem
+                                    return ''
+                                } else {
+                                    console.log('已到底')
+                                    return '已到底'
+                                }
+                            }
+                        }
+                    }
+                }
+            } else {
+                // 非分组模式时，调换位置并不能直接改变 wordsOrigin 因为 与 words 已经断开连接
+                // [word, word]
+                for(let i=0; i<this.words.length; i++){
+                    if (wordId === this.words[i].id){
+                        let tempItem = this.words[i]
+                        if (direction === 'up'){
+                            if (i !==0) {
+                                this.dict.exchangePositionInOrigin(tempItem, this.words[i-1]) // 调换 wordsOrigin 中的词条位置
+                                this.words[i] = this.words[i - 1]
+                                this.words[i - 1] = tempItem
+                                return ''
+                            } else {
+                                console.log('已到顶')
+                                return '已到顶'
+                            }
+                        } else if (direction === 'down'){
+                            if (i+1 !== this.words.length) {
+                                this.dict.exchangePositionInOrigin(tempItem, this.words[i+1]) // 调换 wordsOrigin 中的词条位置
+                                this.words[i] = this.words[i + 1]
+                                this.words[i + 1] = tempItem
+                                return ''
+                            } else {
+                                console.log('已到底')
+                                return '已到底'
+                            }
+                        }
+                    }
+                }
+            }
+        },
+
         // 上移词条
         moveUp(id){
-            this.display = this.dict.move(id, 'up')
-            let temp = this.dict.words.pop()
-            this.dict.words.push(temp)
+            this.display = this.move(id, 'up')
+            let temp = this.words.pop()
+            this.words.push(temp)
         },
         // 下移词条
         moveDown(id){
-            this.display = this.dict.move(id, 'down')
-            let temp = this.dict.words.pop()
-            this.dict.words.push(temp)
+            this.display = this.move(id, 'down')
+            let temp = this.words.pop()
+            this.words.push(temp)
+        },
+        // 判断是否为第一个元素
+        isFirstItem(id){
+            if (this.dict.isGroupMode){ // 分组时的第一个元素
+                for (let i=0; i<this.words.length; i++) {
+                    for (let j = 0; j < this.words[i].dict.length; j++) {
+                        if (this.words[i].dict[j].id === id){
+                            return j === 0 // 使用 array.forEach() 无法跳出循环
+                        }
+                    }
+                }
+                return false
+            } else {
+                for (let i = 0; i < this.words.length; i++) {
+                    if (this.words[i].id === id){
+                        return i === 0 // 使用 array.forEach() 无法跳出循环
+                    }
+                }
+                return false
+            }
+        },
+        // 判断是否为最后一个元素
+        isLastItem(id){
+            if (this.dict.isGroupMode){ // 分组时的最后一个元素
+                for (let i=0; i<this.words.length; i++) {
+                    for (let j = 0; j < this.words[i].dict.length; j++) {
+                        if (this.words[i].id === id){
+                            return j + 1 === this.words.length
+                        }
+                    }
+                }
+                return false
+            } else {
+                for (let i = 0; i < this.words.length; i++) {
+                    if (this.words[i].id === id){
+                        return i + 1 === this.words.length
+                    }
+                }
+                return false
+            }
         },
         // 绑定键盘事件： 键盘上下控制词条上下移动
         addKeyboardListener(){
@@ -181,6 +344,7 @@ const app = {
             }
             console.log('words transferring：', JSON.stringify(wordsTransferring))
             this.dictMain.addWordsInOrder(wordsTransferring)
+            this.words = [...this.dict.wordsOrigin]
             console.log('after insert:( main:wordOrigin ):\n ', JSON.stringify(this.dictMain.wordsOrigin))
             this.deleteWords()
             this.saveToFile(this.dictMain)

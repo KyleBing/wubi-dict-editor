@@ -18,6 +18,9 @@ $catalog-pd-lr: 10px;
     line-height: $catalog-height - $catalog-pd-tb * 2;
     padding: $catalog-pd-tb $catalog-pd-lr;
     cursor: pointer;
+    > div{
+      height: $catalog-height - $catalog-pd-tb * 2;
+    }
     &:hover{
       background-color: $bg-td-highlighted;
     }

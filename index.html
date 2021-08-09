@@ -34,10 +34,10 @@
                     :buffer="1000"
                     :prerender="200"
                     :style="`height: ${heightContent}px`"
-                    v-if="dict.words"
+                    v-if="words"
                     :min-item-size="24"
                     class="virtual-list"
-                    :items="dict.words">
+                    :items="words">
                     <template v-slot="{ item, index }">
                         <div class="word-item">
                             <div class="checkbox-cell">
@@ -79,10 +79,10 @@
 <!--分组目录-->
             <div class="catalog-list"
                  :style="`height: ${heightContent}px`">
-                <div :class="['catalog-item', {active: 0 === currentGroupId}]"
-                     @click="setGroupId(0)"><div>全部</div></div>
-                <div :class="['catalog-item', {active: groupIndex+1 === currentGroupId}]"
-                     @click="setGroupId(groupIndex + 1)"
+                <div :class="['catalog-item', {active: -1 === activeGroupId}]"
+                     @click="setGroupId(-1)"><div>全部</div></div>
+                <div :class="['catalog-item', {active: groupIndex === activeGroupId}]"
+                     @click="setGroupId(groupIndex)"
                      v-for="(group, groupIndex) in dict.wordsOrigin"
                      :key="groupIndex">
                     <div>{{group.groupName}}</div>
@@ -91,7 +91,8 @@
 <!-- 分组列表-->
             <div class="group-list"
                  :style="`height: ${heightContent}px`">
-                <div class="group" v-for="(group, groupIndex) in dict.words" :key="groupIndex">
+                <div class="group" v-for="(group, groupIndex) in words" :key="groupIndex">
+                    <!--- GROUP HEADER -->
                     <div :class="['group-header', {active: activeGroupId === groupIndex}]"
                          @click="activeGroupId = groupIndex"
                          @click.right="group.isEditingTitle = !group.isEditingTitle">
@@ -106,10 +107,10 @@
                         <template v-else>
                             <h3 :key="groupIndex"
                             >{{ group.groupName }}</h3>
-                            <div class="operation">
+                            <div class="operation" v-if="activeGroupId === -1">
                                 <div class="btn btn-sm btn-alt-primary" @click="group.isEditingTitle = true">编辑</div>
-                                <div class="btn btn-sm btn-alt-primary" @click="dict.addGroupBefore(groupIndex)">添加</div>
-                                <div class="btn btn-sm btn-alt-roseo" @click="dict.deleteGroup(groupIndex)">删除</div>
+                                <div class="btn btn-sm btn-alt-primary" @click="addGroupBeforeId(groupIndex)">添加</div>
+                                <div class="btn btn-sm btn-alt-roseo" @click="deleteGroup(groupIndex)">删除</div>
                             </div>
                         </template>
                         <p class="tip" v-if="activeGroupId === groupIndex">+  新词将添加到该分组</p>
@@ -158,7 +159,7 @@
             </div>
             <div class="info-list">
                 <div class="count" v-if="this.dict.isGroupMode"><span>分组模式</span></div>
-                <div class="count">总 <span class="number">{{dict.countDictOrigin}}</span></div>
+                <div class="count">总 <span class="number">{{wordsCount}}</span></div>
                 <div class="count"
                      v-if="dict.countDictOrigin !== dict.countDict">显 <span class="number">{{dict.countDict}}</span></div>
                 <div class="count">已选 <span class="number">{{selectedWordIds.length}}</span></div>
