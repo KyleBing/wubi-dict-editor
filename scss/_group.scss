@@ -13,6 +13,7 @@ $catalog-pd-lr: 10px;
   flex-shrink: 0;
   overflow-y: auto;
   .catalog-item{
+    @extend .unselectable;
     text-align: center;
     line-height: $catalog-height - $catalog-pd-tb * 2;
     padding: $catalog-pd-tb $catalog-pd-lr;
@@ -30,6 +31,7 @@ $catalog-pd-lr: 10px;
     background-color: $color-border;
   }
 }
+
 .group-list{
   flex-grow: 1;
   overflow-y: auto;

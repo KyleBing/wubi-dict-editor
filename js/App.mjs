@@ -64,8 +64,13 @@ const app = {
         }
     },
     methods: {
-        setGroupId(id){
-            this.currentGroupId = id
+        setGroupId(groupId){ // groupId 是在原 index 基础上 +1 的值，使用需要 —1
+            this.currentGroupId = groupId
+            if (groupId === 0){
+                this.dict.words = [...this.dict.wordsOrigin]
+            } else {
+                this.dict.words = [...[this.dict.wordsOrigin[groupId - 1]]]
+            }
         },
         search(){
             this.selectedWordIds = []

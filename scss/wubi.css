@@ -1,8 +1,5 @@
-@import "_reset.css";
-/*
-  Extension
-*/
-.unselectable, input[type=checkbox] + label.checker, .btn, .btn-group .btn-vertical > *, .word-item .operation {
+@import "reset.css";
+.unselectable, .catalog-list .catalog-item, input[type=checkbox] + label.checker, .btn, .btn-group .btn-vertical > *, .word-item .operation {
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;

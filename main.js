@@ -117,18 +117,16 @@ function readFile(filePath){
 function getLabelNameFromFileName(fileName){
     let map = [
         {name: '拼音词库', path: 'pinyin_simp.dict.yaml'},
-        {name: '五笔极点 - 主词库', path: 'wubi86_jidian.dict.yaml'},
-        {name: '五笔极点 - 分词库', path: 'wubi86_jidian_addition.dict.yaml'},
-        {name: '五笔极点 - 附加词库', path: 'wubi86_jidian_extra.dict.yaml'},
-        {name: '五笔极点 - 用户词库', path: 'wubi86_jidian_user.dict.yaml'},
+        {name: '五笔极点 - 主', path: 'wubi86_jidian.dict.yaml'},
+        {name: '五笔极点 - 分', path: 'wubi86_jidian_addition.dict.yaml'},
+        {name: '五笔极点 - 附加', path: 'wubi86_jidian_extra.dict.yaml'},
+        {name: '五笔极点 - 用户', path: 'wubi86_jidian_user.dict.yaml'},
+
+        // 测试词库
+        {name: '测试- 普通 ⛳', path: 'test.dict.yaml'},
+        {name: '测试- 分组️ ⛳️', path: 'test_group.dict.yaml'},
+        {name: '测试- 主 ⛳️', path: 'main.dict.yaml'},
     ]
-    if (IS_IN_DEVELOP){
-        map = map.concat([
-            {name: '测试 ⛳', path: 'test.dict.yaml'},
-            {name: '测试- 分组️ ⛳️', path: 'test_group.dict.yaml'},
-            {name: '测试- 主 ⛳️', path: 'main.dict.yaml'},
-        ])
-    }
     let matchedPath = map.filter(item => item.path === fileName)
     // 返回匹配的名字，或者返回原文件名
     return matchedPath.length > 0 ? matchedPath[0].name: fileName
