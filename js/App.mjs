@@ -126,6 +126,7 @@ const app = {
             this.refreshShowingWords()
         },
         refreshShowingWords(){
+            this.selectedWordIds = []
             if (this.activeGroupId === -1){
                 this.words = [...this.dict.wordsOrigin]
             } else {
@@ -149,7 +150,7 @@ const app = {
         },
         // 选中全部展示的词条
         selectAll(){
-            if(this.dict.countDict < 1000){
+            if(this.wordsCount < 1000){
                 if (this.dict.isGroupMode){
                     this.selectedWordIds = []
                     this.words.forEach(group => {

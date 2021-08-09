@@ -18,6 +18,7 @@
     justify-content: flex-start;
     .link-list{
       .link{
+        @extend .unselectable;
         margin-right: 10px;
         cursor: pointer;
         transition: all 0.3s;
