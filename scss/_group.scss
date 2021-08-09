@@ -29,9 +29,20 @@ $catalog-pd-lr: 10px;
       color: white;
     }
   }
-  ::-webkit-scrollbar-thumb{
-    width: 2px;
+  &::-webkit-scrollbar {
+    z-index: 50;
+    width: 1px;
+  }
+  &::-webkit-scrollbar-track {
+    background-color: rgba(0, 0, 0, 0);
+  }
+  &::-webkit-scrollbar-thumb {
     background-color: $color-border;
+    transition: all .2s;
+    height: 3px;
+  }
+  &:hover::-webkit-scrollbar-thumb {
+    background-color: #ccc;
   }
 }
 

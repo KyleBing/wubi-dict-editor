@@ -1549,9 +1549,20 @@ select option {
   background-color: #FF2D70;
   color: white;
 }
-.catalog-list ::-webkit-scrollbar-thumb {
-  width: 2px;
+.catalog-list::-webkit-scrollbar {
+  z-index: 50;
+  width: 1px;
+}
+.catalog-list::-webkit-scrollbar-track {
+  background-color: rgba(0, 0, 0, 0);
+}
+.catalog-list::-webkit-scrollbar-thumb {
   background-color: #eee;
+  transition: all 0.2s;
+  height: 3px;
+}
+.catalog-list:hover::-webkit-scrollbar-thumb {
+  background-color: #ccc;
 }
 
 .group-list {
