@@ -72,6 +72,8 @@ sudo xattr -rd com.apple.quarantine /Applications/wubi-dict-editor.app/
 - [x] 分组添加 `2021-08-06`
 - [x] 分组删除 `2021-08-06`
 - [x] 分组列表，切换展示内容 `2021-08-08`
+  - [ ] 适配暗黑模式
+  - [ ] 列表滚动条样式
 - [ ] 词条在分组之间移动
   
 #### 4. 系统相关

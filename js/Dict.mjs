@@ -103,10 +103,10 @@ class Dict {
      */
     addNewWord(word, groupIndex){
         if(this.isGroupMode){
-            if (groupIndex !== ''){
+            if (groupIndex !== -1){
                 this.wordsOrigin[groupIndex].dict.push(word)
             } else {
-                let newWordGroup = new WordGroup('未命名',[word])
+                let newWordGroup = new WordGroup('- 未命名 -',[word])
                 this.wordsOrigin.unshift(newWordGroup) // 添加到第一组
             }
         } else {

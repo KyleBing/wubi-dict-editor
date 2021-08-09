@@ -1558,8 +1558,6 @@ select option {
 }
 .catalog-list::-webkit-scrollbar-thumb {
   background-color: #eee;
-  transition: all 0.2s;
-  height: 3px;
 }
 .catalog-list:hover::-webkit-scrollbar-thumb {
   background-color: #ccc;

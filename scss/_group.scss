@@ -38,8 +38,6 @@ $catalog-pd-lr: 10px;
   }
   &::-webkit-scrollbar-thumb {
     background-color: $color-border;
-    transition: all .2s;
-    height: 3px;
   }
   &:hover::-webkit-scrollbar-thumb {
     background-color: #ccc;

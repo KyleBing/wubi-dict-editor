@@ -144,7 +144,7 @@ const app = {
                 shakeDomFocus(this.$refs.domInputCode)
             } else {
                 this.dict.addNewWord(new Word(this.dict.lastIndex, this.code, this.word) ,this.activeGroupId)
-                this.words = new Array(this.dict.wordsOrigin[this.activeGroupId])
+                this.refreshShowingWords()
                 console.log(this.code, this.word, this.activeGroupId)
             }
         },
