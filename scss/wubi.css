@@ -1223,6 +1223,27 @@ select option {
   .word-item .code {
     color: #b3b3b3;
   }
+  .catalog-list {
+    color: #e6e6e6;
+    border-right-color: #272b32 !important;
+  }
+  .catalog-list .catalog-item:hover {
+    background-color: #272b32 !important;
+  }
+  .catalog-list .catalog-item.active {
+    color: black !important;
+    background-color: #81fffa !important;
+  }
+  .catalog-list::-webkit-scrollbar-track {
+    background-color: rgba(0, 0, 0, 0);
+  }
+  .catalog-list::-webkit-scrollbar-thumb {
+    background-color: #272b32 !important;
+  }
+  .catalog-list:hover::-webkit-scrollbar-thumb {
+    background-color: #383838 !important;
+  }
+
   .footer {
     background-color: #1c1f24;
     border-top-color: #383838;
