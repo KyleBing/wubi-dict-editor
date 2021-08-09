@@ -1189,6 +1189,18 @@ select option {
 }
 
 @media (prefers-color-scheme: dark) {
+  ::-webkit-scrollbar-track {
+    background-color: rgba(0, 0, 0, 0);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: #272b32 !important;
+  }
+
+  :hover::-webkit-scrollbar-thumb {
+    background-color: #383838 !important;
+  }
+
   body {
     background-color: #1c1f24 !important;
   }
@@ -1233,15 +1245,6 @@ select option {
   .catalog-list .catalog-item.active {
     color: black !important;
     background-color: #81fffa !important;
-  }
-  .catalog-list::-webkit-scrollbar-track {
-    background-color: rgba(0, 0, 0, 0);
-  }
-  .catalog-list::-webkit-scrollbar-thumb {
-    background-color: #272b32 !important;
-  }
-  .catalog-list:hover::-webkit-scrollbar-thumb {
-    background-color: #383838 !important;
   }
 
   .footer {

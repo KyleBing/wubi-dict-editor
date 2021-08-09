@@ -180,7 +180,7 @@ function createMenu(filesMenu) {
             label: '关于',
             submenu: [
                 {label: '最小化', role: 'minimize'},
-                {label: 'v1.0.0(beta)'},
+                {label: 'v1.0.1(beta2)'},
                 {type: 'separator'},
                 {label: '退出', role: 'quit'},
             ]
