@@ -15,6 +15,7 @@ Windows, macOS, (Linux 未测试)
 ## 安装
 
 __windows__ 直接解压打开 `.exe` 文件即可
+
 __macOS__ 如果提示无法打开，文件损坏什么的，将 app 移到应用程序 `Applications` 文件夹后，打开终端 `Terminal`，这样操作：
 
 ```bash
