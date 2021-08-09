@@ -84,14 +84,17 @@ const app = {
         // 通过 code, word 筛选词条
         search(){
             this.selectedWordIds = []
+            this.activeGroupId = -1 // 切到【全部】标签页，展示所有搜索结果
             let startPoint = new Date().getTime()
             if (this.code || this.word){
                 if (this.dict.isGroupMode){
-                    this.words =[]
+                    this.words = []
                     this.dict.wordsOrigin.forEach(groupItem => {
                         let tempGroupItem = groupItem.clone() // 不能直接使用原 groupItem，不然会改变 wordsOrigin 的数据
+                        console.log(tempGroupItem)
                         tempGroupItem.dict = tempGroupItem.dict.filter(item => {
-                            return item.code.includes(code) && item.word.includes(word)
+                            console.log(item)
+                            return item.code.includes(this.code) && item.word.includes(this.word)
                         })
                         if (tempGroupItem.dict.length > 0){ // 当前分组中有元素，添加到结果中
                             this.words.push(tempGroupItem)
@@ -106,11 +109,11 @@ const app = {
                 }
 
             } else { // 如果 code, word 为空，恢复原有数据
-                this.words = [...this.dict.wordsOrigin]
+                this.refreshShowingWords()
             }
         },
 
-        // GROUP Operation
+        // GROUP OPERATION
         // 添加新组
         addGroupBeforeId(groupIndex){
             this.dict.addGroupBeforeId(groupIndex)
@@ -125,6 +128,7 @@ const app = {
             this.activeGroupId = groupId
             this.refreshShowingWords()
         },
+        // 刷新 this.words
         refreshShowingWords(){
             this.selectedWordIds = []
             if (this.activeGroupId === -1){
@@ -360,7 +364,7 @@ const app = {
     },
     watch: {
         code(newValue){
-            this.code = newValue.replaceAll(/[^A-Za-z ]/g, '') // 只允许输入字母
+            this.code = newValue.replaceAll(/[^A-Za-z ]/g, '') // input.code 只允许输入字母
         },
         selectedWordIds(newValue){
             console.log('已选词条id: ', JSON.stringify(newValue))

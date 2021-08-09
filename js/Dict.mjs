@@ -60,11 +60,11 @@ class Dict {
                 if (temp && temp.groupName) { // 如果上一个已经有名字了，说明需要保存
                     wordsGroup.push(temp)
                 }
-                temp = new WordGroup(index,item.substring(3).trim())
+                temp = new WordGroup(item.substring(3).trim())
                 lastItemIsEmptyLine = false
             } else if (item.indexOf('\t') > -1) { // 是词条
                 if (!temp){ // 第一行是词条时，没有分组名时
-                    temp = new WordGroup(index)
+                    temp = new WordGroup()
                 }
                 temp.dict.push(getWordFromLine(index, item))
                 lastItemIsEmptyLine = false
@@ -79,7 +79,7 @@ class Dict {
                     if (temp){
                         temp.groupName = temp.groupName || '未命名'
                         wordsGroup.push(temp)
-                        temp = new WordGroup(index)
+                        temp = new WordGroup()
                     }
                 }
                 lastItemIsEmptyLine = true
@@ -106,7 +106,7 @@ class Dict {
             if (groupIndex !== ''){
                 this.wordsOrigin[groupIndex].dict.push(word)
             } else {
-                let newWordGroup = new WordGroup(this.wordsOrigin[this.wordsOrigin.length - 1].id + 1,'未命名',[word])
+                let newWordGroup = new WordGroup('未命名',[word])
                 this.wordsOrigin.unshift(newWordGroup) // 添加到第一组
             }
         } else {
@@ -170,7 +170,7 @@ class Dict {
     }
 
     addGroupBeforeId(groupIndex){
-        this.wordsOrigin.splice(groupIndex,0,new WordGroup(this.wordsOrigin[this.wordsOrigin.length - 1].id + 1,'',[],true))
+        this.wordsOrigin.splice(groupIndex,0,new WordGroup('',[],true))
     }
 
     // 分组模式：删除分组

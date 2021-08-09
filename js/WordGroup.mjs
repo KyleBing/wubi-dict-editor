@@ -1,7 +1,6 @@
 // 词条对象 分组
 class WordGroup{
-    constructor(id, groupName, words, editing) {
-        this.id = id
+    constructor(groupName, words, editing) {
         this.groupName = groupName || ''
         this.dict = words || []
         this.isEditingTitle = editing || false // 标题是否在编辑
