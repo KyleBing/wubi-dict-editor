@@ -3,8 +3,8 @@
 # 五笔词库管理工具 for [Rime](https://github.com/rime)
 一个管理 Rime 五笔词库的工具，添加、删除词条
 
-<img width="712" alt="Screen Shot 2021-08-07 at 23 38 13" src="https://user-images.githubusercontent.com/12215982/128605586-47399a2e-c036-4729-aeef-8c67281b45ba.png">
-
+<img width="812" alt="Screen Shot 2021-08-09 at 21 35 45" src="https://user-images.githubusercontent.com/12215982/128715098-8dc4c6d6-76f8-4428-9434-e3ac86ab2072.png">
+<img width="812" alt="Screen Shot 2021-08-09 at 21 35 34" src="https://user-images.githubusercontent.com/12215982/128715114-8e9f82ff-2bdb-4837-87ed-ecbf0ea7ee28.png">
 ## 支持平台：
 Windows, macOS, (Linux 未测试)
 
