@@ -1,8 +1,12 @@
-## v1.01beta3
+## v1.02
 - 展示当前码表文件名
 - `footer` 信息调整
 - 切换码表保留 code 输入框内容
-- `windows` 显示程序图标
+- 显示程序图标
+- 关于界面填充
+
+<img width="396" alt="Screen Shot 2021-08-10 at 22 19 30" src="https://user-images.githubusercontent.com/12215982/128883939-0a627819-47c4-4729-b5a3-65ce1b2536cf.png">
+
 
 ## v1.01beta2 `2021-08-09`
 - 分组列表展示
