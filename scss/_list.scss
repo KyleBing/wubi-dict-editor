@@ -87,6 +87,7 @@ $height-word-item: 24px;
     flex-shrink: 0;
   }
   .code{
+    //@extend .font-roboto;
     line-height: $height-word-item;
     min-width: 15%;
     padding-right: 20px;
@@ -99,6 +100,7 @@ $height-word-item: 24px;
     flex-grow: 1;
   }
   .priority{
+    @extend .font-roboto;
     padding-right: 10px;
     text-align: right;
     width: 10%;
@@ -106,6 +108,7 @@ $height-word-item: 24px;
     font-size: $fz-list - 2;
   }
   .id{
+    @extend .font-roboto;
     text-align: right;
     padding-right: 10px;
     width: $fz-list * 4 + 20;

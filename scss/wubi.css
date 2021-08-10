@@ -1,4 +1,28 @@
 @import "reset.css";
+@font-face {
+  font-family: "Roboto-v27-light";
+  src: url("../fonts/Robotov27-light.woff2");
+}
+@font-face {
+  font-family: "Roboto-v27-regular";
+  src: url("../fonts/Robotov27-regular.woff2");
+}
+@font-face {
+  font-family: "Comfortaa-v30";
+  src: url("../fonts/Comfortaa-v30.woff2");
+}
+.font-roboto, .word-item .id, .word-item .priority {
+  font-family: "Roboto-v27-light", Roboto, SansSerif;
+}
+
+.font-roboto-regular, .footer .footer-toolbar .info-list .number, .footer .footer-toolbar .link-list .origin {
+  font-family: "Roboto-v27-regular", Roboto, SansSerif;
+}
+
+.font-comfortaa {
+  font-family: "Comfortaa-v30", Roboto, SansSerif;
+}
+
 .unselectable, .catalog-list .catalog-item, .footer .footer-toolbar .link-list .link, input[type=checkbox] + label.checker, .btn, .btn-group .btn-vertical > *, .word-item .operation {
   -webkit-user-select: none;
   -moz-user-select: none;

@@ -28,11 +28,15 @@
           color: $color-main;
         }
       }
+      .origin{
+        @extend .font-roboto-regular;
+      }
       display: flex;
       justify-content: flex-start;
     }
     .info-list{
       .number{
+        @extend .font-roboto-regular;
         margin-left: 2px;
       }
       > *{
