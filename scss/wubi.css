@@ -519,7 +519,7 @@
 .word-item .code {
   line-height: 24px;
   min-width: 52px;
-  width: 10%;
+  width: 15%;
   color: #333;
 }
 .word-item .word {
@@ -1166,6 +1166,7 @@ select option {
 }
 .footer .footer-toolbar > * {
   margin-right: 30px;
+  white-space: nowrap;
 }
 .footer .footer-toolbar .link-list {
   display: flex;
@@ -1184,8 +1185,11 @@ select option {
   display: flex;
   justify-content: flex-start;
 }
+.footer .footer-toolbar .info-list .number {
+  margin-left: 2px;
+}
 .footer .footer-toolbar .info-list > * {
-  margin-right: 15px;
+  margin-right: 10px;
 }
 
 @media (prefers-color-scheme: dark) {

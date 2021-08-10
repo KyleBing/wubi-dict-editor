@@ -29,18 +29,18 @@ const app = {
             labelOfSaveBtn: '保存', // 保存按钮的文本
             heightContent: 0, // content 高度
 
-            words: [] // words showing
+            words: [] // 显示的 words
         }
     },
     mounted() {
         this.heightContent = innerHeight - 47 - 20 - 10
         ipcRenderer.on('showFileContent', (event, fileName, res) => {
             this.dict = new Dict(res, fileName)
-            this.words = [...this.dict.wordsOrigin]
-            console.log(fileName)
             this.tip = fileName
-            // document.title = filePath // 窗口 title
-            this.resetInputs()
+            // 载入新码表时，清除 word 保存 code
+            this.word = ''
+            this.refreshShowingWords()
+            // this.search() // 配置项：切换码表是否自动搜索
         })
         ipcRenderer.on('saveFileSuccess', () => {
             this.labelOfSaveBtn = '保存成功'
@@ -93,7 +93,6 @@ const app = {
                     this.words = []
                     this.dict.wordsOrigin.forEach(groupItem => {
                         let tempGroupItem = groupItem.clone() // 不能直接使用原 groupItem，不然会改变 wordsOrigin 的数据
-                        console.log(tempGroupItem)
                         tempGroupItem.dict = tempGroupItem.dict.filter(item => {
                             return item.code.includes(this.code) && item.word.includes(this.word)
                         })

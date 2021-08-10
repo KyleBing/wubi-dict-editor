@@ -13,6 +13,7 @@
   .footer-toolbar{
     > *{
       margin-right: 30px;
+      white-space: nowrap;
     }
     display: flex;
     justify-content: flex-start;
@@ -32,9 +33,10 @@
     }
     .info-list{
       .number{
+        margin-left: 2px;
       }
       > *{
-        margin-right: 15px;
+        margin-right: 10px;
       }
       display: flex;
       justify-content: flex-start;
