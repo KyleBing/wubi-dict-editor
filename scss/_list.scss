@@ -88,20 +88,27 @@ $height-word-item: 24px;
   }
   .code{
     line-height: $height-word-item;
-    min-width: $fz-list * 4;
-    width: 15%;
+    min-width: 15%;
+    padding-right: 20px;
     color: $text-title;
-    //font-family: monospace;
   }
   .word{
     line-height: $height-word-item;
     flex-shrink: 0;
     flex-grow: 1;
   }
-  .id{
-    width: $fz-list * 3;
-    margin-right: 10px;
+  .priority{
+    text-align: right;
+    width: 10%;
     color: $text-subtitle;
+    font-size: $fz-list - 2;
+  }
+  .id{
+    text-align: right;
+    padding: 0 10px;
+    width: $fz-list * 4 + 20;
+    color: $text-subtitle;
+    font-size: $fz-list - 2;
   }
   .operation{
     width: 60px;

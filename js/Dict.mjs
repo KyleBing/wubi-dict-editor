@@ -226,6 +226,7 @@ function getWordFromLine(index, lineStr){
     let wordArray = lineStr.split('\t')
     let code = wordArray[1]
     let word = wordArray[0]
-    return new Word(index, code, word)
+    let priority = wordArray.length > 2 ? wordArray[2] : null
+    return new Word(index, code, word, priority)
 }
 export default Dict

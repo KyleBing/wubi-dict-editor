@@ -36,7 +36,6 @@ const app = {
         this.heightContent = innerHeight - 47 - 20 - 10
         ipcRenderer.on('showFileContent', (event, fileName, res) => {
             this.dict = new Dict(res, fileName)
-            this.tip = fileName
             // 载入新码表时，清除 word 保存 code
             this.word = ''
             this.refreshShowingWords()
