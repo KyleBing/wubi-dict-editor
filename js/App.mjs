@@ -359,7 +359,10 @@ const app = {
         openCurrentYaml(){
             ipcRenderer.send('openFileOutside', this.dict.filePath)
         },
-
+        // 重新载入当前码表
+        reloadCurrentDict(){
+            ipcRenderer.send('loadDictFile', this.dict.filePath)
+        }
     },
     watch: {
         code(newValue){
