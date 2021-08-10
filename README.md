@@ -56,6 +56,7 @@ sudo xattr -rd com.apple.quarantine /Applications/wubi-dict-editor.app/
 - [ ] 提醒
   - [ ] 未保存时
   - [ ] 删除词组时
+- [ ] ？词条优先级，加权重
 
 #### 2. 主码表文件
 - [x] 词条添加到主码表文件 `2021-08-04`
