@@ -185,7 +185,7 @@ function createMenu(filesMenu) {
             label: '关于',
             submenu: [
                 {label: '最小化', role: 'minimize'},
-                {label: 'v1.0.1(beta2)', role: 'about'},
+                {label: '关于', role: 'about'},
                 {type: 'separator'},
                 {label: '退出', role: 'quit'},
             ]
