@@ -10,7 +10,7 @@ const { IS_IN_DEVELOP } =  require('./js/Global')
 let mainWindow
 
 function createWindow() {
-    let width = IS_IN_DEVELOP ? 1400: 700
+    let width = IS_IN_DEVELOP ? 1400: 800
     let height = IS_IN_DEVELOP ? 600: 600
     mainWindow = new BrowserWindow({
         width,
