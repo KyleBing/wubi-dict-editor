@@ -34,7 +34,7 @@
         "appVersion": "1.0.1beta2",
         "name": "五笔码表工具",
         "appCopyright": "kylebing(kylebing@kylebing.cn)",
-        "icon": "./assets/appIcon/appicon.ico",
+        "icon": "./assets/appIcon/appicon",
         "win32metadata": {
           "ProductName": "五笔码表工具 Windows",
           "CompanyName": "kylebing.cn",
