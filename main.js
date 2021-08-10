@@ -78,9 +78,8 @@ function createWindow() {
     })
 
     // 外部打开当前码表文件
-    ipcMain.on('openFileOutside', (event, filePath) => {
-        console.log(filePath)
-        shell.openPath(filePath).then(res => {
+    ipcMain.on('openFileOutside', (event, filename) => {
+        shell.openPath(path.join(getRimeConfigDir(), filename)).then(res => {
             console.log(res)
         }).catch(err => {
             console.log(err)
