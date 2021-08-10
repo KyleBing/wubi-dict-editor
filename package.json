@@ -1,6 +1,6 @@
 {
   "name": "wubi-dict-editor",
-  "version": "0.1.0",
+  "version": "1.0.1",
   "private": true,
   "author": {
     "name": "KyleBing",
@@ -30,7 +30,17 @@
   },
   "config": {
     "forge": {
-      "packagerConfig": {},
+      "packagerConfig": {
+        "appVersion": "1.0.1beta2",
+        "name": "五笔码表工具",
+        "appCopyright": "kylebing(kylebing@kylebing.cn)",
+        "icon": "./assets/appIcon/appicon.ico",
+        "win32metadata": {
+          "ProductName": "五笔码表工具 Windows",
+          "CompanyName": "kylebing.cn",
+          "FileDescription": "码表工具 for 小狼毫"
+        }
+      },
       "makers": [
         {
           "name": "@electron-forge/maker-squirrel",
