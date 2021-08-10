@@ -52,17 +52,17 @@ function createWindow() {
 
     // 监听 window 的文件载入请求
     ipcMain.on('loadTestFile', event => {
-        readFile(path.join(getRimeConfigDir(), 'test_group.dict.yaml'))
+        readFile('test_group.dict.yaml')
     })
 
     // 监听 window 的文件载入请求
     ipcMain.on('loadUserDictFile', event => {
-        readFile(path.join(getRimeConfigDir(), 'wubi86_jidian_user.dict.yaml'))
+        readFile('wubi86_jidian_user.dict.yaml')
     })
 
     // 监听载入主文件内容的请求
-    ipcMain.on('loadDictFile', (event,filepath) => {
-        readFile(filepath)
+    ipcMain.on('loadDictFile', (event,fileName) => {
+        readFile(fileName)
     })
 
     // 监听载入主文件内容的请求
@@ -107,12 +107,13 @@ app.on('activate', function () {
 })
 
 // 读取文件
-function readFile(filePath){
-    fs.readFile(filePath, {encoding: 'utf-8'}, (err, res) => {
+function readFile(fileName){
+    let rimeHomeDir = getRimeConfigDir()
+    fs.readFile(path.join(rimeHomeDir, fileName), {encoding: 'utf-8'}, (err, res) => {
         if(err){
             console.log(err)
         } else {
-            mainWindow.webContents.send('showFileContent', filePath ,res)
+            mainWindow.webContents.send('showFileContent', fileName ,res)
         }
     })
 }
@@ -123,7 +124,7 @@ function getLabelNameFromFileName(fileName){
     let map = [
         {name: '拼音词库', path: 'pinyin_simp.dict.yaml'},
         {name: '五笔极点 - 主', path: 'wubi86_jidian.dict.yaml'},
-        {name: '五笔极点 - 分', path: 'wubi86_jidian_addition.dict.yaml'},
+        {name: '五笔极点 - 临时', path: 'wubi86_jidian_addition.dict.yaml'},
         {name: '五笔极点 - 附加', path: 'wubi86_jidian_extra.dict.yaml'},
         {name: '五笔极点 - 用户', path: 'wubi86_jidian_user.dict.yaml'},
 
@@ -210,8 +211,7 @@ function setRimeFolderMenu(){
                         click(sender, window, content) {
                             window.title = sender.label // 点击对应菜单时，显示当前编辑词库的名字
                             currentFilePath = item
-                            let filePath = path.join(rimeFolderPath, item)
-                            readFile(filePath)
+                            readFile(item)
                         }
                     },)
                 }

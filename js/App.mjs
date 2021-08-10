@@ -15,7 +15,7 @@ const app = {
     data() {
         return {
             IS_IN_DEVELOP: IS_IN_DEVELOP, // 是否为开发模式
-            display: '', // 提示信息
+            tip: '', // 提示信息
             dict: {
                 deep: true
             }, // 当前词库对象 Dict
@@ -34,9 +34,11 @@ const app = {
     },
     mounted() {
         this.heightContent = innerHeight - 47 - 20 - 10
-        ipcRenderer.on('showFileContent', (event, filePath, res) => {
-            this.dict = new Dict(res, filePath)
+        ipcRenderer.on('showFileContent', (event, fileName, res) => {
+            this.dict = new Dict(res, fileName)
             this.words = [...this.dict.wordsOrigin]
+            console.log(fileName)
+            this.tip = fileName
             // document.title = filePath // 窗口 title
             this.resetInputs()
         })
@@ -164,7 +166,7 @@ const app = {
                 }
             } else {
                 // 提示不能同时选择太多内容
-                this.display = '不能同时选择大于 1000条 的词条内容'
+                this.tip = '不能同时选择大于 1000条 的词条内容'
                 shakeDom(this.$refs.domBtnSelectAll)
             }
         },
@@ -174,7 +176,7 @@ const app = {
             this.word = ''
             this.selectedWordIds = []
             this.search()
-            this.display = ''
+            this.tip = ''
         },
         // 删除词条：单
         deleteWord(wordId){
@@ -255,13 +257,13 @@ const app = {
 
         // 上移词条
         moveUp(id){
-            this.display = this.move(id, 'up')
+            this.tip = this.move(id, 'up')
             let temp = this.words.pop()
             this.words.push(temp)
         },
         // 下移词条
         moveDown(id){
-            this.display = this.move(id, 'down')
+            this.tip = this.move(id, 'down')
             let temp = this.words.pop()
             this.words.push(temp)
         },
