@@ -93,11 +93,13 @@ $height-word-item: 24px;
     color: $text-title;
   }
   .word{
+    padding-right: 10px;
     line-height: $height-word-item;
     flex-shrink: 0;
     flex-grow: 1;
   }
   .priority{
+    padding-right: 10px;
     text-align: right;
     width: 10%;
     color: $text-subtitle;
@@ -105,7 +107,7 @@ $height-word-item: 24px;
   }
   .id{
     text-align: right;
-    padding: 0 10px;
+    padding-right: 10px;
     width: $fz-list * 4 + 20;
     color: $text-subtitle;
     font-size: $fz-list - 2;
