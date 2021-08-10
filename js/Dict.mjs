@@ -5,8 +5,8 @@ import WordGroup from "./WordGroup.mjs";
 const os = require('os')
 
 class Dict {
-    constructor(yaml, filePath) {
-        this.filePath = filePath // 文件路径
+    constructor(yaml, filename) {
+        this.filename = filename // 文件路径
         this.header = null // 文件头部内容
         this.wordsOrigin = [] // 文件词条数组
         this.lastIndex = 0 // 最后一个 Index 的值，用于新添加词时，作为唯一的 id 传入

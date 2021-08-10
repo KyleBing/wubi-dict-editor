@@ -57,8 +57,8 @@ const app = {
             ipcRenderer.send('loadUserDictFile')
         }
         ipcRenderer.send('loadMainDict')
-        ipcRenderer.on('setMainDict', (event, filePath, res) => {
-            this.dictMain = new Dict(res, filePath)
+        ipcRenderer.on('setMainDict', (event, filename, res) => {
+            this.dictMain = new Dict(res, filename)
         })
 
         this.addKeyboardListener()
@@ -150,7 +150,7 @@ const app = {
         },
         // 保存内容到文件
         saveToFile(dict){
-            ipcRenderer.send('saveFile', dict.filePath, dict.toYamlString())
+            ipcRenderer.send('saveFile', dict.filename, dict.toYamlString())
         },
         // 选中全部展示的词条
         selectAll(){
@@ -358,11 +358,11 @@ const app = {
         },
         // 打开当前码表源文件
         openCurrentYaml(){
-            ipcRenderer.send('openFileOutside', this.dict.filePath)
+            ipcRenderer.send('openFileOutside', this.dict.filename)
         },
         // 重新载入当前码表
         reloadCurrentDict(){
-            ipcRenderer.send('loadDictFile', this.dict.filePath)
+            ipcRenderer.send('loadDictFile', this.dict.filename)
         }
     },
     watch: {

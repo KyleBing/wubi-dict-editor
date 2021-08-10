@@ -40,8 +40,8 @@ function createWindow() {
 
 
     // 保存词库到文件
-    ipcMain.on('saveFile', (event, filePath, yamlString) => {
-        fs.writeFile(filePath, yamlString, {encoding: "utf8"}, err => {
+    ipcMain.on('saveFile', (event, filename, yamlString) => {
+        fs.writeFile(path.join(getRimeConfigDir(), filename), yamlString, {encoding: "utf8"}, err => {
             if (!err){
                 console.log('saveFileSuccess')
                 applyRime() // 布署
