@@ -41,6 +41,7 @@ sudo xattr -rd com.apple.quarantine /Applications/wubi-dict-editor.app/
 - [x] 搜索词条 `2021-07-26`
   - [x] 基于编码、内容 `2021-07-29`
 - [x] 添加自定义短语 `2021-07-26`
+  - [ ] 自动生成编码
 - [x] 删除词条 `2021-07-27`
   - [x] 批量 `2021-07-27`
   - [x] 单个 `2021-08-06`
@@ -102,7 +103,7 @@ sudo xattr -rd com.apple.quarantine /Applications/wubi-dict-editor.app/
 #### 7. 其它
 - [x] macOS 暗黑模式适配 `2021-08-08`
 - [ ] 使用帮助页面
-- [ ] 关于窗口信息
+- [x] 关于窗口信息 `2021-08-10`
 
 #### 8. 其它想法
 - [ ] 全民维护一个增量词库

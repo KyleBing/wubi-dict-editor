@@ -28,7 +28,6 @@ const app = {
             selectedWordIds: [], // 已选择的词条
             labelOfSaveBtn: '保存', // 保存按钮的文本
             heightContent: 0, // content 高度
-
             words: [] // 显示的 words
         }
     },
@@ -40,6 +39,12 @@ const app = {
             this.word = ''
             this.refreshShowingWords()
             // this.search() // 配置项：切换码表是否自动搜索
+            // 如果不是在主码表中，载入主码表文件
+            if (!this.isInMainDict){
+                ipcRenderer.send('loadMainDict')
+            } else {
+                this.dictMain = [] // 清空，释放无用内存
+            }
         })
         ipcRenderer.on('saveFileSuccess', () => {
             this.labelOfSaveBtn = '保存成功'
@@ -55,7 +60,7 @@ const app = {
         } else {
             ipcRenderer.send('loadUserDictFile')
         }
-        ipcRenderer.send('loadMainDict')
+
         ipcRenderer.on('setMainDict', (event, filename, res) => {
             this.dictMain = new Dict(res, filename)
         })
@@ -78,6 +83,10 @@ const app = {
             } else {
                 return this.words.length
             }
+        },
+        // 当前载入的是否为 主 码表
+        isInMainDict(){
+            return this.dict.filename === 'wubi86_jidian.dict.yaml'
         }
     },
 
