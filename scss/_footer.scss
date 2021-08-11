@@ -20,7 +20,7 @@
     .link-list{
       .link{
         @extend .unselectable;
-        margin-right: 10px;
+        margin-right: 12px;
         cursor: pointer;
         transition: all 0.3s;
         &:hover{
@@ -29,7 +29,7 @@
         }
       }
       .origin{
-        @extend .font-roboto-regular;
+        //@extend .font-roboto-regular;
       }
       display: flex;
       justify-content: flex-start;

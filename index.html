@@ -50,7 +50,7 @@
                             </div>
                             <div class="code">{{ item.code }}</div>
                             <div class="word">{{ item.word }}</div>
-                            <div v-if="item.priority" class="priority">{{ item.priority }}</div>
+                            <div v-if="item.priority" title="权重" class="priority">{{ item.priority }}</div>
                             <div v-if="IS_IN_DEVELOP" class="id">{{ item.id }}</div>
                             <div class="operation">
                                 <div class="up" @click="moveUp(item.id)">
@@ -128,7 +128,7 @@
                             </div>
                             <div class="code">{{ item.code }}</div>
                             <div class="word">{{ item.word }}</div>
-                            <div v-if="item.priority" class="priority">{{ item.priority }}</div>
+                            <div v-if="item.priority" title="权重" class="priority">{{ item.priority }}</div>
                             <div v-if="IS_IN_DEVELOP" class="id">{{ item.id }}</div>
                             <div class="operation">
                                 <div class="up" @click="moveUp(item.id)">
@@ -153,7 +153,7 @@
     <div class="footer">
         <div class="footer-toolbar">
             <div class="link-list">
-                <div class="link" @click="resetInputs">重置</div>
+                <div class="link" @click="resetInputs">清选</div>
                 <div class="link" ref="domBtnSelectAll" @click="selectAll">全选</div>
                 <div class="link" @click="reloadCurrentDict">重载码表</div>
                 <div class="link origin" @click="openCurrentYaml">{{ dict.filename }}</div>

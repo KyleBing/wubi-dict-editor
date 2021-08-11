@@ -15,7 +15,7 @@
   font-family: "Roboto-v27-light", Roboto, SansSerif;
 }
 
-.font-roboto-regular, .footer .footer-toolbar .info-list .number, .footer .footer-toolbar .link-list .origin {
+.font-roboto-regular, .footer .footer-toolbar .info-list .number {
   font-family: "Roboto-v27-regular", Roboto, SansSerif;
 }
 
@@ -1207,7 +1207,7 @@ select option {
   justify-content: flex-start;
 }
 .footer .footer-toolbar .link-list .link {
-  margin-right: 10px;
+  margin-right: 12px;
   cursor: pointer;
   transition: all 0.3s;
 }
