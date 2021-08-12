@@ -88,6 +88,63 @@ function createWindow() {
     })
 }
 
+let toolWindow
+function showToolWindow (){
+    let width = IS_IN_DEVELOP ? 1400: 800
+    let height = IS_IN_DEVELOP ? 600: 600
+    toolWindow = new BrowserWindow({
+        width,
+        height,
+        icon: __dirname + '/assets/appIcon/appicon.ico', // windows icon
+        webPreferences: {
+            nodeIntegration: true,
+            contextIsolation: false
+        }
+    })
+
+    if (IS_IN_DEVELOP){
+        toolWindow.webContents.openDevTools() // 打开调试窗口
+    }
+
+
+    toolWindow.loadURL(
+        url.format({
+            pathname: path.join(__dirname, 'tool/tool.html'),
+            protocol: "file:",
+            slashes: true
+        })
+    )
+    toolWindow.on('closed', function () {
+        toolWindow = null
+    })
+
+
+    // 保存词库到文件
+    ipcMain.on('saveFile', (event, filename, yamlString) => {
+        fs.writeFile(path.join(getRimeConfigDir(), filename), yamlString, {encoding: "utf8"}, err => {
+            if (!err){
+                console.log('saveFileSuccess')
+                applyRime() // 布署
+                toolWindow.webContents.send('saveFileSuccess')
+            }
+        })
+    })
+
+    // 监听 window 的文件载入请求
+    ipcMain.on('ToolWindow:loadOriginFile', event => {
+        readFile('origin.txt', toolWindow)
+    })
+
+    // 外部打开当前码表文件
+    ipcMain.on('ToolWindow:openFileOutside', (event, filename) => {
+        shell.openPath(path.join(getRimeConfigDir(), filename)).then(res => {
+            console.log(res)
+        }).catch(err => {
+            console.log(err)
+        })
+    })
+}
+
 
 
 
@@ -107,13 +164,17 @@ app.on('activate', function () {
 })
 
 // 读取文件
-function readFile(fileName){
+function readFile(fileName, win){
     let rimeHomeDir = getRimeConfigDir()
     fs.readFile(path.join(rimeHomeDir, fileName), {encoding: 'utf-8'}, (err, res) => {
         if(err){
             console.log(err)
         } else {
-            mainWindow.webContents.send('showFileContent', fileName ,res)
+            if(win){
+                win.send('showFileContent', fileName ,res)
+            } else {
+                mainWindow.webContents.send('showFileContent', fileName ,res)
+            }
         }
     })
 }
@@ -161,6 +222,17 @@ function createMenu(filesMenu) {
                     label: '重新布署',
                     click() {
                         applyRime()
+                    }
+                },
+            ]
+        },
+        {
+            label: '码表处理',
+            submenu: [
+                {
+                    label: '处理一码多词：空格',
+                    click() {
+                        showToolWindow()
                     }
                 },
             ]
