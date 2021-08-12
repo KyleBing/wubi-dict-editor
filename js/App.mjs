@@ -156,6 +156,22 @@ const app = {
                 console.log(this.code, this.word, this.activeGroupId)
             }
         },
+        getWordCodes(){
+            let characterMap = new Map()
+            this.dictMain.wordsOrigin.forEach(item => {
+                if (item.word.length === 1 && item.code.length === 4){ // 编码长度为 4 的单字
+                    characterMap.set(item.word, item.code)
+                }
+            })
+            console.log(characterMap)
+            console.log('单字数量：', characterMap.size)
+            let decodeArray = [] // 每个字解码后的数组表
+            this.word.split('').forEach(ch => {
+                decodeArray.push(characterMap.get(ch))
+            })
+            console.log(decodeArray)
+            return
+        },
         // 保存内容到文件
         saveToFile(dict){
             ipcRenderer.send('saveFile', dict.filename, dict.toYamlString())
