@@ -12,6 +12,8 @@ class Dict {
         this.lastIndex = 0 // 最后一个 Index 的值，用于新添加词时，作为唯一的 id 传入
         this.isGroupMode = false // 识别码表是否为分组形式的
 
+        this.characterMap = new Map() // 单字码表，用于根据此生成词语码表
+
         let indexEndOfHeader = yaml.indexOf('...')
         if (indexEndOfHeader < 0){
             console.log('文件格式错误，没有 ... 这一行')
@@ -42,7 +44,17 @@ class Dict {
         let lines = body.split(os.EOL) // 拆分词条与编码成单行
         this.lastIndex = lines.length
         let linesValid = lines.filter(item => item.indexOf('\t') > -1) // 选取包含 \t 的行
-        let words = linesValid.map((item, index) => getWordFromLine(index,item))
+        let words = []
+        linesValid.forEach((item, index) => {
+            let currentWord = getWordFromLine(index, item)
+            words.push(currentWord) // 获取词条
+            if (currentWord.word.length === 1
+                && currentWord.code.length >=2
+                && !this.characterMap.has(currentWord.word)) // map里不存在这个字
+            { // 编码长度为 4 的单字
+                this.characterMap.set(currentWord.word, currentWord.code)
+            }
+        })
         console.log(`处理yaml码表文件：完成，共：${words.length } ${this.isGroupMode? '组': '条'}，用时 ${new Date().getTime() - startPoint} ms`)
         return words
     }

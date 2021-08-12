@@ -14,7 +14,6 @@
             :class="['btn', {'btn-green': labelOfSaveBtn === '保存成功'}, {'btn-primary': labelOfSaveBtn !== '保存成功'} ]"
             ref="domBtnSave"
             @click="saveToFile(dict)">{{ labelOfSaveBtn }}</div>
-<!--        <input class="word" ref="domInputWord" v-model="word" @keyup.enter="search" type="text" placeholder="词条">-->
         <input class="word" ref="domInputWord" v-model="word" type="text" placeholder="词条">
         <input class="code" ref="domInputCode" v-model="code" type="text" placeholder="编码">
         <div class="btn btn-primary" @click="addNewWord">添加</div>
@@ -24,7 +23,7 @@
         <div class="btn btn-orange" v-show="selectedWordIds.length > 0 && !isInMainDict" @click="addToMain">移至主词库</div>
 
         <template v-if="IS_IN_DEVELOP">
-            <div class="btn btn-orange" @click="getWordCodes">自动生成编码</div>
+
         </template>
     </div>
 

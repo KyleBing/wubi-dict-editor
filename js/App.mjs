@@ -156,22 +156,42 @@ const app = {
                 console.log(this.code, this.word, this.activeGroupId)
             }
         },
-        getWordCodes(){
-            let characterMap = new Map()
-            this.dictMain.wordsOrigin.forEach(item => {
-                if (item.word.length === 1 && item.code.length === 4){ // 编码长度为 4 的单字
-                    characterMap.set(item.word, item.code)
+        getWordCodes(word){
+            try{
+                let decodeArray = [] // 每个字解码后的数组表
+                word.split('').forEach(ch => {
+                    decodeArray.push(this.dictMain.characterMap.get(ch))
+                })
+                let phraseCode = ''
+                switch (decodeArray.length){
+                    case 0:
+                    case 1:
+                        break
+                    case 2: // 取一的前二码，二的前二码
+                        phraseCode =
+                            decodeArray[0].substring(0,2) +
+                            decodeArray[1].substring(0,2)
+                        break
+                    case 3: // 取一二前一码，三前二码
+                        phraseCode =
+                            decodeArray[0].substring(0,1) +
+                            decodeArray[1].substring(0,1) +
+                            decodeArray[2].substring(0,2)
+                        break
+                    default: // 取一二三前一码，最后的一码
+                        phraseCode =
+                            decodeArray[0].substring(0,1) +
+                            decodeArray[1].substring(0,1) +
+                            decodeArray[2].substring(0,1) +
+                            decodeArray[decodeArray.length - 1].substring(0,1)
                 }
-            })
-            console.log(characterMap)
-            console.log('单字数量：', characterMap.size)
-            let decodeArray = [] // 每个字解码后的数组表
-            this.word.split('').forEach(ch => {
-                decodeArray.push(characterMap.get(ch))
-            })
-            console.log(decodeArray)
-            return
+                console.log(phraseCode, decodeArray)
+                return phraseCode
+            } catch(err){
+                return ''
+            }
         },
+
         // 保存内容到文件
         saveToFile(dict){
             ipcRenderer.send('saveFile', dict.filename, dict.toYamlString())
@@ -392,6 +412,9 @@ const app = {
     watch: {
         code(newValue){
             this.code = newValue.replaceAll(/[^A-Za-z ]/g, '') // input.code 只允许输入字母
+        },
+        word(newValue){
+            this.code = this.getWordCodes(newValue)
         },
         selectedWordIds(newValue){
             console.log('已选词条id: ', JSON.stringify(newValue))
