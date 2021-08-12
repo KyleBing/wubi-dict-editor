@@ -163,8 +163,12 @@ const app = {
         getWordCodes(word){
             try{
                 let decodeArray = [] // 每个字解码后的数组表
-                word.split('').forEach(ch => {
-                    decodeArray.push(this.dictMain.characterMap.get(ch))
+                let letterArray = word.split('')
+                if (letterArray.length > 4){ // 只截取前三和后一
+                    letterArray.splice(3,letterArray.length - 4)
+                }
+                letterArray.forEach(ch => {
+                    decodeArray.push(this.dictMain.characterMap.get(ch) || '')
                 })
                 let phraseCode = ''
                 switch (decodeArray.length){
