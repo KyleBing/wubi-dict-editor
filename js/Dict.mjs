@@ -12,11 +12,11 @@ class Dict {
         this.lastIndex = 0 // 最后一个 Index 的值，用于新添加词时，作为唯一的 id 传入
         this.isGroupMode = false // 识别码表是否为分组形式的
 
-        let indexEndOfHeader = yaml.indexOf('...') + 3
+        let indexEndOfHeader = yaml.indexOf('...')
         if (indexEndOfHeader < 0){
             console.log('文件格式错误，没有 ... 这一行')
         } else {
-            this.indexEndOfHeader = indexEndOfHeader
+            this.indexEndOfHeader = indexEndOfHeader + 3
             this.header = yaml.substring(0, this.indexEndOfHeader)
             this.isGroupMode = this.header.includes('dict_grouped: true') // 根据有没有这一段文字进行判断，是否为分组形式的码表
             let body = yaml.substring(this.indexEndOfHeader)
