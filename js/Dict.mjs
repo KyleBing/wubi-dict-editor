@@ -108,6 +108,23 @@ class Dict {
         }
     }
 
+    // 排序
+    sort(groupIndex){
+        let startPoint = new Date().getTime()
+        if (this.isGroupMode){ // group mode
+            if (groupIndex !== -1){ // -1 代表全部
+                this.wordsOrigin[groupIndex].dict.sort((a,b) => a.code < b.code ? -1: 1)
+            } else {
+                this.wordsOrigin.forEach(group => {
+                    group.dict.sort((a,b) => a.code < b.code ? -1: 1)
+                })
+            }
+        } else {
+            this.wordsOrigin.sort((a,b) => a.code < b.code ? -1: 1)
+        }
+        console.log(`Sort 用时 ${new Date().getTime() - startPoint} ms`)
+    }
+
     /**
      * 添加新 Word
      * @param word Word

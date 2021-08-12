@@ -53,7 +53,7 @@ sudo xattr -rd com.apple.quarantine /Applications/wubi-dict-editor.app/
 - [x] 展示总词数 | 当前词数 | 分组模式 `2021-08-01`
 - [ ] 任意词条移动到任意码表中
 - [ ] 右击编辑任意词条内容
-- [ ] 按输入码排序
+- [x] 按输入码排序 `2021-08-12`
 - [ ] 提醒
   - [ ] 未保存时
   - [ ] 删除词组时

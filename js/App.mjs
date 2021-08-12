@@ -91,6 +91,10 @@ const app = {
     },
 
     methods: {
+        sort(){
+            this.dict.sort(this.activeGroupId)
+            this.refreshShowingWords()
+        },
         // 通过 code, word 筛选词条
         search(){
             this.selectedWordIds = []

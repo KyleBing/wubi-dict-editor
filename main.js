@@ -52,7 +52,7 @@ function createWindow() {
 
     // 监听 window 的文件载入请求
     ipcMain.on('loadTestFile', event => {
-        readFile('test_group.dict.yaml')
+        readFile('test.dict.yaml')
     })
 
     // 监听 window 的文件载入请求

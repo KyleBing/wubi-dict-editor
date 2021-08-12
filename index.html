@@ -22,7 +22,7 @@
         <div class="btn btn-roseo" v-show="selectedWordIds.length > 0" @click="deleteWords">删除</div>
         <div class="btn btn-orange" v-show="selectedWordIds.length > 0 && !isInMainDict" @click="addToMain">移至主词库</div>
         <template v-if="IS_IN_DEVELOP">
-            <div class="btn btn-orange" @click="getWordCodes">自动生成编码</div>
+            
         </template>
     </div>
 
@@ -160,10 +160,10 @@
                 <div class="link" ref="domBtnSelectAll" @click="selectAll">全选</div>
                 <div class="link" @click="resetInputs">清选</div>
                 <div class="link" @click="reloadCurrentDict">重载码表</div>
+                <div class="link" @click="sort">排序</div>
                 <div class="link origin" @click="openCurrentYaml">{{ dict.filename }}</div>
             </div>
             <div class="info-list">
-<!--                <div class="count" v-if="this.dict.isGroupMode"><span>分组模式</span></div>-->
                 <div class="count">总<span class="number">{{dict.countDictOrigin}}</span></div>
                 <div class="count"
                      v-if="dict.countDictOrigin !== dict.countDict">显<span class="number">{{wordsCount}}</span></div>
