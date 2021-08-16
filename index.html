@@ -9,6 +9,20 @@
 <body>
 
 <div v-cloak id="app">
+
+    <div class="modal" v-show="modalDictList">
+        <!--分组目录-->
+        <div class="file-list"
+             :style="`height: ${heightContent}px`">
+            <div :class="['file-list-item', {active: fileIndex === modalActiveIndex}]"
+                 @click="setModalActiveIndex(fileIndex)"
+                 v-for="(file, fileIndex) in modalFileList"
+                 :key="fileIndex">
+                <div>{{file.name}}</div>
+            </div>
+        </div>
+    </div>
+
     <div class="search-bar" v-if="dict">
         <div
             :class="['btn', {'btn-green': labelOfSaveBtn === '保存成功'}, {'btn-primary': labelOfSaveBtn !== '保存成功'} ]"
@@ -21,6 +35,7 @@
         <div class="btn btn-primary" @click="search">搜索</div>
         <div class="btn btn-roseo" v-show="selectedWordIds.length > 0" @click="deleteWords">删除</div>
         <div class="btn btn-orange" v-show="selectedWordIds.length > 0 && !isInMainDict" @click="addToMain">移至主词库</div>
+        <div class="btn btn-blue" v-show="selectedWordIds.length > 0" @click="modalDictList = !modalDictList">移动到...</div>
         <template v-if="IS_IN_DEVELOP">
 
         </template>

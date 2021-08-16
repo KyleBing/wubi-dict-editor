@@ -1,0 +1,49 @@
+.modal{
+  position: fixed;
+  top: 40px;
+  bottom: 40px;
+  left: 40px;
+  right: 40px;
+  z-index: 100;
+  background-color: rgba(255,255,255,0.3);
+  backdrop-filter: blur(10px) saturate(180%);
+}
+
+
+.file-list{
+  border-right: 1px solid $color-border;
+  width: 110px;
+  flex-shrink: 0;
+  overflow-y: auto;
+  .file-list-item{
+    @extend .unselectable;
+    text-align: center;
+    line-height: $catalog-height - $catalog-pd-tb * 2;
+    padding: $catalog-pd-tb $catalog-pd-lr;
+    cursor: pointer;
+    > div{
+      height: $catalog-height - $catalog-pd-tb * 2;
+    }
+    &:hover{
+      background-color: $bg-td-highlighted;
+    }
+    &.active{
+      background-color: $color-main;
+      color: white;
+    }
+  }
+  &::-webkit-scrollbar {
+    z-index: 50;
+    width: 1px;
+  }
+  &::-webkit-scrollbar-track {
+    background-color: rgba(0, 0, 0, 0);
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: $color-border;
+  }
+  &:hover::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+  }
+}
+

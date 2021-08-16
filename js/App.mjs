@@ -28,7 +28,17 @@ const app = {
             selectedWordIds: [], // 已选择的词条
             labelOfSaveBtn: '保存', // 保存按钮的文本
             heightContent: 0, // content 高度
-            words: [] // 显示的 words
+            words: [], // 显示的 words
+
+            modalDictList: false, // 显示移动词条窗口
+            modalFileList: [
+                {name: '拼音词库', path: 'pinyin_simp.dict.yaml'},
+                {name: '五笔极点 - 主', path: 'wubi86_jidian.dict.yaml'},
+                {name: '五笔极点 - 临时', path: 'wubi86_jidian_addition.dict.yaml'},
+                {name: '五笔极点 - 附加', path: 'wubi86_jidian_extra.dict.yaml'},
+                {name: '五笔极点 - 用户', path: 'wubi86_jidian_user.dict.yaml'},
+            ],
+            modalActiveIndex: 0
         }
     },
     mounted() {
@@ -91,6 +101,9 @@ const app = {
     },
 
     methods: {
+        setModalActiveIndex(index){
+            this.modalActiveIndex = index
+        },
         sort(){
             this.dict.sort(this.activeGroupId)
             this.refreshShowingWords()

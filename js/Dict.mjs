@@ -54,7 +54,7 @@ class Dict {
             { // 编码长度为 4 的单字
                 this.characterMap.set(currentWord.word, currentWord.code)
             }
-        })
+         })
         console.log(`处理yaml码表文件：完成，共：${words.length } ${this.isGroupMode? '组': '条'}，用时 ${new Date().getTime() - startPoint} ms`)
         return words
     }
