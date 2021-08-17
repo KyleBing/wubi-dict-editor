@@ -1293,7 +1293,7 @@ select option {
   -moz-border-radius: 3px;
   border-radius: 3px;
   overflow: hidden;
-  color: #333;
+  color: #000;
   flex-shrink: 0;
   background-color: white;
   overflow-y: auto;

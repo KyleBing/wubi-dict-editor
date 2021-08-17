@@ -23,7 +23,7 @@ $bg-dropdown-highlight: transparentize($bg-dropdown, 0.95);
   border: 1px solid lighten($bg-dropdown, 20%);
   @include border-radius($radius);
   overflow: hidden;
-  color: $text-title;
+  color: $text-main;
   flex-shrink: 0;
   background-color: white;
   overflow-y: auto;
