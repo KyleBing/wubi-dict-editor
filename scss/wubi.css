@@ -1288,12 +1288,12 @@ select option {
 .file-list {
   margin-left: 5px;
   max-height: 400px;
-  border: 1px solid #007AFF;
+  border: 1px solid #66afff;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   border-radius: 3px;
   overflow: hidden;
-  color: #000;
+  color: #333;
   flex-shrink: 0;
   background-color: white;
   overflow-y: auto;
@@ -1316,6 +1316,7 @@ select option {
 }
 .file-list-item.active, .file-list-item:active {
   background-color: #007AFF;
+  border-bottom-color: #007AFF;
   color: white;
 }
 .file-list::-webkit-scrollbar {
@@ -1401,8 +1402,9 @@ select option {
   }
 
   .file-list {
-    color: white;
+    color: #e6e6e6;
     background-color: #1c1f24;
+    border-color: #00448e;
   }
   .file-list-item {
     border-bottom-color: #272b32;
@@ -1411,6 +1413,7 @@ select option {
     background-color: #383f4a;
   }
   .file-list-item.active, .file-list-item:active {
+    background-color: #007AFF;
     color: white;
   }
 

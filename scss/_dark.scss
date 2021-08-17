@@ -96,14 +96,16 @@ $black-color-main: #81fffa;
   }
 
   .file-list {
-    color: white;
+    color: $black-color-text;
     background-color: $black-bg;
+    border-color: #00448e;
     &-item {
       border-bottom-color: $black-color-border;
       &:hover {
         background-color: $black-bg-highlight;
       }
       &.active, &:active {
+        background-color: $blue;
         color: white;
       }
     }
