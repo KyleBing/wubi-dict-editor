@@ -237,17 +237,6 @@ function createMenu(filesMenu) {
             ]
         },
         {
-            label: '码表处理',
-            submenu: [
-                {
-                    label: '处理一码多词：空格',
-                    click() {
-                        showToolWindow()
-                    }
-                },
-            ]
-        },
-        {
             label: '文件夹',
             submenu: [
                 {
@@ -274,6 +263,21 @@ function createMenu(filesMenu) {
             ]
         },
     ]
+    if(IS_IN_DEVELOP){
+        menuStructure.push(
+            {
+                label: '码表处理',
+                submenu: [
+                    {
+                        label: '处理一码多词：空格',
+                        click() {
+                            showToolWindow()
+                        }
+                    },
+                ]
+            }
+        )
+    }
     let menu = Menu.buildFromTemplate(menuStructure)
     Menu.setApplicationMenu(menu)
 }
