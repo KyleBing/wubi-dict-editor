@@ -42,6 +42,7 @@ const app = {
                 {name: '测试- 普通 ⛳', path: 'test.dict.yaml'},
                 {name: '测试- 分组️ ⛳️', path: 'test_group.dict.yaml'},
                 {name: '测试- 主 ⛳️', path: 'main.dict.yaml'},
+                // TODO: get file list from system
             ],
             dropdownActiveFileIndex: -1, // 选中的
             dropdownActiveGroupIndex: -1 // 选中的分组 ID
