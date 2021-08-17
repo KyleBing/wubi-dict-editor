@@ -1,18 +1,23 @@
-.modal{
-  position: fixed;
-  top: 40px;
-  bottom: 40px;
-  left: 40px;
-  right: 40px;
-  z-index: 100;
-  background-color: rgba(255,255,255,0.3);
-  backdrop-filter: blur(10px) saturate(180%);
+.dropdown{
+  position: relative;
+  &-link{
+
+  }
+  &-body{
+    @include border-radius($radius);
+    background-color: white;
+    z-index: 100;
+    position: absolute;
+    top: 30px;
+    left: 0;
+    width: 150px;
+    border: 1px solid #ccc;
+  }
 }
 
-
 .file-list{
+  color: $text-main;
   border-right: 1px solid $color-border;
-  width: 110px;
   flex-shrink: 0;
   overflow-y: auto;
   .file-list-item{
@@ -21,6 +26,10 @@
     line-height: $catalog-height - $catalog-pd-tb * 2;
     padding: $catalog-pd-tb $catalog-pd-lr;
     cursor: pointer;
+    border-bottom: 1px solid $color-border;
+    &:last-item{
+      border-bottom: none;
+    }
     > div{
       height: $catalog-height - $catalog-pd-tb * 2;
     }

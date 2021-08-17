@@ -1131,7 +1131,6 @@ label.btn, .btn-group .btn-vertical > label {
 
 .search-bar {
   width: 100%;
-  overflow-x: auto;
   z-index: 10;
   border-bottom: 1px solid #eee;
   background-color: #f3f3f3;
@@ -1161,8 +1160,8 @@ input, select {
   transition: all, 0.5s;
 }
 input.code, select.code {
-  width: 5rem;
   flex-shrink: 0;
+  width: 5rem;
 }
 input.word, select.word {
   flex-shrink: 0;
@@ -1630,20 +1629,25 @@ select option {
   overflow-y: auto;
 }
 
-.modal {
-  position: fixed;
-  top: 40px;
-  bottom: 40px;
-  left: 40px;
-  right: 40px;
+.dropdown {
+  position: relative;
+}
+.dropdown-body {
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  background-color: white;
   z-index: 100;
-  background-color: rgba(255, 255, 255, 0.3);
-  backdrop-filter: blur(10px) saturate(180%);
+  position: absolute;
+  top: 30px;
+  left: 0;
+  width: 150px;
+  border: 1px solid #ccc;
 }
 
 .file-list {
+  color: #000;
   border-right: 1px solid #eee;
-  width: 110px;
   flex-shrink: 0;
   overflow-y: auto;
 }
@@ -1652,6 +1656,10 @@ select option {
   line-height: 20px;
   padding: 5px 10px;
   cursor: pointer;
+  border-bottom: 1px solid #eee;
+}
+.file-list .file-list-item:last-item {
+  border-bottom: none;
 }
 .file-list .file-list-item > div {
   height: 20px;
@@ -1687,9 +1695,9 @@ body {
 }
 
 .shadow {
-  -webkit-box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.08);
-  -moz-box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.08);
-  box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.08);
+  -webkit-box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.2);
+  box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.2);
 }
 
 .hidden, .prototype {

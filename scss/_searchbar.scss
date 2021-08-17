@@ -1,6 +1,5 @@
 .search-bar{
   width: 100%;
-  overflow-x: auto;
   z-index: 10;
   border-bottom: 1px solid $color-border;
   background-color: $bg-panel;
@@ -23,8 +22,8 @@ input, select{
   padding: $padding-input-tb 8px;
   &.code{
     //font-family: monospace;
-    width: 5rem;
     flex-shrink: 0;
+    width: 5rem;
   }
   &.word{
     flex-shrink: 0;

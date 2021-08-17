@@ -38,7 +38,7 @@ const app = {
                 {name: '五笔极点 - 附加', path: 'wubi86_jidian_extra.dict.yaml'},
                 {name: '五笔极点 - 用户', path: 'wubi86_jidian_user.dict.yaml'},
             ],
-            modalActiveIndex: 0
+            modalActiveFileIndex: 0 // 选中的
         }
     },
     mounted() {
@@ -102,7 +102,7 @@ const app = {
 
     methods: {
         setModalActiveIndex(index){
-            this.modalActiveIndex = index
+            this.modalActiveFileIndex = index
         },
         sort(){
             this.dict.sort(this.activeGroupId)
