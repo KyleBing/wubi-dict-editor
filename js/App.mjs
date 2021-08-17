@@ -41,8 +41,8 @@ const app = {
                 {name: '五笔极点 - 用户', path: 'wubi86_jidian_user.dict.yaml'},
                 // TODO: 筛选文件列表，不显示当前码表
             ],
-            dropdownActiveFileIndex: 0, // 选中的
-            dropdownActiveGroupIndex: 0 // 选中的分组 ID
+            dropdownActiveFileIndex: -1, // 选中的
+            dropdownActiveGroupIndex: -1 // 选中的分组 ID
         }
     },
     mounted() {
@@ -107,15 +107,19 @@ const app = {
     },
 
     methods: {
+        moveWords(){
+
+        },
         // 选择移动到的分组 index
         setDropdownActiveGroupIndex(index){
             this.dropdownActiveGroupIndex = index
         },
         // 选择移动到的文件 index
         setDropdownActiveIndex(index){
-            // 改变时，请求对应的文件内容
             this.dropdownActiveFileIndex = index
-            ipcRenderer.send('loadSecondDict', this.dropdownFileList[newValue].path) // 载入当前 index 的文件内容
+            this.dropdownActiveGroupIndex = -1 // 切换文件列表时，复位分组 index
+            // this.dictSecond = {} // 立即清空次码表，分组列表也会立即消失，不会等下面的码表加载完成再清空
+            ipcRenderer.send('loadSecondDict', this.dropdownFileList[index].path) // 载入当前 index 的文件内容
         },
         sort(){
             this.dict.sort(this.activeGroupId)
@@ -453,6 +457,12 @@ const app = {
         selectedWordIds(newValue){
             console.log('已选词条id: ', JSON.stringify(newValue))
         },
+        dropdownDictList(newValue){
+            if (!newValue){ // 窗口关闭时，重置 index
+                this.setDropdownActiveIndex(-1)
+                this.dictSecond = {} // 清空次码表
+            }
+        }
     }
 }
 

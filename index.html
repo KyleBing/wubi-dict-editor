@@ -38,6 +38,10 @@
                         <div>{{ group.groupName }}</div>
                     </div>
                 </div>
+                <div class="btn btn-blue"
+                     @click="moveWords"
+                     v-if="dictSecond.isGroupMode && dropdownActiveGroupIndex !== -1 || !dictSecond.isGroupMode && dropdownActiveFileIndex !== -1"
+                >确定</div>
 
             </div>
         </div>

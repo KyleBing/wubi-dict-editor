@@ -22,6 +22,7 @@
   color: $text-main;
   flex-shrink: 0;
   background-color: white;
+  //backdrop-filter: saturate(180%) blur(10px);
   overflow-y: auto;
   &:last-child{
     border-right: none;
@@ -42,7 +43,7 @@
     &:hover{
       background-color: $bg-td-highlighted;
     }
-    &.active{
+    &.active, &:active{
       background-color: $color-main;
       color: white;
     }
