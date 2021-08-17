@@ -130,7 +130,7 @@ function showToolWindow (){
 
 
     // 保存词库到文件
-    ipcMain.on('saveFile', (event, filename, yamlString) => {
+    ipcMain.on('ToolWindow:saveFile', (event, filename, yamlString) => {
         fs.writeFile(path.join(getRimeConfigDir(), filename), yamlString, {encoding: "utf8"}, err => {
             if (!err){
                 console.log('saveFileSuccess')
@@ -222,7 +222,7 @@ function createMenu(filesMenu) {
             role: 'editMenu'
         },
         {
-            label: '词库',
+            label: '选择词库',
             submenu: filesMenu
         },
         {

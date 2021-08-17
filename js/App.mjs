@@ -435,13 +435,25 @@ const app = {
             } else {
                 wordsTransferring = this.dict.wordsOrigin.filter(item => this.selectedWordIds.includes(item.id))
             }
-            console.log('words transferring：', JSON.stringify(wordsTransferring))
-            this.dictSecond.addWordsInOrder(wordsTransferring, this.dropdownActiveGroupIndex)
-            this.words = [...this.dict.wordsOrigin]
-            console.log('after insert:( main:wordOrigin ):\n ', JSON.stringify(this.dictSecond.wordsOrigin))
-            this.deleteWords()
-            this.saveToFile(this.dictSecond)
-            this.saveToFile(this.dict)
+            if(this.IS_IN_DEVELOP){console.log('words transferring：', JSON.stringify(wordsTransferring))}
+
+            if (this.dict.filename === this.dictSecond.filename){
+                this.dictSecond.deleteWords(this.selectedWordIds) // 删除移动的词条
+                this.dictSecond.addWordsInOrder(wordsTransferring, this.dropdownActiveGroupIndex)
+                if(this.IS_IN_DEVELOP) {console.log('after insert:( main:wordOrigin ):\n ', JSON.stringify(this.dictSecond.wordsOrigin))}
+                // 如果在同码表中移动：如，从一个分组移到别一个分组
+                // 只保存 dictSecond 内容，重新载入 dict 内容
+                this.saveToFile(this.dictSecond)
+                this.reloadCurrentDict()
+                // TODO：将本组所有词条移走后，需要更新 app 的index，不然有错误提示
+            } else {
+                this.dictSecond.addWordsInOrder(wordsTransferring, this.dropdownActiveGroupIndex)
+                this.words = [...this.dict.wordsOrigin]
+                if(this.IS_IN_DEVELOP) {console.log('after insert:( main:wordOrigin ):\n ', JSON.stringify(this.dictSecond.wordsOrigin))}
+                this.deleteWords() // 删除当前词库已移动的词条
+                this.saveToFile(this.dictSecond)
+                this.saveToFile(this.dict)
+            }
             this.tip = '移动成功'
             this.resetDropList()
         },
