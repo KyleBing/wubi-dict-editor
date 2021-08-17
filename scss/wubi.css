@@ -23,7 +23,7 @@
   font-family: "Comfortaa-v30", Roboto, SansSerif;
 }
 
-.unselectable, .file-list .file-list-item, .catalog-list .catalog-item, .footer .footer-toolbar .link-list .link, input[type=checkbox] + label.checker, .btn, .btn-group .btn-vertical > *, .word-item .operation {
+.unselectable, .file-list-item, .catalog-list .catalog-item, .footer .footer-toolbar .link-list .link, input[type=checkbox] + label.checker, .btn, .btn-group .btn-vertical > *, .word-item .operation {
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -1225,6 +1225,113 @@ select option {
   margin-right: 10px;
 }
 
+.group-container {
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+}
+
+.catalog-list {
+  border-right: 1px solid #eee;
+  width: 110px;
+  flex-shrink: 0;
+  overflow-y: auto;
+}
+.catalog-list .catalog-item {
+  text-align: center;
+  line-height: 20px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+.catalog-list .catalog-item > div {
+  height: 20px;
+}
+.catalog-list .catalog-item:hover {
+  background-color: rgba(255, 45, 112, 0.05);
+}
+.catalog-list .catalog-item.active {
+  background-color: #FF2D70;
+  color: white;
+}
+.catalog-list::-webkit-scrollbar {
+  z-index: 50;
+  width: 1px;
+}
+.catalog-list::-webkit-scrollbar-track {
+  background-color: rgba(0, 0, 0, 0);
+}
+.catalog-list::-webkit-scrollbar-thumb {
+  background-color: #eee;
+}
+.catalog-list:hover::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+}
+
+.group-list {
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+.dropdown {
+  position: relative;
+}
+.dropdown-body {
+  z-index: 100;
+  position: absolute;
+  top: 30px;
+  left: 0;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: flex-start;
+}
+
+.file-list {
+  margin-left: 5px;
+  max-height: 400px;
+  border: 1px solid #007AFF;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  overflow: hidden;
+  color: #000;
+  flex-shrink: 0;
+  background-color: white;
+  overflow-y: auto;
+}
+.file-list-item {
+  text-align: center;
+  line-height: 20px;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-bottom: 1px solid #eee;
+}
+.file-list-item:last-child {
+  border-bottom: none;
+}
+.file-list-item > div {
+  height: 20px;
+}
+.file-list-item:hover {
+  background-color: rgba(0, 122, 255, 0.05);
+}
+.file-list-item.active, .file-list-item:active {
+  background-color: #007AFF;
+  color: white;
+}
+.file-list::-webkit-scrollbar {
+  z-index: 50;
+  width: 1px;
+}
+.file-list::-webkit-scrollbar-track {
+  background-color: rgba(0, 0, 0, 0);
+}
+.file-list::-webkit-scrollbar-thumb {
+  background-color: #eee;
+}
+.file-list:hover::-webkit-scrollbar-thumb {
+  background-color: #007AFF;
+}
+
 @media (prefers-color-scheme: dark) {
   ::-webkit-scrollbar-track {
     background-color: rgba(0, 0, 0, 0);
@@ -1291,6 +1398,20 @@ select option {
   }
   .footer .link:hover {
     color: #81fffa !important;
+  }
+
+  .file-list {
+    color: white;
+    background-color: #1c1f24;
+  }
+  .file-list-item {
+    border-bottom-color: #272b32;
+  }
+  .file-list-item:hover {
+    background-color: #383f4a;
+  }
+  .file-list-item.active, .file-list-item:active {
+    color: white;
   }
 
   input, select {
@@ -1582,113 +1703,6 @@ select option {
     color: #8E8E93;
   }
 }
-.group-container {
-  display: flex;
-  justify-content: flex-start;
-  width: 100%;
-}
-
-.catalog-list {
-  border-right: 1px solid #eee;
-  width: 110px;
-  flex-shrink: 0;
-  overflow-y: auto;
-}
-.catalog-list .catalog-item {
-  text-align: center;
-  line-height: 20px;
-  padding: 5px 10px;
-  cursor: pointer;
-}
-.catalog-list .catalog-item > div {
-  height: 20px;
-}
-.catalog-list .catalog-item:hover {
-  background-color: rgba(255, 45, 112, 0.05);
-}
-.catalog-list .catalog-item.active {
-  background-color: #FF2D70;
-  color: white;
-}
-.catalog-list::-webkit-scrollbar {
-  z-index: 50;
-  width: 1px;
-}
-.catalog-list::-webkit-scrollbar-track {
-  background-color: rgba(0, 0, 0, 0);
-}
-.catalog-list::-webkit-scrollbar-thumb {
-  background-color: #eee;
-}
-.catalog-list:hover::-webkit-scrollbar-thumb {
-  background-color: #ccc;
-}
-
-.group-list {
-  flex-grow: 1;
-  overflow-y: auto;
-}
-
-.dropdown {
-  position: relative;
-}
-.dropdown-body {
-  z-index: 100;
-  position: absolute;
-  top: 30px;
-  left: 0;
-  display: flex;
-  flex-flow: row nowrap;
-  align-items: flex-start;
-}
-
-.file-list {
-  margin-left: 5px;
-  max-height: 400px;
-  border: 1px solid #007AFF;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  border-radius: 3px;
-  overflow: hidden;
-  color: #000;
-  flex-shrink: 0;
-  background-color: white;
-  overflow-y: auto;
-}
-.file-list .file-list-item {
-  text-align: center;
-  line-height: 20px;
-  padding: 5px 10px;
-  cursor: pointer;
-  border-bottom: 1px solid #eee;
-}
-.file-list .file-list-item:last-child {
-  border-bottom: none;
-}
-.file-list .file-list-item > div {
-  height: 20px;
-}
-.file-list .file-list-item:hover {
-  background-color: rgba(0, 122, 255, 0.05);
-}
-.file-list .file-list-item.active, .file-list .file-list-item:active {
-  background-color: #007AFF;
-  color: white;
-}
-.file-list::-webkit-scrollbar {
-  z-index: 50;
-  width: 1px;
-}
-.file-list::-webkit-scrollbar-track {
-  background-color: rgba(0, 0, 0, 0);
-}
-.file-list::-webkit-scrollbar-thumb {
-  background-color: #eee;
-}
-.file-list:hover::-webkit-scrollbar-thumb {
-  background-color: #007AFF;
-}
-
 body {
   font-size: 12px;
   background-color: white;

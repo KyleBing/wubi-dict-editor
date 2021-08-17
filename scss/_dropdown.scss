@@ -27,7 +27,7 @@ $bg-dropdown-highlight: transparentize($bg-dropdown, 0.95);
   flex-shrink: 0;
   background-color: white;
   overflow-y: auto;
-  .file-list-item{
+  &-item{
     @extend .unselectable;
     text-align: center;
     line-height: $catalog-height - $catalog-pd-tb * 2;
