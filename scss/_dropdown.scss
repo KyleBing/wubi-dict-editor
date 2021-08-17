@@ -1,3 +1,6 @@
+$bg-dropdown: $blue;
+$bg-dropdown-highlight: transparentize($bg-dropdown, 0.95);
+
 .dropdown{
   position: relative;
   &-link{
@@ -15,18 +18,15 @@
 }
 
 .file-list{
+  margin-left: 5px;
   max-height: 400px;
-  border-right: 1px solid $color-border;
+  border: 1px solid $bg-dropdown;
   @include border-radius($radius);
   overflow: hidden;
   color: $text-main;
   flex-shrink: 0;
   background-color: white;
-  //backdrop-filter: saturate(180%) blur(10px);
   overflow-y: auto;
-  &:last-child{
-    border-right: none;
-  }
   .file-list-item{
     @extend .unselectable;
     text-align: center;
@@ -41,10 +41,10 @@
       height: $catalog-height - $catalog-pd-tb * 2;
     }
     &:hover{
-      background-color: $bg-td-highlighted;
+      background-color: $bg-dropdown-highlight;
     }
     &.active, &:active{
-      background-color: $color-main;
+      background-color: $bg-dropdown;
       color: white;
     }
   }
@@ -59,7 +59,7 @@
     background-color: $color-border;
   }
   &:hover::-webkit-scrollbar-thumb {
-    background-color: #ccc;
+    background-color: $bg-dropdown;
   }
 }
 

@@ -21,7 +21,7 @@
         <div class="dropdown">
             <div class="dropdown-link btn btn-blue" v-show="selectedWordIds.length > 0" @click.capture="showDropdown = !showDropdown">移动到...            </div>
             <div class="dropdown-body" v-show="showDropdown">
-                <div class="file-list shadow">
+                <div class="file-list shadow" v-if="dropdownFileList.length > 0">
                     <div :class="['file-list-item', {active: fileIndex === dropdownActiveFileIndex}]"
                          @click="setDropdownActiveIndex(fileIndex)"
                          v-for="(file, fileIndex) in dropdownFileList"
@@ -29,7 +29,7 @@
                         <div>{{ file.name }}</div>
                     </div>
                 </div>
-                <div class="file-list shadow">
+                <div class="file-list shadow" v-if="dictSecond.isGroupMode">
                     <div :class="['file-list-item', {active: index === dropdownActiveGroupIndex}]"
                          v-if="dictSecond.isGroupMode"
                          @click="setDropdownActiveGroupIndex(index)"
@@ -38,7 +38,7 @@
                         <div>{{ group.groupName }}</div>
                     </div>
                 </div>
-                <div class="btn btn-blue"
+                <div class="btn btn-blue shadow ml-1"
                      @click="moveWordsToSecondDict"
                      v-if="dictSecond.isGroupMode && dropdownActiveGroupIndex !== -1 || !dictSecond.isGroupMode && dropdownActiveFileIndex !== -1"
                 >确定</div>

@@ -1643,8 +1643,9 @@ select option {
 }
 
 .file-list {
+  margin-left: 5px;
   max-height: 400px;
-  border-right: 1px solid #eee;
+  border: 1px solid #007AFF;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   border-radius: 3px;
@@ -1653,9 +1654,6 @@ select option {
   flex-shrink: 0;
   background-color: white;
   overflow-y: auto;
-}
-.file-list:last-child {
-  border-right: none;
 }
 .file-list .file-list-item {
   text-align: center;
@@ -1671,10 +1669,10 @@ select option {
   height: 20px;
 }
 .file-list .file-list-item:hover {
-  background-color: rgba(255, 45, 112, 0.05);
+  background-color: rgba(0, 122, 255, 0.05);
 }
 .file-list .file-list-item.active, .file-list .file-list-item:active {
-  background-color: #FF2D70;
+  background-color: #007AFF;
   color: white;
 }
 .file-list::-webkit-scrollbar {
@@ -1688,7 +1686,7 @@ select option {
   background-color: #eee;
 }
 .file-list:hover::-webkit-scrollbar-thumb {
-  background-color: #ccc;
+  background-color: #007AFF;
 }
 
 body {

@@ -71,7 +71,7 @@ function createWindow() {
             if(err){
                 console.log(err)
             } else {
-                mainWindow.webContents.send('setSecondDict', path.join(getRimeConfigDir(), filename) ,res)
+                mainWindow.webContents.send('setSecondDict',filename ,res)
             }
         })
     })

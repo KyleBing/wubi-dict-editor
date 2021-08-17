@@ -237,6 +237,7 @@ const app = {
 
         // 保存内容到文件
         saveToFile(dict){
+            console.log(dict.filename)
             ipcRenderer.send('saveFile', dict.filename, dict.toYamlString())
         },
         // 选中全部展示的词条
@@ -435,13 +436,14 @@ const app = {
                 wordsTransferring = this.dict.wordsOrigin.filter(item => this.selectedWordIds.includes(item.id))
             }
             console.log('words transferring：', JSON.stringify(wordsTransferring))
-            this.dictSecond.addWordsInOrder(wordsTransferring)
+            this.dictSecond.addWordsInOrder(wordsTransferring, this.dropdownActiveGroupIndex)
             this.words = [...this.dict.wordsOrigin]
             console.log('after insert:( main:wordOrigin ):\n ', JSON.stringify(this.dictSecond.wordsOrigin))
             this.deleteWords()
-            this.resetDropList()
             this.saveToFile(this.dictSecond)
             this.saveToFile(this.dict)
+            this.tip = '移动成功'
+            this.resetDropList()
         },
         // 复制 dropdown
         resetDropList(){

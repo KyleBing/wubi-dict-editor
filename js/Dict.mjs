@@ -146,10 +146,10 @@ class Dict {
     }
 
     // 依次序添加 words
-    addWordsInOrder(words){
+    addWordsInOrder(words, groupIndex){
         let startPoint = new Date().getTime()
-        if (this.isGroupMode){
-            this.addWordToDictWithGroup()
+        if (this.isGroupMode && groupIndex !== -1){
+            this.addWordToDictWithGroup(words, groupIndex)
         } else {
             words.forEach(word => {
                 this.addWordToDict(word)
@@ -177,8 +177,24 @@ class Dict {
 
 
     // 依次序添加 word groupMode
-    addWordToDictWithGroup(word){
+    addWordToDictWithGroup(words, groupIndex){
+        let wordGroup = this.wordsOrigin[groupIndex]
         console.log('TODO: add to group')
+        words.forEach(word => {
+            let insetPosition = null // 插入位置 index
+            for (let i=0; i<wordGroup.length-1; i++){ // -1 为了避免下面 i+1 为 undefined
+                if (word.code >= wordGroup[i]  && word.code <= wordGroup[i+1].code){
+                    insetPosition = i + 1
+                    break
+                }
+            }
+            if (!insetPosition){  // 没有匹配到任何位置，添加到结尾
+                insetPosition = wordGroup.length
+            }
+            let wordInsert = word.clone() // 断开与别一个 dict 的引用链接，新建一个 word 对象，不然两个 dict 引用同一个 word
+            wordInsert.id = wordGroup.length + 1 // 给新的 words 一个新的唯一 id
+            wordGroup.splice(insetPosition, 0, wordInsert)
+        })
     }
 
 
