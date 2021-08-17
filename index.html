@@ -19,14 +19,26 @@
             @click="saveToFile(dict)">{{ labelOfSaveBtn }}
         </div>
         <div class="dropdown">
-            <div class="dropdown-link btn btn-blue" v-show="selectedWordIds.length > 0" @click.capture="modalDictList = !modalDictList">移动到...            </div>
-            <div class="dropdown-body file-list shadow" v-show="modalDictList">
-                <div :class="['file-list-item', {active: fileIndex === modalActiveFileIndex}]"
-                     @click="setModalActiveIndex(fileIndex)"
-                     v-for="(file, fileIndex) in modalFileList"
-                     :key="fileIndex">
-                    <div>{{ file.name }}</div>
+            <div class="dropdown-link btn btn-blue" v-show="selectedWordIds.length > 0" @click.capture="dropdownDictList = !dropdownDictList">移动到...            </div>
+            <div class="dropdown-body" v-show="dropdownDictList">
+                <div class="file-list shadow">
+                    <div :class="['file-list-item', {active: fileIndex === dropdownActiveFileIndex}]"
+                         @click="setDropdownActiveIndex(fileIndex)"
+                         v-for="(file, fileIndex) in dropdownFileList"
+                         :key="fileIndex">
+                        <div>{{ file.name }}</div>
+                    </div>
                 </div>
+                <div class="file-list shadow">
+                    <div :class="['file-list-item', {active: index === dropdownActiveGroupIndex}]"
+                         v-if="dictSecond.isGroupMode"
+                         @click="setDropdownActiveGroupIndex(index)"
+                         v-for="(group, index) in dictSecond.wordsOrigin"
+                         :key="group">
+                        <div>{{ group.groupName }}</div>
+                    </div>
+                </div>
+
             </div>
         </div>
         <input class="word" ref="domInputWord" v-model="word" type="text" placeholder="词条">

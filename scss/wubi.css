@@ -1633,23 +1633,29 @@ select option {
   position: relative;
 }
 .dropdown-body {
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  border-radius: 3px;
-  background-color: white;
   z-index: 100;
   position: absolute;
   top: 30px;
   left: 0;
-  width: 150px;
-  border: 1px solid #ccc;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: flex-start;
 }
 
 .file-list {
-  color: #000;
+  max-height: 400px;
   border-right: 1px solid #eee;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  overflow: hidden;
+  color: #000;
   flex-shrink: 0;
+  background-color: white;
   overflow-y: auto;
+}
+.file-list:last-child {
+  border-right: none;
 }
 .file-list .file-list-item {
   text-align: center;
@@ -1658,7 +1664,7 @@ select option {
   cursor: pointer;
   border-bottom: 1px solid #eee;
 }
-.file-list .file-list-item:last-item {
+.file-list .file-list-item:last-child {
   border-bottom: none;
 }
 .file-list .file-list-item > div {

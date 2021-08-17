@@ -30,15 +30,19 @@ const app = {
             heightContent: 0, // content 高度
             words: [], // 显示的 words
 
-            modalDictList: false, // 显示移动词条窗口
-            modalFileList: [
+
+            dictSecond: {}, // 要移动到的码表
+            dropdownDictList: false, // 显示移动词条窗口
+            dropdownFileList: [
                 {name: '拼音词库', path: 'pinyin_simp.dict.yaml'},
                 {name: '五笔极点 - 主', path: 'wubi86_jidian.dict.yaml'},
                 {name: '五笔极点 - 临时', path: 'wubi86_jidian_addition.dict.yaml'},
                 {name: '五笔极点 - 附加', path: 'wubi86_jidian_extra.dict.yaml'},
                 {name: '五笔极点 - 用户', path: 'wubi86_jidian_user.dict.yaml'},
+                // TODO: 筛选文件列表，不显示当前码表
             ],
-            modalActiveFileIndex: 0 // 选中的
+            dropdownActiveFileIndex: 0, // 选中的
+            dropdownActiveGroupIndex: 0 // 选中的分组 ID
         }
     },
     mounted() {
@@ -49,12 +53,8 @@ const app = {
             this.word = ''
             this.refreshShowingWords()
             // this.search() // 配置项：切换码表是否自动搜索
-            // 如果不是在主码表中，载入主码表文件
-            if (!this.isInMainDict){
-                ipcRenderer.send('loadMainDict')
-            } else {
-                this.dictMain = [] // 清空，释放无用内存
-            }
+            ipcRenderer.send('loadMainDict') // 请求主码表文件
+
         })
         ipcRenderer.on('saveFileSuccess', () => {
             this.labelOfSaveBtn = '保存成功'
@@ -71,12 +71,18 @@ const app = {
             ipcRenderer.send('loadUserDictFile')
         }
 
+        // 载入次码表
+        ipcRenderer.on('setSecondDict', (event, filename, res) => {
+            this.dictSecond = new Dict(res, filename)
+        })
+
+        // 载入主码表
         ipcRenderer.on('setMainDict', (event, filename, res) => {
             this.dictMain = new Dict(res, filename)
         })
 
-        this.addKeyboardListener()
 
+        this.addKeyboardListener()
         onresize = ()=>{
             this.heightContent = innerHeight - 47 - 20 - 10
         }
@@ -101,8 +107,15 @@ const app = {
     },
 
     methods: {
-        setModalActiveIndex(index){
-            this.modalActiveFileIndex = index
+        // 选择移动到的分组 index
+        setDropdownActiveGroupIndex(index){
+            this.dropdownActiveGroupIndex = index
+        },
+        // 选择移动到的文件 index
+        setDropdownActiveIndex(index){
+            // 改变时，请求对应的文件内容
+            this.dropdownActiveFileIndex = index
+            ipcRenderer.send('loadSecondDict', this.dropdownFileList[newValue].path) // 载入当前 index 的文件内容
         },
         sort(){
             this.dict.sort(this.activeGroupId)
