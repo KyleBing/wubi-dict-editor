@@ -348,26 +348,6 @@ const app = {
                 }
             })
         },
-        // 将选中的词条添加到主码表
-        addToMain(){
-            // get words
-            let wordsTransferring = [] // 被转移的 [Word]
-            if (this.dict.isGroupMode){
-                this.dict.wordsOrigin.forEach((group, index) => {
-                    let matchedWords = group.dict.filter(item => this.selectedWordIds.includes(item.id))
-                    wordsTransferring = wordsTransferring.concat(matchedWords)
-                })
-            } else {
-                wordsTransferring = this.dict.wordsOrigin.filter(item => this.selectedWordIds.includes(item.id))
-            }
-            console.log('words transferring：', JSON.stringify(wordsTransferring))
-            this.dictMain.addWordsInOrder(wordsTransferring)
-            this.words = [...this.dict.wordsOrigin]
-            console.log('after insert:( main:wordOrigin ):\n ', JSON.stringify(this.dictMain.wordsOrigin))
-            this.deleteWords()
-            this.saveToFile(this.dictMain)
-            this.saveToFile(this.dict)
-        },
         // 打开当前码表源文件
         openCurrentYaml(){
             ipcRenderer.send('openFileOutside', this.dict.filename)

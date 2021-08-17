@@ -155,7 +155,7 @@ class Dict {
                 this.addWordToDict(word)
             })
         }
-        console.log(`添加 ${words.length } 条词条到主码表, 用时 ${new Date().getTime() - startPoint} ms`)
+        console.log(`添加 ${words.length } 条词条到指定码表, 用时 ${new Date().getTime() - startPoint} ms`)
     }
 
     // 依次序添加 word

@@ -32,13 +32,16 @@ const app = {
 
 
             dictSecond: {}, // 要移动到的码表
-            dropdownDictList: false, // 显示移动词条窗口
+            showDropdown: false, // 显示移动词条窗口
             dropdownFileList: [
                 {name: '拼音词库', path: 'pinyin_simp.dict.yaml'},
                 {name: '五笔极点 - 主', path: 'wubi86_jidian.dict.yaml'},
                 {name: '五笔极点 - 临时', path: 'wubi86_jidian_addition.dict.yaml'},
                 {name: '五笔极点 - 附加', path: 'wubi86_jidian_extra.dict.yaml'},
                 {name: '五笔极点 - 用户', path: 'wubi86_jidian_user.dict.yaml'},
+                {name: '测试- 普通 ⛳', path: 'test.dict.yaml'},
+                {name: '测试- 分组️ ⛳️', path: 'test_group.dict.yaml'},
+                {name: '测试- 主 ⛳️', path: 'main.dict.yaml'},
                 // TODO: 筛选文件列表，不显示当前码表
             ],
             dropdownActiveFileIndex: -1, // 选中的
@@ -47,13 +50,18 @@ const app = {
     },
     mounted() {
         this.heightContent = innerHeight - 47 - 20 - 10
-        ipcRenderer.on('showFileContent', (event, fileName, res) => {
-            this.dict = new Dict(res, fileName)
+        // 载入主要操作码表文件
+        ipcRenderer.on('showFileContent', (event, filename, res) => {
+            // 过滤移动到的文件列表，不显示正在显示的这个码表
+            // this.dropdownFileList = this.dropdownFileList.filter(item => item.path !== filename)
+
+            this.dict = new Dict(res, filename)
             // 载入新码表时，清除 word 保存 code
             this.word = ''
             this.refreshShowingWords()
             // this.search() // 配置项：切换码表是否自动搜索
             ipcRenderer.send('loadMainDict') // 请求主码表文件
+
 
         })
         ipcRenderer.on('saveFileSuccess', () => {
@@ -107,19 +115,16 @@ const app = {
     },
 
     methods: {
-        moveWords(){
-
-        },
         // 选择移动到的分组 index
         setDropdownActiveGroupIndex(index){
             this.dropdownActiveGroupIndex = index
         },
         // 选择移动到的文件 index
-        setDropdownActiveIndex(index){
-            this.dropdownActiveFileIndex = index
-            this.dropdownActiveGroupIndex = -1 // 切换文件列表时，复位分组 index
+        setDropdownActiveIndex(fileIndex){
+            this.dropdownActiveFileIndex = fileIndex
+            this.dropdownActiveGroupIndex = -1 // 切换文件列表时，复位分组 fileIndex
             // this.dictSecond = {} // 立即清空次码表，分组列表也会立即消失，不会等下面的码表加载完成再清空
-            ipcRenderer.send('loadSecondDict', this.dropdownFileList[index].path) // 载入当前 index 的文件内容
+            ipcRenderer.send('loadSecondDict', this.dropdownFileList[fileIndex].path) // 载入当前 index 的文件内容
         },
         sort(){
             this.dict.sort(this.activeGroupId)
@@ -418,9 +423,8 @@ const app = {
                 }
             })
         },
-        // 将选中的词条添加到主码表
-        addToMain(){
-            // get words
+        // 将选中的词条移动到次码表
+        moveWordsToSecondDict(){
             let wordsTransferring = [] // 被转移的 [Word]
             if (this.dict.isGroupMode){
                 this.dict.wordsOrigin.forEach((group, index) => {
@@ -431,12 +435,20 @@ const app = {
                 wordsTransferring = this.dict.wordsOrigin.filter(item => this.selectedWordIds.includes(item.id))
             }
             console.log('words transferring：', JSON.stringify(wordsTransferring))
-            this.dictMain.addWordsInOrder(wordsTransferring)
+            this.dictSecond.addWordsInOrder(wordsTransferring)
             this.words = [...this.dict.wordsOrigin]
-            console.log('after insert:( main:wordOrigin ):\n ', JSON.stringify(this.dictMain.wordsOrigin))
+            console.log('after insert:( main:wordOrigin ):\n ', JSON.stringify(this.dictSecond.wordsOrigin))
             this.deleteWords()
-            this.saveToFile(this.dictMain)
+            this.resetDropList()
+            this.saveToFile(this.dictSecond)
             this.saveToFile(this.dict)
+        },
+        // 复制 dropdown
+        resetDropList(){
+            this.showDropdown = false
+            this.dropdownActiveFileIndex = -1
+            this.dropdownActiveGroupIndex = -1
+            this.dictSecond = {} // 清空次码表
         },
         // 打开当前码表源文件
         openCurrentYaml(){
@@ -457,10 +469,9 @@ const app = {
         selectedWordIds(newValue){
             console.log('已选词条id: ', JSON.stringify(newValue))
         },
-        dropdownDictList(newValue){
+        showDropdown(newValue){
             if (!newValue){ // 窗口关闭时，重置 index
-                this.setDropdownActiveIndex(-1)
-                this.dictSecond = {} // 清空次码表
+                this.resetDropList()
             }
         }
     }

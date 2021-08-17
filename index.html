@@ -19,8 +19,8 @@
             @click="saveToFile(dict)">{{ labelOfSaveBtn }}
         </div>
         <div class="dropdown">
-            <div class="dropdown-link btn btn-blue" v-show="selectedWordIds.length > 0" @click.capture="dropdownDictList = !dropdownDictList">移动到...            </div>
-            <div class="dropdown-body" v-show="dropdownDictList">
+            <div class="dropdown-link btn btn-blue" v-show="selectedWordIds.length > 0" @click.capture="showDropdown = !showDropdown">移动到...            </div>
+            <div class="dropdown-body" v-show="showDropdown">
                 <div class="file-list shadow">
                     <div :class="['file-list-item', {active: fileIndex === dropdownActiveFileIndex}]"
                          @click="setDropdownActiveIndex(fileIndex)"
@@ -39,7 +39,7 @@
                     </div>
                 </div>
                 <div class="btn btn-blue"
-                     @click="moveWords"
+                     @click="moveWordsToSecondDict"
                      v-if="dictSecond.isGroupMode && dropdownActiveGroupIndex !== -1 || !dictSecond.isGroupMode && dropdownActiveFileIndex !== -1"
                 >确定</div>
 
@@ -50,7 +50,6 @@
         <div class="btn btn-primary" @click="addNewWord">添加</div>
         <div class="btn btn-primary" @click="search">搜索</div>
         <div class="btn btn-roseo" v-show="selectedWordIds.length > 0" @click="deleteWords">删除</div>
-        <div class="btn btn-orange" v-show="selectedWordIds.length > 0 && !isInMainDict" @click="addToMain">移至主词库</div>
 
         <template v-if="IS_IN_DEVELOP">
 
