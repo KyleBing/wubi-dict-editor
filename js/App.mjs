@@ -482,6 +482,9 @@ const app = {
             this.code = this.getWordCodes(newValue)
         },
         selectedWordIds(newValue){
+            if (newValue.length === 0){
+                this.showDropdown = false
+            }
             console.log('已选词条id: ', JSON.stringify(newValue))
         },
         showDropdown(newValue){
