@@ -42,7 +42,6 @@ const app = {
                 {name: '测试- 普通 ⛳', path: 'test.dict.yaml'},
                 {name: '测试- 分组️ ⛳️', path: 'test_group.dict.yaml'},
                 {name: '测试- 主 ⛳️', path: 'main.dict.yaml'},
-                // TODO: 筛选文件列表，不显示当前码表
             ],
             dropdownActiveFileIndex: -1, // 选中的
             dropdownActiveGroupIndex: -1 // 选中的分组 ID
@@ -166,8 +165,9 @@ const app = {
             this.dict.addGroupBeforeId(groupIndex)
             this.refreshShowingWords()
         },
-        deleteGroup(groupIndex){
-            this.dict.deleteGroup(groupIndex)
+        deleteGroup(groupId){
+            this.dict.deleteGroup(groupId)
+            this.activeGroupId = - 1 // 不管删除哪个分组，之后都指向全部
             this.refreshShowingWords()
         },
         // 设置当前显示的 分组

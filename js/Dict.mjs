@@ -9,7 +9,8 @@ class Dict {
         this.filename = filename // 文件路径
         this.header = null // 文件头部内容
         this.wordsOrigin = [] // 文件词条数组
-        this.lastIndex = 0 // 最后一个 Index 的值，用于新添加词时，作为唯一的 id 传入
+        this.lastIndex = 0 // 最后一个Word Index 的值，用于新添加词时，作为唯一的 id 传入
+        this.lastGroupIndex = 0 // 最后一个WordGroup Index 的值，用于新添加词时，作为唯一的 id 传入
         this.isGroupMode = false // 识别码表是否为分组形式的
 
         this.characterMap = new Map() // 单字码表，用于根据此生成词语码表
@@ -72,11 +73,11 @@ class Dict {
                 if (temp && temp.groupName) { // 如果上一个已经有名字了，说明需要保存
                     wordsGroup.push(temp)
                 }
-                temp = new WordGroup(item.substring(3).trim())
+                temp = new WordGroup(this.lastGroupIndex++, item.substring(3).trim())
                 lastItemIsEmptyLine = false
             } else if (item.indexOf('\t') > -1) { // 是词条
                 if (!temp){ // 第一行是词条时，没有分组名时
-                    temp = new WordGroup()
+                    temp = new WordGroup(this.lastGroupIndex++)
                 }
                 temp.dict.push(getWordFromLine(index, item))
                 lastItemIsEmptyLine = false
@@ -91,7 +92,7 @@ class Dict {
                     if (temp){
                         temp.groupName = temp.groupName || '未命名'
                         wordsGroup.push(temp)
-                        temp = new WordGroup()
+                        temp = new WordGroup(this.lastGroupIndex++)
                     }
                 }
                 lastItemIsEmptyLine = true
@@ -135,7 +136,7 @@ class Dict {
             if (groupIndex !== -1){
                 this.wordsOrigin[groupIndex].dict.push(word)
             } else {
-                let newWordGroup = new WordGroup('- 未命名 -',[word])
+                let newWordGroup = new WordGroup(this.lastGroupIndex++,'- 未命名 -',[word])
                 this.wordsOrigin.unshift(newWordGroup) // 添加到第一组
             }
         } else {
@@ -215,12 +216,13 @@ class Dict {
     }
 
     addGroupBeforeId(groupIndex){
-        this.wordsOrigin.splice(groupIndex,0,new WordGroup('',[],true))
+        this.wordsOrigin.splice(groupIndex,0,new WordGroup(this.lastGroupIndex++,'',[],true))
     }
 
     // 分组模式：删除分组
-    deleteGroup(groupIndex){
-        this.wordsOrigin.splice(groupIndex, 1)
+    deleteGroup(groupId){
+        console.log('要删除的分组 id: ',groupId)
+        this.wordsOrigin = this.wordsOrigin.filter(group => group.id !== groupId)
     }
     // 转为 yaml String
     toYamlString(){
