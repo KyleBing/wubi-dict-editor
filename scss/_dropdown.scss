@@ -61,7 +61,7 @@ $bg-dropdown-highlight: transparentize($bg-dropdown, 0.95);
     background-color: $color-border;
   }
   &:hover::-webkit-scrollbar-thumb {
-    background-color: $text-subtitle;
+    background-color: transparentize($bg-dropdown, 0.3);
   }
 }
 

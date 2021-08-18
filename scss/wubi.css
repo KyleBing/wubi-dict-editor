@@ -1331,7 +1331,7 @@ select option {
   background-color: #eee;
 }
 .file-list:hover::-webkit-scrollbar-thumb {
-  background-color: #848484;
+  background-color: rgba(0, 122, 255, 0.7);
 }
 
 @media (prefers-color-scheme: dark) {
