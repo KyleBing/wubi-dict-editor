@@ -211,7 +211,7 @@ function getLabelNameFromFileName(fileName){
     ]
     let matchedPath = map.filter(item => item.path === fileName)
     // 返回匹配的名字，或者返回原文件名
-    return matchedPath.length > 0 ? matchedPath[0].name: fileName
+    return matchedPath.length > 0 ? matchedPath[0].name: fileName.substring(0, fileName.indexOf('.dict.yaml'))
 }
 
 
