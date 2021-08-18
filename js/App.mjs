@@ -34,15 +34,7 @@ const app = {
             dictSecond: {}, // 要移动到的码表
             showDropdown: false, // 显示移动词条窗口
             dropdownFileList: [
-                {name: '拼音词库', path: 'pinyin_simp.dict.yaml'},
-                {name: '五笔极点 - 主', path: 'wubi86_jidian.dict.yaml'},
-                {name: '五笔极点 - 临时', path: 'wubi86_jidian_addition.dict.yaml'},
-                {name: '五笔极点 - 附加', path: 'wubi86_jidian_extra.dict.yaml'},
-                {name: '五笔极点 - 用户', path: 'wubi86_jidian_user.dict.yaml'},
-                {name: '测试- 普通 ⛳', path: 'test.dict.yaml'},
-                {name: '测试- 分组️ ⛳️', path: 'test_group.dict.yaml'},
-                {name: '测试- 主 ⛳️', path: 'main.dict.yaml'},
-                // TODO: get file list from system
+                // {name: '拼音词库', path: 'pinyin_simp.dict.yaml'}
             ],
             dropdownActiveFileIndex: -1, // 选中的
             dropdownActiveGroupIndex: -1 // 选中的分组 ID
@@ -61,8 +53,6 @@ const app = {
             this.refreshShowingWords()
             // this.search() // 配置项：切换码表是否自动搜索
             ipcRenderer.send('loadMainDict') // 请求主码表文件
-
-
         })
         ipcRenderer.on('saveFileSuccess', () => {
             this.labelOfSaveBtn = '保存成功'
@@ -71,6 +61,13 @@ const app = {
                 this.$refs.domBtnSave.classList.remove('btn-green')
                 this.labelOfSaveBtn = '保存'
             }, 2000)
+        })
+
+        // 由 window 触发获取文件目录的请求，不然无法实现适时的获取到 主进程返回的数据
+        ipcRenderer.send('GetFileList')
+        ipcRenderer.on('FileList', (event, fileList) => {
+            console.log(fileList)
+            this.dropdownFileList = fileList
         })
 
         if (IS_IN_DEVELOP){
@@ -446,7 +443,6 @@ const app = {
                 // 只保存 dictSecond 内容，重新载入 dict 内容
                 this.saveToFile(this.dictSecond)
                 this.reloadCurrentDict()
-                // TODO：将本组所有词条移走后，需要更新 app 的index，不然有错误提示
             } else {
                 this.dictSecond.addWordsInOrder(wordsTransferring, this.dropdownActiveGroupIndex)
                 this.words = [...this.dict.wordsOrigin]

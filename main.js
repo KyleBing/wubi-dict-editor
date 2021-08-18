@@ -7,7 +7,8 @@ const path = require("path")
 
 const { IS_IN_DEVELOP } =  require('./js/Global')
 
-let mainWindow
+let mainWindow // 主窗口
+let fileList = [] // 文件目录列表，用于移动词条
 
 function createWindow() {
     let width = IS_IN_DEVELOP ? 1400: 800
@@ -95,6 +96,10 @@ function createWindow() {
         }).catch(err => {
             console.log(err)
         })
+    })
+
+    ipcMain.on('GetFileList', event => {
+        mainWindow.send('FileList', fileList)
     })
 }
 
@@ -292,6 +297,10 @@ function setRimeFolderMenu(){
             let filesMenu = []
             filePaths.forEach(item => {
                 if (item.indexOf('.dict.yaml') > 0){
+                    fileList.push({
+                        name: getLabelNameFromFileName(item),
+                        path: item
+                    })
                     filesMenu.push({
                         label: getLabelNameFromFileName(item),
                         click(sender, window, content) {

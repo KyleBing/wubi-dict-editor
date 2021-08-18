@@ -1299,6 +1299,7 @@ select option {
   overflow-y: auto;
 }
 .file-list-item {
+  min-width: 100px;
   text-align: center;
   line-height: 20px;
   padding: 5px 10px;
@@ -1330,7 +1331,7 @@ select option {
   background-color: #eee;
 }
 .file-list:hover::-webkit-scrollbar-thumb {
-  background-color: #007AFF;
+  background-color: #848484;
 }
 
 @media (prefers-color-scheme: dark) {

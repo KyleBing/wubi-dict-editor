@@ -28,6 +28,7 @@ $bg-dropdown-highlight: transparentize($bg-dropdown, 0.95);
   background-color: white;
   overflow-y: auto;
   &-item{
+    min-width: 100px;
     @extend .unselectable;
     text-align: center;
     line-height: $catalog-height - $catalog-pd-tb * 2;
@@ -60,7 +61,7 @@ $bg-dropdown-highlight: transparentize($bg-dropdown, 0.95);
     background-color: $color-border;
   }
   &:hover::-webkit-scrollbar-thumb {
-    background-color: $bg-dropdown;
+    background-color: $text-subtitle;
   }
 }
 
