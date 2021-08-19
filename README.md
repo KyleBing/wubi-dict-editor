@@ -5,12 +5,16 @@
 
 <img width="812" alt="Screen Shot 2021-08-09 at 21 35 45" src="https://user-images.githubusercontent.com/12215982/128715098-8dc4c6d6-76f8-4428-9434-e3ac86ab2072.png">
 <img width="812" alt="Screen Shot 2021-08-09 at 21 35 34" src="https://user-images.githubusercontent.com/12215982/128715114-8e9f82ff-2bdb-4837-87ed-ecbf0ea7ee28.png">
+
 ## 支持平台：
 Windows, macOS, (Linux 未测试)
 
 ## 下载
 
 去往下载页面 [https://github.com/KyleBing/wubi-dict-editor/releases](https://github.com/KyleBing/wubi-dict-editor/releases)
+
+如果连接 github 速度慢，可以往国内的 gitee 上下载
+[https://gitee.com/KyleBing/wubi-dict-editor/releases](https://gitee.com/KyleBing/wubi-dict-editor/releases)
 
 ## 安装
 
