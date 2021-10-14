@@ -4,7 +4,7 @@ import Word from "../js/Word.mjs";
 import Vue from '../node_modules/vue/dist/vue.esm.browser.min.js'
 
 const {ipcRenderer} = require('electron')
-const {IS_IN_DEVELOP} =  require('../js/Global')
+const {IS_IN_DEVELOP} =  require('../js/Global.js')
 const VirtualScroller = require('vue-virtual-scroller')
 
 

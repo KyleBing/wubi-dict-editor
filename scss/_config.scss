@@ -1,0 +1,58 @@
+$fz-title: 15px;
+
+.config-list{
+  .config-list-item{
+    @extend .unselectable;
+    padding: 5px 8px;
+    border-bottom: 1px solid $color-border;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    .name{
+      color: $text-title;
+    }
+    .path{
+      margin-left: 30px;
+      color: $text-subtitle;
+    }
+    &:hover{
+      @include border-radius(3px);
+      overflow: hidden;
+      border-bottom-color: transparent;
+      background-color: $bg-dropdown-highlight;
+    }
+    &.active{
+      @include border-radius(3px);
+      overflow: hidden;
+      background-color: $color-main;
+      border-bottom-color: $color-main;
+      .name, .path{
+        color: white;
+      }
+    }
+  }
+}
+
+
+.config{
+  .container {
+    padding: 30px;
+  }
+
+  section{
+    margin-bottom: 20px;
+    .section-title{
+      padding: 10px 0;
+      font-weight: bold;
+      font-size: $fz-title;
+
+    }
+    .section-content{
+      padding-left: 50px;
+    }
+  }
+  .check-item{
+    display: flex;
+    justify-content: flex-start;
+  }
+}

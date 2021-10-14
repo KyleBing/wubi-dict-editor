@@ -4,8 +4,7 @@ const fs = require('fs')
 const os = require('os')
 const url = require("url")
 const path = require("path")
-
-const { IS_IN_DEVELOP } =  require('./js/Global')
+const { IS_IN_DEVELOP } =  require('./js/Global.js')
 
 let mainWindow // 主窗口
 let fileList = [] // 文件目录列表，用于移动词条
@@ -97,7 +96,6 @@ function createWindow() {
             console.log(err)
         })
     })
-
     ipcMain.on('GetFileList', event => {
         mainWindow.send('FileList', fileList)
     })
@@ -157,6 +155,41 @@ function showToolWindow (){
         }).catch(err => {
             console.log(err)
         })
+    })
+}
+
+
+let configWindow
+function createConfigWindow() {
+    let width = IS_IN_DEVELOP ? 1400 : 800
+    let height = IS_IN_DEVELOP ? 600 : 600
+    configWindow = new BrowserWindow({
+        width,
+        height,
+        icon: __dirname + '/assets/appIcon/appicon.ico', // windows icon
+        webPreferences: {
+            nodeIntegration: true,
+            contextIsolation: false
+        }
+    })
+
+    if (IS_IN_DEVELOP) {
+        configWindow.webContents.openDevTools() // 打开调试窗口
+    }
+
+
+    configWindow.loadURL(
+        url.format({
+            pathname: path.join(__dirname, 'config.html'),
+            protocol: "file:",
+            slashes: true
+        })
+    )
+    configWindow.on('closed', function () {
+        configWindow = null
+    })
+    ipcMain.on('GetFileList', event => {
+        configWindow.send('FileList', fileList)
     })
 }
 
@@ -263,6 +296,12 @@ function createMenu(filesMenu) {
             submenu: [
                 {label: '最小化', role: 'minimize'},
                 {label: '关于', role: 'about'},
+                {
+                    label: '配置',
+                    click() {
+                        createConfigWindow()
+                    }
+                },
                 {type: 'separator'},
                 {label: '退出', role: 'quit'},
             ]

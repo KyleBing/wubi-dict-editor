@@ -63,6 +63,7 @@ sudo xattr -rd com.apple.quarantine /Applications/wubi-dict-editor.app/
   - [ ] 删除词组时
 - [ ] ？词条优先级，加权重
 - [ ] 查重，并选中
+- [ ] 搜索框添加清空内容的按钮
 
 #### 2. 主码表文件
 - [x] 词条添加到主码表文件 `2021-08-04`
@@ -103,6 +104,7 @@ sudo xattr -rd com.apple.quarantine /Applications/wubi-dict-editor.app/
 - [ ] 指定初始载入码表
 - [ ] 保存后是否立即布署
 - [ ] 删除元素时，如果组内词条为空，是否删除该组
+- [ ] 回车键是搜索|添加新用户词
 
 
 #### 7. 其它

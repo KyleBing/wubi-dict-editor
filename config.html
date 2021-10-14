@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>五笔码表助手配置</title>
+    <link rel="stylesheet" href="./scss/wubi.css">
+    <link rel="stylesheet" href="node_modules/vue-virtual-scroller/dist/vue-virtual-scroller.css">
+</head>
+<body class="config">
+
+<div v-cloak id="app" class="container">
+
+    <section>
+        <h3 class="section-title">选择初始文件</h3>
+        <div class="section-content">
+            <div class="config-list">
+                <div @click="setInitFile(file)"
+                     :class="['config-list-item', {active: file === initFile}]"
+                     v-for="(file, index) in fileList"
+                     :key="index"
+                     v-if="fileList"
+                >
+                    <div class="name">{{file.name}}</div>
+                    <div class="path">{{file.path}}</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h3 class="section-title">展示</h3>
+        <div class="section-content">
+            <p>初始文件为: {{initFile.name}}</p>
+        </div>
+    </section>
+
+    <section>
+        <h3 class="section-title">布署</h3>
+        <div class="section-content">
+            <div class="check-item">
+                <div class="checkbox-cell">
+                    <input
+                        name="table"
+                        :id="`word`"
+                        type="checkbox">
+                    <label class="checkbox" :for="`word`"></label>
+                </div>
+                <div class="label">加词后是否立即自动布署输入法</div>
+            </div>
+        </div>
+    </section>
+    <section>
+        <h3 class="section-title">回车动作</h3>
+        <div class="section-content">
+            <div class="check-item">
+                <div class="checkbox-cell">
+                    <input
+                        name="table"
+                        :id="`word`"
+                        type="checkbox">
+                    <label class="checkbox" :for="`word`"></label>
+                </div>
+                <div class="label">回车键是搜索还是添加</div>
+            </div>
+        </div>
+    </section>
+
+</div>
+
+<script type="module" src="js/Config.mjs"></script>
+</body>
+</html>

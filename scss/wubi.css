@@ -23,7 +23,7 @@
   font-family: "Comfortaa-v30", Roboto, SansSerif;
 }
 
-.unselectable, .file-list-item, .catalog-list .catalog-item, .footer .footer-toolbar .link-list .link, input[type=checkbox] + label.checker, .btn, .btn-group .btn-vertical > *, .word-item .operation {
+.unselectable, .config-list .config-list-item, .file-list-item, .catalog-list .catalog-item, .footer .footer-toolbar .link-list .link, input[type=checkbox] + label.checker, .btn, .btn-group .btn-vertical > *, .word-item .operation {
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -1332,6 +1332,59 @@ select option {
 }
 .file-list:hover::-webkit-scrollbar-thumb {
   background-color: rgba(0, 122, 255, 0.7);
+}
+
+.config-list .config-list-item {
+  padding: 5px 8px;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+}
+.config-list .config-list-item .name {
+  color: #333;
+}
+.config-list .config-list-item .path {
+  margin-left: 30px;
+  color: #848484;
+}
+.config-list .config-list-item:hover {
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  overflow: hidden;
+  border-bottom-color: transparent;
+  background-color: rgba(0, 122, 255, 0.05);
+}
+.config-list .config-list-item.active {
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  overflow: hidden;
+  background-color: #FF2D70;
+  border-bottom-color: #FF2D70;
+}
+.config-list .config-list-item.active .name, .config-list .config-list-item.active .path {
+  color: white;
+}
+
+.config .container {
+  padding: 30px;
+}
+.config section {
+  margin-bottom: 20px;
+}
+.config section .section-title {
+  padding: 10px 0;
+  font-weight: bold;
+  font-size: 15px;
+}
+.config section .section-content {
+  padding-left: 50px;
+}
+.config .check-item {
+  display: flex;
+  justify-content: flex-start;
 }
 
 @media (prefers-color-scheme: dark) {

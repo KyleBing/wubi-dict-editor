@@ -496,6 +496,13 @@ aws4@^1.8.0:
   resolved "https://registry.nlark.com/aws4/download/aws4-1.11.0.tgz#d61f46d83b2519250e2784daf5b09479a8b41c59"
   integrity sha1-1h9G2DslGSUOJ4Ta9bCUeai0HFk=
 
+axios@^0.21.1:
+  version "0.21.1"
+  resolved "https://registry.npm.taobao.org/axios/download/axios-0.21.1.tgz#22563481962f4d6bde9a76d516ef0e5d3c09b2b8"
+  integrity sha1-IlY0gZYvTWvemnbVFu8OXTwJsrg=
+  dependencies:
+    follow-redirects "^1.10.0"
+
 balanced-match@^1.0.0:
   version "1.0.2"
   resolved "https://registry.nlark.com/balanced-match/download/balanced-match-1.0.2.tgz#e83e3a7e3f300b34cb9d87f615fa0cbf357690ee"
@@ -1275,6 +1282,11 @@ flora-colossus@^1.0.0:
   dependencies:
     debug "^4.1.1"
     fs-extra "^7.0.0"
+
+follow-redirects@^1.10.0:
+  version "1.14.2"
+  resolved "https://registry.nlark.com/follow-redirects/download/follow-redirects-1.14.2.tgz?cache=0&sync_timestamp=1629288519293&other_urls=https%3A%2F%2Fregistry.nlark.com%2Ffollow-redirects%2Fdownload%2Ffollow-redirects-1.14.2.tgz#cecb825047c00f5e66b142f90fed4f515dec789b"
+  integrity sha1-zsuCUEfAD15msUL5D+1PUV3seJs=
 
 forever-agent@~0.6.1:
   version "0.6.1"
