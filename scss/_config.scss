@@ -3,7 +3,7 @@ $fz-title: 15px;
 .config-list{
   .config-list-item{
     @extend .unselectable;
-    padding: 5px 8px;
+    padding: 3px 8px;
     border-bottom: 1px solid $color-border;
     cursor: pointer;
     display: flex;
@@ -14,6 +14,9 @@ $fz-title: 15px;
     .path{
       margin-left: 30px;
       color: $text-subtitle;
+    }
+    &:last-child{
+      border-bottom: none;
     }
     &:hover{
       @include border-radius(3px);
@@ -36,23 +39,90 @@ $fz-title: 15px;
 
 .config{
   .container {
-    padding: 30px;
+    padding: 10px 25px;
   }
 
   section{
-    margin-bottom: 20px;
+    margin-bottom: 30px;
     .section-title{
       padding: 10px 0;
-      font-weight: bold;
-      font-size: $fz-title;
-
+      h3{
+        font-weight: bold;
+        font-size: $fz-title;
+      }
+      .desc{
+        font-size: $fz-button;
+        color: $text-subtitle;
+      }
     }
     .section-content{
-      padding-left: 50px;
+      @include border-radius(5px);
+      background-color: $bg-panel;
+      padding: 10px 10px 10px 50px;
+      .check-item{
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        & > *:first-child{
+          margin-right: 10px;
+        }
+      }
+      .check-list{
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        .check-item{
+          margin-right: 20px;
+        }
+      }
     }
   }
-  .check-item{
-    display: flex;
-    justify-content: flex-start;
+}
+
+
+$height-switch: 14px;
+
+.audio-switch{
+  input{
+    display: none;
+  }
+  input+label{
+    box-sizing: content-box;
+    border: 2px solid $text-subtitle;
+    background-color: $text-subtitle;
+    position: relative;
+    display: block;
+    width: $height-switch * 1.8;
+    @include border-radius(30px);
+    height: $height-switch;
+    @include transition(all .3s);
+    &:before{
+      z-index: 10;
+      box-sizing: border-box;
+      border: 1px solid #eeeeee;
+      content: '';
+      display: block;
+      @include box-shadow(1px 3px 6px rgba(0,0,0,0.5));
+      top: 0;
+      left: 0;
+      position: absolute;
+      width: $height-switch;
+      height: $height-switch;
+      @include border-radius(30px);
+      background-color: white;
+      @include transition(all .3s);
+
+    }
+  }
+  input:checked+label{
+    @include transition(all .3s);
+    border-color: $green;
+    background-color: $green;
+    &:before{
+      top: 0;
+      left: $height-switch * .8;
+      background-color: #fff;
+      @include transition(all .3s);
+    }
   }
 }

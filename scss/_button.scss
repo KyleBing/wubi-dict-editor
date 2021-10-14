@@ -173,136 +173,39 @@ input[type=checkbox]:checked + label.checkbox{
   border-color: $color-main;
 }
 
-
-
-$height-radio: $height-btn;
-$radio-gap: 2px;
-
-input[type=checkbox] + label.switch
-{
-  position: relative;
-  display: block;
-  @include border-radius($radius-switch);
-  background-color: $color-border;
-  //border-bottom: 1px solid white;
-  @include box-shadow(inset 0 1px 2px rgba(0,0,0,0.1));
-  height: $height-radio + $radio-gap * 2;
-  width: $height-radio * 2;
-  @include transition(all 0.3s);
-  &:before{
-    content: '';
-    display: block;
-    position: absolute;
-    top: $radio-gap;
-    left: $radio-gap;
-    width: $height-radio;
-    height: $height-radio;
-    @include border-radius($radius-switch);
-    background-color: white;
-    @include box-shadow(1px 1px 2px rgba(0,0,0,0.2));
-    @include transition(all 0.3s);
-  }
-}
-
-input[type=checkbox]:checked + label.switch
-{
-  background-color: $green;
-  @include box-shadow(inset 0 1px 2px rgba(0,0,0,0.1));
-  @include transition(all 0.3s);
-  &:before{
-    content: '';
-    display: block;
-    position: absolute;
-    left: $height-radio * 2 - $radio-gap - $height-radio;
-    right: 0;
-    width: $height-radio;
-    height: $height-radio;
-    @include border-radius($radius-switch);
-    @include transition(all 0.3s);
-  }
-}
-
-input[type=checkbox] + label.checker {
-  @extend .unselectable;
+input[type=radio] + label.radio{
   cursor: pointer;
   display: block;
-  border-color: $green;
-  @include transition(all 0.3s);
-}
-
-input[type=checkbox]:checked + label.checker {
-  color: white;
-  @include transition(all 0.3s);
-  background-color: $green;
-  @include box-shadow(0 1px 2px rgba(0,0,0,0.1));
-}
-
-.btn-group{
-  display: flex;
-  @include border-radius($radius-btn);
-  justify-content: flex-start;
-  overflow: hidden;
-  border: 1px solid $color-border;
-  margin: 0 5px 5px 0;
-  &.dash{
-    border-style: dashed;
-    > * {
-      border-color: inherit;
-      border-right-style: dashed;
-    }
-  }
-  > * {
-    border-right: 1px solid $color-border;
-    &:last-child{
-      border-right: none;
-    }
-  }
-  .btn-vertical{
-    display: flex;
-    flex-flow: column nowrap;
-    justify-content: center;
-    align-items: center;
-    > *{
-      @extend .btn;
-      padding: 2px;
-      font-size: 7px;
-      text-align: center;
-      background-color: #fff;
-      border-bottom: 1px solid $color-border;
-      height: 50%;
-      width: 20px;
-      &:last-child{
-        border-bottom: none;
-      }
-    }
-  }
-  &:last-child{
-    margin-right: 0;
-  }
-  &.no-border{
-    border: none !important;
-  }
-}
-
-input[type=radio] + label{
+  width: $height-checkbox;
   background-color: white;
-}
-
-input[type=radio]:checked + label{
-  font-weight: bold;
-  background-color: $orange;
-  color: white !important;
-  &:hover{
-    background-color: lighten($orange, 5%);
+  height: $height-checkbox;
+  @include border-radius(10px);
+  border: 1px solid $border-color-checkbox;
+  position: relative;
+  @if $checkbox-shadow{
+    @include box-shadow(inset 1px 1px 2px rgb(0 0 0 / 12%))
   }
 }
 
-
-label.btn{
-  min-width: 30px;
-  text-align: center;
-  padding-left: $btn-padding-lr - 2 !important;
-  padding-right: $btn-padding-lr - 2 !important;
+label.radio:hover{
+  border-color: $color-main !important;
+  @if $checkbox-shadow {
+    @include box-shadow(inset 1px 1px 2px transparentize($color-main, 0.8) !important) ;
+  }
 }
 
+input[type=radio]:checked + label.radio{
+  &:after{
+    content: '';
+    display: block;
+    position: absolute;
+    height: $height-checkbox - 6;
+    width: $height-checkbox - 6;
+    top: 2px;
+    left: 2px;
+    @include border-radius(10px);
+    background-color: $color-main;
+  }
+  border-color: $color-main;
+}
 

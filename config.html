@@ -11,7 +11,10 @@
 <div v-cloak id="app" class="container">
 
     <section>
-        <h3 class="section-title">选择初始文件</h3>
+        <div class="section-title">
+            <h3>选择初始文件</h3>
+            <div class="desc">程序打开时，自动载入的码表文件</div>
+        </div>
         <div class="section-content">
             <div class="config-list">
                 <div @click="setInitFile(file)"
@@ -28,43 +31,50 @@
     </section>
 
     <section>
-        <h3 class="section-title">展示</h3>
-        <div class="section-content">
-            <p>初始文件为: {{initFile.name}}</p>
+        <div class="section-title">
+            <h3>自动布署</h3>
+            <div class="desc">添加新用户词之后，是否自动布署</div>
         </div>
-    </section>
-
-    <section>
-        <h3 class="section-title">布署</h3>
         <div class="section-content">
             <div class="check-item">
-                <div class="checkbox-cell">
-                    <input
-                        name="table"
-                        :id="`word`"
-                        type="checkbox">
-                    <label class="checkbox" :for="`word`"></label>
+                <div class="label">加词后立即自动布署输入法</div>
+                <div class="audio-switch">
+                    <input checked type="checkbox" id="audioSwitch">
+                    <label for="audioSwitch"></label>
                 </div>
-                <div class="label">加词后是否立即自动布署输入法</div>
             </div>
         </div>
     </section>
     <section>
-        <h3 class="section-title">回车动作</h3>
+        <div class="section-title">
+            <h3>回车动作</h3>
+            <div class="desc">定义搜索框中按回车键的动作</div>
+        </div>
         <div class="section-content">
-            <div class="check-item">
-                <div class="checkbox-cell">
-                    <input
-                        name="table"
-                        :id="`word`"
-                        type="checkbox">
-                    <label class="checkbox" :for="`word`"></label>
+            <div class="check-list">
+                <div class="check-item">
+                    <div class="checkbox-cell">
+                        <input
+                            name="table"
+                            id="radioAddNew"
+                            type="radio">
+                        <label class="radio" for="radioAddNew"></label>
+                    </div>
+                    <div class="label">添加新词</div>
                 </div>
-                <div class="label">回车键是搜索还是添加</div>
+                <div class="check-item">
+                    <div class="checkbox-cell">
+                        <input
+                            name="table"
+                            id="radioSearch"
+                            type="radio">
+                        <label class="radio" for="radioSearch"></label>
+                    </div>
+                    <div class="label">搜索</div>
+                </div>
             </div>
         </div>
     </section>
-
 </div>
 
 <script type="module" src="js/Config.mjs"></script>
