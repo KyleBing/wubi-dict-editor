@@ -188,8 +188,18 @@ function createConfigWindow() {
     configWindow.on('closed', function () {
         configWindow = null
     })
-    ipcMain.on('GetFileList', event => {
-        configWindow.send('FileList', fileList)
+    // 载入文件列表
+    ipcMain.on('requestFileList', event => {
+        configWindow.send('responseFileList', fileList)
+    })
+    // 载入配置文件内容
+    ipcMain.on('requestFileList', event => {
+        configWindow.send('responseFileList', config)
+        // TODO: 获取 config file
+    })
+    // 保存配置文件内容
+    ipcMain.on('requestSaveConfig', (event, config) => {
+        // TODO: 保存 config 到文件
     })
 }
 

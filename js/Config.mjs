@@ -23,11 +23,19 @@ const app = {
     mounted() {
         this.heightContent = innerHeight - 47 - 20 - 10
 
-        ipcRenderer.on('FileList', (event, fileList) => {
+        // load file list
+        ipcRenderer.on('responseFileList', (event, fileList) => {
             fileList.sort((a,b) => a.name > b.name ? 1: -1)
             this.fileList = fileList
         })
-        ipcRenderer.send('GetFileList')
+        ipcRenderer.send('requestFileList')
+
+        // config
+        ipcRenderer.on('responseConfigFile', (event, fileList) => {
+            fileList.sort((a,b) => a.name > b.name ? 1: -1)
+            this.fileList = fileList
+        })
+        ipcRenderer.send('requestConfigFile')
 
         onresize = ()=>{
             this.heightContent = innerHeight - 47 - 20 - 10
@@ -40,9 +48,10 @@ const app = {
         },
         saveConfig(){
             console.log(JSON.stringify(this.config))
+            ipcRenderer.send('requestSaveConfig', this.config)
         },
         loadConfig(){
-
+            ipcRenderer.send('requestConfigFile')
         }
     },
     watch: {
