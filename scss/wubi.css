@@ -23,7 +23,7 @@
   font-family: "Comfortaa-v30", Roboto, SansSerif;
 }
 
-.unselectable, .config-list .config-list-item, .file-list-item, .catalog-list .catalog-item, .footer .footer-toolbar .link-list .link, .btn, .word-item .operation {
+.unselectable, .config-file-list .config-file-list-item, .file-list-item, .catalog-list .catalog-item, .footer .footer-toolbar .link-list .link, .btn, .word-item .operation {
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -992,10 +992,10 @@ input[type=radio]:checked + label.radio:after {
   content: "";
   display: block;
   position: absolute;
-  height: 8px;
-  width: 8px;
-  top: 2px;
-  left: 2px;
+  height: 6px;
+  width: 6px;
+  top: 3px;
+  left: 3px;
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
   border-radius: 10px;
@@ -1207,24 +1207,24 @@ select option {
   background-color: rgba(0, 122, 255, 0.7);
 }
 
-.config-list .config-list-item {
+.config-file-list .config-file-list-item {
   padding: 3px 8px;
   border-bottom: 1px solid #eee;
   cursor: pointer;
   display: flex;
   justify-content: space-between;
 }
-.config-list .config-list-item .name {
+.config-file-list .config-file-list-item .name {
   color: #333;
 }
-.config-list .config-list-item .path {
+.config-file-list .config-file-list-item .path {
   margin-left: 30px;
   color: #848484;
 }
-.config-list .config-list-item:last-child {
+.config-file-list .config-file-list-item:last-child {
   border-bottom: none;
 }
-.config-list .config-list-item:hover {
+.config-file-list .config-file-list-item:hover {
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   border-radius: 3px;
@@ -1232,7 +1232,7 @@ select option {
   border-bottom-color: transparent;
   background-color: rgba(0, 122, 255, 0.05);
 }
-.config-list .config-list-item.active {
+.config-file-list .config-file-list-item.active {
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   border-radius: 3px;
@@ -1240,7 +1240,7 @@ select option {
   background-color: #FF2D70;
   border-bottom-color: #FF2D70;
 }
-.config-list .config-list-item.active .name, .config-list .config-list-item.active .path {
+.config-file-list .config-file-list-item.active .name, .config-file-list .config-file-list-item.active .path {
   color: white;
 }
 
@@ -1590,6 +1590,78 @@ select option {
   }
   .btn-gray:active {
     background-color: #74747a;
+  }
+
+  .config section {
+    margin-bottom: 30px;
+  }
+  .config section .section-title {
+    color: #e6e6e6;
+  }
+  .config section .section-title .desc {
+    color: #b3b3b3;
+  }
+  .config section .section-content {
+    background-color: #0f0f13;
+    color: #e6e6e6;
+  }
+
+  .config-file-list .config-file-list-item {
+    border-bottom-color: #272b32;
+  }
+  .config-file-list .config-file-list-item .name {
+    color: #e6e6e6;
+  }
+  .config-file-list .config-file-list-item .path {
+    color: #b3b3b3;
+  }
+  .config-file-list .config-file-list-item.active {
+    background-color: #81fffa;
+    border-bottom-color: #81fffa;
+  }
+  .config-file-list .config-file-list-item.active .name, .config-file-list .config-file-list-item.active .path {
+    color: #000;
+  }
+  .config-file-list .config-file-list-item.active:hover {
+    background-color: #81fffa;
+    border-bottom-color: #81fffa;
+  }
+  .config-file-list .config-file-list-item:hover {
+    background-color: #383f4a;
+  }
+
+  input[type=radio] + label.radio {
+    background-color: #383f4a;
+    border-color: #383838;
+  }
+
+  input[type=radio]:checked + label.radio {
+    border-color: #81fffa;
+  }
+
+  label.radio:hover {
+    border-color: #81fffa !important;
+  }
+
+  input[type=radio]:checked + label.radio:after {
+    background-color: #81fffa;
+  }
+
+  .audio-switch input {
+    display: none;
+  }
+  .audio-switch input + label {
+    box-sizing: content-box;
+    border: 2px solid #848484;
+    background-color: #848484;
+  }
+  .audio-switch input + label:before {
+    border-color: transparent;
+    background-color: #1c1f24;
+  }
+  .audio-switch input:checked + label {
+    border-color: #4CD964;
+    background-color: #4CD964;
   }
 
   .btn-alt-primary {

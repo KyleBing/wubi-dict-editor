@@ -15,9 +15,9 @@
             <div class="desc">程序打开时，自动载入的码表文件</div>
         </div>
         <div class="section-content">
-            <div class="config-list">
+            <div class="config-file-list">
                 <div @click="setInitFile(file)"
-                     :class="['config-list-item', {active: file === config.initFile}]"
+                     :class="['config-file-list-item', {active: file === config.initFile}]"
                      v-for="(file, index) in fileList"
                      :key="index"
                      v-if="fileList"

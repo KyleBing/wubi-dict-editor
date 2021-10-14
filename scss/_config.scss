@@ -1,7 +1,7 @@
 $fz-title: 15px;
 
-.config-list{
-  .config-list-item{
+.config-file-list{
+  .config-file-list-item{
     @extend .unselectable;
     padding: 3px 8px;
     border-bottom: 1px solid $color-border;

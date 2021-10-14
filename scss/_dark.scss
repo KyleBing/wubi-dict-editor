@@ -172,6 +172,82 @@ $black-color-main: #81fffa;
     }
   }
 
+  .config{
+    section{
+      margin-bottom: 30px;
+      .section-title{
+        color: $black-color-text;
+        .desc{
+          color: $black-color-text-subtitle;
+        }
+      }
+      .section-content {
+        background-color: $black-body-bg;
+        color: $black-color-text;
+      }
+    }
+  }
+  .config-file-list {
+    .config-file-list-item {
+      border-bottom-color: $black-color-border;
+      .name{
+        color: $black-color-text;
+      }
+      .path{
+        color: $black-color-text-subtitle;
+      }
+      &.active {
+        background-color: $black-color-main;
+        border-bottom-color: $black-color-main;
+        .name, .path{
+          color: $text-main;
+        }
+        &:hover{
+          background-color: $black-color-main;
+          border-bottom-color: $black-color-main;
+        }
+      }
+      &:hover{
+        background-color: $black-bg-highlight;
+      }
+    }
+  }
+
+  input[type=radio] + label.radio{
+    background-color: $black-bg-highlight;
+    border-color: $black-color-border-highlight;
+  }
+  input[type=radio]:checked + label.radio {
+    border-color: $black-color-main;
+  }
+  label.radio:hover{
+    border-color: $black-color-main !important;
+  }
+  input[type=radio]:checked + label.radio{
+    &:after{
+      background-color: $black-color-main;
+    }
+  }
+
+
+  .audio-switch{
+    input{
+      display: none;
+    }
+    input+label{
+      box-sizing: content-box;
+      border: 2px solid $text-subtitle;
+      background-color: $text-subtitle;
+      &:before{
+        border-color: transparent;
+        background-color: $black-bg;
+      }
+    }
+    input:checked+label{
+      border-color: $green;
+      background-color: $green;
+    }
+  }
 
 
   @each $name, $color in $btns {
