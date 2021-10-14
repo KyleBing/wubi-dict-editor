@@ -1271,14 +1271,14 @@ select option {
 .config section .section-content .check-item {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: space-around;
 }
 .config section .section-content .check-item > *:first-child {
   margin-right: 10px;
 }
 .config section .section-content .check-list {
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-around;
   align-items: center;
 }
 .config section .section-content .check-list .check-item {

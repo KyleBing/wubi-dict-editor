@@ -13,7 +13,11 @@ const app = {
             IS_IN_DEVELOP: IS_IN_DEVELOP, // 是否为开发模式
             fileList: null,
             // { "name": "luna_pinyin.sogou", "path": "luna_pinyin.sogou.dict.yaml" }
-            initFile: {}
+            config: {
+                initFile: {}, // 初始文件信息
+                autoDeploy: false, // 是否自动布署
+                enterKeyBehavior: 'add', // add | search
+            }
         }
     },
     mounted() {
@@ -31,11 +35,20 @@ const app = {
     },
     methods: {
         setInitFile(file){
-            this.initFile = file
+            this.config.initFile = file
+            this.saveConfig()
+        },
+        saveConfig(){
+            console.log(JSON.stringify(this.config))
+        },
+        loadConfig(){
+
         }
     },
     watch: {
-
+        config: (newValue)=>{
+            console.log(this.config)
+        }
     }
 }
 

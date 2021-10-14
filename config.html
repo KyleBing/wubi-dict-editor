@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <title>五笔码表助手配置</title>
     <link rel="stylesheet" href="./scss/wubi.css">
-    <link rel="stylesheet" href="node_modules/vue-virtual-scroller/dist/vue-virtual-scroller.css">
 </head>
 <body class="config">
 
@@ -18,7 +17,7 @@
         <div class="section-content">
             <div class="config-list">
                 <div @click="setInitFile(file)"
-                     :class="['config-list-item', {active: file === initFile}]"
+                     :class="['config-list-item', {active: file === config.initFile}]"
                      v-for="(file, index) in fileList"
                      :key="index"
                      v-if="fileList"
@@ -39,7 +38,7 @@
             <div class="check-item">
                 <div class="label">加词后立即自动布署输入法</div>
                 <div class="audio-switch">
-                    <input checked type="checkbox" id="audioSwitch">
+                    <input @change="saveConfig" v-model="config.autoDeploy" checked type="checkbox" id="audioSwitch">
                     <label for="audioSwitch"></label>
                 </div>
             </div>
@@ -54,20 +53,18 @@
             <div class="check-list">
                 <div class="check-item">
                     <div class="checkbox-cell">
-                        <input
-                            name="table"
-                            id="radioAddNew"
-                            type="radio">
+                        <input value="add" @change="saveConfig"
+                               v-model="config.enterKeyBehavior"
+                               name="enterKey" id="radioAddNew" type="radio">
                         <label class="radio" for="radioAddNew"></label>
                     </div>
                     <div class="label">添加新词</div>
                 </div>
                 <div class="check-item">
                     <div class="checkbox-cell">
-                        <input
-                            name="table"
-                            id="radioSearch"
-                            type="radio">
+                        <input value="search" @change="saveConfig"
+                               v-model="config.enterKeyBehavior"
+                               name="enterKey" id="radioSearch" type="radio">
                         <label class="radio" for="radioSearch"></label>
                     </div>
                     <div class="label">搜索</div>

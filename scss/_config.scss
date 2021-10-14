@@ -62,14 +62,14 @@ $fz-title: 15px;
       .check-item{
         display: flex;
         align-items: center;
-        justify-content: flex-start;
+        justify-content: space-around;
         & > *:first-child{
           margin-right: 10px;
         }
       }
       .check-list{
         display: flex;
-        justify-content: flex-start;
+        justify-content: space-around;
         align-items: center;
         .check-item{
           margin-right: 20px;

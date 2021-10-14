@@ -161,7 +161,7 @@ function showToolWindow (){
 
 let configWindow
 function createConfigWindow() {
-    let width = IS_IN_DEVELOP ? 1400 : 800
+    let width = IS_IN_DEVELOP ? 1400 : 600
     let height = IS_IN_DEVELOP ? 600 : 600
     configWindow = new BrowserWindow({
         width,
