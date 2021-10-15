@@ -88,7 +88,7 @@
                                name="searchMethod" id="radioSearchCode" type="radio">
                         <label class="radio" for="radioSearchCode"></label>
                     </div>
-                    <div class="label">只搜索编码</div>
+                    <div class="label">编码</div>
                 </div>
                 <div class="check-item">
                     <div class="checkbox-cell">
@@ -97,7 +97,7 @@
                                name="searchMethod" id="radioSearchPhrase" type="radio">
                         <label class="radio" for="radioSearchPhrase"></label>
                     </div>
-                    <div class="label">只搜索词条</div>
+                    <div class="label">词条</div>
                 </div>
                 <div class="check-item">
                     <div class="checkbox-cell">
@@ -106,7 +106,16 @@
                                name="searchMethod" id="radioSearchBoth" type="radio">
                         <label class="radio" for="radioSearchBoth"></label>
                     </div>
-                    <div class="label">同时匹配编码和词条</div>
+                    <div class="label">编码、词条，同时匹配</div>
+                </div>
+                <div class="check-item">
+                    <div class="checkbox-cell">
+                        <input value="any" @change="saveConfig"
+                               v-model="config.searchMethod"
+                               name="searchMethod" id="radioSearchAny" type="radio">
+                        <label class="radio" for="radioSearchAny"></label>
+                    </div>
+                    <div class="label">编码、词条，匹配任一</div>
                 </div>
             </div>
         </div>

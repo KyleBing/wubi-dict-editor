@@ -161,6 +161,7 @@ const app = {
                                 case "code": return item.code.includes(this.code);
                                 case "phrase": return item.word.includes(this.word);
                                 case "both": return item.code.includes(this.code) && item.word.includes(this.word)
+                                case "any": return item.code.includes(this.code) || item.word.includes(this.word)
                             }
                         })
                         if (tempGroupItem.dict.length > 0){ // 当前分组中有元素，添加到结果中
@@ -174,6 +175,7 @@ const app = {
                             case "code": return item.code.includes(this.code);
                             case "phrase": return item.word.includes(this.word);
                             case "both": return item.code.includes(this.code) && item.word.includes(this.word)
+                            case "any": return item.code.includes(this.code) || item.word.includes(this.word)
                         }
                     })
                     console.log(`${this.code} ${this.word}: ` ,'搜索出', this.words.length, '条，', '用时: ', new Date().getTime() - startPoint, 'ms')
