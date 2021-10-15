@@ -4,7 +4,7 @@ const fs = require('fs')
 const os = require('os')
 const url = require("url")
 const path = require("path")
-const { IS_IN_DEVELOP, CONFIG_FILE_NAME } =  require('./js/Global.js')
+const { IS_IN_DEVELOP, CONFIG_FILE_PATH, CONFIG_FILE_NAME } =  require('./js/Global.js')
 
 let mainWindow // 主窗口
 let fileList = [] // 文件目录列表，用于移动词条
@@ -207,31 +207,42 @@ function createConfigWindow() {
 }
 
 
+// config 文件保存在 用户文件夹下 / CONFIG_FILE_PATH/CONFIG_FILE_NAME 文件中
 function writeConfigFile(contentString, responseWindow){
-    let rimeHomeDir = getRimeConfigDir()
-    fs.writeFile(path.join(rimeHomeDir, CONFIG_FILE_NAME), contentString, {encoding: 'utf-8'}, err => {
+    let configPath = path.join(os.homedir(), CONFIG_FILE_PATH)
+    fs.writeFile(path.join(configPath, CONFIG_FILE_NAME), contentString, {encoding: 'utf-8'}, err => {
         if(err){
-            console.log(err)
+            if (err.errno === -4058){
+                console.log('config dir does not exist')
+                // 新建目录
+                fs.mkdir(configPath, err => { // 先建立文件夹
+                    if (err) {
+                        console.log(err)
+                    } else {
+                        fs.writeFile(
+                            path.join(configPath, CONFIG_FILE_NAME),
+                            contentString, {encoding: 'utf-8'}, err => {
+                                console.log(err)
+                            })
+                    }
+                })
+            }
         } else {
             responseWindow.send('saveConfigFileSuccess')
         }
     })
+
 }
 
-// config 文件保存在 Rime 配置文件夹下面 名为 global.js 中的 CONFIG_FILE_NAME 字段
-function readConfigFile(responseWindow){
-    let rimeHomeDir = getRimeConfigDir()
+function readConfigFile(){
+    let configPath = path.join(os.homedir(), CONFIG_FILE_PATH)
     try{ // 捕获读取文件时的错误，如果有配置文件 返回其内容，如果没有，返回  false
-        let result = fs.readFileSync(path.join(rimeHomeDir, CONFIG_FILE_NAME), {encoding: 'utf-8'})
+        let result = fs.readFileSync(path.join(configPath, CONFIG_FILE_NAME), {encoding: 'utf-8'})
         return JSON.parse(result)
     } catch (err){
         return false
     }
 }
-
-
-
-
 
 app.on('ready', ()=>{
     createWindow()
