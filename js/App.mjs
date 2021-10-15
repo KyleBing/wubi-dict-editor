@@ -37,7 +37,9 @@ const app = {
                 // {name: '拼音词库', path: 'pinyin_simp.dict.yaml'}
             ],
             dropdownActiveFileIndex: -1, // 选中的
-            dropdownActiveGroupIndex: -1 // 选中的分组 ID
+            dropdownActiveGroupIndex: -1, // 选中的分组 ID
+
+            config: {} // 全局配置
         }
     },
     mounted() {
@@ -82,6 +84,10 @@ const app = {
             this.dictMain = new Dict(res, filename)
         })
 
+        ipcRenderer.on('updateConfigFile', (event, config) => {
+            this.config = config
+            console.log(config)
+        })
 
         this.addKeyboardListener()
         onresize = ()=>{

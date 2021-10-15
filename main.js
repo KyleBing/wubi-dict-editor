@@ -221,14 +221,22 @@ function writeConfigFile(contentString, responseWindow){
                     } else {
                         fs.writeFile(
                             path.join(configPath, CONFIG_FILE_NAME),
-                            contentString, {encoding: 'utf-8'}, err => {
-                                console.log(err)
+                            contentString, {encoding: 'utf-8'},
+                            err => {
+                                if (err){
+                                    console.log(err)
+                                } else {
+                                    // 配置保存成功后，向主窗口发送配置文件内容
+                                    mainWindow.send('updateConfigFile', JSON.parse(contentString))
+                                }
                             })
                     }
                 })
             }
         } else {
             responseWindow.send('saveConfigFileSuccess')
+            // 配置保存成功后，向主窗口发送配置文件内容
+            mainWindow.send('updateConfigFile', JSON.parse(contentString))
         }
     })
 
