@@ -54,7 +54,9 @@ function createWindow() {
     ipcMain.on('loadInitDictFile', event => {
         let config = readConfigFile()
         if (config){
-            readFile(config.initFileName || 'wubi86_jidian_user.dict.yaml')
+            readFile(config.initFileName)
+        } else {
+            readFile('wubi86_jidian_user.dict.yaml')
         }
     })
 
@@ -284,8 +286,8 @@ function getLabelNameFromFileName(fileName){
 
         // 测试词库
         {name: '测试- 普通 ⛳', path: 'test.dict.yaml'},
-        {name: '测试- 分组️ ⛳️', path: 'test_group.dict.yaml'},
-        {name: '测试- 主 ⛳️', path: 'main.dict.yaml'},
+        {name: '测试- 分组 ⛳', path: 'test_group.dict.yaml'},
+        {name: '测试- 主 ⛳', path: 'main.dict.yaml'},
     ]
     let matchedPath = map.filter(item => item.path === fileName)
     // 返回匹配的名字，或者返回原文件名
@@ -299,6 +301,14 @@ function createMenu(filesMenu) {
     let menuStructure = [
         {
             label: '词库工具',
+            submenu: [
+                {
+                    label: '配置',
+                    click() {
+                        createConfigWindow()
+                    }
+                },
+            ]
         },
         {
             label: '编辑',
@@ -341,12 +351,6 @@ function createMenu(filesMenu) {
             submenu: [
                 {label: '最小化', role: 'minimize'},
                 {label: '关于', role: 'about'},
-                {
-                    label: '配置',
-                    click() {
-                        createConfigWindow()
-                    }
-                },
                 {type: 'separator'},
                 {label: '退出', role: 'quit'},
             ]
