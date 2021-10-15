@@ -4,7 +4,7 @@ const fs = require('fs')
 const os = require('os')
 const url = require("url")
 const path = require("path")
-const { IS_IN_DEVELOP } =  require('./js/Global.js')
+const { IS_IN_DEVELOP, CONFIG_FILE_NAME } =  require('./js/Global.js')
 
 let mainWindow // 主窗口
 let fileList = [] // 文件目录列表，用于移动词条
@@ -192,16 +192,43 @@ function createConfigWindow() {
     ipcMain.on('requestFileList', event => {
         configWindow.send('responseFileList', fileList)
     })
+
     // 载入配置文件内容
-    ipcMain.on('requestFileList', event => {
-        configWindow.send('responseFileList', config)
-        // TODO: 获取 config file
+    ipcMain.on('requestConfigFile', event => {
+        let config = readConfigFile(configWindow) // 没有配置文件时，返回 false
+        if (config){ // 如果有配置文件
+            configWindow.send('responseConfigFile', config) // 向窗口发送 config 内容
+        }
     })
     // 保存配置文件内容
     ipcMain.on('requestSaveConfig', (event, config) => {
-        // TODO: 保存 config 到文件
+        writeConfigFile(config, configWindow)
     })
 }
+
+
+function writeConfigFile(contentString, responseWindow){
+    let rimeHomeDir = getRimeConfigDir()
+    fs.writeFile(path.join(rimeHomeDir, CONFIG_FILE_NAME), contentString, {encoding: 'utf-8'}, err => {
+        if(err){
+            console.log(err)
+        } else {
+            responseWindow.send('saveConfigFileSuccess')
+        }
+    })
+}
+
+// config 文件保存在 Rime 配置文件夹下面 名为 global.js 中的 CONFIG_FILE_NAME 字段
+function readConfigFile(responseWindow){
+    let rimeHomeDir = getRimeConfigDir()
+    try{ // 捕获读取文件时的错误，如果有配置文件 返回其内容，如果没有，返回  false
+        let result = fs.readFileSync(path.join(rimeHomeDir, CONFIG_FILE_NAME), {encoding: 'utf-8'})
+        return JSON.parse(result)
+    } catch (err){
+        return false
+    }
+}
+
 
 
 
@@ -222,21 +249,20 @@ app.on('activate', function () {
 })
 
 // 读取文件
-function readFile(fileName, win){
+function readFile(fileName, responseWindow){
     let rimeHomeDir = getRimeConfigDir()
     fs.readFile(path.join(rimeHomeDir, fileName), {encoding: 'utf-8'}, (err, res) => {
         if(err){
             console.log(err)
         } else {
-            if(win){
-                win.send('showFileContent', fileName ,res)
+            if(responseWindow){
+                responseWindow.send('showFileContent', fileName ,res)
             } else {
                 mainWindow.webContents.send('showFileContent', fileName ,res)
             }
         }
     })
 }
-
 
 // 匹配文件名，返回对应文件的名字
 function getLabelNameFromFileName(fileName){

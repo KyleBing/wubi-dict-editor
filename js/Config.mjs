@@ -31,9 +31,8 @@ const app = {
         ipcRenderer.send('requestFileList')
 
         // config
-        ipcRenderer.on('responseConfigFile', (event, fileList) => {
-            fileList.sort((a,b) => a.name > b.name ? 1: -1)
-            this.fileList = fileList
+        ipcRenderer.on('responseConfigFile', (event, config) => {
+            this.config = config
         })
         ipcRenderer.send('requestConfigFile')
 
@@ -43,12 +42,12 @@ const app = {
     },
     methods: {
         setInitFile(file){
-            this.config.initFile = file
+            this.config.initFile = file.path
             this.saveConfig()
         },
         saveConfig(){
             console.log(JSON.stringify(this.config))
-            ipcRenderer.send('requestSaveConfig', this.config)
+            ipcRenderer.send('requestSaveConfig', JSON.stringify(this.config))
         },
         loadConfig(){
             ipcRenderer.send('requestConfigFile')
@@ -56,7 +55,7 @@ const app = {
     },
     watch: {
         config: (newValue)=>{
-            console.log(this.config)
+            console.log(newValue)
         }
     }
 }
