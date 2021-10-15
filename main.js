@@ -1,4 +1,4 @@
-const {app, BrowserWindow, Menu, ipcMain, shell} = require('electron')
+const {app, BrowserWindow, Menu, ipcMain, shell, dialog} = require('electron')
 const { exec } = require('child_process')
 const fs = require('fs')
 const os = require('os')
@@ -53,11 +53,7 @@ function createWindow() {
     // 监听 window 的文件载入请求
     ipcMain.on('loadInitDictFile', event => {
         let config = readConfigFile()
-        if (config){
-            readFile(config.initFileName)
-        } else {
-            readFile('wubi86_jidian_user.dict.yaml')
-        }
+        readFile(config.initFileName)
     })
 
     // 监听载入主文件内容的请求
@@ -216,6 +212,17 @@ function createConfigWindow() {
     ipcMain.on('requestSaveConfig', (event, config) => {
         writeConfigFile(config, configWindow)
     })
+
+    ipcMain.on('chooseRimeHomeDir', event => {
+        let rimeHomeDir = dialog.showOpenDialogSync(configWindow,{
+            title: '选择输入法配置文件目录',
+            properties: ['openDirectory']
+        })
+        if (rimeHomeDir){
+            configWindow.send('choosenRimeHomeDir', rimeHomeDir)
+        }
+        console.log(rimeHomeDir)
+    })
 }
 
 
@@ -224,7 +231,9 @@ function writeConfigFile(contentString, responseWindow){
     let configPath = path.join(os.homedir(), CONFIG_FILE_PATH)
     fs.writeFile(path.join(configPath, CONFIG_FILE_NAME), contentString, {encoding: 'utf-8'}, err => {
         if(err){
-            if (err.errno === -4058){
+            console.log('writeFileError: ',err)
+            console.log(configPath)
+            if (err.errno === -4058 || err.errno === -2){
                 console.log('config dir does not exist')
                 // 新建目录
                 fs.mkdir(configPath, err => { // 先建立文件夹

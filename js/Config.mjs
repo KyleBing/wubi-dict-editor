@@ -47,6 +47,13 @@ const app = {
         },
         loadConfig(){
             ipcRenderer.send('requestConfigFile')
+        },
+        chooseRimeHomeDir(){
+            ipcRenderer.send('chooseRimeHomeDir')
+            ipcRenderer.on('choosenRimeHomeDir', (event, dir) => {
+                this.config.rimeHomeDir = dir[0]
+                this.saveConfig()
+            })
         }
     },
     watch: {
