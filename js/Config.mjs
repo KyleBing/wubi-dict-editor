@@ -2,7 +2,7 @@ import {shakeDom, shakeDomFocus} from "./Utility.mjs"
 import Vue from '../node_modules/vue/dist/vue.esm.browser.min.js'
 
 const {ipcRenderer} = require('electron')
-const {IS_IN_DEVELOP} =  require('./js/Global')
+const { IS_IN_DEVELOP, CONFIG_FILE_PATH, CONFIG_FILE_NAME, DEFAULT_CONFIG } =  require('./js/Global.js')
 
 
 // Vue 2
@@ -13,11 +13,7 @@ const app = {
             IS_IN_DEVELOP: IS_IN_DEVELOP, // 是否为开发模式
             fileList: null,
             // { "name": "luna_pinyin.sogou", "path": "luna_pinyin.sogou.dict.yaml" }
-            config: {
-                initFileName: {}, // 初始文件信息
-                autoDeploy: false, // 是否自动布署
-                enterKeyBehavior: 'add', // add | search
-            }
+            config: DEFAULT_CONFIG
         }
     },
     mounted() {

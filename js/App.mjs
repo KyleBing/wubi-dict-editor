@@ -139,6 +139,13 @@ const app = {
             this.dict.sort(this.activeGroupId)
             this.refreshShowingWords()
         },
+        enterKeyPressed(){
+            switch (this.config.enterKeyBehavior){
+                case "add":this.addNewWord(); break;
+                case "search": this.search(); break;
+                default: break;
+            }
+        },
         // 通过 code, word 筛选词条
         search(){
             this.selectedWordIds = []
@@ -203,6 +210,9 @@ const app = {
                 this.dict.addNewWord(new Word(this.dict.lastIndex, this.code, this.word) ,this.activeGroupId)
                 this.refreshShowingWords()
                 console.log(this.code, this.word, this.activeGroupId)
+                if (this.config.autoDeploy){
+                    this.saveToFile(this.dict)
+                }
             }
         },
         getWordCodes(word){
