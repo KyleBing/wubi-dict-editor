@@ -8,6 +8,7 @@ const DEFAULT_CONFIG = {
     autoDeploy: false, // 是否自动布署
     enterKeyBehavior: 'add', // add | search
     rimeHomeDir: '', // 配置文件主目录
+    searchMethod: 'both', // 搜索匹配的内容  code | phrase | both
 }
 
 module.exports = {

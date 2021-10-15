@@ -32,6 +32,12 @@ const app = {
         })
         ipcRenderer.send('requestConfigFile')
 
+        // 选取配置目录后保存
+        ipcRenderer.on('choosenRimeHomeDir', (event, dir) => {
+            this.config.rimeHomeDir = dir[0]
+            this.saveConfig()
+        })
+
         onresize = ()=>{
             this.heightContent = innerHeight - 47 - 20 - 10
         }
@@ -50,10 +56,6 @@ const app = {
         },
         chooseRimeHomeDir(){
             ipcRenderer.send('chooseRimeHomeDir')
-            ipcRenderer.on('choosenRimeHomeDir', (event, dir) => {
-                this.config.rimeHomeDir = dir[0]
-                this.saveConfig()
-            })
         }
     },
     watch: {

@@ -213,15 +213,14 @@ function createConfigWindow() {
         writeConfigFile(config, configWindow)
     })
 
+    // 选取配置文件目录
     ipcMain.on('chooseRimeHomeDir', event => {
         let rimeHomeDir = dialog.showOpenDialogSync(configWindow,{
-            title: '选择输入法配置文件目录',
-            properties: ['openDirectory']
+            properties: ['openDirectory'] // 选择文件夹
         })
         if (rimeHomeDir){
             configWindow.send('choosenRimeHomeDir', rimeHomeDir)
         }
-        console.log(rimeHomeDir)
     })
 }
 
@@ -279,7 +278,8 @@ app.on('ready', ()=>{
 })
 
 app.on('window-all-closed', function () {
-    if (process.platform !== 'darwin') app.quit()
+    // if (process.platform !== 'darwin') app.quit()
+    app.quit()
 })
 
 app.on('activate', function () {
@@ -458,14 +458,19 @@ function applyRime(){
 // 根据系统返回 rime 配置路径
 function getRimeConfigDir(){
     let userHome = os.homedir()
-    switch (os.platform()){
-        case 'aix': break
-        case 'darwin': return path.join(userHome + '/Library/Rime') // macOS
-        case 'freebsd': break
-        case 'linux': break
-        case 'openbsd': break
-        case 'sunos': break
-        case 'win32': return path.join(userHome + '/AppData/Roaming/Rime') // windows
+    let config = readConfigFile()
+    if (!config.rimeHomeDir){ // 没有设置配置文件目录时
+        switch (os.platform()){
+            case 'aix': break
+            case 'darwin': return path.join(userHome + '/Library/Rime') // macOS
+            case 'freebsd': break
+            case 'linux': break
+            case 'openbsd': break
+            case 'sunos': break
+            case 'win32': return path.join(userHome + '/AppData/Roaming/Rime') // windows
+        }
+    } else {
+        return config.rimeHomeDir
     }
 }
 

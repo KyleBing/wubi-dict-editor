@@ -32,11 +32,11 @@
     <section>
         <div class="section-title">
             <h3>自动布署</h3>
-            <div class="desc">添加新用户词之后，是否自动布署</div>
+            <div class="desc">添加新用户词之后，是否保存当前自动布署</div>
         </div>
         <div class="section-content">
             <div class="check-item">
-                <div class="label">加词后立即自动布署输入法</div>
+                <div class="label">加词后，立即自动布署输入法</div>
                 <div class="audio-switch">
                     <input @change="saveConfig" v-model="config.autoDeploy" checked type="checkbox" id="audioSwitch">
                     <label for="audioSwitch"></label>
@@ -45,15 +45,6 @@
         </div>
     </section>
 
-    <section>
-        <div class="section-title">
-            <h3>配置文件目录</h3>
-            <div class="desc">添加新用户词之后，是否自动布署</div>
-        </div>
-        <div class="section-content">
-            <div class="btn btn-primary" @click="chooseRimeHomeDir">选择</div>
-        </div>
-    </section>
     <section>
         <div class="section-title">
             <h3>回车动作</h3>
@@ -79,6 +70,57 @@
                     </div>
                     <div class="label">搜索</div>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="section-title">
+            <h3>搜索</h3>
+            <div class="desc">搜索匹配的内容</div>
+        </div>
+        <div class="section-content">
+            <div class="check-list">
+                <div class="check-item">
+                    <div class="checkbox-cell">
+                        <input value="code" @change="saveConfig"
+                               v-model="config.searchMethod"
+                               name="searchMethod" id="radioSearchCode" type="radio">
+                        <label class="radio" for="radioSearchCode"></label>
+                    </div>
+                    <div class="label">只搜索编码</div>
+                </div>
+                <div class="check-item">
+                    <div class="checkbox-cell">
+                        <input value="phrase" @change="saveConfig"
+                               v-model="config.searchMethod"
+                               name="searchMethod" id="radioSearchPhrase" type="radio">
+                        <label class="radio" for="radioSearchPhrase"></label>
+                    </div>
+                    <div class="label">只搜索词条</div>
+                </div>
+                <div class="check-item">
+                    <div class="checkbox-cell">
+                        <input value="both" @change="saveConfig"
+                               v-model="config.searchMethod"
+                               name="searchMethod" id="radioSearchBoth" type="radio">
+                        <label class="radio" for="radioSearchBoth"></label>
+                    </div>
+                    <div class="label">同时匹配编码和词条</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="section-title">
+            <h3>配置文件目录</h3>
+            <div class="desc">工具自动读取的输入法配置文件目录</div>
+        </div>
+        <div class="section-content">
+            <div class="check-item">
+                {{config.rimeHomeDir}}
+                <div class="btn btn-primary" @click="chooseRimeHomeDir">选择</div>
             </div>
         </div>
     </section>

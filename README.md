@@ -106,6 +106,7 @@ sudo xattr -rd com.apple.quarantine /Applications/wubi-dict-editor.app/
 - [x] 保存后是否立即布署 `2021-10-15`
 - [ ] 删除元素时，如果组内词条为空，是否删除该组
 - [x] 回车键是搜索 | 添加新用户词 `2021-10-15`
+  - [ ] 搜索时，只搜编码 | 只搜词条 | 同时搜
 
 
 #### 7. 其它
