@@ -17,7 +17,7 @@
         <div class="section-content">
             <div class="config-file-list">
                 <div @click="setInitFile(file)"
-                     :class="['config-file-list-item', {active: file.path === config.initFile}]"
+                     :class="['config-file-list-item', {active: file.path === config.initFileName}]"
                      v-for="(file, index) in fileList"
                      :key="index"
                      v-if="fileList"

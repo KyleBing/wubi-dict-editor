@@ -14,7 +14,7 @@ const app = {
             fileList: null,
             // { "name": "luna_pinyin.sogou", "path": "luna_pinyin.sogou.dict.yaml" }
             config: {
-                initFile: {}, // 初始文件信息
+                initFileName: {}, // 初始文件信息
                 autoDeploy: false, // 是否自动布署
                 enterKeyBehavior: 'add', // add | search
             }
@@ -42,7 +42,7 @@ const app = {
     },
     methods: {
         setInitFile(file){
-            this.config.initFile = file.path
+            this.config.initFileName = file.path
             this.saveConfig()
         },
         saveConfig(){

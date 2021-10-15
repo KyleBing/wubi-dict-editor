@@ -70,11 +70,7 @@ const app = {
             this.dropdownFileList = fileList
         })
 
-        if (IS_IN_DEVELOP){
-            ipcRenderer.send('loadTestFile')
-        } else {
-            ipcRenderer.send('loadUserDictFile')
-        }
+        ipcRenderer.send('loadInitDictFile')
 
         // 载入次码表
         ipcRenderer.on('setSecondDict', (event, filename, res) => {

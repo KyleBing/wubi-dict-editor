@@ -51,13 +51,11 @@ function createWindow() {
     })
 
     // 监听 window 的文件载入请求
-    ipcMain.on('loadTestFile', event => {
-        readFile('test.dict.yaml')
-    })
-
-    // 监听 window 的文件载入请求
-    ipcMain.on('loadUserDictFile', event => {
-        readFile('wubi86_jidian_user.dict.yaml')
+    ipcMain.on('loadInitDictFile', event => {
+        let config = readConfigFile()
+        if (config){
+            readFile(config.initFileName || 'wubi86_jidian_user.dict.yaml')
+        }
     })
 
     // 监听载入主文件内容的请求
