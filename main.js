@@ -99,6 +99,15 @@ function createWindow() {
     ipcMain.on('GetFileList', event => {
         mainWindow.send('FileList', fileList)
     })
+
+    // config 相关
+    // 载入配置文件内容
+    ipcMain.on('requestConfigFile', event => {
+        let config = readConfigFile() // 没有配置文件时，返回 false
+        if (config){ // 如果有配置文件
+            mainWindow.send('responseConfigFile', config) // 向窗口发送 config 内容
+        }
+    })
 }
 
 let toolWindow
@@ -188,18 +197,21 @@ function createConfigWindow() {
     configWindow.on('closed', function () {
         configWindow = null
     })
+
     // 载入文件列表
     ipcMain.on('requestFileList', event => {
         configWindow.send('responseFileList', fileList)
     })
 
+    // config 相关
     // 载入配置文件内容
     ipcMain.on('requestConfigFile', event => {
-        let config = readConfigFile(configWindow) // 没有配置文件时，返回 false
+        let config = readConfigFile() // 没有配置文件时，返回 false
         if (config){ // 如果有配置文件
             configWindow.send('responseConfigFile', config) // 向窗口发送 config 内容
         }
     })
+
     // 保存配置文件内容
     ipcMain.on('requestSaveConfig', (event, config) => {
         writeConfigFile(config, configWindow)

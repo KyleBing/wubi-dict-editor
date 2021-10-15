@@ -68,7 +68,9 @@ const app = {
         // 由 window 触发获取文件目录的请求，不然无法实现适时的获取到 主进程返回的数据
         ipcRenderer.send('GetFileList')
         ipcRenderer.on('FileList', (event, fileList) => {
-            console.log(fileList)
+            if(IS_IN_DEVELOP){
+                console.log(fileList)
+            }
             this.dropdownFileList = fileList
         })
 
@@ -84,9 +86,17 @@ const app = {
             this.dictMain = new Dict(res, filename)
         })
 
+        // 配置相关
+        ipcRenderer.on('responseConfigFile', (event, config) => {
+            this.config = config
+            console.log('窗口载入时获取到的 config 文件：', config)
+        })
+        ipcRenderer.send('requestConfigFile')
+
+
+        // 配置文件保存后，向主窗口更新配置文件内容
         ipcRenderer.on('updateConfigFile', (event, config) => {
             this.config = config
-            console.log(config)
         })
 
         this.addKeyboardListener()
