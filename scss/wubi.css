@@ -1298,6 +1298,7 @@ select option {
   padding: 10px 10px 10px 50px;
 }
 .config section .section-content .check-item {
+  margin-bottom: 10px;
   display: flex;
   align-items: center;
   justify-content: space-around;
@@ -1308,6 +1309,9 @@ select option {
 .config section .section-content .check-item .label {
   white-space: nowrap;
 }
+.config section .section-content .check-item:last-child {
+  margin-bottom: 0;
+}
 .config section .section-content .check-list {
   display: flex;
   justify-content: space-around;
@@ -1315,6 +1319,7 @@ select option {
 }
 .config section .section-content .check-list .check-item {
   margin-right: 20px;
+  margin-bottom: 0;
 }
 
 .audio-switch input {

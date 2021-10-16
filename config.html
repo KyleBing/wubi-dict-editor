@@ -36,10 +36,17 @@
         </div>
         <div class="section-content">
             <div class="check-item">
-                <div class="label">加词后，立即自动布署输入法</div>
+                <div class="label">加词后，自动保存并布署输入法</div>
                 <div class="audio-switch">
-                    <input @change="saveConfig" v-model="config.autoDeploy" checked type="checkbox" id="audioSwitch">
-                    <label for="audioSwitch"></label>
+                    <input @change="saveConfig" v-model="config.autoDeployOnAdd" checked type="checkbox" id="autoDeployAdd">
+                    <label for="autoDeployAdd"></label>
+                </div>
+            </div>
+            <div class="check-item">
+                <div class="label">删词后，自动保存并布署输入法</div>
+                <div class="audio-switch">
+                    <input @change="saveConfig" v-model="config.autoDeployOnDelete" checked type="checkbox" id="autoDeployDelete">
+                    <label for="autoDeployDelete"></label>
                 </div>
             </div>
         </div>

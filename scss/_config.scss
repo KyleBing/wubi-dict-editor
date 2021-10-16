@@ -61,6 +61,7 @@ $fz-title: 15px;
       background-color: $bg-panel;
       padding: 10px 10px 10px 50px;
       .check-item{
+        margin-bottom: 10px;
         display: flex;
         align-items: center;
         justify-content: space-around;
@@ -70,6 +71,9 @@ $fz-title: 15px;
         .label{
           white-space: nowrap;
         }
+        &:last-child{
+          margin-bottom: 0;
+        }
       }
       .check-list{
         display: flex;
@@ -77,6 +81,7 @@ $fz-title: 15px;
         align-items: center;
         .check-item{
           margin-right: 20px;
+          margin-bottom: 0;
         }
       }
     }

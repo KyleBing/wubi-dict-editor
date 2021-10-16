@@ -5,7 +5,6 @@ const os = require('os')
 const url = require("url")
 const path = require("path")
 const { IS_IN_DEVELOP, CONFIG_FILE_PATH, CONFIG_FILE_NAME, DEFAULT_CONFIG } =  require('./js/Global.js')
-
 let mainWindow // 主窗口
 let fileList = [] // 文件目录列表，用于移动词条
 

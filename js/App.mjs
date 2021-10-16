@@ -224,7 +224,7 @@ const app = {
                 this.dict.addNewWord(new Word(this.dict.lastIndex, this.code, this.word) ,this.activeGroupId)
                 this.refreshShowingWords()
                 console.log(this.code, this.word, this.activeGroupId)
-                if (this.config.autoDeploy){
+                if (this.config.autoDeployOnAdd){
                     this.saveToFile(this.dict)
                 }
             }
@@ -304,12 +304,14 @@ const app = {
             this.selectedWordIds = this.selectedWordIds.filter(item => item !== wordId)
             this.dict.deleteWords([wordId])
             this.refreshShowingWords()
+            if(this.config.autoDeployOnDelete){ this.saveToFile(this.dict) }
         },
         // 删除词条：多
         deleteWords(){
             this.dict.deleteWords(this.selectedWordIds)
             this.refreshShowingWords()
             this.selectedWordIds = [] // 清空选中 wordID
+            if(this.config.autoDeployOnDelete){ this.saveToFile(this.dict) }
         },
 
         // 词条位置移动
