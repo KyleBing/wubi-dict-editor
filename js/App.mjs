@@ -214,6 +214,9 @@ const app = {
             if (this.activeGroupId === -1){
                 this.words = [...this.dict.wordsOrigin]
             } else {
+                if (this.activeGroupId > this.dict.wordsOrigin.length - 1) {
+                    this.activeGroupId = this.dict.wordsOrigin.length - 1
+                }
                 this.words = new Array(this.dict.wordsOrigin[this.activeGroupId])
             }
         },
