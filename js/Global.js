@@ -9,6 +9,7 @@ const DEFAULT_CONFIG = {
     enterKeyBehavior: 'add', // add | search
     rimeHomeDir: '', // 配置文件主目录
     searchMethod: 'both', // 搜索匹配的内容  code | phrase | both | any
+    chosenGroupIndex: -1, // 列表中选定的分组 id
 }
 
 module.exports = {

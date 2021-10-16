@@ -201,6 +201,8 @@ const app = {
         setGroupId(groupId){ // groupId 全部的 id 是 -1
             this.activeGroupId = groupId
             this.refreshShowingWords()
+            this.config.chosenGroupIndex = groupId
+            ipcRenderer.send('saveConfigFileFromMainWindow', JSON.stringify(this.config))
         },
         // 刷新 this.words
         refreshShowingWords(){
@@ -506,8 +508,12 @@ const app = {
         code(newValue){
             this.code = newValue.replaceAll(/[^A-Za-z ]/g, '') // input.code 只允许输入字母
         },
-        word(newValue){
-            this.code = this.getWordCodes(newValue)
+        word(newValue, oldValue){
+            if (newValue.length < oldValue.length){
+                // 删除或清空时，不清空编码
+            } else {
+                this.code = this.getWordCodes(newValue)
+            }
         },
         selectedWordIds(newValue){
             if (newValue.length === 0){

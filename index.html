@@ -45,15 +45,17 @@
 
             </div>
         </div>
-        <!-- TODO： 添加清空按钮 -->
         <div class="input-item">
             <input class="word" ref="domInputWord" @keyup.enter="enterKeyPressed" v-model="word" type="text" placeholder="词条">
-            <div class="btn-clear">
-                <img src="./assets/delete.svg" alt="clear">
+            <div @click="word = ''" v-show="word" class="btn-clear">
+                <img src="./assets/delete_white.svg" alt="clear">
             </div>
         </div>
         <div class="input-item">
             <input class="code" ref="domInputCode" @keyup.enter="enterKeyPressed" v-model="code" type="text" placeholder="编码">
+            <div @click="code = ''" v-show="code" class="btn-clear">
+                <img src="./assets/delete_white.svg" alt="clear">
+            </div>
         </div>
         <div class="btn btn-primary" @click="addNewWord">添加</div>
         <div class="btn btn-primary" @click="search">搜索</div>
@@ -118,7 +120,7 @@
          class="container">
         <div class="group-container"
              :style="`height: ${heightContent}px`">
-<!--分组目录-->
+            <!--分组目录-->
             <div class="catalog-list"
                  :style="`height: ${heightContent}px`">
                 <div :class="['catalog-item', {active: -1 === activeGroupId}]"
@@ -130,7 +132,7 @@
                     <div>{{group.groupName || '- 未命名 -'}}</div>
                 </div>
             </div>
-<!-- 分组列表-->
+            <!-- 分组词条组列表-->
             <div class="group-list"
                  :style="`height: ${heightContent}px`">
                 <div class="group" v-for="(group, groupIndex) in words" :key="groupIndex">

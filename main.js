@@ -105,6 +105,10 @@ function createWindow() {
             mainWindow.send('responseConfigFile', config) // 向窗口发送 config 内容
         }
     })
+    // 保存配置文件内容
+    ipcMain.on('saveConfigFileFromMainWindow', (event, configString) => {
+        writeConfigFile(configString, mainWindow)
+    })
 }
 
 let toolWindow
