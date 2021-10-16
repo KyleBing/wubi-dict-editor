@@ -1,3 +1,4 @@
+@use "sass:math";
 .search-bar{
   width: 100%;
   z-index: 10;
@@ -22,7 +23,7 @@ $height-clear: 16px;
     cursor: pointer;
     position: absolute;
     right: 5px;
-    top: ($height-input + $padding-input-tb - $height-clear)/2;
+    top: math.div($height-input + $padding-input-tb - $height-clear, 2);
     z-index: 10;
     height: 15px;
     width: 15px;

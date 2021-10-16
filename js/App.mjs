@@ -39,7 +39,8 @@ const app = {
             dropdownActiveFileIndex: -1, // 选中的
             dropdownActiveGroupIndex: -1, // 选中的分组 ID
 
-            config: {} // 全局配置
+            config: {}, // 全局配置
+            theme: 'auto', // theme
         }
     },
     mounted() {
@@ -90,6 +91,7 @@ const app = {
         ipcRenderer.on('responseConfigFile', (event, config) => {
             this.config = config
             this.activeGroupId = config.chosenGroupIndex // 首次载入时，定位到上次选中的分组
+            this.theme = config.theme
             console.log('窗口载入时获取到的 config 文件：', config)
         })
         ipcRenderer.send('requestConfigFile')
@@ -528,6 +530,12 @@ const app = {
         showDropdown(newValue){
             if (!newValue){ // 窗口关闭时，重置 index
                 this.resetDropList()
+            }
+        },
+        theme(newValue){
+            switch (newValue){
+                case "auto": document.documentElement.classList.remove('dark-mode'); break;
+                case "black": document.documentElement.classList.add('dark-mode'); break;
             }
         }
     }

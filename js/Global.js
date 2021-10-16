@@ -11,6 +11,7 @@ const DEFAULT_CONFIG = {
     rimeHomeDir: '', // 配置文件主目录
     searchMethod: 'both', // 搜索匹配的内容  code | phrase | both | any
     chosenGroupIndex: -1, // 列表中选定的分组 id
+    theme: 'auto', // auto 跟随系统 | black
 }
 
 module.exports = {

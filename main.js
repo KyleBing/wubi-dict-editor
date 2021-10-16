@@ -25,7 +25,6 @@ function createWindow() {
         mainWindow.webContents.openDevTools() // 打开调试窗口
     }
 
-
     mainWindow.loadURL(
         url.format({
             pathname: path.join(__dirname, 'index.html'),
@@ -208,7 +207,9 @@ function createConfigWindow() {
     ipcMain.on('requestConfigFile', event => {
         let config = readConfigFile() // 没有配置文件时，返回 false
         if (config){ // 如果有配置文件
-            configWindow.send('responseConfigFile', config) // 向窗口发送 config 内容
+            if (configWindow){
+                configWindow.send('responseConfigFile', config) // 向窗口发送 config 内容
+            }
         }
     })
 
@@ -258,6 +259,7 @@ function writeConfigFile(contentString, responseWindow){
                 })
             }
         } else {
+            // 配置文件保存成功后
             responseWindow.send('saveConfigFileSuccess')
             // 配置保存成功后，向主窗口发送配置文件内容
             mainWindow.send('updateConfigFile', JSON.parse(contentString))
@@ -341,6 +343,12 @@ function createMenu(filesMenu) {
                         createConfigWindow()
                     }
                 },
+                {
+                    label: '刷新', // 刷新页面
+                    click() {
+                        refreshWindows()
+                    }
+                },
             ]
         },
         {
@@ -406,6 +414,12 @@ function createMenu(filesMenu) {
     }
     let menu = Menu.buildFromTemplate(menuStructure)
     Menu.setApplicationMenu(menu)
+}
+
+// 刷新所有窗口内容
+function refreshWindows(){
+    if(mainWindow) mainWindow.reload()
+    if(configWindow) configWindow.reload()
 }
 
 // 设置菜单 - Rime 所有文件

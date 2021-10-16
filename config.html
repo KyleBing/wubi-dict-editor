@@ -140,6 +140,35 @@
             </div>
         </div>
     </section>
+
+    <section>
+        <div class="section-title">
+            <h3>主题</h3>
+            <div class="desc">切换主题，修改后，需要点击第一个菜单中的 [ 刷新 ]</div>
+        </div>
+        <div class="section-content">
+            <div class="check-list">
+                <div class="check-item">
+                    <div class="checkbox-cell">
+                        <input value="black" @change="saveConfig"
+                               v-model="config.theme"
+                               name="theme" id="themeBlack" type="radio">
+                        <label class="radio" for="themeBlack"></label>
+                    </div>
+                    <div class="label">暗黑</div>
+                </div>
+                <div class="check-item">
+                    <div class="checkbox-cell">
+                        <input value="auto" @change="saveConfig"
+                               v-model="config.theme"
+                               name="theme" id="themeAuto" type="radio">
+                        <label class="radio" for="themeAuto"></label>
+                    </div>
+                    <div class="label">跟随系统</div>
+                </div>
+            </div>
+        </div>
+    </section>
 </div>
 
 <script type="module" src="js/Config.mjs"></script>

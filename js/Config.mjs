@@ -60,8 +60,11 @@ const app = {
     },
     watch: {
         config: (newValue)=>{
-            console.log(newValue)
-        }
+            switch (newValue.theme){
+                case "auto": document.documentElement.classList.remove('dark-mode'); break;
+                case "black": document.documentElement.classList.add('dark-mode'); break;
+            }
+        },
     }
 }
 
