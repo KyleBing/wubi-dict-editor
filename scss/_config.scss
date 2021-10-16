@@ -96,6 +96,7 @@ $height-switch: 14px;
     display: none;
   }
   input+label{
+    cursor: pointer;
     box-sizing: content-box;
     border: 2px solid $text-subtitle;
     background-color: $text-subtitle;

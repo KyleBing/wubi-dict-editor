@@ -1326,6 +1326,7 @@ select option {
   display: none;
 }
 .audio-switch input + label {
+  cursor: pointer;
   box-sizing: content-box;
   border: 2px solid #848484;
   background-color: #848484;
