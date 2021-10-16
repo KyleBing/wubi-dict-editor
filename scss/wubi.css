@@ -1275,7 +1275,10 @@ select option {
   justify-content: space-around;
 }
 .config section .section-content .check-item > *:first-child {
-  margin-right: 10px;
+  margin-right: 5px;
+}
+.config section .section-content .check-item .label {
+  white-space: nowrap;
 }
 .config section .section-content .check-list {
   display: flex;

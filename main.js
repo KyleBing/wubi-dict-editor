@@ -169,6 +169,7 @@ function createConfigWindow() {
     let width = IS_IN_DEVELOP ? 1400 : 600
     let height = IS_IN_DEVELOP ? 600 : 600
     configWindow = new BrowserWindow({
+        parent: mainWindow,
         width,
         height,
         icon: __dirname + '/assets/appIcon/appicon.ico', // windows icon

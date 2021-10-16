@@ -65,7 +65,10 @@ $fz-title: 15px;
         align-items: center;
         justify-content: space-around;
         & > *:first-child{
-          margin-right: 10px;
+          margin-right: 5px;
+        }
+        .label{
+          white-space: nowrap;
         }
       }
       .check-list{

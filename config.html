@@ -106,7 +106,7 @@
                                name="searchMethod" id="radioSearchBoth" type="radio">
                         <label class="radio" for="radioSearchBoth"></label>
                     </div>
-                    <div class="label">编码、词条，同时匹配</div>
+                    <div class="label">编码 和 词条</div>
                 </div>
                 <div class="check-item">
                     <div class="checkbox-cell">
@@ -115,7 +115,7 @@
                                name="searchMethod" id="radioSearchAny" type="radio">
                         <label class="radio" for="radioSearchAny"></label>
                     </div>
-                    <div class="label">编码、词条，匹配任一</div>
+                    <div class="label">编码 或 词条</div>
                 </div>
             </div>
         </div>
@@ -128,7 +128,7 @@
         </div>
         <div class="section-content">
             <div class="check-item">
-                {{config.rimeHomeDir}}
+                <p>{{config.rimeHomeDir || '默认目录'}}</p>
                 <div class="btn btn-primary" @click="chooseRimeHomeDir">选择</div>
             </div>
         </div>
