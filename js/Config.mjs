@@ -1,4 +1,3 @@
-import {shakeDom, shakeDomFocus} from "./Utility.mjs"
 import Vue from '../node_modules/vue/dist/vue.esm.browser.min.js'
 
 const {ipcRenderer} = require('electron')
@@ -61,8 +60,14 @@ const app = {
     watch: {
         config: (newValue)=>{
             switch (newValue.theme){
-                case "auto": document.documentElement.classList.remove('dark-mode'); break;
-                case "black": document.documentElement.classList.add('dark-mode'); break;
+                case "auto":
+                    document.documentElement.classList.add('auto-mode');
+                    document.documentElement.classList.remove('dark-mode');
+                    break;
+                case "black":
+                    document.documentElement.classList.add('dark-mode');
+                    document.documentElement.classList.remove('auto-mode');
+                    break;
             }
         },
     }

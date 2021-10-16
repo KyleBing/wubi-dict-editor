@@ -534,8 +534,14 @@ const app = {
         },
         theme(newValue){
             switch (newValue){
-                case "auto": document.documentElement.classList.remove('dark-mode'); break;
-                case "black": document.documentElement.classList.add('dark-mode'); break;
+                case "auto":
+                    document.documentElement.classList.add('auto-mode');
+                    document.documentElement.classList.remove('dark-mode');
+                    break;
+                case "black":
+                    document.documentElement.classList.add('dark-mode');
+                    document.documentElement.classList.remove('auto-mode');
+                    break;
             }
         }
     }

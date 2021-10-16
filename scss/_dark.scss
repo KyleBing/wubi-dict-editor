@@ -10,7 +10,8 @@ $black-color-text-subtitle: lighten(black, 70%);
 $black-color-text-comment: lighten(black, 55%);
 $black-btn-bg: lighten(black, 25%);
 $black-color-main: #81fffa;
-.dark-mode {
+
+@mixin dark-mode(){
   // 暗黑模式下的滚动条样式
   ::-webkit-scrollbar {
   }
@@ -251,5 +252,15 @@ $black-color-main: #81fffa;
         color: $color;
       }
     }
+  }
+}
+
+.dark-mode {
+  @include dark-mode();
+}
+
+.auto-mode{
+  @media (prefers-color-scheme: dark) {
+    @include dark-mode();
   }
 }

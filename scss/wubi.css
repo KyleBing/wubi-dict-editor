@@ -1797,6 +1797,418 @@ select option {
   color: #8E8E93;
 }
 
+@media (prefers-color-scheme: dark) {
+  .auto-mode ::-webkit-scrollbar-track {
+    background-color: rgba(0, 0, 0, 0);
+  }
+  .auto-mode ::-webkit-scrollbar-thumb {
+    background-color: #272b32 !important;
+  }
+  .auto-mode :hover::-webkit-scrollbar-thumb {
+    background-color: #383838 !important;
+  }
+  .auto-mode body {
+    background-color: #1c1f24 !important;
+  }
+  .auto-mode .search-bar {
+    background-color: #1c1f24;
+    border-bottom-color: #272b32;
+  }
+  .auto-mode .input-item .btn-clear {
+    background-color: #383f4a;
+  }
+  .auto-mode .input-item .btn-clear:hover {
+    background-color: #FF2D70;
+  }
+  .auto-mode .group {
+    color: #e6e6e6;
+  }
+  .auto-mode .group .group-header {
+    color: #81fffa;
+  }
+  .auto-mode .group .group-header:hover {
+    background-color: #272b32;
+  }
+  .auto-mode .group .group-header.active {
+    background-color: #383f4a;
+  }
+  .auto-mode .word-item:hover {
+    background: #272b32;
+  }
+  .auto-mode .word-item:hover .checkbox-cell label {
+    border-color: #81fffa;
+  }
+  .auto-mode .word-item:after {
+    background-color: #272b32;
+  }
+  .auto-mode .word-item .code {
+    color: #b3b3b3;
+  }
+  .auto-mode .catalog-list {
+    color: #e6e6e6;
+    border-right-color: #272b32 !important;
+  }
+  .auto-mode .catalog-list .catalog-item:hover {
+    background-color: #272b32 !important;
+  }
+  .auto-mode .catalog-list .catalog-item.active {
+    color: black !important;
+    background-color: #81fffa !important;
+  }
+  .auto-mode .footer {
+    background-color: #1c1f24;
+    border-top-color: #383838;
+    color: #e6e6e6;
+  }
+  .auto-mode .footer .link:hover {
+    color: #81fffa !important;
+  }
+  .auto-mode .file-list {
+    color: #e6e6e6;
+    background-color: #1c1f24;
+    border-color: #00448e;
+  }
+  .auto-mode .file-list-item {
+    border-bottom-color: #272b32;
+  }
+  .auto-mode .file-list-item:hover {
+    background-color: #383f4a;
+  }
+  .auto-mode .file-list-item.active, .auto-mode .file-list-item:active {
+    background-color: #007AFF;
+    color: white;
+  }
+  .auto-mode input, .auto-mode select {
+    color: #e6e6e6;
+  }
+  .auto-mode input:focus, .auto-mode select:focus {
+    border-color: #81fffa;
+    -webkit-box-shadow: 0 0 0 2px rgba(129, 255, 250, 0.5);
+    -moz-box-shadow: 0 0 0 2px rgba(129, 255, 250, 0.5);
+    box-shadow: 0 0 0 2px rgba(129, 255, 250, 0.5);
+  }
+  .auto-mode input[type=checkbox] + label.checkbox {
+    background-color: #0f0f13;
+    border-color: #272b32;
+  }
+  .auto-mode input[type=checkbox]:checked + label.checkbox {
+    border-color: #81fffa;
+  }
+  .auto-mode label.checkbox:hover {
+    border-color: #81fffa !important;
+  }
+  .auto-mode input[type=checkbox]:checked + label.checkbox:after {
+    background-color: #81fffa;
+  }
+  .auto-mode input {
+    background-color: #0f0f13;
+    border-color: #383838;
+  }
+  .auto-mode .btn-primary {
+    color: #e6e6e6;
+    background-color: #404040;
+    border: 1px solid #383838;
+  }
+  .auto-mode .btn-primary:hover {
+    color: #e6e6e6;
+    background-color: #404040;
+    border: 1px solid #383838;
+  }
+  .auto-mode .btn-green {
+    color: white;
+    background-color: #4CD964;
+    border: 1px solid #4CD964;
+  }
+  .auto-mode .btn-green:hover {
+    background-color: #2cd048;
+    border-color: #2cd048;
+  }
+  .auto-mode .btn-green:active {
+    background-color: #2ac845;
+  }
+  .auto-mode .btn-cyan {
+    color: white;
+    background-color: #5AC8FA;
+    border: 1px solid #5AC8FA;
+  }
+  .auto-mode .btn-cyan:hover {
+    background-color: #32bbf9;
+    border-color: #32bbf9;
+  }
+  .auto-mode .btn-cyan:active {
+    background-color: #29b8f9;
+  }
+  .auto-mode .btn-blue {
+    color: white;
+    background-color: #007AFF;
+    border: 1px solid #007AFF;
+  }
+  .auto-mode .btn-blue:hover {
+    background-color: #0066d6;
+    border-color: #0066d6;
+  }
+  .auto-mode .btn-blue:active {
+    background-color: #0062cc;
+  }
+  .auto-mode .btn-purple {
+    color: white;
+    background-color: #5856D6;
+    border: 1px solid #5856D6;
+  }
+  .auto-mode .btn-purple:hover {
+    background-color: #3835ce;
+    border-color: #3835ce;
+  }
+  .auto-mode .btn-purple:active {
+    background-color: #3331c8;
+  }
+  .auto-mode .btn-yellow {
+    color: white;
+    background-color: #FFCC00;
+    border: 1px solid #FFCC00;
+  }
+  .auto-mode .btn-yellow:hover {
+    background-color: #d6ab00;
+    border-color: #d6ab00;
+  }
+  .auto-mode .btn-yellow:active {
+    background-color: #cca300;
+  }
+  .auto-mode .btn-orange {
+    color: white;
+    background-color: #FF9500;
+    border: 1px solid #FF9500;
+  }
+  .auto-mode .btn-orange:hover {
+    background-color: #d67d00;
+    border-color: #d67d00;
+  }
+  .auto-mode .btn-orange:active {
+    background-color: #cc7700;
+  }
+  .auto-mode .btn-roseo {
+    color: white;
+    background-color: #FF2D70;
+    border: 1px solid #FF2D70;
+  }
+  .auto-mode .btn-roseo:hover {
+    background-color: #ff0454;
+    border-color: #ff0454;
+  }
+  .auto-mode .btn-roseo:active {
+    background-color: #f9004f;
+  }
+  .auto-mode .btn-red {
+    color: white;
+    background-color: #FF3B30;
+    border: 1px solid #FF3B30;
+  }
+  .auto-mode .btn-red:hover {
+    background-color: #ff1407;
+    border-color: #ff1407;
+  }
+  .auto-mode .btn-red:active {
+    background-color: #fc0d00;
+  }
+  .auto-mode .btn-gray {
+    color: white;
+    background-color: #8E8E93;
+    border: 1px solid #8E8E93;
+  }
+  .auto-mode .btn-gray:hover {
+    background-color: #79797f;
+    border-color: #79797f;
+  }
+  .auto-mode .btn-gray:active {
+    background-color: #74747a;
+  }
+  .auto-mode .config section {
+    margin-bottom: 30px;
+  }
+  .auto-mode .config section .section-title {
+    color: #e6e6e6;
+  }
+  .auto-mode .config section .section-title .desc {
+    color: #b3b3b3;
+  }
+  .auto-mode .config section .section-content {
+    background-color: #0f0f13;
+    color: #e6e6e6;
+  }
+  .auto-mode .config-file-list .config-file-list-item {
+    border-bottom-color: #272b32;
+  }
+  .auto-mode .config-file-list .config-file-list-item .name {
+    color: #e6e6e6;
+  }
+  .auto-mode .config-file-list .config-file-list-item .path {
+    color: #b3b3b3;
+  }
+  .auto-mode .config-file-list .config-file-list-item.active {
+    background-color: #81fffa;
+    border-bottom-color: #81fffa;
+  }
+  .auto-mode .config-file-list .config-file-list-item.active .name, .auto-mode .config-file-list .config-file-list-item.active .path {
+    color: #000;
+  }
+  .auto-mode .config-file-list .config-file-list-item.active:hover {
+    background-color: #81fffa;
+    border-bottom-color: #81fffa;
+  }
+  .auto-mode .config-file-list .config-file-list-item:hover {
+    background-color: #383f4a;
+  }
+  .auto-mode input[type=radio] + label.radio {
+    background-color: #383f4a;
+    border-color: #383838;
+  }
+  .auto-mode input[type=radio]:checked + label.radio {
+    border-color: #81fffa;
+  }
+  .auto-mode label.radio:hover {
+    border-color: #81fffa !important;
+  }
+  .auto-mode input[type=radio]:checked + label.radio:after {
+    background-color: #81fffa;
+  }
+  .auto-mode .audio-switch input {
+    display: none;
+  }
+  .auto-mode .audio-switch input + label {
+    box-sizing: content-box;
+    border: 2px solid #848484;
+    background-color: #848484;
+  }
+  .auto-mode .audio-switch input + label:before {
+    border-color: transparent;
+    background-color: #1c1f24;
+  }
+  .auto-mode .audio-switch input:checked + label {
+    border-color: #4CD964;
+    background-color: #4CD964;
+  }
+  .auto-mode .btn-alt-primary {
+    border-color: transparent;
+    background-color: transparent;
+    color: white;
+  }
+  .auto-mode .btn-alt-primary:hover {
+    border-color: white;
+    color: white;
+  }
+  .auto-mode .btn-alt-primary:active {
+    color: white;
+  }
+  .auto-mode .btn-alt-green {
+    border-color: transparent;
+    background-color: transparent;
+    color: #4CD964;
+  }
+  .auto-mode .btn-alt-green:hover {
+    border-color: #4CD964;
+    color: #4CD964;
+  }
+  .auto-mode .btn-alt-green:active {
+    color: #4CD964;
+  }
+  .auto-mode .btn-alt-cyan {
+    border-color: transparent;
+    background-color: transparent;
+    color: #5AC8FA;
+  }
+  .auto-mode .btn-alt-cyan:hover {
+    border-color: #5AC8FA;
+    color: #5AC8FA;
+  }
+  .auto-mode .btn-alt-cyan:active {
+    color: #5AC8FA;
+  }
+  .auto-mode .btn-alt-blue {
+    border-color: transparent;
+    background-color: transparent;
+    color: #007AFF;
+  }
+  .auto-mode .btn-alt-blue:hover {
+    border-color: #007AFF;
+    color: #007AFF;
+  }
+  .auto-mode .btn-alt-blue:active {
+    color: #007AFF;
+  }
+  .auto-mode .btn-alt-purple {
+    border-color: transparent;
+    background-color: transparent;
+    color: #5856D6;
+  }
+  .auto-mode .btn-alt-purple:hover {
+    border-color: #5856D6;
+    color: #5856D6;
+  }
+  .auto-mode .btn-alt-purple:active {
+    color: #5856D6;
+  }
+  .auto-mode .btn-alt-yellow {
+    border-color: transparent;
+    background-color: transparent;
+    color: #FFCC00;
+  }
+  .auto-mode .btn-alt-yellow:hover {
+    border-color: #FFCC00;
+    color: #FFCC00;
+  }
+  .auto-mode .btn-alt-yellow:active {
+    color: #FFCC00;
+  }
+  .auto-mode .btn-alt-orange {
+    border-color: transparent;
+    background-color: transparent;
+    color: #FF9500;
+  }
+  .auto-mode .btn-alt-orange:hover {
+    border-color: #FF9500;
+    color: #FF9500;
+  }
+  .auto-mode .btn-alt-orange:active {
+    color: #FF9500;
+  }
+  .auto-mode .btn-alt-roseo {
+    border-color: transparent;
+    background-color: transparent;
+    color: #FF2D70;
+  }
+  .auto-mode .btn-alt-roseo:hover {
+    border-color: #FF2D70;
+    color: #FF2D70;
+  }
+  .auto-mode .btn-alt-roseo:active {
+    color: #FF2D70;
+  }
+  .auto-mode .btn-alt-red {
+    border-color: transparent;
+    background-color: transparent;
+    color: #FF3B30;
+  }
+  .auto-mode .btn-alt-red:hover {
+    border-color: #FF3B30;
+    color: #FF3B30;
+  }
+  .auto-mode .btn-alt-red:active {
+    color: #FF3B30;
+  }
+  .auto-mode .btn-alt-gray {
+    border-color: transparent;
+    background-color: transparent;
+    color: #8E8E93;
+  }
+  .auto-mode .btn-alt-gray:hover {
+    border-color: #8E8E93;
+    color: #8E8E93;
+  }
+  .auto-mode .btn-alt-gray:active {
+    color: #8E8E93;
+  }
+}
+
 body {
   font-size: 12px;
   background-color: white;
