@@ -1452,6 +1452,11 @@ select option {
 .dark-mode .footer .link:hover {
   color: #81fffa !important;
 }
+.dark-mode .shadow {
+  -webkit-box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.5);
+  -moz-box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.5);
+  box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.5);
+}
 .dark-mode .file-list {
   color: #e6e6e6;
   background-color: #1c1f24;
@@ -1495,13 +1500,13 @@ select option {
 }
 .dark-mode .btn-primary {
   color: #e6e6e6;
-  background-color: #404040;
-  border: 1px solid #383838;
+  background-color: #595959;
+  border: 1px solid #595959;
 }
 .dark-mode .btn-primary:hover {
   color: #e6e6e6;
-  background-color: #404040;
-  border: 1px solid #383838;
+  background-color: #666666;
+  border: 1px solid #666666;
 }
 .dark-mode .btn-green {
   color: white;
@@ -1863,6 +1868,11 @@ select option {
   .auto-mode .footer .link:hover {
     color: #81fffa !important;
   }
+  .auto-mode .shadow {
+    -webkit-box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.5);
+    -moz-box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.5);
+    box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.5);
+  }
   .auto-mode .file-list {
     color: #e6e6e6;
     background-color: #1c1f24;
@@ -1906,13 +1916,13 @@ select option {
   }
   .auto-mode .btn-primary {
     color: #e6e6e6;
-    background-color: #404040;
-    border: 1px solid #383838;
+    background-color: #595959;
+    border: 1px solid #595959;
   }
   .auto-mode .btn-primary:hover {
     color: #e6e6e6;
-    background-color: #404040;
-    border: 1px solid #383838;
+    background-color: #666666;
+    border: 1px solid #666666;
   }
   .auto-mode .btn-green {
     color: white;

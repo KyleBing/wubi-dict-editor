@@ -8,7 +8,8 @@ $black-color-text: lighten(black, 90%);
 $black-color-text-info: lighten(black, 65%);
 $black-color-text-subtitle: lighten(black, 70%);
 $black-color-text-comment: lighten(black, 55%);
-$black-btn-bg: lighten(black, 25%);
+$black-btn-bg: lighten(black, 35%);
+$black-btn-bg-hover: lighten(black, 40%);
 $black-color-main: #81fffa;
 
 @mixin dark-mode(){
@@ -94,7 +95,9 @@ $black-color-main: #81fffa;
       }
     }
   }
-  .dropdown {
+  .dropdown {}
+  .shadow{
+    @include box-shadow(1px 2px 5px rgba(0,0,0,0.5))
   }
   .file-list {
     color: $black-color-text;
@@ -142,7 +145,7 @@ $black-color-main: #81fffa;
       @if $name == primary {
         color: $black-color-text;
         background-color: $black-btn-bg;
-        border: 1px solid $black-color-border-highlight;
+        border: 1px solid $black-btn-bg;
       } @else {
         color: white;
         background-color: $color;
@@ -151,8 +154,8 @@ $black-color-main: #81fffa;
       &:hover {
         @if $name == primary {
           color: $black-color-text;
-          background-color: $black-btn-bg;
-          border: 1px solid $black-color-border-highlight;
+          background-color: $black-btn-bg-hover;
+          border: 1px solid $black-btn-bg-hover;
         } @else {
           background-color: darken($color, 8%);
           border-color: darken($color, 8%);
