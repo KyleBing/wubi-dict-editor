@@ -1,19 +1,16 @@
-$black-color-border-highlight : lighten(black, 22%);
-$black-body-bg                : #0f0f13;
-$black-bg                     : #1c1f24;
-$black-bg-hover               : lighten(#1c1f24, 5%);
-$black-bg-highlight           : #383f4a;
-$black-color-border           : lighten($black-bg, 5%);
-$black-color-text             : lighten(black, 90%);
-$black-color-text-info        : lighten(black, 65%);
-$black-color-text-subtitle    : lighten(black, 70%);
-$black-color-text-comment     : lighten(black, 55%);
-$black-btn-bg                 : lighten(black, 25%);
-
+$black-color-border-highlight: lighten(black, 22%);
+$black-body-bg: #0f0f13;
+$black-bg: #1c1f24;
+$black-bg-hover: lighten(#1c1f24, 5%);
+$black-bg-highlight: #383f4a;
+$black-color-border: lighten($black-bg, 5%);
+$black-color-text: lighten(black, 90%);
+$black-color-text-info: lighten(black, 65%);
+$black-color-text-subtitle: lighten(black, 70%);
+$black-color-text-comment: lighten(black, 55%);
+$black-btn-bg: lighten(black, 25%);
 $black-color-main: #81fffa;
-
-@media (prefers-color-scheme: dark) {
-
+.dark-mode {
   // 暗黑模式下的滚动条样式
   ::-webkit-scrollbar {
   }
@@ -26,52 +23,58 @@ $black-color-main: #81fffa;
   :hover::-webkit-scrollbar-thumb {
     background-color: $black-color-border-highlight !important;
   }
-
-  body{
+  body {
     background-color: $black-bg !important;
   }
-  .list-container{
+  .list-container {
   }
-  .search-bar{
+  .search-bar {
     background-color: $black-bg;
     border-bottom-color: $black-color-border;
   }
+  .input-item {
+    .btn-clear {
+      background-color: $black-bg-highlight;
+      &:hover{
+        background-color: $color-main;
+      }
+    }
+  }
   .group {
     color: $black-color-text;
-    .group-header{
+    .group-header {
       color: $black-color-main;
-      &:hover{
+      &:hover {
         background-color: $black-bg-hover;
       }
-      &.active{
+      &.active {
         background-color: $black-bg-highlight;
       }
     }
   }
-  .word-item{
-    &:hover{
+  .word-item {
+    &:hover {
       background: $black-bg-hover;
-      .checkbox-cell{
-        label{
+      .checkbox-cell {
+        label {
           border-color: $black-color-main;
         }
       }
     }
-    &:after{
+    &:after {
       background-color: $black-color-border;
     }
-    .code{
+    .code {
       color: $black-color-text-subtitle;
     }
-    .word{
+    .word {
     }
   }
-
   .catalog-list {
     color: $black-color-text;
     border-right-color: $black-color-border !important;
     .catalog-item {
-      &:hover{
+      &:hover {
         background-color: $black-bg-hover !important;
       }
       &.active {
@@ -80,7 +83,7 @@ $black-color-main: #81fffa;
       }
     }
   }
-  .footer{
+  .footer {
     background-color: $black-bg;
     border-top-color: $black-color-border-highlight;
     color: $black-color-text;
@@ -90,11 +93,8 @@ $black-color-main: #81fffa;
       }
     }
   }
-
-  .dropdown{
-
+  .dropdown {
   }
-
   .file-list {
     color: $black-color-text;
     background-color: $black-bg;
@@ -110,28 +110,25 @@ $black-color-main: #81fffa;
       }
     }
   }
-
-
-
-  input, select{
+  input, select {
     color: $black-color-text;
-    &:focus{
+    &:focus {
       border-color: $black-color-main;
       @include box-shadow(0 0 0 2px transparentize($black-color-main, 0.5))
     }
   }
-  input[type=checkbox] + label.checkbox{
+  input[type=checkbox] + label.checkbox {
     background-color: $black-body-bg;
     border-color: $black-color-border;
   }
   input[type=checkbox]:checked + label.checkbox {
     border-color: $black-color-main;
   }
-  label.checkbox:hover{
+  label.checkbox:hover {
     border-color: $black-color-main !important;
   }
-  input[type=checkbox]:checked + label.checkbox{
-    &:after{
+  input[type=checkbox]:checked + label.checkbox {
+    &:after {
       background-color: $black-color-main;
     }
   }
@@ -139,10 +136,8 @@ $black-color-main: #81fffa;
     background-color: $black-body-bg;
     border-color: $black-color-border-highlight;
   }
-
-
   @each $name, $color in $btns {
-    .btn-#{$name}{
+    .btn-#{$name} {
       @if $name == primary {
         color: $black-color-text;
         background-color: $black-btn-bg;
@@ -152,7 +147,7 @@ $black-color-main: #81fffa;
         background-color: $color;
         border: 1px solid $color;
       }
-      &:hover{
+      &:hover {
         @if $name == primary {
           color: $black-color-text;
           background-color: $black-btn-bg;
@@ -162,22 +157,20 @@ $black-color-main: #81fffa;
           border-color: darken($color, 8%);
         }
       }
-      &:active{
+      &:active {
         @if $name == primary {
-
         } @else {
           background-color: darken($color, 10%);
         }
       }
     }
   }
-
-  .config{
-    section{
+  .config {
+    section {
       margin-bottom: 30px;
-      .section-title{
+      .section-title {
         color: $black-color-text;
-        .desc{
+        .desc {
           color: $black-color-text-subtitle;
         }
       }
@@ -190,76 +183,71 @@ $black-color-main: #81fffa;
   .config-file-list {
     .config-file-list-item {
       border-bottom-color: $black-color-border;
-      .name{
+      .name {
         color: $black-color-text;
       }
-      .path{
+      .path {
         color: $black-color-text-subtitle;
       }
       &.active {
         background-color: $black-color-main;
         border-bottom-color: $black-color-main;
-        .name, .path{
+        .name, .path {
           color: $text-main;
         }
-        &:hover{
+        &:hover {
           background-color: $black-color-main;
           border-bottom-color: $black-color-main;
         }
       }
-      &:hover{
+      &:hover {
         background-color: $black-bg-highlight;
       }
     }
   }
-
-  input[type=radio] + label.radio{
+  input[type=radio] + label.radio {
     background-color: $black-bg-highlight;
     border-color: $black-color-border-highlight;
   }
   input[type=radio]:checked + label.radio {
     border-color: $black-color-main;
   }
-  label.radio:hover{
+  label.radio:hover {
     border-color: $black-color-main !important;
   }
-  input[type=radio]:checked + label.radio{
-    &:after{
+  input[type=radio]:checked + label.radio {
+    &:after {
       background-color: $black-color-main;
     }
   }
-
-
-  .audio-switch{
-    input{
+  .audio-switch {
+    input {
       display: none;
     }
-    input+label{
+    input + label {
       box-sizing: content-box;
       border: 2px solid $text-subtitle;
       background-color: $text-subtitle;
-      &:before{
+      &:before {
         border-color: transparent;
         background-color: $black-bg;
       }
     }
-    input:checked+label{
+    input:checked + label {
       border-color: $green;
       background-color: $green;
     }
   }
-
-
   @each $name, $color in $btns {
-    .btn-alt-#{$name}{
+    .btn-alt-#{$name} {
       border-color: transparent;
       background-color: transparent;
       color: $color;
-      &:hover{
+      &:hover {
         border-color: $color;
         color: $color;
       }
-      &:active{
+      &:active {
         color: $color;
       }
     }
