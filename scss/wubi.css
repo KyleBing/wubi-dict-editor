@@ -1018,6 +1018,21 @@ input[type=radio]:checked + label.radio:after {
   margin-right: 5px;
 }
 
+.input-item input:focus + .btn-clear {
+  display: block;
+}
+.input-item .btn-clear {
+  height: 10px;
+  width: 10px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+}
+.input-item .btn-clear img {
+  display: block;
+  width: 100%;
+}
+
 input, select {
   font-size: inherit;
   line-height: 18px;
