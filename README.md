@@ -1,7 +1,7 @@
-> ## 开发进行中 ... 
-
 # 五笔词库管理工具 for [Rime](https://github.com/rime)
 一个管理 Rime 五笔词库的工具，添加、删除词条
+
+有其它问题，欢迎加群讨论: [878750538](https://jq.qq.com/?_wv=1027&k=st8cY2sI)
 
 <img width="812" alt="Screen Shot 2021-08-09 at 21 35 45" src="https://user-images.githubusercontent.com/12215982/128715098-8dc4c6d6-76f8-4428-9434-e3ac86ab2072.png">
 <img width="812" alt="Screen Shot 2021-08-09 at 21 35 34" src="https://user-images.githubusercontent.com/12215982/128715114-8e9f82ff-2bdb-4837-87ed-ecbf0ea7ee28.png">
@@ -39,6 +39,13 @@ sudo xattr -rd com.apple.quarantine /Applications/wubi-dict-editor.app/
 #### 进程截图记录：
 > [https://github.com/KyleBing/wubi-words-editor/discussions/2](https://github.com/KyleBing/wubi-dict-editor/discussions/2)
 
+#### 纯工具模块
+- [ ] 查重，并选中
+- [ ] 批量添加词条编码
+- [ ] 载入码表文件，根据码表生成不同版本五笔的编码码表
+- [ ] 编码查错修正
+- [ ] 保存成不同格式的码表文件，一码一词，一码多词，码表分隔符 `\t` `空格`
+
 #### 1. 词条
 - [x] 展示词库内容 `2021-07-25`
   - [x] 成组显示 组为以 `##` 开头`2021-07-25`
@@ -58,12 +65,7 @@ sudo xattr -rd com.apple.quarantine /Applications/wubi-dict-editor.app/
 - [x] 按输入码排序 `2021-08-12`
 - [x] 任意词条移动到任意码表中
 - [ ] 右击编辑任意词条内容
-- [ ] 提醒
-  - [ ] 未保存时
-  - [ ] 删除词组时
-- [ ] ？词条优先级，加权重
-- [ ] 查重，并选中
-- [ ] 搜索框添加清空内容的按钮
+- [x] 搜索框添加清空内容的按钮 `2021-10-16`
 
 #### 2. 主码表文件
 - [x] 词条添加到主码表文件 `2021-08-04`
@@ -106,6 +108,7 @@ sudo xattr -rd com.apple.quarantine /Applications/wubi-dict-editor.app/
 - [x] 保存后是否立即布署 `2021-10-15`
 - [x] 回车键是搜索 | 添加新用户词 `2021-10-15`
   - [x] 搜索时，编码 | 词条 | 同时 | 任一 `2021-10-16`
+- [x] 记录最后一次选中的分组 `2021-10-16`
 - [ ] 删除元素时，如果组内词条为空，是否删除该组 `待定`
 
 
