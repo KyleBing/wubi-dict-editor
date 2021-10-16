@@ -36,7 +36,7 @@ function createWindow() {
     )
     mainWindow.on('closed', function () {
         mainWindow = null
-        configWindow.close()
+        if (configWindow) configWindow.close()
     })
 
 

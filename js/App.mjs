@@ -89,6 +89,7 @@ const app = {
         // 配置相关
         ipcRenderer.on('responseConfigFile', (event, config) => {
             this.config = config
+            this.activeGroupId = config.chosenGroupIndex // 首次载入时，定位到上次选中的分组
             console.log('窗口载入时获取到的 config 文件：', config)
         })
         ipcRenderer.send('requestConfigFile')
@@ -207,6 +208,7 @@ const app = {
         // 刷新 this.words
         refreshShowingWords(){
             this.selectedWordIds = []
+            if (IS_IN_DEVELOP) console.log('已选中的 groupIndex: ',this.activeGroupId, typeof this.activeGroupId)
             if (this.activeGroupId === -1){
                 this.words = [...this.dict.wordsOrigin]
             } else {
