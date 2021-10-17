@@ -83,20 +83,21 @@
                     <template v-slot="{ item, index }">
                         <div class="word-item" @click="select(item.id, event)">
                             <div class="checkbox-cell">
-                                <div :class="['checkbox-item', {active: chosenWordIdArray.some(i => i === item.id)}]"></div>
+<!--                                <div :class="['checkbox-item', {active: chosenWordIdArray.some(i => i === item.id)}]"></div>-->
+                                <div :class="['checkbox-item', {active: chosenWordIds.has(item.id)}]"></div>
                             </div>
                             <div class="code">{{ item.code }}</div>
                             <div class="word">{{ item.word }}</div>
                             <div v-if="item.priority" title="权重" class="priority">{{ item.priority }}</div>
                             <div v-if="IS_IN_DEVELOP" class="id">{{ item.id }}</div>
                             <div class="operation">
-                                <div class="up" @click="moveUp(item.id)">
+                                <div class="up" @click.stop="moveUp(item.id)">
                                     <img src="../../assets/img/up.svg" alt="move up">
                                 </div>
-                                <div class="down" @click="moveDown(item.id)">
+                                <div class="down" @click.stop="moveDown(item.id)">
                                     <img src="../../assets/img/down.svg" alt="move down">
                                 </div>
-                                <div  class="down" @click="deleteWord(item.id)">
+                                <div  class="down" @click.stop="deleteWord(item.id)">
                                     <img src="../../assets/img/delete.svg" alt="move down">
                                 </div>
                             </div>
@@ -158,20 +159,21 @@
                              v-for="(item, index) in group.dict"
                              :key="item.id">
                             <div class="checkbox-cell">
-                                <div :class="['checkbox-item', {active: chosenWordIdArray.some(i => i === item.id)}]"></div>
+<!--                                <div :class="['checkbox-item', {active: chosenWordIdArray.some(i => i === item.id)}]"></div>-->
+                                <div :class="['checkbox-item', {active: chosenWordIds.has(item.id)}]"></div>
                             </div>
                             <div class="code">{{ item.code }}</div>
                             <div class="word">{{ item.word }}</div>
                             <div v-if="item.priority" title="权重" class="priority">{{ item.priority }}</div>
                             <div v-if="IS_IN_DEVELOP" class="id">{{ item.id }}</div>
                             <div class="operation">
-                                <div class="up" @click="moveUp(item.id)">
+                                <div class="up" @click.stop="moveUp(item.id)">
                                     <img src="../../assets/img/up.svg" alt="move up">
                                 </div>
-                                <div  class="down" @click="moveDown(item.id)">
+                                <div  class="down" @click.stop="moveDown(item.id)">
                                     <img src="../../assets/img/down.svg" alt="move down">
                                 </div>
-                                <div  class="down" @click="deleteWord(item.id)">
+                                <div  class="down" @click.stop="deleteWord(item.id)">
                                     <img src="../../assets/img/delete.svg" alt="move down">
                                 </div>
                             </div>
