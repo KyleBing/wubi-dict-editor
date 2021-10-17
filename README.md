@@ -66,6 +66,7 @@ sudo xattr -rd com.apple.quarantine /Applications/wubi-dict-editor.app/
 - [x] 任意词条移动到任意码表中
 - [ ] 右击编辑任意词条内容
 - [x] 搜索框添加清空内容的按钮 `2021-10-16`
+- [x] shift 批量选词 `2021-10-17`
 
 #### 2. 主码表文件
 - [x] 词条添加到主码表文件 `2021-08-04`
