@@ -27,7 +27,7 @@ function createWindow() {
 
     mainWindow.loadURL(
         url.format({
-            pathname: path.join(__dirname, 'index.html'),
+            pathname: path.join(__dirname, './view/index/index.html'),
             protocol: "file:",
             slashes: true
         })
@@ -130,7 +130,7 @@ function showToolWindow (){
 
     toolWindow.loadURL(
         url.format({
-            pathname: path.join(__dirname, 'tool/tool.html'),
+            pathname: path.join(__dirname, 'view/tool/tool.html'),
             protocol: "file:",
             slashes: true
         })
@@ -188,7 +188,7 @@ function createConfigWindow() {
 
     configWindow.loadURL(
         url.format({
-            pathname: path.join(__dirname, 'config.html'),
+            pathname: path.join(__dirname, 'view/config/config.html'),
             protocol: "file:",
             slashes: true
         })
