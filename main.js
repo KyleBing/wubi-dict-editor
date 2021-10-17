@@ -314,16 +314,16 @@ function readFile(fileName, responseWindow){
 function getLabelNameFromFileName(fileName){
     let map = [
         {name: '拼音词库', path: 'pinyin_simp.dict.yaml'},
-        {name: '五笔极点 - 主表', path: 'wubi86_jidian.dict.yaml'},
-        {name: '五笔极点 - 临时', path: 'wubi86_jidian_addition.dict.yaml'},
-        {name: '五笔极点 - 附加', path: 'wubi86_jidian_extra.dict.yaml'},
-        {name: '五笔极点 - 用户', path: 'wubi86_jidian_user.dict.yaml'},
-        {name: '五笔极点 - 英文', path: 'wubi86_jidian_english.dict.yaml'},
+        {name: '⒈ 五笔极点 - 主表', path: 'wubi86_jidian.dict.yaml'},
+        {name: '⒉ 五笔极点 - 临时', path: 'wubi86_jidian_addition.dict.yaml'},
+        {name: '⒊ 五笔极点 - 附加', path: 'wubi86_jidian_extra.dict.yaml'},
+        {name: '⒋ 五笔极点 - 用户', path: 'wubi86_jidian_user.dict.yaml'},
+        {name: '⒌ 五笔极点 - 英文', path: 'wubi86_jidian_english.dict.yaml'},
 
         // 测试词库
-        {name: '测试- 普通 ⛳', path: 'test.dict.yaml'},
-        {name: '测试- 分组 ⛳', path: 'test_group.dict.yaml'},
-        {name: '测试- 主 ⛳', path: 'test_main.dict.yaml'},
+        {name: '测试 - 主表 ⛳', path: 'test_main.dict.yaml'},
+        {name: '测试 - 分组 ⛳', path: 'test_group.dict.yaml'},
+        {name: '测试 - 普通 ⛳', path: 'test.dict.yaml'},
     ]
     let matchedPath = map.filter(item => item.path === fileName)
     // 返回匹配的名字，或者返回原文件名
@@ -431,23 +431,26 @@ function setRimeFolderMenu(){
             console.log(err)
         } else {
             let filesMenu = []
-            filePaths.sort((a,b) => a.name > b.name ? 1: -1) // 排序路径
-            filePaths.forEach(item => {
-                if (item.indexOf('.dict.yaml') > 0){
-                    fileList.push({
-                        name: getLabelNameFromFileName(item),
-                        path: item
-                    })
-                    fileList.sort((a,b) => a.name > b.name ? 1: -1) // 排序返回 mainWindows 用于移动词条的文件路径列表
-                    filesMenu.push({
-                        label: getLabelNameFromFileName(item),
-                        click(sender, window, content) {
-                            window.title = sender.label // 点击对应菜单时，显示当前编辑词库的名字
-                            currentFilePath = item
-                            readFile(item)
-                        }
-                    },)
+            // 筛选 .yaml 文件
+            let yamlFileList = filePaths.filter(item => item.indexOf('.dict.yaml') > 0)
+            // 匹配获取上面提前定义的文件名
+            fileList = yamlFileList.map(item => {
+                return {
+                    name: getLabelNameFromFileName(item),
+                    path: item
                 }
+            })
+            // 排序路径
+            fileList.sort((a,b) => a.name > b.name ? 1: -1)
+            // 添加菜单
+            fileList.forEach(item => {
+                filesMenu.push({
+                    label: item.name,
+                    click(sender, window, content) {
+                        window.title = sender.label // 点击对应菜单时，显示当前编辑词库的名字
+                        readFile(item.path)
+                    }
+                },)
             })
             createMenu(filesMenu)
         }
