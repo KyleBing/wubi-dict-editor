@@ -314,15 +314,16 @@ function readFile(fileName, responseWindow){
 function getLabelNameFromFileName(fileName){
     let map = [
         {name: '拼音词库', path: 'pinyin_simp.dict.yaml'},
-        {name: '五笔极点 - 主', path: 'wubi86_jidian.dict.yaml'},
+        {name: '五笔极点 - 主表', path: 'wubi86_jidian.dict.yaml'},
         {name: '五笔极点 - 临时', path: 'wubi86_jidian_addition.dict.yaml'},
         {name: '五笔极点 - 附加', path: 'wubi86_jidian_extra.dict.yaml'},
         {name: '五笔极点 - 用户', path: 'wubi86_jidian_user.dict.yaml'},
+        {name: '五笔极点 - 英文', path: 'wubi86_jidian_english.dict.yaml'},
 
         // 测试词库
         {name: '测试- 普通 ⛳', path: 'test.dict.yaml'},
         {name: '测试- 分组 ⛳', path: 'test_group.dict.yaml'},
-        {name: '测试- 主 ⛳', path: 'main.dict.yaml'},
+        {name: '测试- 主 ⛳', path: 'test_main.dict.yaml'},
     ]
     let matchedPath = map.filter(item => item.path === fileName)
     // 返回匹配的名字，或者返回原文件名
@@ -430,12 +431,14 @@ function setRimeFolderMenu(){
             console.log(err)
         } else {
             let filesMenu = []
+            filePaths.sort((a,b) => a.name > b.name ? 1: -1) // 排序路径
             filePaths.forEach(item => {
                 if (item.indexOf('.dict.yaml') > 0){
                     fileList.push({
                         name: getLabelNameFromFileName(item),
                         path: item
                     })
+                    fileList.sort((a,b) => a.name > b.name ? 1: -1) // 排序返回 mainWindows 用于移动词条的文件路径列表
                     filesMenu.push({
                         label: getLabelNameFromFileName(item),
                         click(sender, window, content) {
