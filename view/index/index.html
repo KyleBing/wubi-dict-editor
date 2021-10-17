@@ -19,7 +19,7 @@
             @click="saveToFile(dict)">{{ labelOfSaveBtn }}
         </div>
         <div class="dropdown">
-            <div class="dropdown-link btn btn-blue" v-show="selectedWordIds.length > 0" @click.capture="showDropdown = !showDropdown">移动到...            </div>
+            <div class="dropdown-link btn btn-blue" v-show="chosenWordIdArray.length > 0" @click.capture="showDropdown = !showDropdown">移动到...            </div>
             <div class="dropdown-body" v-show="showDropdown">
                 <div class="file-list shadow" v-if="dropdownFileList.length > 0">
                     <div :class="['file-list-item', {active: fileIndex === dropdownActiveFileIndex}]"
@@ -58,7 +58,7 @@
         </div>
         <div class="btn btn-primary" @click="addNewWord">添加</div>
         <div class="btn btn-primary" @click="search">搜索</div>
-        <div class="btn btn-roseo" v-show="selectedWordIds.length > 0" @click="deleteWords">删除</div>
+        <div class="btn btn-roseo" v-show="chosenWordIds.length > 0" @click="deleteWords">删除</div>
 
         <template v-if="IS_IN_DEVELOP">
 
@@ -81,15 +81,9 @@
                     class="virtual-list"
                     :items="words">
                     <template v-slot="{ item, index }">
-                        <div class="word-item">
+                        <div class="word-item" @click="select(item.id, event)">
                             <div class="checkbox-cell">
-                                <input
-                                    v-model="selectedWordIds"
-                                    name="table"
-                                    :id="`word${index}`"
-                                    type="checkbox"
-                                    :value="item.id">
-                                <label class="checkbox" :for="`word${index}`"></label>
+                                <div :class="['checkbox-item', {active: chosenWordIdArray.some(i => i === item.id)}]"></div>
                             </div>
                             <div class="code">{{ item.code }}</div>
                             <div class="word">{{ item.word }}</div>
@@ -159,15 +153,12 @@
                     </div>
 
                     <div class="word-list">
-                        <div class="word-item" v-for="(item, index) in group.dict" :key="item.id">
+                        <div class="word-item"
+                             @click="select(item.id, event)"
+                             v-for="(item, index) in group.dict"
+                             :key="item.id">
                             <div class="checkbox-cell">
-                                <input
-                                    v-model="selectedWordIds"
-                                    name="selectedIds"
-                                    :id="`${groupIndex}-${index}`"
-                                    type="checkbox"
-                                    :value="item.id">
-                                <label class="checkbox" :for="`${groupIndex}-${index}`"></label>
+                                <div :class="['checkbox-item', {active: chosenWordIdArray.some(i => i === item.id)}]"></div>
                             </div>
                             <div class="code">{{ item.code }}</div>
                             <div class="word">{{ item.word }}</div>
@@ -206,7 +197,7 @@
                 <div class="count">总<span class="number">{{dict.countDictOrigin}}</span></div>
                 <div class="count"
                      v-if="dict.countDictOrigin !== dict.countDict">显<span class="number">{{wordsCount}}</span></div>
-                <div class="count">选<span class="number">{{selectedWordIds.length}}</span></div>
+                <div class="count">选<span class="number">{{chosenWordIds.size}}</span></div>
             </div>
         </div>
 

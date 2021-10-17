@@ -25,10 +25,13 @@ const app = {
             word: '',
             activeGroupId: -1, // 组 index
             keywordUnwatch: null, // keyword watch 方法的撤消方法
-            selectedWordIds: [], // 已选择的词条
             labelOfSaveBtn: '保存', // 保存按钮的文本
             heightContent: 0, // content 高度
             words: [], // 显示的 words
+
+            chosenWordIds: new Set(),
+            chosenWordIdArray: [], // 对应上面的 set 内容
+            lastChosenWordId: null, // 最后一次选中的 id
 
 
             dictSecond: {}, // 要移动到的码表
@@ -125,6 +128,34 @@ const app = {
     },
 
     methods: {
+        select(wordId, event){
+            if (event.shiftKey){
+                if (this.lastChosenWordId !== null){
+                    let a,b // 判断大小，调整大小顺序
+                    if (wordId > this.lastChosenWordId){
+                        a = this.lastChosenWordId
+                        b = wordId
+                    } else {
+                        b = this.lastChosenWordId
+                        a = wordId
+                    }
+                    for (let i=a; i<=b; i++){
+                        this.chosenWordIds.add(i)
+                    }
+                }
+                this.lastChosenWordId = null // shift 选择后，最后一个id定义为没有
+
+            } else {
+                if (this.chosenWordIds.has(wordId)){
+                    this.chosenWordIds.delete(wordId)
+                    this.lastChosenWordId = null
+                } else {
+                    this.chosenWordIds.add(wordId)
+                    this.lastChosenWordId = wordId
+                }
+            }
+            this.chosenWordIdArray = [...this.chosenWordIds.values()]
+        },
         // 选择移动到的分组 index
         setDropdownActiveGroupIndex(index){
             this.dropdownActiveGroupIndex = index
@@ -149,7 +180,8 @@ const app = {
         },
         // 通过 code, word 筛选词条
         search(){
-            this.selectedWordIds = []
+            this.chosenWordIds.clear()
+            this.chosenWordIdArray = []
             this.activeGroupId = -1 // 切到【全部】标签页，展示所有搜索结果
             let startPoint = new Date().getTime()
             if (this.code || this.word){
@@ -207,7 +239,8 @@ const app = {
         },
         // 刷新 this.words
         refreshShowingWords(){
-            this.selectedWordIds = []
+            this.chosenWordIds.clear()
+            this.chosenWordIdArray = []
             if (IS_IN_DEVELOP) console.log('已选中的 groupIndex: ',this.activeGroupId, typeof this.activeGroupId)
             if (this.activeGroupId === -1){
                 this.words = [...this.dict.wordsOrigin]
@@ -281,13 +314,17 @@ const app = {
         selectAll(){
             if(this.wordsCount < 1000){
                 if (this.dict.isGroupMode){
-                    this.selectedWordIds = []
+                    this.chosenWordIds.clear()
+                    this.chosenWordIdArray = []
                     this.words.forEach(group => {
-                        this.selectedWordIds = this.selectedWordIds.concat(group.dict.map(item => item.id))
+                        group.forEach( item => {
+                            this.chosenWordIds.add(item.id)
+                        })
                     })
                 } else {
-                    this.selectedWordIds = this.words.map(item => item.id)
+                    this.words.forEach(item => {this.chosenWordIds.add(item.id)})
                 }
+                this.chosenWordIdArray = [...this.chosenWordIds.values()]
             } else {
                 // 提示不能同时选择太多内容
                 this.tip = '不能同时选择大于 1000条 的词条内容'
@@ -296,24 +333,27 @@ const app = {
         },
         // 清除内容
         resetInputs(){
+            this.chosenWordIds.clear()
+            this.chosenWordIdArray = []
             this.code = ''
             this.word = ''
-            this.selectedWordIds = []
             this.search()
             this.tip = ''
         },
         // 删除词条：单
         deleteWord(wordId){
-            this.selectedWordIds = this.selectedWordIds.filter(item => item !== wordId)
+            this.chosenWordIds.delete(wordId)
+            this.chosenWordIdArray = [...this.chosenWordIds.values()]
             this.dict.deleteWords([wordId])
             this.refreshShowingWords()
             if(this.config.autoDeployOnDelete){ this.saveToFile(this.dict) }
         },
         // 删除词条：多
         deleteWords(){
-            this.dict.deleteWords(this.selectedWordIds)
+            this.dict.deleteWords(this.chosenWordIds)
             this.refreshShowingWords()
-            this.selectedWordIds = [] // 清空选中 wordID
+            this.chosenWordIds.clear() // 清空选中 wordID
+            this.chosenWordIdArray = []
             if(this.config.autoDeployOnDelete){ this.saveToFile(this.dict) }
         },
 
@@ -447,15 +487,15 @@ const app = {
                         }
                         break
                     case 'ArrowDown':
-                        if(this.selectedWordIds.length === 1) { // 只有一个元素时，键盘才起作用
-                            let id = this.selectedWordIds[0]
+                        if(this.chosenWordIds.size === 1) { // 只有一个元素时，键盘才起作用
+                            let id = [...this.chosenWordIds.values()][0]
                             this.moveDown(id)
                         }
                         event.preventDefault()
                         break
                     case 'ArrowUp':
-                        if(this.selectedWordIds.length === 1) { // 只有一个元素时，键盘才起作用
-                            let id = this.selectedWordIds[0]
+                        if(this.chosenWordIds.size === 1) { // 只有一个元素时，键盘才起作用
+                            let id = [...this.chosenWordIds.values()][0]
                             this.moveUp(id)
                         }
                         event.preventDefault()
@@ -468,16 +508,16 @@ const app = {
             let wordsTransferring = [] // 被转移的 [Word]
             if (this.dict.isGroupMode){
                 this.dict.wordsOrigin.forEach((group, index) => {
-                    let matchedWords = group.dict.filter(item => this.selectedWordIds.includes(item.id))
+                    let matchedWords = group.dict.filter(item => this.chosenWordIds.has(item.id))
                     wordsTransferring = wordsTransferring.concat(matchedWords)
                 })
             } else {
-                wordsTransferring = this.dict.wordsOrigin.filter(item => this.selectedWordIds.includes(item.id))
+                wordsTransferring = this.dict.wordsOrigin.filter(item => this.chosenWordIds.has(item.id))
             }
             if(this.IS_IN_DEVELOP){console.log('words transferring：', JSON.stringify(wordsTransferring))}
 
             if (this.dict.filename === this.dictSecond.filename){
-                this.dictSecond.deleteWords(this.selectedWordIds) // 删除移动的词条
+                this.dictSecond.deleteWords(this.chosenWordIds) // 删除移动的词条
                 this.dictSecond.addWordsInOrder(wordsTransferring, this.dropdownActiveGroupIndex)
                 if(this.IS_IN_DEVELOP) {console.log('after insert:( main:wordOrigin ):\n ', JSON.stringify(this.dictSecond.wordsOrigin))}
                 // 如果在同码表中移动：如，从一个分组移到别一个分组
@@ -493,6 +533,7 @@ const app = {
                 this.saveToFile(this.dict)
             }
             this.tip = '移动成功'
+            setTimeout(()=>{this.tip = ''}, 3000)
             this.resetDropList()
         },
         // 复制 dropdown
@@ -522,7 +563,7 @@ const app = {
                 this.code = this.getWordCodes(newValue)
             }
         },
-        selectedWordIds(newValue){
+        chosenWordIdArray(newValue){
             if (newValue.length === 0){
                 this.showDropdown = false
             }
