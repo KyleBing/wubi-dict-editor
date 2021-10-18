@@ -305,7 +305,7 @@ const app = {
         deleteWord(wordId){
             this.chosenWordIds.delete(wordId)
             this.chosenWordIdArray = [...this.chosenWordIds.values()]
-            this.dict.deleteWords([wordId])
+            this.dict.deleteWords(new Set([wordId]))
             this.refreshShowingWords()
             if(this.config.autoDeployOnDelete){ this.saveToFile(this.dict) }
         },
