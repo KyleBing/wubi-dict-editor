@@ -241,13 +241,17 @@ const app = {
             this.chosenWordIds.clear()
             this.chosenWordIdArray = []
             log('已选中的 groupIndex: ',this.activeGroupId, typeof this.activeGroupId)
-            if (this.activeGroupId === -1){
-                this.words = [...this.dict.wordsOrigin]
-            } else {
-                if (this.activeGroupId > this.dict.wordsOrigin.length - 1) {
-                    this.activeGroupId = this.dict.wordsOrigin.length - 1
+            if (this.dict.isGroupMode){
+                if (this.activeGroupId === -1){
+                    this.words = [...this.dict.wordsOrigin]
+                } else {
+                    if (this.activeGroupId > this.dict.wordsOrigin.length - 1) {
+                        this.activeGroupId = this.dict.wordsOrigin.length - 1
+                    }
+                    this.words = new Array(this.dict.wordsOrigin[this.activeGroupId])
                 }
-                this.words = new Array(this.dict.wordsOrigin[this.activeGroupId])
+            } else {
+                this.words = [...this.dict.wordsOrigin]
             }
         },
         addNewWord(){
