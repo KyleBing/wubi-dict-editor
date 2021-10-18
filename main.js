@@ -4,8 +4,8 @@ const fs = require('fs')
 const os = require('os')
 const url = require("url")
 const path = require("path")
-const {shakeDom, log, shakeDomFocus} = require('./js/Utility.js')
-const { IS_IN_DEVELOP, CONFIG_FILE_PATH, CONFIG_FILE_NAME, DEFAULT_CONFIG } =  require('./js/Global.js')
+const {shakeDom, log, shakeDomFocus} = require('./js/Utility')
+const { IS_IN_DEVELOP, CONFIG_FILE_PATH, CONFIG_FILE_NAME, DEFAULT_CONFIG } =  require('./js/Global')
 
 let mainWindow // 主窗口
 let fileList = [] // 文件目录列表，用于移动词条

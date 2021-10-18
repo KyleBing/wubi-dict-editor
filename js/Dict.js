@@ -1,7 +1,7 @@
 // 字典对象
-const Word = require("./Word.js")
-const WordGroup = require("./WordGroup.js")
-const {shakeDom, log, shakeDomFocus} = require('./Utility.js')
+const Word = require("./Word")
+const WordGroup = require("./WordGroup")
+const {shakeDom, log, shakeDomFocus} = require('./Utility')
 
 const os = require('os')
 

@@ -81,7 +81,7 @@
                     class="virtual-list"
                     :items="words">
                     <template v-slot="{ item, index }">
-                        <div class="word-item" @click="select(item.id, event)">
+                        <div class="word-item" @click="select(item.id, $event)">
                             <div class="checkbox-cell">
 <!--                                <div :class="['checkbox-item', {active: chosenWordIdArray.some(i => i === item.id)}]"></div>-->
                                 <div :class="['checkbox-item', {active: chosenWordIds.has(item.id)}]"></div>
@@ -155,7 +155,7 @@
 
                     <div class="word-list">
                         <div class="word-item"
-                             @click="select(item.id, event)"
+                             @click="select(item.id, $event)"
                              v-for="(item, index) in group.dict"
                              :key="item.id">
                             <div class="checkbox-cell">
@@ -207,6 +207,6 @@
     </div>
 </div>
 
-<script src="App.mjs"></script>
+<script src="App.js"></script>
 </body>
 </html>

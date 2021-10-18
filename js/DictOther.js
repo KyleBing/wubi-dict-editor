@@ -1,5 +1,5 @@
 // 其它字典对象
-const Word = require("./Word.js")
+const Word = require("./Word")
 const os = require('os')
 
 class DictOther {

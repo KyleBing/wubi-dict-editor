@@ -1,8 +1,8 @@
 const {shakeDom, shakeDomFocus, log} = require('../../js/Utility')
 const {IS_IN_DEVELOP} = require('../../js/Global')
 
-const Dict = require('../../js/Dict.js')
-const Word = require('../../js/Word.js')
+const DictOther = require('../../js/DictOther')
+const Word = require('../../js/Word')
 const Vue  = require('../../node_modules/vue/dist/vue.common.dev')
 
 const {ipcRenderer} = require('electron')
@@ -176,6 +176,10 @@ const app = {
                 case "search": this.search(); break;
                 default: break;
             }
+        },
+        filterWordsLength(length){
+            this.words = this.dict.getWordsLengthOf(length)
+            console.log(this.words.length)
         },
         // 通过 code, word 筛选词条
         search(){

@@ -11,16 +11,55 @@
 <div v-cloak id="app">
     <div class="search-bar" v-if="dict">
         <div
-            :class="['btn', {'btn-green': labelOfSaveBtn === '保存成功'}, {'btn-primary': labelOfSaveBtn !== '保存成功'} ]"
+            :class="[
+                'btn',
+                {'btn-green': labelOfSaveBtn === '保存成功'},
+                {'btn-primary': labelOfSaveBtn !== '保存成功'} ]"
             ref="domBtnSave"
-            @click="saveToFile(dict)">{{ labelOfSaveBtn }}</div>
-        <input class="word" ref="domInputWord" v-model="word" type="text" placeholder="词条">
-        <input class="code" ref="domInputCode" v-model="code" type="text" placeholder="编码">
+            @click="saveToFile(dict)">{{ labelOfSaveBtn }}
+        </div>
+        <div class="dropdown">
+            <div class="dropdown-link btn btn-blue" v-show="chosenWordIdArray.length > 0" @click.capture="showDropdown = !showDropdown">移动到...            </div>
+            <div class="dropdown-body" v-show="showDropdown">
+                <div class="file-list shadow" v-if="dropdownFileList.length > 0">
+                    <div :class="['file-list-item', {active: fileIndex === dropdownActiveFileIndex}]"
+                         @click="setDropdownActiveIndex(fileIndex)"
+                         v-for="(file, fileIndex) in dropdownFileList"
+                         :key="fileIndex">
+                        <div>{{ file.name }}</div>
+                    </div>
+                </div>
+                <div class="file-list shadow" v-if="dictSecond.isGroupMode">
+                    <div :class="['file-list-item', {active: index === dropdownActiveGroupIndex}]"
+                         v-if="dictSecond.isGroupMode"
+                         @click="setDropdownActiveGroupIndex(index)"
+                         v-for="(group, index) in dictSecond.wordsOrigin"
+                         :key="group">
+                        <div>{{ group.groupName }}</div>
+                    </div>
+                </div>
+                <div class="btn btn-blue shadow ml-1"
+                     @click="moveWordsToSecondDict"
+                     v-if="dictSecond.isGroupMode && dropdownActiveGroupIndex !== -1 || !dictSecond.isGroupMode && dropdownActiveFileIndex !== -1"
+                >确定</div>
+            </div>
+        </div>
+        <div class="input-item">
+            <input class="word" ref="domInputWord" @keyup.enter="enterKeyPressed" v-model="word" type="text" placeholder="词条">
+            <div @click="word = ''" v-show="word" class="btn-clear">
+                <img src="../../assets/img/delete_white.svg" alt="clear">
+            </div>
+        </div>
+        <div class="input-item">
+            <input class="code" ref="domInputCode" @keyup.enter="enterKeyPressed" v-model="code" type="text" placeholder="编码">
+            <div @click="code = ''" v-show="code" class="btn-clear">
+                <img src="../../assets/img/delete_white.svg" alt="clear">
+            </div>
+        </div>
         <div class="btn btn-primary" @click="addNewWord">添加</div>
         <div class="btn btn-primary" @click="search">搜索</div>
         <div class="btn btn-primary" @click="filterWordsLength(1)">一个字的</div>
-        <div class="btn btn-roseo" v-show="selectedWordIds.length > 0" @click="deleteWords">删除</div>
-        <div class="btn btn-orange" v-show="selectedWordIds.length > 0 && !isInMainDict" @click="addToMain">移至主词库</div>
+        <div class="btn btn-roseo" v-show="chosenWordIds.length > 0" @click="deleteWords">删除</div>
 
         <template v-if="IS_IN_DEVELOP">
 
@@ -43,28 +82,23 @@
                     class="virtual-list"
                     :items="words">
                     <template v-slot="{ item, index }">
-                        <div class="word-item">
+                        <div class="word-item" @click="select(item.id, $event)">
                             <div class="checkbox-cell">
-                                <input
-                                    v-model="selectedWordIds"
-                                    name="table"
-                                    :id="`word${index}`"
-                                    type="checkbox"
-                                    :value="item.id">
-                                <label class="checkbox" :for="`word${index}`"></label>
+<!--                                <div :class="['checkbox-item', {active: chosenWordIdArray.some(i => i === item.id)}]"></div>-->
+                                <div :class="['checkbox-item', {active: chosenWordIds.has(item.id)}]"></div>
                             </div>
                             <div class="code">{{ item.code }}</div>
                             <div class="word">{{ item.word }}</div>
                             <div v-if="item.priority" title="权重" class="priority">{{ item.priority }}</div>
                             <div v-if="IS_IN_DEVELOP" class="id">{{ item.id }}</div>
                             <div class="operation">
-                                <div class="up" @click="moveUp(item.id)">
+                                <div class="up" @click.stop="moveUp(item.id)">
                                     <img src="../../assets/img/up.svg" alt="move up">
                                 </div>
-                                <div class="down" @click="moveDown(item.id)">
+                                <div class="down" @click.stop="moveDown(item.id)">
                                     <img src="../../assets/img/down.svg" alt="move down">
                                 </div>
-                                <div  class="down" @click="deleteWord(item.id)">
+                                <div  class="down" @click.stop="deleteWord(item.id)">
                                     <img src="../../assets/img/delete.svg" alt="move down">
                                 </div>
                             </div>
@@ -81,7 +115,7 @@
          class="container">
         <div class="group-container"
              :style="`height: ${heightContent}px`">
-<!--分组目录-->
+            <!--分组目录-->
             <div class="catalog-list"
                  :style="`height: ${heightContent}px`">
                 <div :class="['catalog-item', {active: -1 === activeGroupId}]"
@@ -93,7 +127,7 @@
                     <div>{{group.groupName || '- 未命名 -'}}</div>
                 </div>
             </div>
-<!-- 分组列表-->
+            <!-- 分组词条组列表-->
             <div class="group-list"
                  :style="`height: ${heightContent}px`">
                 <div class="group" v-for="(group, groupIndex) in words" :key="groupIndex">
@@ -114,35 +148,33 @@
                             <div class="operation" >
                                 <div class="btn btn-sm btn-alt-primary" @click="group.isEditingTitle = true">编辑</div>
                                 <div v-if="activeGroupId === -1" class="btn btn-sm btn-alt-primary" @click="addGroupBeforeId(groupIndex)">添加分组</div>
-                                <div class="btn btn-sm btn-alt-roseo" @click="deleteGroup(groupIndex)">删除</div>
+                                <div class="btn btn-sm btn-alt-roseo" @click="deleteGroup(group.id)">删除</div>
                             </div>
                         </template>
 <!--                        <p class="tip" v-if="activeGroupId === groupIndex">+  新词将添加到该分组</p>-->
                     </div>
 
                     <div class="word-list">
-                        <div class="word-item" v-for="(item, index) in group.dict" :key="item.id">
+                        <div class="word-item"
+                             @click="select(item.id, $event)"
+                             v-for="(item, index) in group.dict"
+                             :key="item.id">
                             <div class="checkbox-cell">
-                                <input
-                                    v-model="selectedWordIds"
-                                    name="selectedIds"
-                                    :id="`${groupIndex}-${index}`"
-                                    type="checkbox"
-                                    :value="item.id">
-                                <label class="checkbox" :for="`${groupIndex}-${index}`"></label>
+<!--                                <div :class="['checkbox-item', {active: chosenWordIdArray.some(i => i === item.id)}]"></div>-->
+                                <div :class="['checkbox-item', {active: chosenWordIds.has(item.id)}]"></div>
                             </div>
                             <div class="code">{{ item.code }}</div>
                             <div class="word">{{ item.word }}</div>
                             <div v-if="item.priority" title="权重" class="priority">{{ item.priority }}</div>
                             <div v-if="IS_IN_DEVELOP" class="id">{{ item.id }}</div>
                             <div class="operation">
-                                <div class="up" @click="moveUp(item.id)">
+                                <div class="up" @click.stop="moveUp(item.id)">
                                     <img src="../../assets/img/up.svg" alt="move up">
                                 </div>
-                                <div  class="down" @click="moveDown(item.id)">
+                                <div  class="down" @click.stop="moveDown(item.id)">
                                     <img src="../../assets/img/down.svg" alt="move down">
                                 </div>
-                                <div  class="down" @click="deleteWord(item.id)">
+                                <div  class="down" @click.stop="deleteWord(item.id)">
                                     <img src="../../assets/img/delete.svg" alt="move down">
                                 </div>
                             </div>
@@ -158,17 +190,17 @@
     <div class="footer">
         <div class="footer-toolbar">
             <div class="link-list">
-                <div class="link" @click="resetInputs">清选</div>
                 <div class="link" ref="domBtnSelectAll" @click="selectAll">全选</div>
+                <div class="link" @click="resetInputs">清选</div>
                 <div class="link" @click="reloadCurrentDict">重载码表</div>
+                <div class="link" @click="sort">排序</div>
                 <div class="link origin" @click="openCurrentYaml">{{ dict.filename }}</div>
             </div>
             <div class="info-list">
-<!--                <div class="count" v-if="this.dict.isGroupMode"><span>分组模式</span></div>-->
                 <div class="count">总<span class="number">{{dict.countDictOrigin}}</span></div>
                 <div class="count"
                      v-if="dict.countDictOrigin !== dict.countDict">显<span class="number">{{wordsCount}}</span></div>
-                <div class="count">选<span class="number">{{selectedWordIds.length}}</span></div>
+                <div class="count">选<span class="number">{{chosenWordIds.size}}</span></div>
             </div>
         </div>
 
@@ -176,6 +208,6 @@
     </div>
 </div>
 
-<script type="module" src="./Tool.mjs"></script>
+<script src="Tool.js"></script>
 </body>
 </html>

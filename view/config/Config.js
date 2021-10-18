@@ -1,7 +1,7 @@
-import Vue from '../../node_modules/vue/dist/vue.esm.browser.min.js'
+import Vue from '../../node_modules/vue/dist/vue.esm.browser.min'
 
 const {ipcRenderer} = require('electron')
-const { IS_IN_DEVELOP, CONFIG_FILE_PATH, CONFIG_FILE_NAME, DEFAULT_CONFIG } =  require('../../js/Global.js')
+const { IS_IN_DEVELOP, CONFIG_FILE_PATH, CONFIG_FILE_NAME, DEFAULT_CONFIG } =  require('../../js/Global')
 
 
 // Vue 2
