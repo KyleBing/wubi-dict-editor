@@ -53,7 +53,7 @@ const app = {
             // 过滤移动到的文件列表，不显示正在显示的这个码表
             // this.dropdownFileList = this.dropdownFileList.filter(item => item.path !== filename)
 
-            this.dict = new Dict(res, filename)
+            this.dict = new DictOther(res, filename)
             // 载入新码表时，清除 word 保存 code
             this.word = ''
             this.refreshShowingWords()
@@ -76,10 +76,11 @@ const app = {
             this.dropdownFileList = fileList
         })
 
-        ipcRenderer.send('loadInitDictFile')
+        // 广播：载入 origin 文件的信号
+        ipcRenderer.send('ToolWindow:loadOriginFile')
 
-        // 载入次码表
-        ipcRenderer.on('setSecondDict', (event, filename, res) => {
+        // 载入目标码表
+        ipcRenderer.on('setTargetDict', (event, filename, res) => {
             this.dictSecond = new Dict(res, filename)
         })
 

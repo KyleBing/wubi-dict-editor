@@ -29,18 +29,18 @@
                         <div>{{ file.name }}</div>
                     </div>
                 </div>
-                <div class="file-list shadow" v-if="dictSecond.isGroupMode">
+                <div class="file-list shadow" v-if="targetDict.isGroupMode">
                     <div :class="['file-list-item', {active: index === dropdownActiveGroupIndex}]"
-                         v-if="dictSecond.isGroupMode"
+                         v-if="targetDict.isGroupMode"
                          @click="setDropdownActiveGroupIndex(index)"
-                         v-for="(group, index) in dictSecond.wordsOrigin"
-                         :key="group">
+                         v-for="(group, index) in targetDict.wordsOrigin"
+                         :key="index">
                         <div>{{ group.groupName }}</div>
                     </div>
                 </div>
                 <div class="btn btn-blue shadow ml-1"
                      @click="moveWordsToSecondDict"
-                     v-if="dictSecond.isGroupMode && dropdownActiveGroupIndex !== -1 || !dictSecond.isGroupMode && dropdownActiveFileIndex !== -1"
+                     v-if="targetDict.isGroupMode && dropdownActiveGroupIndex !== -1 || !targetDict.isGroupMode && dropdownActiveFileIndex !== -1"
                 >确定</div>
             </div>
         </div>

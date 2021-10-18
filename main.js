@@ -68,7 +68,7 @@ function createWindow() {
             if(err){
                 log(err)
             } else {
-                mainWindow.webContents.send('setSecondDict',filename ,res)
+                mainWindow.webContents.send('setTargetDict',filename ,res)
             }
         })
     })

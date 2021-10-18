@@ -35,7 +35,7 @@ const app = {
             lastChosenWordId: null, // 最后一次选中的 id
 
 
-            dictSecond: {}, // 要移动到的码表
+            targetDict: {}, // 要移动到的码表
             showDropdown: false, // 显示移动词条窗口
             dropdownFileList: [
                 // {name: '拼音词库', path: 'pinyin_simp.dict.yaml'}
@@ -78,9 +78,9 @@ const app = {
 
         ipcRenderer.send('loadInitDictFile')
 
-        // 载入次码表
-        ipcRenderer.on('setSecondDict', (event, filename, res) => {
-            this.dictSecond = new Dict(res, filename)
+        // 载入目标码表
+        ipcRenderer.on('setTargetDict', (event, filename, res) => {
+            this.targetDict = new Dict(res, filename)
         })
 
         // 载入主码表
@@ -515,20 +515,20 @@ const app = {
             }
             log('words transferring：', JSON.stringify(wordsTransferring))
 
-            if (this.dict.filename === this.dictSecond.filename){
-                this.dictSecond.deleteWords(this.chosenWordIds) // 删除移动的词条
-                this.dictSecond.addWordsInOrder(wordsTransferring, this.dropdownActiveGroupIndex)
-                log('after insert:( main:wordOrigin ):\n ', JSON.stringify(this.dictSecond.wordsOrigin))
+            if (this.dict.filename === this.targetDict.filename){
+                this.targetDict.deleteWords(this.chosenWordIds) // 删除移动的词条
+                this.targetDict.addWordsInOrder(wordsTransferring, this.dropdownActiveGroupIndex)
+                log('after insert:( main:wordOrigin ):\n ', JSON.stringify(this.targetDict.wordsOrigin))
                 // 如果在同码表中移动：如，从一个分组移到别一个分组
                 // 只保存 dictSecond 内容，重新载入 dict 内容
-                this.saveToFile(this.dictSecond)
+                this.saveToFile(this.targetDict)
                 this.reloadCurrentDict()
             } else {
-                this.dictSecond.addWordsInOrder(wordsTransferring, this.dropdownActiveGroupIndex)
+                this.targetDict.addWordsInOrder(wordsTransferring, this.dropdownActiveGroupIndex)
                 this.words = [...this.dict.wordsOrigin]
-                log('after insert:( main:wordOrigin ):\n ', JSON.stringify(this.dictSecond.wordsOrigin))
+                log('after insert:( main:wordOrigin ):\n ', JSON.stringify(this.targetDict.wordsOrigin))
                 this.deleteWords() // 删除当前词库已移动的词条
-                this.saveToFile(this.dictSecond)
+                this.saveToFile(this.targetDict)
                 this.saveToFile(this.dict)
             }
             this.tip = '移动成功'
@@ -540,7 +540,7 @@ const app = {
             this.showDropdown = false
             this.dropdownActiveFileIndex = -1
             this.dropdownActiveGroupIndex = -1
-            this.dictSecond = {} // 清空次码表
+            this.targetDict = {} // 清空次码表
         },
         // 打开当前码表源文件
         openCurrentYaml(){

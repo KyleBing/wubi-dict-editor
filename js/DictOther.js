@@ -3,17 +3,17 @@ const Word = require("./Word")
 const os = require('os')
 
 class DictOther {
-    constructor(yaml, filename) {
+    constructor(fileContent, filename) {
         this.filename = filename // 文件路径
         this.wordsOrigin = [] // 文件词条数组
         this.lastIndex = 0 // 最后一个 Index 的值，用于新添加词时，作为唯一的 id 传入
-        this.getDictWordsIn(yaml)
+        this.getDictWordsIn(fileContent)
     }
 
     // 返回所有 word
-    getDictWordsIn(body){
+    getDictWordsIn(fileContent){
         let startPoint = new Date().getTime()
-        let lines = body.split(os.EOL) // 拆分词条与编码成单行
+        let lines = fileContent.split(os.EOL) // 拆分词条与编码成单行
         let wordsArray = lines.map(item => this.getWordsFromLine(item)) // [[Word, Word], [Word], [Word, Word]]
         wordsArray.forEach(arr => {
             arr.forEach(item => {
@@ -89,6 +89,7 @@ class DictOther {
     }
 
     // 从一条词条字符串中获取 word 对象
+    // 一编码对应多词
     getWordsFromLine(lineStr){
         let wordArray = lineStr.split(' ')
         let code = wordArray[0]
