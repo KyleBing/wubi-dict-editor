@@ -119,9 +119,8 @@
             <div class="catalog-list"
                  :style="`height: ${heightContent}px`">
                 <div :class="['catalog-item', {active: -1 === activeGroupId}]"
-                     @click="setGroupId(-1)"><div>全部</div></div>
+                     ><div>全部</div></div>
                 <div :class="['catalog-item', {active: groupIndex === activeGroupId}]"
-                     @click="setGroupId(groupIndex)"
                      v-for="(group, groupIndex) in dict.wordsOrigin"
                      :key="groupIndex">
                     <div>{{group.groupName || '- 未命名 -'}}</div>

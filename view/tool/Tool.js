@@ -233,13 +233,6 @@ const app = {
             this.activeGroupId = - 1 // 不管删除哪个分组，之后都指向全部
             this.refreshShowingWords()
         },
-        // 设置当前显示的 分组
-        setGroupId(groupId){ // groupId 全部的 id 是 -1
-            this.activeGroupId = groupId
-            this.refreshShowingWords()
-            this.config.chosenGroupIndex = groupId
-            ipcRenderer.send('saveConfigFileFromMainWindow', JSON.stringify(this.config))
-        },
         // 刷新 this.words
         refreshShowingWords(){
             this.chosenWordIds.clear()
