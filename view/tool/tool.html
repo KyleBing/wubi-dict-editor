@@ -74,7 +74,7 @@
             <section>
                 <div class="title">载入码表文件</div>
                 <div class="content">
-                    <div v-if="dict.filename" @click="loadDictFile" class="btn btn-green">{{ dict.filename}}</div>
+                    <div v-if="dict.filename" @click="loadDictFile" class="btn btn-blue">{{ dict.filename}}</div>
                     <div v-else @click="loadDictFile" class="btn btn-primary">选择码表文件</div>
                 </div>
             </section>
@@ -89,6 +89,18 @@
                     <div class="size-item"><div @click="filterWordsLength(5)" class="btn btn-primary">五+</div></div>
                 </div>
             </section>
+
+            <section>
+                <div class="title">码表间隔符</div>
+                <div class="content">
+                    <div class="seperator-list">
+                        <div class="seperator-item"><div :class="['btn btn-primary', {'btn-blue': seperator === ' '}]" @click="changeSeperator(' ')">空格</div></div>
+                        <div class="seperator-item"><div :class="['btn btn-primary', {'btn-blue': seperator === '\t'}]" @click="changeSeperator('\t')">tab</div></div>
+                    </div>
+                </div>
+            </section>
+
+            <div class="btn btn-primary center" @click="init">重新载入</div>
         </div>
 
         <div class="list-container">

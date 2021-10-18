@@ -44,6 +44,8 @@ const app = {
             dropdownActiveGroupIndex: -1, // 选中的分组 ID
 
             config: {}, // 全局配置
+
+            seperator: ' ', // 分隔符
         }
     },
     mounted() {
@@ -127,6 +129,12 @@ const app = {
     },
 
     methods: {
+        init(){
+            ipcRenderer.send('ToolWindow:loadOriginFile')
+        },
+        changeSeperator(seperator){
+            this.seperator = seperator
+        },
         // 载入码表文件
         loadDictFile(){
 
@@ -289,7 +297,7 @@ const app = {
         // 保存内容到文件
         saveToFile(dict){
             log(dict.filename)
-            ipcRenderer.send('saveFile', dict.filename, dict.toYamlString())
+            ipcRenderer.send('ToolWindow:saveFile', dict.filename, dict.toYamlString())
         },
         // 选中全部展示的词条
         selectAll(){

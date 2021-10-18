@@ -639,6 +639,10 @@
   flex-flow: row wrap;
 }
 
+.center {
+  text-align: center;
+}
+
 .btn {
   font-size: 12px;
   color: inherit;
@@ -1455,6 +1459,16 @@ select option {
   justify-content: flex-start;
 }
 .size-list .size-item {
+  margin-right: 10px;
+}
+
+.seperator-list {
+  width: 100%;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+}
+.seperator-list .seperator-item {
   margin-right: 10px;
 }
 
