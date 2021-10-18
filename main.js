@@ -156,7 +156,7 @@ function showToolWindow (){
         fs.writeFile(path.join(getRimeConfigDir(), filename), yamlString, {encoding: "utf8"}, err => {
             if (!err){
                 log('saveFileSuccess')
-                applyRime() // 布署
+                // applyRime() // 布署
                 toolWindow.webContents.send('saveFileSuccess')
             }
         })

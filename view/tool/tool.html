@@ -58,7 +58,7 @@
         </div>
         <div class="btn btn-primary" @click="addNewWord">添加</div>
         <div class="btn btn-primary" @click="search">搜索</div>
-        <div class="btn btn-roseo" v-show="chosenWordIds.length > 0" @click="deleteWords">删除</div>
+        <div class="btn btn-roseo" v-show="chosenWordIdArray.length > 0" @click="deleteWords">删除</div>
 
         <template v-if="IS_IN_DEVELOP">
 
@@ -80,13 +80,22 @@
             </section>
 
             <section>
+                <div class="title">码表格式</div>
+                <div class="content">
+                    <div class="seperator-list">
+                        <div class="seperator-item" v-for="item in dictFormatArray" :key="item.name">
+                            <div :class="['btn btn-primary', {'btn-orange': dictFormat === item.value}]" @click="changeDictFormat(item.value)">{{item.name}}</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section>
                 <div class="title">字数筛选</div>
                 <div class="content size-list">
-                    <div class="size-item"><div @click="filterWordsLength(1)" class="btn btn-primary">一</div></div>
-                    <div class="size-item"><div @click="filterWordsLength(2)" class="btn btn-primary">二</div></div>
-                    <div class="size-item"><div @click="filterWordsLength(3)" class="btn btn-primary">三</div></div>
-                    <div class="size-item"><div @click="filterWordsLength(4)" class="btn btn-primary">四</div></div>
-                    <div class="size-item"><div @click="filterWordsLength(5)" class="btn btn-primary">五+</div></div>
+                    <div class="size-item" v-for="item in filterCharacterLengthArray" :key="item.name">
+                        <div @click="changeFilterWordLength(item.value)" :class="['btn btn-primary', {'btn-green': filterCharacterLength === item.value}]">{{ item.name }}</div>
+                    </div>
                 </div>
             </section>
 
@@ -94,8 +103,9 @@
                 <div class="title">码表间隔符</div>
                 <div class="content">
                     <div class="seperator-list">
-                        <div class="seperator-item"><div :class="['btn btn-primary', {'btn-blue': seperator === ' '}]" @click="changeSeperator(' ')">空格</div></div>
-                        <div class="seperator-item"><div :class="['btn btn-primary', {'btn-blue': seperator === '\t'}]" @click="changeSeperator('\t')">tab</div></div>
+                        <div class="seperator-item" v-for="item in seperatorArray" :key="item.name">
+                            <div :class="['btn btn-primary', {'btn-red': seperator === item.value}]" @click="changeSeperator(item.value)">{{item.name}}</div>
+                        </div>
                     </div>
                 </div>
             </section>

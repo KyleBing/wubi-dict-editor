@@ -6,13 +6,15 @@ const {shakeDom, log, shakeDomFocus} = require('./Utility')
 const os = require('os')
 
 class DictOther {
-    constructor(fileContent, filename) {
+    constructor(fileContent, filename, seperator, dictFormat) {
         this.filename = filename // 文件路径
         this.wordsOrigin = [] // 文件词条数组
         this.lastIndex = 0 // 最后一个 Index 的值，用于新添加词时，作为唯一的 id 传入
         this.lastGroupIndex = 0 // 最后一个WordGroup Index 的值，用于新添加词时，作为唯一的 id 传入
         this.isGroupMode = false // 识别码表是否为分组形式的
-        this.seperator = ' ' // 默认间隔符为空格
+
+        this.seperator = seperator ||' ' // 默认间隔符为空格
+        this.dictFormat = dictFormat || 'cww' // 码表格式： 一码多词什么的 cww: 一码多词 | wc: 一词一码 | cw: 一码一词
 
         this.characterMap = new Map() // 单字码表，用于根据此生成词语码表
 
@@ -35,16 +37,23 @@ class DictOther {
     setSeperator(seperator){
         this.seperator = seperator
     }
+    // 设置 dictFormat
+    setDictFormat(dictFormat){
+        this.dictFormat = dictFormat
+    }
 
     // 获取指定字数的词条组
     getWordsLengthOf(length){
         switch (length){
+            case 0:
+                return this.wordsOrigin
             case 1:
             case 2:
             case 3:
             case 4:
                 return this.wordsOrigin.filter(word => word.word.length === length)
-            default: return this.wordsOrigin.filter(word => word.word.length > 4)
+            default:
+                return this.wordsOrigin.filter(word => word.word.length > 4)
         }
     }
 
@@ -70,55 +79,6 @@ class DictOther {
          })
         log(`处理文件：完成，共：${words.length } ${this.isGroupMode? '组': '条'}，用时 ${new Date().getTime() - startPoint} ms`)
         return words
-    }
-
-    // 返回 word 分组
-    getDictWordsInGroupMode(fileContent){
-        let startPoint = new Date().getTime()
-        let lines = fileContent.split(os.EOL) // 拆分词条与编码成单行
-        let wordsGroup = [] // 总分组
-        let temp = null // 第一个分组
-        let lastItemIsEmptyLine = false // 上一条是空，用于循环中判断是否需要新起一个 WordGroup
-        this.lastIndex = lines.length
-        lines.forEach((item, index) => {
-            if (item.startsWith('##')) { // 注释分组
-                if (temp && temp.groupName) { // 如果上一个已经有名字了，说明需要保存
-                    wordsGroup.push(temp)
-                }
-                temp = new WordGroup(this.lastGroupIndex++, item.substring(3).trim())
-                lastItemIsEmptyLine = false
-            } else if (item.indexOf('\t') > -1) { // 是词条
-                if (!temp){ // 第一行是词条时，没有分组名时
-                    temp = new WordGroup(this.lastGroupIndex++)
-                }
-                temp.dict.push(getWordFromLine(index, item))
-                lastItemIsEmptyLine = false
-            } else if (item.startsWith('#')) { // 注释
-                log(item)
-                lastItemIsEmptyLine = false
-            } else {
-                // 为空行时
-                if (lastItemIsEmptyLine){
-                    // 上行和本行都是空行
-                } else {
-                    if (temp){
-                        temp.groupName = temp.groupName || '未命名'
-                        wordsGroup.push(temp)
-                        temp = new WordGroup(this.lastGroupIndex++)
-                    }
-                }
-                lastItemIsEmptyLine = true
-            }
-        })
-        log(`处理yaml码表文件：完成，共：${wordsGroup.length } ${this.isGroupMode? '组': '条'}，用时 ${new Date().getTime() - startPoint} ms`)
-        if (temp){
-            if (temp.dict.length > 0){
-                wordsGroup.push(temp) // 加上最后一个
-            }
-            return wordsGroup
-        } else {
-            return [] // 文件内容为空时
-        }
     }
     decodeWord(word){
         try{
@@ -287,13 +247,13 @@ class DictOther {
                 })
                 yamlBody = yamlBody + tempGroupString + os.EOL // 每组的末尾加个空行
             })
-            return this.header + os.EOL + yamlBody
+            return yamlBody
         } else {
             let yamlBody = ''
             this.wordsOrigin.forEach(item =>{
                 yamlBody = yamlBody + item.toString() + os.EOL
             })
-            return this.header + os.EOL + yamlBody
+            return yamlBody
         }
     }
 
@@ -321,13 +281,28 @@ class DictOther {
     // 一编码对应多词
     getWordsFromLine(lineStr){
         let wordArray = lineStr.split(this.seperator)
-        let code = wordArray[0]
         let words = []
-        for(let i=1; i<wordArray.length;i++){
-            this.lastIndex++
-            words.push(new Word(this.lastIndex, code, wordArray[i]))
+        let code, word
+        switch (this.dictFormat){
+            case 'cww':
+                code = wordArray[0]
+                for(let i=1; i<wordArray.length;i++){
+                    this.lastIndex++
+                    words.push(new Word(this.lastIndex, code, wordArray[i]))
+                }
+                return words
+            case 'cw':
+                code = wordArray[0]
+                word = wordArray[1]
+                this.lastIndex++
+                return [new Word(this.lastIndex, code, word)]
+            case 'wc':
+                word = wordArray[0]
+                code = wordArray[1]
+                this.lastIndex++
+                return [new Word(this.lastIndex, code, word)]
         }
-        return words
+
     }
 }
 

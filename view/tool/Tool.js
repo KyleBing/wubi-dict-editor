@@ -45,7 +45,27 @@ const app = {
 
             config: {}, // 全局配置
 
+            // 码表配置
             seperator: ' ', // 分隔符
+            seperatorArray: [
+                {name: '空格', value: ' ',},
+                {name: 'Tab', value: '\t',}
+            ], // 分隔符 数组
+            dictFormat: 'cww', // 码表格式默认值
+            dictFormatArray: [
+                {name: '一码多词', value: 'cww',},
+                {name: '一码一词', value: 'cw',},
+                {name: '一词一码', value: 'wc',}
+            ], // 码表格式数组
+            filterCharacterLength: 0, // 筛选词条字数默认值
+            filterCharacterLengthArray: [
+                {name: '无', value: 0,},
+                {name: '一', value: 1,},
+                {name: '二', value: 2,},
+                {name: '三', value: 3,},
+                {name: '四', value: 4,},
+                {name: '五', value: 5,}
+            ], // 筛选词条字数数组
         }
     },
     mounted() {
@@ -54,7 +74,7 @@ const app = {
         ipcRenderer.on('showFileContent', (event, filename, fileContent) => {
             // 过滤移动到的文件列表，不显示正在显示的这个码表
             this.dropdownFileList = this.dropdownFileList.filter(item => item.path !== filename)
-            this.dict = new DictOther(fileContent, filename)
+            this.dict = new DictOther(fileContent, filename, this.seperator, this.dictFormat)
             // 载入新码表时，清除 word 保存 code
             this.word = ''
             this.refreshShowingWords()
@@ -129,12 +149,24 @@ const app = {
     },
 
     methods: {
+        // 根据码表的一些参数，重新载入当前文件
         init(){
             ipcRenderer.send('ToolWindow:loadOriginFile')
         },
+        // 改变分隔符
         changeSeperator(seperator){
             this.seperator = seperator
         },
+        // 改变码表格式
+        changeDictFormat(dictFormat){
+            this.dictFormat = dictFormat
+        },
+        // 筛选词条字数
+        changeFilterWordLength(length){
+            this.filterCharacterLength = parseInt(length)
+            this.words = this.dict.getWordsLengthOf(length)
+        },
+
         // 载入码表文件
         loadDictFile(){
 
@@ -190,10 +222,7 @@ const app = {
                 default: break;
             }
         },
-        filterWordsLength(length){
-            this.words = this.dict.getWordsLengthOf(length)
-            console.log(this.words.length)
-        },
+
         // 通过 code, word 筛选词条
         search(){
             this.chosenWordIds.clear()
@@ -249,9 +278,6 @@ const app = {
                 this.dict.addNewWord(new Word(this.dict.lastIndex, this.code, this.word) ,this.activeGroupId)
                 this.refreshShowingWords()
                 log(this.code, this.word, this.activeGroupId)
-                if (this.config.autoDeployOnAdd){
-                    this.saveToFile(this.dict)
-                }
             }
         },
         decodeWord(word){
@@ -301,7 +327,7 @@ const app = {
         },
         // 选中全部展示的词条
         selectAll(){
-            if(this.wordsCount < 1000){
+            if(this.wordsCount < 100000){
                 if (this.dict.isGroupMode){
                     this.chosenWordIds.clear()
                     this.chosenWordIdArray = []
@@ -335,7 +361,6 @@ const app = {
             this.chosenWordIdArray = [...this.chosenWordIds.values()]
             this.dict.deleteWords([wordId])
             this.refreshShowingWords()
-            if(this.config.autoDeployOnDelete){ this.saveToFile(this.dict) }
         },
         // 删除词条：多
         deleteWords(){
