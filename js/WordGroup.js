@@ -12,4 +12,4 @@ class WordGroup{
     }
 }
 
-export default WordGroup
+module.exports = WordGroup

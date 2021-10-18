@@ -4,7 +4,9 @@ const fs = require('fs')
 const os = require('os')
 const url = require("url")
 const path = require("path")
+const {shakeDom, log, shakeDomFocus} = require('./js/Utility.js')
 const { IS_IN_DEVELOP, CONFIG_FILE_PATH, CONFIG_FILE_NAME, DEFAULT_CONFIG } =  require('./js/Global.js')
+
 let mainWindow // 主窗口
 let fileList = [] // 文件目录列表，用于移动词条
 
@@ -42,7 +44,7 @@ function createWindow() {
     ipcMain.on('saveFile', (event, filename, yamlString) => {
         fs.writeFile(path.join(getRimeConfigDir(), filename), yamlString, {encoding: "utf8"}, err => {
             if (!err){
-                console.log('saveFileSuccess')
+                log('saveFileSuccess')
                 applyRime() // 布署
                 mainWindow.webContents.send('saveFileSuccess')
             }
@@ -64,7 +66,7 @@ function createWindow() {
     ipcMain.on('loadSecondDict', (event, filename) => {
         fs.readFile(path.join(getRimeConfigDir(), filename), {encoding: 'utf-8'}, (err, res) => {
             if(err){
-                console.log(err)
+                log(err)
             } else {
                 mainWindow.webContents.send('setSecondDict',filename ,res)
             }
@@ -76,7 +78,7 @@ function createWindow() {
         let mainDictFileName = 'wubi86_jidian.dict.yaml'
         fs.readFile(path.join(getRimeConfigDir(), mainDictFileName), {encoding: 'utf-8'}, (err, res) => {
             if(err){
-                console.log(err)
+                log(err)
             } else {
                 mainWindow.webContents.send('setMainDict', path.join(getRimeConfigDir(), mainDictFileName) ,res)
             }
@@ -86,9 +88,9 @@ function createWindow() {
     // 外部打开当前码表文件
     ipcMain.on('openFileOutside', (event, filename) => {
         shell.openPath(path.join(getRimeConfigDir(), filename)).then(res => {
-            console.log(res)
+            log(res)
         }).catch(err => {
-            console.log(err)
+            log(err)
         })
     })
     ipcMain.on('GetFileList', event => {
@@ -144,7 +146,7 @@ function showToolWindow (){
     ipcMain.on('ToolWindow:saveFile', (event, filename, yamlString) => {
         fs.writeFile(path.join(getRimeConfigDir(), filename), yamlString, {encoding: "utf8"}, err => {
             if (!err){
-                console.log('saveFileSuccess')
+                log('saveFileSuccess')
                 applyRime() // 布署
                 toolWindow.webContents.send('saveFileSuccess')
             }
@@ -159,9 +161,9 @@ function showToolWindow (){
     // 外部打开当前码表文件
     ipcMain.on('ToolWindow:openFileOutside', (event, filename) => {
         shell.openPath(path.join(getRimeConfigDir(), filename)).then(res => {
-            console.log(res)
+            log(res)
         }).catch(err => {
-            console.log(err)
+            log(err)
         })
     })
 }
@@ -235,21 +237,21 @@ function writeConfigFile(contentString, responseWindow){
     let configPath = path.join(os.homedir(), CONFIG_FILE_PATH)
     fs.writeFile(path.join(configPath, CONFIG_FILE_NAME), contentString, {encoding: 'utf-8'}, err => {
         if(err){
-            console.log('writeFileError: ',err)
-            console.log(configPath)
+            log('writeFileError: ',err)
+            log(configPath)
             if (err.errno === -4058 || err.errno === -2){
-                console.log('config dir does not exist')
+                log('config dir does not exist')
                 // 新建目录
                 fs.mkdir(configPath, err => { // 先建立文件夹
                     if (err) {
-                        console.log(err)
+                        log(err)
                     } else {
                         fs.writeFile(
                             path.join(configPath, CONFIG_FILE_NAME),
                             contentString, {encoding: 'utf-8'},
                             err => {
                                 if (err){
-                                    console.log(err)
+                                    log(err)
                                 } else {
                                     // 配置保存成功后，向主窗口发送配置文件内容
                                     mainWindow.send('updateConfigFile', JSON.parse(contentString))
@@ -299,7 +301,7 @@ function readFile(fileName, responseWindow){
     let rimeHomeDir = getRimeConfigDir()
     fs.readFile(path.join(rimeHomeDir, fileName), {encoding: 'utf-8'}, (err, res) => {
         if(err){
-            console.log(err)
+            log(err)
         } else {
             if(responseWindow){
                 responseWindow.send('showFileContent', fileName ,res)
@@ -428,7 +430,7 @@ function setRimeFolderMenu(){
     let rimeFolderPath = getRimeConfigDir()
     fs.readdir(rimeFolderPath,(err, filePaths) => {
         if (err) {
-            console.log(err)
+            log(err)
         } else {
             let filesMenu = []
             // 筛选 .yaml 文件
@@ -460,12 +462,12 @@ function setRimeFolderMenu(){
 // 布署 Rime
 function applyRime(){
     let rimeBinDir = getRimeExecDir()
-    console.log(path.join(rimeBinDir,'WeaselDeployer.exe'))
+    log(path.join(rimeBinDir,'WeaselDeployer.exe'))
     switch (os.platform()){
         case 'darwin':
             // macOS
             exec(`"${rimeBinDir}/Squirrel" --reload`, error => {
-                console.log(error)
+                log(error)
             })
             break
         case 'win32':
@@ -473,7 +475,7 @@ function applyRime(){
             let execFilePath = path.join(rimeBinDir,'WeaselDeployer.exe')
             exec(`"${execFilePath}" /deploy`, err => {
                 if (err){
-                    console.log(err)
+                    log(err)
                 }
             })
     }

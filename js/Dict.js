@@ -1,6 +1,7 @@
 // 字典对象
-import Word from "./Word.mjs";
-import WordGroup from "./WordGroup.mjs";
+const Word = require("./Word.js")
+const WordGroup = require("./WordGroup.js")
+const {shakeDom, log, shakeDomFocus} = require('./Utility.js')
 
 const os = require('os')
 
@@ -17,7 +18,7 @@ class Dict {
 
         let indexEndOfHeader = yaml.indexOf('...')
         if (indexEndOfHeader < 0){
-            console.log('文件格式错误，没有 ... 这一行')
+            log('文件格式错误，没有 ... 这一行')
         } else {
             this.indexEndOfHeader = indexEndOfHeader + 3
             this.header = yaml.substring(0, this.indexEndOfHeader)
@@ -56,7 +57,7 @@ class Dict {
                 this.characterMap.set(currentWord.word, currentWord.code)
             }
          })
-        console.log(`处理yaml码表文件：完成，共：${words.length } ${this.isGroupMode? '组': '条'}，用时 ${new Date().getTime() - startPoint} ms`)
+        log(`处理yaml码表文件：完成，共：${words.length } ${this.isGroupMode? '组': '条'}，用时 ${new Date().getTime() - startPoint} ms`)
         return words
     }
 
@@ -82,7 +83,7 @@ class Dict {
                 temp.dict.push(getWordFromLine(index, item))
                 lastItemIsEmptyLine = false
             } else if (item.startsWith('#')) { // 注释
-                console.log(item)
+                log(item)
                 lastItemIsEmptyLine = false
             } else {
                 // 为空行时
@@ -98,7 +99,7 @@ class Dict {
                 lastItemIsEmptyLine = true
             }
         })
-        console.log(`处理yaml码表文件：完成，共：${wordsGroup.length } ${this.isGroupMode? '组': '条'}，用时 ${new Date().getTime() - startPoint} ms`)
+        log(`处理yaml码表文件：完成，共：${wordsGroup.length } ${this.isGroupMode? '组': '条'}，用时 ${new Date().getTime() - startPoint} ms`)
         if (temp){
             if (temp.dict.length > 0){
                 wordsGroup.push(temp) // 加上最后一个
@@ -123,7 +124,7 @@ class Dict {
         } else {
             this.wordsOrigin.sort((a,b) => a.code < b.code ? -1: 1)
         }
-        console.log(`Sort 用时 ${new Date().getTime() - startPoint} ms`)
+        log(`Sort 用时 ${new Date().getTime() - startPoint} ms`)
     }
 
     /**
@@ -140,7 +141,7 @@ class Dict {
                 this.wordsOrigin.unshift(newWordGroup) // 添加到第一组
             }
         } else {
-            console.log('TODO: 确定插入的位置')
+            log('TODO: 确定插入的位置')
             this.wordsOrigin.push(word)
         }
         this.lastIndex = this.lastIndex + 1 // 新加的词添加后， lastIndex + 1
@@ -156,7 +157,7 @@ class Dict {
                 this.addWordToDict(word)
             })
         }
-        console.log(`添加 ${words.length } 条词条到指定码表, 用时 ${new Date().getTime() - startPoint} ms`)
+        log(`添加 ${words.length } 条词条到指定码表, 用时 ${new Date().getTime() - startPoint} ms`)
     }
 
     // 依次序添加 word
@@ -180,7 +181,7 @@ class Dict {
     // 依次序添加 word groupMode
     addWordToDictWithGroup(words, groupIndex){
         let dictWords = this.wordsOrigin[groupIndex].dict
-        console.log('TODO: add to group')
+        log('TODO: add to group')
         words.forEach(word => {
             let insetPosition = null // 插入位置 index
             for (let i=0; i<dictWords.length-1; i++){ // -1 为了避免下面 i+1 为 undefined
@@ -221,7 +222,7 @@ class Dict {
 
     // 分组模式：删除分组
     deleteGroup(groupId){
-        console.log('要删除的分组 id: ',groupId)
+        log('要删除的分组 id: ',groupId)
         this.wordsOrigin = this.wordsOrigin.filter(group => group.id !== groupId)
     }
     // 转为 yaml String
@@ -276,4 +277,4 @@ function getWordFromLine(index, lineStr){
     let priority = wordArray.length > 2 ? wordArray[2] : null
     return new Word(index, code, word, priority)
 }
-export default Dict
+module.exports =  Dict

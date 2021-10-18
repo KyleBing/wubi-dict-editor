@@ -25,4 +25,4 @@ class Word{
     }
 }
 
-export default Word
+module.exports =  Word

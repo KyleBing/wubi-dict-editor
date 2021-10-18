@@ -1,6 +1,6 @@
-import DictOther from "../../js/DictOther.mjs"
-import {shakeDom, shakeDomFocus} from "../../js/Utility.mjs"
-import Word from "../../js/Word.mjs";
+import DictOther from "../../js/DictOther.js"
+import {shakeDom, shakeDomFocus, log} from "../../js/Utility.js"
+import Word from "../../js/Word.js";
 import Vue from '../../node_modules/vue/dist/vue.esm.browser.min.js'
 
 const {ipcRenderer} = require('electron')

@@ -1,3 +1,5 @@
+const {IS_IN_DEVELOP} = require("./Global")
+
 function $(selector){
     return document.querySelector(selector)
 }
@@ -25,6 +27,10 @@ function shakeDomFocus(dom){
     dom.focus()
 }
 
-export {
-    shakeDom, shakeDomFocus
+function log(...obj){
+    if (IS_IN_DEVELOP) console.log(...obj)
+}
+
+module.exports = {
+    shakeDom, shakeDomFocus, log
 }

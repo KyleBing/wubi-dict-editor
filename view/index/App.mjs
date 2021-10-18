@@ -1,10 +1,11 @@
-import Dict from "../../js/Dict.mjs"
-import {shakeDom, shakeDomFocus} from "../../js/Utility.mjs"
-import Word from "../../js/Word.mjs";
-import Vue from '../../node_modules/vue/dist/vue.esm.browser.min.js'
+const {shakeDom, shakeDomFocus, log} = require('../../js/Utility')
+const {IS_IN_DEVELOP} = require('../../js/Global')
+
+const Dict = require('../../js/Dict.js')
+const Word = require('../../js/Word.js')
+const Vue  = require('../../node_modules/vue/dist/vue.common.dev')
 
 const {ipcRenderer} = require('electron')
-const {IS_IN_DEVELOP} = require('../../js/Global')
 const VirtualScroller = require('vue-virtual-scroller')
 
 
@@ -71,9 +72,7 @@ const app = {
         // 由 window 触发获取文件目录的请求，不然无法实现适时的获取到 主进程返回的数据
         ipcRenderer.send('GetFileList')
         ipcRenderer.on('FileList', (event, fileList) => {
-            if(IS_IN_DEVELOP){
-                console.log(fileList)
-            }
+            log(fileList)
             this.dropdownFileList = fileList
         })
 
@@ -93,7 +92,7 @@ const app = {
         ipcRenderer.on('responseConfigFile', (event, config) => {
             this.config = config
             this.activeGroupId = config.chosenGroupIndex // 首次载入时，定位到上次选中的分组
-            console.log('窗口载入时获取到的 config 文件：', config)
+            log('窗口载入时获取到的 config 文件：', config)
         })
         ipcRenderer.send('requestConfigFile')
 
@@ -201,7 +200,7 @@ const app = {
                             this.words.push(tempGroupItem)
                         }
                     })
-                    console.log('用时: ', new Date().getTime() - startPoint, 'ms')
+                    log('用时: ', new Date().getTime() - startPoint, 'ms')
                 } else {
                     this.words = this.dict.wordsOrigin.filter(item => { // 获取包含 code 的记录
                         switch (this.config.searchMethod){
@@ -211,7 +210,7 @@ const app = {
                             case "any": return item.code.includes(this.code) || item.word.includes(this.word)
                         }
                     })
-                    console.log(`${this.code} ${this.word}: ` ,'搜索出', this.words.length, '条，', '用时: ', new Date().getTime() - startPoint, 'ms')
+                    log(`${this.code} ${this.word}: ` ,'搜索出', this.words.length, '条，', '用时: ', new Date().getTime() - startPoint, 'ms')
                 }
 
             } else { // 如果 code, word 为空，恢复原有数据
@@ -241,7 +240,7 @@ const app = {
         refreshShowingWords(){
             this.chosenWordIds.clear()
             this.chosenWordIdArray = []
-            if (IS_IN_DEVELOP) console.log('已选中的 groupIndex: ',this.activeGroupId, typeof this.activeGroupId)
+            log('已选中的 groupIndex: ',this.activeGroupId, typeof this.activeGroupId)
             if (this.activeGroupId === -1){
                 this.words = [...this.dict.wordsOrigin]
             } else {
@@ -259,7 +258,7 @@ const app = {
             } else {
                 this.dict.addNewWord(new Word(this.dict.lastIndex, this.code, this.word) ,this.activeGroupId)
                 this.refreshShowingWords()
-                console.log(this.code, this.word, this.activeGroupId)
+                log(this.code, this.word, this.activeGroupId)
                 if (this.config.autoDeployOnAdd){
                     this.saveToFile(this.dict)
                 }
@@ -298,7 +297,7 @@ const app = {
                             decodeArray[2].substring(0,1) +
                             decodeArray[decodeArray.length - 1].substring(0,1)
                 }
-                console.log(phraseCode, decodeArray)
+                log(phraseCode, decodeArray)
                 return phraseCode
             } catch(err){
                 return ''
@@ -307,7 +306,7 @@ const app = {
 
         // 保存内容到文件
         saveToFile(dict){
-            console.log(dict.filename)
+            log(dict.filename)
             ipcRenderer.send('saveFile', dict.filename, dict.toYamlString())
         },
         // 选中全部展示的词条
@@ -373,7 +372,7 @@ const app = {
                                     group.dict[j - 1] = tempItem
                                     return ''
                                 } else {
-                                    console.log('已到顶')
+                                    log('已到顶')
                                     return '已到顶'
                                 }
                             } else if (direction === 'down'){
@@ -382,7 +381,7 @@ const app = {
                                     group.dict[j + 1] = tempItem
                                     return ''
                                 } else {
-                                    console.log('已到底')
+                                    log('已到底')
                                     return '已到底'
                                 }
                             }
@@ -402,7 +401,7 @@ const app = {
                                 this.words[i - 1] = tempItem
                                 return ''
                             } else {
-                                console.log('已到顶')
+                                log('已到顶')
                                 return '已到顶'
                             }
                         } else if (direction === 'down'){
@@ -412,7 +411,7 @@ const app = {
                                 this.words[i + 1] = tempItem
                                 return ''
                             } else {
-                                console.log('已到底')
+                                log('已到底')
                                 return '已到底'
                             }
                         }
@@ -476,7 +475,7 @@ const app = {
         // 绑定键盘事件： 键盘上下控制词条上下移动
         addKeyboardListener(){
             window.addEventListener('keydown', event => {
-                // console.log(event)
+                // log(event)
                 switch( event.key) {
                     case 's':
                         if (event.ctrlKey || event.metaKey){ // metaKey 是 macOS 的 Ctrl
@@ -514,12 +513,12 @@ const app = {
             } else {
                 wordsTransferring = this.dict.wordsOrigin.filter(item => this.chosenWordIds.has(item.id))
             }
-            if(this.IS_IN_DEVELOP){console.log('words transferring：', JSON.stringify(wordsTransferring))}
+            log('words transferring：', JSON.stringify(wordsTransferring))
 
             if (this.dict.filename === this.dictSecond.filename){
                 this.dictSecond.deleteWords(this.chosenWordIds) // 删除移动的词条
                 this.dictSecond.addWordsInOrder(wordsTransferring, this.dropdownActiveGroupIndex)
-                if(this.IS_IN_DEVELOP) {console.log('after insert:( main:wordOrigin ):\n ', JSON.stringify(this.dictSecond.wordsOrigin))}
+                log('after insert:( main:wordOrigin ):\n ', JSON.stringify(this.dictSecond.wordsOrigin))
                 // 如果在同码表中移动：如，从一个分组移到别一个分组
                 // 只保存 dictSecond 内容，重新载入 dict 内容
                 this.saveToFile(this.dictSecond)
@@ -527,7 +526,7 @@ const app = {
             } else {
                 this.dictSecond.addWordsInOrder(wordsTransferring, this.dropdownActiveGroupIndex)
                 this.words = [...this.dict.wordsOrigin]
-                if(this.IS_IN_DEVELOP) {console.log('after insert:( main:wordOrigin ):\n ', JSON.stringify(this.dictSecond.wordsOrigin))}
+                log('after insert:( main:wordOrigin ):\n ', JSON.stringify(this.dictSecond.wordsOrigin))
                 this.deleteWords() // 删除当前词库已移动的词条
                 this.saveToFile(this.dictSecond)
                 this.saveToFile(this.dict)
@@ -567,7 +566,7 @@ const app = {
             if (newValue.length === 0){
                 this.showDropdown = false
             }
-            console.log('已选词条id: ', JSON.stringify(newValue))
+            log('已选词条id: ', JSON.stringify(newValue))
         },
         showDropdown(newValue){
             if (!newValue){ // 窗口关闭时，重置 index

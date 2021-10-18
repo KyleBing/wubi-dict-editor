@@ -14,6 +14,7 @@ const DEFAULT_CONFIG = {
     theme: 'auto', // auto 跟随系统 | black
 }
 
+
 module.exports = {
     IS_IN_DEVELOP, CONFIG_FILE_NAME,CONFIG_FILE_PATH, DEFAULT_CONFIG
 }

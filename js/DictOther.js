@@ -1,5 +1,5 @@
 // 其它字典对象
-import Word from "./Word.mjs";
+const Word = require("./Word.js")
 const os = require('os')
 
 class DictOther {
@@ -102,4 +102,4 @@ class DictOther {
 }
 
 
-export default DictOther
+module.exports = DictOther
