@@ -57,6 +57,33 @@ class DictOther {
         }
     }
 
+    // 查重，返回重复定义的字词
+    getRepetitionWords(){
+        let startPoint = new Date().getTime()
+        let wordMap = new Map()
+        let repetitionWords = []
+        this.wordsOrigin.forEach(word => {
+            if (wordMap.has(word.word) && word.word.length > 1){
+                repetitionWords.push(word)
+                // 如果已保存的数组中，没有当前对应的 map 对象，保存它
+/*                if (!repetitionWords.some(item => {
+                  return item.code !== wordMap.get(word.word) && item.word === word.word
+                })){
+                    repetitionWords.push(new Word(this.lastIndex++, wordMap.get(word.word), word.word))
+                    wordMap.set(word.word, word.code) // 更新 map 记录为最新的
+                }*/
+                // TODO: 目前只查到了，多出来的重复的部分，对照区的参考值没有取出
+            } else { // 如果 map 中没有这个词的记录，添加这个记录
+                wordMap.set(word.word, word.code)
+            }
+        })
+        log(`查重完成，用时 ${new Date().getTime() - startPoint} ms`)
+        log('WordMap count: ', wordMap.size)
+        log('RepetitionWord count: ', repetitionWords.length)
+        log('RepetitionWord + WordMap = ', repetitionWords.length + wordMap.size)
+        return repetitionWords
+    }
+
     // 返回所有 word
     getDictWordsInNormalMode(fileContent){
         let startPoint = new Date().getTime()
@@ -121,19 +148,9 @@ class DictOther {
     }
 
     // 排序
-    sort(groupIndex){
+    sort(){
         let startPoint = new Date().getTime()
-        if (this.isGroupMode){ // group mode
-            if (groupIndex !== -1){ // -1 代表全部
-                this.wordsOrigin[groupIndex].dict.sort((a,b) => a.code < b.code ? -1: 1)
-            } else {
-                this.wordsOrigin.forEach(group => {
-                    group.dict.sort((a,b) => a.code < b.code ? -1: 1)
-                })
-            }
-        } else {
-            this.wordsOrigin.sort((a,b) => a.code < b.code ? -1: 1)
-        }
+        this.wordsOrigin.sort((a,b) => a.code < b.code ? -1: 1)
         log(`Sort 用时 ${new Date().getTime() - startPoint} ms`)
     }
 

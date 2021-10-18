@@ -166,6 +166,9 @@ const app = {
             this.filterCharacterLength = parseInt(length)
             this.words = this.dict.getWordsLengthOf(length)
         },
+        checkRepetition(){
+            this.words = this.dict.getRepetitionWords()
+        },
 
         // 载入码表文件
         loadDictFile(){
@@ -212,8 +215,7 @@ const app = {
             ipcRenderer.send('loadSecondDict', this.dropdownFileList[fileIndex].path) // 载入当前 index 的文件内容
         },
         sort(){
-            this.dict.sort(this.activeGroupId)
-            this.refreshShowingWords()
+            this.words.sort((a,b) => a.code < b.code ? -1: 1)
         },
         enterKeyPressed(){
             switch (this.config.enterKeyBehavior){
