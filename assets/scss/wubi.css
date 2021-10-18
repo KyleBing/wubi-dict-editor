@@ -1047,6 +1047,7 @@ input[type=radio]:checked + label.radio:after {
   top: 0;
   left: 0;
   display: flex;
+  align-items: center;
   justify-content: flex-start;
 }
 .search-bar > * {

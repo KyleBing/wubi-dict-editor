@@ -38,11 +38,15 @@ sudo xattr -rd com.apple.quarantine /Applications/五笔码表助手.app/
 > [https://github.com/KyleBing/wubi-dict-editor/discussions/11](https://github.com/KyleBing/wubi-dict-editor/discussions/11)
 
 #### 纯工具模块
+- [x] 工具窗口 `2021-10-18`
+  - [x] 设定码表编码词条分隔方式 `\t` `空格` `2021-10-18`
+  - [x] 设定码表格式：一码多词、一码一词、一词一码 `2021-10-18`
+  - [x] 编辑任意码表文件 `2021-10-18`
+
 - [ ] 查重，并选中
 - [ ] 批量添加词条编码
 - [ ] 载入码表文件，根据码表生成不同版本五笔的编码码表
 - [ ] 编码查错修正
-- [ ] 保存成不同格式的码表文件，一码一词，一码多词，码表分隔符 `\t` `空格`
 - [x] 字数筛选 `2021-10-18`
 
 #### 1. 词条

@@ -259,15 +259,7 @@ const app = {
         refreshShowingWords(){
             this.chosenWordIds.clear()
             this.chosenWordIdArray = []
-            log('已选中的 groupIndex: ',this.activeGroupId, typeof this.activeGroupId)
-            if (this.activeGroupId === -1){
-                this.words = [...this.dict.wordsOrigin]
-            } else {
-                if (this.activeGroupId > this.dict.wordsOrigin.length - 1) {
-                    this.activeGroupId = this.dict.wordsOrigin.length - 1
-                }
-                this.words = new Array(this.dict.wordsOrigin[this.activeGroupId])
-            }
+            this.words = [...this.dict.wordsOrigin]
         },
         addNewWord(){
             if (!this.word){
@@ -359,7 +351,7 @@ const app = {
         deleteWord(wordId){
             this.chosenWordIds.delete(wordId)
             this.chosenWordIdArray = [...this.chosenWordIds.values()]
-            this.dict.deleteWords([wordId])
+            this.dict.deleteWords(new Set([wordId]))
             this.refreshShowingWords()
         },
         // 删除词条：多
@@ -600,6 +592,9 @@ const app = {
                     break;
             }
         }
+    },
+    beforeDestroy() {
+        // TODO: 去除所有 ipc 事件
     }
 }
 

@@ -212,18 +212,7 @@ class DictOther {
 
     // 删除词条
     deleteWords(wordIdSet){
-        if (this.isGroupMode){
-            let deleteGroupIds = [] // 记录 words 为 0 的 group，最后删除分组
-            this.wordsOrigin.forEach((group, index) => {
-                group.dict = group.dict.filter(item => !wordIdSet.has(item.id))
-                if (group.dict.length === 0){
-                    deleteGroupIds.push(index)
-                }
-            })
-            this.wordsOrigin = this.wordsOrigin.filter((group, index) => !deleteGroupIds.includes(index))
-        } else {
-            this.wordsOrigin = this.wordsOrigin.filter(item => !wordIdSet.has(item.id))
-        }
+        this.wordsOrigin = this.wordsOrigin.filter(item => !wordIdSet.has(item.id))
     }
 
     addGroupBeforeId(groupIndex){
