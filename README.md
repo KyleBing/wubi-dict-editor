@@ -11,10 +11,8 @@ Windows, macOS, (Linux 未测试)
 
 ## 下载
 
-去往下载页面 [https://github.com/KyleBing/wubi-dict-editor/releases](https://github.com/KyleBing/wubi-dict-editor/releases)
-
-如果连接 github 速度慢，可以往国内的 gitee 上下载
-[https://gitee.com/KyleBing/wubi-dict-editor/releases](https://gitee.com/KyleBing/wubi-dict-editor/releases)
+ [去往下载页面](https://github.com/KyleBing/wubi-dict-editor/releases)
+ [国内gitee下载页面](https://gitee.com/KyleBing/wubi-dict-editor/releases)
 
 ## 安装
 
@@ -23,7 +21,7 @@ __windows__ 直接解压打开 `.exe` 文件即可
 __macOS__ 如果提示无法打开，文件损坏什么的，将 app 移到应用程序 `Applications` 文件夹后，打开终端 `Terminal`，这样操作：
 
 ```bash
-sudo xattr -rd com.apple.quarantine /Applications/wubi-dict-editor.app/
+sudo xattr -rd com.apple.quarantine /Applications/五笔码表助手.app/
 ```
 
 这样应该就能打开了。
@@ -37,7 +35,7 @@ sudo xattr -rd com.apple.quarantine /Applications/wubi-dict-editor.app/
 ## 开发计划
 
 #### 进程截图记录：
-> [https://github.com/KyleBing/wubi-words-editor/discussions/2](https://github.com/KyleBing/wubi-dict-editor/discussions/2)
+> [https://github.com/KyleBing/wubi-dict-editor/discussions/11](https://github.com/KyleBing/wubi-dict-editor/discussions/11)
 
 #### 纯工具模块
 - [ ] 查重，并选中
