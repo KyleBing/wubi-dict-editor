@@ -71,14 +71,24 @@
          :style="`height: ${heightContent}px`"
          class="container tool-container">
         <div class="tool-panel">
-            <div class="size-list">
-                <div class="size-item"><div @click="filterWordsLength(1)" class="btn btn-primary">一</div></div>
-                <div class="size-item"><div @click="filterWordsLength(2)" class="btn btn-primary">二</div></div>
-                <div class="size-item"><div @click="filterWordsLength(3)" class="btn btn-primary">三</div></div>
-                <div class="size-item"><div @click="filterWordsLength(4)" class="btn btn-primary">四</div></div>
-                <div class="size-item"><div @click="filterWordsLength(5)" class="btn btn-primary">五+</div></div>
-            </div>
+            <section>
+                <div class="title">载入码表文件</div>
+                <div class="content">
+                    <div v-if="dict.filename" @click="loadDictFile" class="btn btn-green">{{ dict.filename}}</div>
+                    <div v-else @click="loadDictFile" class="btn btn-primary">选择码表文件</div>
+                </div>
+            </section>
 
+            <section>
+                <div class="title">字数筛选</div>
+                <div class="content size-list">
+                    <div class="size-item"><div @click="filterWordsLength(1)" class="btn btn-primary">一</div></div>
+                    <div class="size-item"><div @click="filterWordsLength(2)" class="btn btn-primary">二</div></div>
+                    <div class="size-item"><div @click="filterWordsLength(3)" class="btn btn-primary">三</div></div>
+                    <div class="size-item"><div @click="filterWordsLength(4)" class="btn btn-primary">四</div></div>
+                    <div class="size-item"><div @click="filterWordsLength(5)" class="btn btn-primary">五+</div></div>
+                </div>
+            </section>
         </div>
 
         <div class="list-container">

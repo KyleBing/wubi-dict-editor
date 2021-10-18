@@ -1434,17 +1434,27 @@ select option {
 .tool-container .list-container {
   flex-grow: 1;
 }
+.tool-container .list-container .word-item {
+  padding: 0 5px 0 10px;
+}
 
 .tool-panel {
   padding: 15px;
 }
-.tool-panel .size-list {
+.tool-panel section {
+  margin-bottom: 20px;
+}
+.tool-panel section .title {
+  font-size: 13px;
+  margin-bottom: 10px;
+}
+.size-list {
   width: 100%;
   display: flex;
   flex-flow: row wrap;
   justify-content: flex-start;
 }
-.tool-panel .size-list .size-item {
+.size-list .size-item {
   margin-right: 10px;
 }
 

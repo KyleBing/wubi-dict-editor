@@ -127,6 +127,11 @@ const app = {
     },
 
     methods: {
+        // 载入码表文件
+        loadDictFile(){
+
+        },
+        // 词条选择操作
         select(wordId, event){
             if (event.shiftKey){
                 if (this.lastChosenWordId !== null){
@@ -241,7 +246,7 @@ const app = {
                 }
             }
         },
-        getWordCodes(word){
+        decodeWord(word){
             try{
                 let decodeArray = [] // 每个字解码后的数组表
                 let letterArray = word.split('')
@@ -536,7 +541,7 @@ const app = {
             if (newValue.length < oldValue.length){
                 // 删除或清空时，不清空编码
             } else {
-                this.code = this.getWordCodes(newValue)
+                this.code = this.dict.decodeWord(newValue)
             }
         },
         chosenWordIdArray(newValue){

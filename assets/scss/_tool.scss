@@ -9,20 +9,34 @@
   }
   .list-container{
     flex-grow: 1;
-
+    .word-item{
+      padding: 0 5px 0 10px;
+    }
   }
 }
 
 .tool-panel{
   padding: 15px;
-  .size-list{
-    width: 100%;
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: flex-start;
+  section{
+    margin-bottom: 20px;
+    .title{
+      font-size: $fz-list;
+      margin-bottom: 10px;
 
-    .size-item{
-      margin-right: 10px;
     }
+    .content {
+
+    }
+  }
+}
+
+.size-list {
+  width: 100%;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+
+  .size-item {
+    margin-right: 10px;
   }
 }
