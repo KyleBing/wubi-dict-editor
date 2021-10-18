@@ -1,5 +1,4 @@
-import Vue from '../../node_modules/vue/dist/vue.esm.browser.min'
-
+const Vue  = require('../../node_modules/vue/dist/vue.common.dev')
 const {ipcRenderer} = require('electron')
 const { IS_IN_DEVELOP, CONFIG_FILE_PATH, CONFIG_FILE_NAME, DEFAULT_CONFIG } =  require('../../js/Global')
 
