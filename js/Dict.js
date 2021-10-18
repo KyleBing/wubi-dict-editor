@@ -6,7 +6,7 @@ const {shakeDom, log, shakeDomFocus} = require('./Utility')
 const os = require('os')
 
 class Dict {
-    constructor(yaml, filename) {
+    constructor(fileContent, filename) {
         this.filename = filename // 文件路径
         this.header = null // 文件头部内容
         this.wordsOrigin = [] // 文件词条数组
@@ -16,14 +16,14 @@ class Dict {
 
         this.characterMap = new Map() // 单字码表，用于根据此生成词语码表
 
-        let indexEndOfHeader = yaml.indexOf('...')
+        let indexEndOfHeader = fileContent.indexOf('...')
         if (indexEndOfHeader < 0){
             log('文件格式错误，没有 ... 这一行')
         } else {
             this.indexEndOfHeader = indexEndOfHeader + 3
-            this.header = yaml.substring(0, this.indexEndOfHeader)
+            this.header = fileContent.substring(0, this.indexEndOfHeader)
             this.isGroupMode = this.header.includes('dict_grouped: true') // 根据有没有这一段文字进行判断，是否为分组形式的码表
-            let body = yaml.substring(this.indexEndOfHeader)
+            let body = fileContent.substring(this.indexEndOfHeader)
             this.wordsOrigin = this.isGroupMode? this.getDictWordsInGroupMode(body): this.getDictWordsInNormalMode(body)
         }
     }
