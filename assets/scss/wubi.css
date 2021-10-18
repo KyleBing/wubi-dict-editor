@@ -1422,6 +1422,32 @@ select option {
   transition: all 0.3s;
 }
 
+.tool-container {
+  display: flex;
+  flex-flow: row nowrap;
+}
+.tool-container .tool-panel {
+  border-right: 1px solid #eee;
+  width: 300px;
+  flex-shrink: 0;
+}
+.tool-container .list-container {
+  flex-grow: 1;
+}
+
+.tool-panel {
+  padding: 15px;
+}
+.tool-panel .size-list {
+  width: 100%;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+}
+.tool-panel .size-list .size-item {
+  margin-right: 10px;
+}
+
 .dark-mode ::-webkit-scrollbar-track {
   background-color: rgba(0, 0, 0, 0);
 }

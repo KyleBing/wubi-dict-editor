@@ -30,6 +30,18 @@ class DictOther {
         }
     }
 
+    // 获取指定字数的词条组
+    getWordsLengthOf(length){
+        switch (length){
+            case 1:
+            case 2:
+            case 3:
+            case 4:
+                return this.wordsOrigin.filter(word => word.word.length === length)
+            default: return this.wordsOrigin.filter(word => word.word.length > 4)
+        }
+    }
+
     // 返回所有 word
     getDictWordsInNormalMode(fileContent){
         let startPoint = new Date().getTime()

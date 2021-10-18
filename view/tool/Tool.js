@@ -188,35 +188,15 @@ const app = {
             this.activeGroupId = -1 // 切到【全部】标签页，展示所有搜索结果
             let startPoint = new Date().getTime()
             if (this.code || this.word){
-                if (this.dict.isGroupMode){
-                    this.words = []
-                    this.dict.wordsOrigin.forEach(groupItem => {
-                        let tempGroupItem = groupItem.clone() // 不能直接使用原 groupItem，不然会改变 wordsOrigin 的数据
-                        tempGroupItem.dict = tempGroupItem.dict.filter(item => {
-                            switch (this.config.searchMethod){
-                                case "code": return item.code.includes(this.code);
-                                case "phrase": return item.word.includes(this.word);
-                                case "both": return item.code.includes(this.code) && item.word.includes(this.word)
-                                case "any": return item.code.includes(this.code) || item.word.includes(this.word)
-                            }
-                        })
-                        if (tempGroupItem.dict.length > 0){ // 当前分组中有元素，添加到结果中
-                            this.words.push(tempGroupItem)
-                        }
-                    })
-                    log('用时: ', new Date().getTime() - startPoint, 'ms')
-                } else {
-                    this.words = this.dict.wordsOrigin.filter(item => { // 获取包含 code 的记录
-                        switch (this.config.searchMethod){
-                            case "code": return item.code.includes(this.code);
-                            case "phrase": return item.word.includes(this.word);
-                            case "both": return item.code.includes(this.code) && item.word.includes(this.word)
-                            case "any": return item.code.includes(this.code) || item.word.includes(this.word)
-                        }
-                    })
-                    log(`${this.code} ${this.word}: ` ,'搜索出', this.words.length, '条，', '用时: ', new Date().getTime() - startPoint, 'ms')
-                }
-
+                this.words = this.dict.wordsOrigin.filter(item => { // 获取包含 code 的记录
+                    switch (this.config.searchMethod){
+                        case "code": return item.code.includes(this.code);
+                        case "phrase": return item.word.includes(this.word);
+                        case "both": return item.code.includes(this.code) && item.word.includes(this.word)
+                        case "any": return item.code.includes(this.code) || item.word.includes(this.word)
+                    }
+                })
+                log(`${this.code} ${this.word}: ` ,'搜索出', this.words.length, '条，', '用时: ', new Date().getTime() - startPoint, 'ms')
             } else { // 如果 code, word 为空，恢复原有数据
                 this.refreshShowingWords()
             }

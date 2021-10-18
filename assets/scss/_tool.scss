@@ -1,0 +1,28 @@
+.tool-container{
+  display: flex;
+  flex-flow: row nowrap;
+
+  .tool-panel{
+    border-right: 1px solid $color-border;
+    width: 300px;
+    flex-shrink: 0;
+  }
+  .list-container{
+    flex-grow: 1;
+
+  }
+}
+
+.tool-panel{
+  padding: 15px;
+  .size-list{
+    width: 100%;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: flex-start;
+
+    .size-item{
+      margin-right: 10px;
+    }
+  }
+}
