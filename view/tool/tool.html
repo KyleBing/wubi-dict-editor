@@ -83,8 +83,8 @@
             <section>
                 <div class="title">码表格式</div>
                 <div class="content">
-                    <div class="seperator-list">
-                        <div class="seperator-item" v-for="item in dictFormatArray" :key="item.name">
+                    <div class="btn-list">
+                        <div class="btn-item" v-for="item in dictFormatArray" :key="item.name">
                             <div :class="['btn btn-primary', {'btn-orange': dictFormat === item.value}]" @click="changeDictFormat(item.value)">{{item.name}}</div>
                         </div>
                     </div>
@@ -93,8 +93,8 @@
 
             <section>
                 <div class="title">字数筛选</div>
-                <div class="content size-list">
-                    <div class="size-item" v-for="item in filterCharacterLengthArray" :key="item.name">
+                <div class="content btn-list">
+                    <div class="btn-item" v-for="item in filterCharacterLengthArray" :key="item.name">
                         <div @click="changeFilterWordLength(item.value)" :class="['btn btn-primary', {'btn-green': filterCharacterLength === item.value}]">{{ item.name }}</div>
                     </div>
                 </div>
@@ -103,15 +103,28 @@
             <section>
                 <div class="title">码表间隔符</div>
                 <div class="content">
-                    <div class="seperator-list">
-                        <div class="seperator-item" v-for="item in seperatorArray" :key="item.name">
+                    <div class="btn-list">
+                        <div class="btn-item" v-for="item in seperatorArray" :key="item.name">
                             <div :class="['btn btn-primary', {'btn-red': seperator === item.value}]" @click="changeSeperator(item.value)">{{item.name}}</div>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <div class="btn btn-primary" @click="checkRepetition">查重</div>
+            <section>
+                <div class="title">查重</div>
+                <div class="content">
+                    <div class="btn-list">
+                        <div class="btn-item">
+                            <div class="btn btn-primary" @click="checkRepetition(true)">单字</div>
+                        </div>
+                        <div class="btn-item">
+                            <div class="btn btn-primary" @click="checkRepetition(false)">词组</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
 
             <div class="btn btn-primary center" @click="init">重新载入</div>
         </div>

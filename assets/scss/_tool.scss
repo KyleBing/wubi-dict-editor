@@ -30,23 +30,12 @@
   }
 }
 
-.size-list {
+.btn-list {
   width: 100%;
   display: flex;
   flex-flow: row wrap;
   justify-content: flex-start;
-
-  .size-item {
-    margin-right: 10px;
-  }
-}
-
-.seperator-list{
-  width: 100%;
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: flex-start;
-  .seperator-item{
+  .btn-item {
     margin-right: 10px;
   }
 }

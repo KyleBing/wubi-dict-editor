@@ -75,6 +75,10 @@ const app = {
             // 过滤移动到的文件列表，不显示正在显示的这个码表
             this.dropdownFileList = this.dropdownFileList.filter(item => item.path !== filename)
             this.dict = new DictOther(fileContent, filename, this.seperator, this.dictFormat)
+            this.tip = '载入完成'
+            setTimeout(()=>{
+                this.tip = ''
+            }, 2000)
             // 载入新码表时，清除 word 保存 code
             this.word = ''
             this.refreshShowingWords()
@@ -166,8 +170,8 @@ const app = {
             this.filterCharacterLength = parseInt(length)
             this.words = this.dict.getWordsLengthOf(length)
         },
-        checkRepetition(){
-            this.words = this.dict.getRepetitionWords()
+        checkRepetition(includeCharacter){
+            this.words = this.dict.getRepetitionWords(includeCharacter)
         },
 
         // 载入码表文件

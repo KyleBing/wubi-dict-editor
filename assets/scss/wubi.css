@@ -1131,8 +1131,7 @@ select option {
   color: #000;
 }
 .footer .tip {
-  font-weight: bold;
-  color: #4CD964;
+  color: #007AFF;
 }
 .footer .footer-toolbar {
   display: flex;
@@ -1453,23 +1452,13 @@ select option {
   font-size: 13px;
   margin-bottom: 10px;
 }
-.size-list {
+.btn-list {
   width: 100%;
   display: flex;
   flex-flow: row wrap;
   justify-content: flex-start;
 }
-.size-list .size-item {
-  margin-right: 10px;
-}
-
-.seperator-list {
-  width: 100%;
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: flex-start;
-}
-.seperator-list .seperator-item {
+.btn-list .btn-item {
   margin-right: 10px;
 }
 
