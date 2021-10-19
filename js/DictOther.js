@@ -47,28 +47,44 @@ class DictOther {
 
     // 查重，返回重复定义的字词
     // includeCharacter 当包含单字时
-    getRepetitionWords(includeCharacter){
+    getRepetitionWords(filterSingleCharacter){
         let startPoint = new Date().getTime()
         let wordMap = new Map()
         let repetitionWords = []
         this.wordsOrigin.forEach(word => {
-            if (includeCharacter){
+            if (filterSingleCharacter){
                 if (wordMap.has(word.word) && word.word.length === 1){
                     repetitionWords.push(word)
-                    repetitionWords.push(new Word(this.lastIndex++, wordMap.get(word.word), word.word))
+                    let matchedWord = wordMap.get(word.word)
+                    if (matchedWord) repetitionWords.push(matchedWord)
                 } else { // 如果 map 中没有这个词的记录，添加这个记录
-                    wordMap.set(word.word, word.code)
+                    wordMap.set(word.word, word)
                 }
             } else {
                 if (wordMap.has(word.word) && word.word.length > 1){ // 单字没必要查重，所以这里只搜索 2 个字以上的词
                     repetitionWords.push(word)
-                    repetitionWords.push(new Word(this.lastIndex++, wordMap.get(word.word), word.word))
+                    let matchedWord = wordMap.get(word.word)
+                    if (matchedWord) repetitionWords.push(matchedWord)
                 } else { // 如果 map 中没有这个词的记录，添加这个记录
-                    wordMap.set(word.word, word.code)
+                    wordMap.set(word.word, word)
                 }
             }
-
         })
+        // 排序后再去除重复项
+        repetitionWords.sort((a, b) => {
+            // log(a.word + a.code, b.word + b.code)
+            return (a.word + a.code) > (b.word + b.code)  ? 1 : -1
+        })
+        log('重复词条数量:未去重之前 ', repetitionWords.length)
+
+        for (let i = 0; i < repetitionWords.length - 1; i++) {
+            if (repetitionWords[i].id === repetitionWords[i + 1].id ) {
+                // TODO: 处理去重
+                log(repetitionWords[i].toString(), repetitionWords[i+1].toString())
+                // delete repetitionWords[i]
+                // i = i - 1
+            }
+        }
         log(`查重完成，用时 ${new Date().getTime() - startPoint} ms`)
         log('词条字典数量: ', wordMap.size)
         log('重复词条数量: ', repetitionWords.length)

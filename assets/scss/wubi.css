@@ -643,9 +643,12 @@
   text-align: center;
 }
 
-.btn {
+.btn-ellipsis {
   text-overflow: ellipsis;
   overflow: hidden;
+}
+
+.btn {
   font-size: 12px;
   color: inherit;
   line-height: 20px;

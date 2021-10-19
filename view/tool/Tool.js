@@ -50,12 +50,12 @@ const app = {
             config: {}, // 全局配置
 
             // 码表配置
-            seperator: ' ', // 分隔符
+            seperator: '\t', // 分隔符
             seperatorArray: [
                 {name: '空格', value: ' ',},
                 {name: 'Tab', value: '\t',}
             ], // 分隔符 数组
-            dictFormat: 'cww', // 码表格式默认值
+            dictFormat: 'wc', // 码表格式默认值
             dictFormatArray: [
                 {name: '一码多词', value: 'cww',},
                 {name: '一码一词', value: 'cw',},
@@ -157,6 +157,9 @@ const app = {
     },
 
     methods: {
+        checkRepetitionInOrder(characterMode){
+            this.words = this.dict.getRepetition(characterMode)
+        },
         // 根据码表的一些参数，重新载入当前文件
         reloadCurrentFile(){
             ipcRenderer.send('ToolWindow:loadFileContent', this.filePath)
@@ -254,17 +257,6 @@ const app = {
             }
         },
 
-        // GROUP OPERATION
-        // 添加新组
-        addGroupBeforeId(groupIndex){
-            this.dict.addGroupBeforeId(groupIndex)
-            this.refreshShowingWords()
-        },
-        deleteGroup(groupId){
-            this.dict.deleteGroup(groupId)
-            this.activeGroupId = - 1 // 不管删除哪个分组，之后都指向全部
-            this.refreshShowingWords()
-        },
         // 刷新 this.words
         refreshShowingWords(){
             this.chosenWordIds.clear()

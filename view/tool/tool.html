@@ -75,8 +75,8 @@
             <section>
                 <div class="title">载入码表文件</div>
                 <div class="content">
-                    <div v-if="dict.filename" @click="loadDictFile" class="btn btn-primary">{{ dict.filename}}</div>
-                    <div v-else @click="loadDictFile" class="btn btn-primary">选择码表文件</div>
+                    <div v-if="dict.filename" @click="loadDictFile" class="btn btn-ellipsis btn-primary">{{ dict.filename}}</div>
+                    <div v-else @click="loadDictFile" class="btn btn-ellipsis btn-primary">选择码表文件</div>
                 </div>
             </section>
 
@@ -150,6 +150,7 @@
                             <div class="code">{{ item.code }}</div>
                             <div class="word">{{ item.word }}</div>
                             <div v-if="item.priority" title="权重" class="priority">{{ item.priority }}</div>
+                            <div class="id">{{ index + 1 }}</div>
                             <div class="id">{{ item.id }}</div>
                             <div class="operation">
                                 <div class="up" @click.stop="moveUp(item.id)">

@@ -36,9 +36,11 @@ $btns: (
         'gray'    : $gray,
 );
 
-.btn{
+.btn-ellipsis{
   text-overflow: ellipsis;
   overflow: hidden;
+}
+.btn{
   font-size: $fz-button;
   color: inherit;
   line-height: $height-btn - $btn-padding-tb * 2;
