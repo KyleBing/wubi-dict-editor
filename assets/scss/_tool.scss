@@ -20,9 +20,10 @@
   section{
     margin-bottom: 20px;
     .title{
-      font-size: $fz-list;
+      font-size: $fz-button;
       margin-bottom: 10px;
-
+      font-weight: bold;
+      color: $text-main;
     }
     .content {
 

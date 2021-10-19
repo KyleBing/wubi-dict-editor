@@ -1056,6 +1056,12 @@ input[type=radio]:checked + label.radio:after {
   margin-right: 5px;
 }
 
+.notice {
+  margin-left: 20px;
+  font-size: 11px;
+  color: #848484;
+}
+
 .input-item {
   position: relative;
 }
@@ -1451,8 +1457,10 @@ select option {
   margin-bottom: 20px;
 }
 .tool-panel section .title {
-  font-size: 13px;
+  font-size: 12px;
   margin-bottom: 10px;
+  font-weight: bold;
+  color: #000;
 }
 .btn-list {
   width: 100%;

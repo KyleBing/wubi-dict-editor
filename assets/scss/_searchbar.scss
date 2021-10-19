@@ -16,6 +16,12 @@
     margin-right: 5px;
   }
 }
+$fz-notice: 11px;
+.notice{
+  margin-left: 20px;
+  font-size: $fz-notice;
+  color: $text-subtitle;
+}
 
 $height-clear: 16px;
 
