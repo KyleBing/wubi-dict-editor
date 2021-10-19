@@ -188,13 +188,13 @@ class DictOther {
         this.wordsOrigin = this.wordsOrigin.filter(item => !wordIdSet.has(item.id))
     }
 
-    // 转为 yaml String
-    toYamlString(){
-        let yamlBody = ''
+    // 转为 String
+    toString(){
+        let fileContentString = ''
         this.wordsOrigin.forEach(item =>{
-            yamlBody = yamlBody + item.toString() + os.EOL
+            fileContentString = fileContentString + item.toString() + os.EOL
         })
-        return yamlBody
+        return fileContentString
     }
 
 

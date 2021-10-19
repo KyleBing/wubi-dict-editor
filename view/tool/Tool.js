@@ -323,9 +323,9 @@ const app = {
         },
 
         // 保存内容到文件
-        saveToFile(dict){
-            log(dict.filename)
-            ipcRenderer.send('ToolWindow:saveFile', dict.filename, dict.toYamlString())
+        saveToFile(){
+            log('保存文件路径： ', this.filePath)
+            ipcRenderer.send('ToolWindow:SaveFile', this.filePath, this.dict.toString())
         },
         // 选中全部展示的词条
         selectAll(){

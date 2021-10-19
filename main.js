@@ -169,8 +169,8 @@ function showToolWindow (){
 
 
     // 保存词库到文件
-    ipcMain.on('ToolWindow:saveFile', (event, filename, yamlString) => {
-        fs.writeFile(path.join(getRimeConfigDir(), filename), yamlString, {encoding: "utf8"}, err => {
+    ipcMain.on('ToolWindow:SaveFile', (event, filePath, fileConentString) => {
+        fs.writeFile(filePath, fileConentString, {encoding: "utf8"}, err => {
             if (!err){
                 log('saveFileSuccess')
                 // applyRime() // 布署
