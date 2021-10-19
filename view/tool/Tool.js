@@ -34,6 +34,9 @@ const app = {
             chosenWordIdArray: [], // 对应上面的 set 内容
             lastChosenWordId: null, // 最后一次选中的 id
 
+            filePath: '', // 选择的文件路径
+            fileName: '', // 选择的文件名
+
 
             targetDict: {}, // 要移动到的码表
             showDropdown: false, // 显示移动词条窗口
@@ -101,9 +104,6 @@ const app = {
             this.dropdownFileList = fileList
         })
 
-        // 广播：载入 origin 文件的信号
-        ipcRenderer.send('ToolWindow:loadOriginFile')
-
         // 载入目标码表
         ipcRenderer.on('setTargetDict', (event, filename, res) => {
             this.targetDict = new Dict(res, filename)
@@ -154,7 +154,7 @@ const app = {
 
     methods: {
         // 根据码表的一些参数，重新载入当前文件
-        init(){
+        reloadCurrentFile(){
             ipcRenderer.send('ToolWindow:loadOriginFile')
         },
         // 改变分隔符
@@ -176,7 +176,7 @@ const app = {
 
         // 载入码表文件
         loadDictFile(){
-
+            ipcRenderer.send('ToolWindow:chooseDictFile')
         },
         // 词条选择操作
         select(wordId, event){

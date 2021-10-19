@@ -37,6 +37,7 @@ function createWindow() {
     mainWindow.on('closed', function () {
         mainWindow = null
         if (configWindow) configWindow.close()
+        if (toolWindow) toolWindow.close()
     })
 
 
@@ -54,12 +55,12 @@ function createWindow() {
     // 监听 window 的文件载入请求
     ipcMain.on('loadInitDictFile', event => {
         let config = readConfigFile()
-        readFile(config.initFileName)
+        readFileFromConfigDir(config.initFileName)
     })
 
     // 监听载入主文件内容的请求
     ipcMain.on('loadDictFile', (event,filename) => {
-        readFile(filename)
+        readFileFromConfigDir(filename)
     })
 
     // 监听载入次文件内容的请求
@@ -141,12 +142,28 @@ function showToolWindow (){
         toolWindow = null
     })
 
+
     // config 相关
     // 载入配置文件内容
     ipcMain.on('requestConfigFile', event => {
         let config = readConfigFile() // 没有配置文件时，返回 false
         if (config){ // 如果有配置文件
             toolWindow.send('responseConfigFile', config) // 向窗口发送 config 内容
+        }
+    })
+
+
+    // 选取码表文件目录
+    ipcMain.on('ToolWindow:chooseDictFile', event => {
+        let dictFilePath = dialog.showOpenDialogSync(toolWindow,{
+            filters: [
+                { name: 'Text', extensions: ['text', 'txt', 'yaml'] },
+            ],
+            properties: ['openFile'] // 选择文件
+        })
+        console.log(dictFilePath)
+        if (dictFilePath){
+            readFileFromDisk(dictFilePath[0], toolWindow)
         }
     })
 
@@ -164,7 +181,7 @@ function showToolWindow (){
 
     // 监听 window 的文件载入请求
     ipcMain.on('ToolWindow:loadOriginFile', event => {
-        readFile('origin.txt', toolWindow)
+        readFileFromConfigDir('origin.txt', toolWindow)
     })
 
     // 外部打开当前码表文件
@@ -305,10 +322,26 @@ app.on('activate', function () {
     }
 })
 
-// 读取文件
-function readFile(fileName, responseWindow){
+// 读取文件 从配置文件目录
+function readFileFromConfigDir(fileName, responseWindow){
     let rimeHomeDir = getRimeConfigDir()
     fs.readFile(path.join(rimeHomeDir, fileName), {encoding: 'utf-8'}, (err, res) => {
+        if(err){
+            log(err)
+        } else {
+            if(responseWindow){
+                responseWindow.send('showFileContent', fileName ,res)
+            } else {
+                mainWindow.webContents.send('showFileContent', fileName ,res)
+            }
+        }
+    })
+}
+
+// 读取文件 从硬盘
+function readFileFromDisk(filePath, responseWindow){
+    let fileName = path.basename(filePath) // 获取文件名
+    fs.readFile(filePath, {encoding: 'utf-8'}, (err, res) => {
         if(err){
             log(err)
         } else {
@@ -459,7 +492,7 @@ function setRimeFolderMenu(){
                     label: item.name,
                     click(sender, window, content) {
                         window.title = sender.label // 点击对应菜单时，显示当前编辑词库的名字
-                        readFile(item.path)
+                        readFileFromConfigDir(item.path)
                     }
                 },)
             })
