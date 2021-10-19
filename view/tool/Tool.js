@@ -370,7 +370,6 @@ const app = {
             this.refreshShowingWords()
             this.chosenWordIds.clear() // 清空选中 wordID
             this.chosenWordIdArray = []
-            if(this.config.autoDeployOnDelete){ this.saveToFile(this.dict) }
         },
 
         // 词条位置移动
