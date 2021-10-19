@@ -147,7 +147,7 @@ function showToolWindow (){
     // 载入配置文件内容
     ipcMain.on('requestConfigFile', event => {
         let config = readConfigFile() // 没有配置文件时，返回 false
-        if (config){ // 如果有配置文件
+        if (config && toolWindow){ // 如果有配置文件
             toolWindow.send('responseConfigFile', config) // 向窗口发送 config 内容
         }
     })
