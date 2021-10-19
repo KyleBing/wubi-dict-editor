@@ -1,6 +1,7 @@
 const {shakeDom, shakeDomFocus, log} = require('../../js/Utility')
 const {IS_IN_DEVELOP} = require('../../js/Global')
 
+const Dict = require('../../js/Dict')
 const DictOther = require('../../js/DictOther')
 const Word = require('../../js/Word')
 const Vue  = require('../../node_modules/vue/dist/vue.common.dev')
@@ -101,14 +102,14 @@ const app = {
         })
 
         // 由 window 触发获取文件目录的请求，不然无法实现适时的获取到 主进程返回的数据
-        ipcRenderer.send('GetFileList')
-        ipcRenderer.on('FileList', (event, fileList) => {
+        ipcRenderer.on('ToolWindow:FileList', (event, fileList) => {
             log(fileList)
             this.dropdownFileList = fileList
         })
+        ipcRenderer.send('ToolWindow:GetFileList')
 
         // 载入目标码表
-        ipcRenderer.on('setTargetDict', (event, filename, res) => {
+        ipcRenderer.on('ToolWindow:SetTargetDict', (event, filename, res) => {
             this.targetDict = new Dict(res, filename)
         })
 
@@ -219,7 +220,7 @@ const app = {
             this.dropdownActiveFileIndex = fileIndex
             this.dropdownActiveGroupIndex = -1 // 切换文件列表时，复位分组 fileIndex
             // this.dictSecond = {} // 立即清空次码表，分组列表也会立即消失，不会等下面的码表加载完成再清空
-            ipcRenderer.send('loadSecondDict', this.dropdownFileList[fileIndex].path) // 载入当前 index 的文件内容
+            ipcRenderer.send('ToolWindow:LoadTargetDict', this.dropdownFileList[fileIndex].path) // 载入当前 index 的文件内容
         },
         sort(){
             this.words.sort((a,b) => a.code < b.code ? -1: 1)

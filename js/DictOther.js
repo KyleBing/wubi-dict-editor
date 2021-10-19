@@ -1,6 +1,5 @@
 // 其它字典对象
 const Word = require("./Word")
-const WordGroup = require("./WordGroup")
 const {shakeDom, log, shakeDomFocus} = require('./Utility')
 
 const os = require('os')
@@ -10,9 +9,6 @@ class DictOther {
         this.filename = filename // 文件路径
         this.wordsOrigin = [] // 文件词条数组
         this.lastIndex = 0 // 最后一个 Index 的值，用于新添加词时，作为唯一的 id 传入
-        this.lastGroupIndex = 0 // 最后一个WordGroup Index 的值，用于新添加词时，作为唯一的 id 传入
-        this.isGroupMode = false // 识别码表是否为分组形式的
-
         this.seperator = seperator ||' ' // 默认间隔符为空格
         this.dictFormat = dictFormat || 'cww' // 码表格式： 一码多词什么的 cww: 一码多词 | wc: 一词一码 | cw: 一码一词
 
@@ -22,15 +18,7 @@ class DictOther {
     }
     // 总的词条数量
     get countDictOrigin(){
-        if (this.isGroupMode){
-            let countOrigin = 0
-            this.wordsOrigin.forEach(group => {
-                countOrigin = countOrigin + group.dict.length
-            })
-            return countOrigin
-        } else {
-            return this.wordsOrigin.length
-        }
+        return this.wordsOrigin.length
     }
 
     // 设置 seperator
@@ -108,7 +96,7 @@ class DictOther {
                 }
             })
          })
-        log(`处理文件完成，共：${words.length } ${this.isGroupMode? '组': '条'}，用时 ${new Date().getTime() - startPoint} ms`)
+        log(`处理文件完成，共：${words.length } 条，用时 ${new Date().getTime() - startPoint} ms`)
         return words
     }
     decodeWord(word){
@@ -161,24 +149,19 @@ class DictOther {
     /**
      * 添加新 Word
      * @param word Word
-     * @param groupIndex Number
      */
-    addNewWord(word, groupIndex){
+    addNewWord(word){
         log('TODO: 确定插入的位置')
         this.wordsOrigin.push(word)
         this.lastIndex = this.lastIndex + 1 // 新加的词添加后， lastIndex + 1
     }
 
     // 依次序添加 words
-    addWordsInOrder(words, groupIndex){
+    addWordsInOrder(words){
         let startPoint = new Date().getTime()
-        if (this.isGroupMode && groupIndex !== -1){
-            this.addWordToDictWithGroup(words, groupIndex)
-        } else {
-            words.forEach(word => {
-                this.addWordToDict(word)
-            })
-        }
+        words.forEach(word => {
+            this.addWordToDict(word)
+        })
         log(`添加 ${words.length } 条词条到指定码表, 用时 ${new Date().getTime() - startPoint} ms`)
     }
 
@@ -200,62 +183,18 @@ class DictOther {
     }
 
 
-    // 依次序添加 word groupMode
-    addWordToDictWithGroup(words, groupIndex){
-        let dictWords = this.wordsOrigin[groupIndex].dict
-        log('TODO: add to group')
-        words.forEach(word => {
-            let insetPosition = null // 插入位置 index
-            for (let i=0; i<dictWords.length-1; i++){ // -1 为了避免下面 i+1 为 undefined
-                if (word.code >= dictWords[i]  && word.code <= dictWords[i+1].code){
-                    insetPosition = i + 1
-                    break
-                }
-            }
-            if (!insetPosition){  // 没有匹配到任何位置，添加到结尾
-                insetPosition = dictWords.length
-            }
-            let wordInsert = word.clone() // 断开与别一个 dict 的引用链接，新建一个 word 对象，不然两个 dict 引用同一个 word
-            wordInsert.id = dictWords.length + 1 // 给新的 words 一个新的唯一 id
-            dictWords.splice(insetPosition, 0, wordInsert)
-        })
-    }
-
-
     // 删除词条
     deleteWords(wordIdSet){
         this.wordsOrigin = this.wordsOrigin.filter(item => !wordIdSet.has(item.id))
     }
 
-    addGroupBeforeId(groupIndex){
-        this.wordsOrigin.splice(groupIndex,0,new WordGroup(this.lastGroupIndex++,'',[],true))
-    }
-
-    // 分组模式：删除分组
-    deleteGroup(groupId){
-        log('要删除的分组 id: ',groupId)
-        this.wordsOrigin = this.wordsOrigin.filter(group => group.id !== groupId)
-    }
     // 转为 yaml String
     toYamlString(){
         let yamlBody = ''
-        if (this.isGroupMode){
-            this.wordsOrigin.forEach(group => {
-                let tempGroupString = ''
-                tempGroupString = tempGroupString + `## ${group.groupName}${os.EOL}` // + groupName
-                group.dict.forEach(item =>{
-                    tempGroupString = tempGroupString + item.toString() + os.EOL
-                })
-                yamlBody = yamlBody + tempGroupString + os.EOL // 每组的末尾加个空行
-            })
-            return yamlBody
-        } else {
-            let yamlBody = ''
-            this.wordsOrigin.forEach(item =>{
-                yamlBody = yamlBody + item.toString() + os.EOL
-            })
-            return yamlBody
-        }
+        this.wordsOrigin.forEach(item =>{
+            yamlBody = yamlBody + item.toString() + os.EOL
+        })
+        return yamlBody
     }
 
 

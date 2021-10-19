@@ -192,6 +192,21 @@ function showToolWindow (){
             log(err)
         })
     })
+
+    ipcMain.on('ToolWindow:GetFileList', event => {
+        toolWindow.send('ToolWindow:FileList', fileList)
+    })
+
+    // 监听载入次文件内容的请求
+    ipcMain.on('ToolWindow:LoadTargetDict', (event, filename) => {
+        fs.readFile(path.join(getRimeConfigDir(), filename), {encoding: 'utf-8'}, (err, res) => {
+            if(err){
+                log(err)
+            } else {
+                toolWindow.webContents.send('ToolWindow:SetTargetDict',filename ,res)
+            }
+        })
+    })
 }
 
 
