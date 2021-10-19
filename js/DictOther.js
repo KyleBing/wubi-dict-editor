@@ -93,9 +93,9 @@ class DictOther {
         let startPoint = new Date().getTime()
         let lines = fileContent.split(os.EOL) // 拆分词条与编码成单行
         this.lastIndex = lines.length
-        let linesValid = lines.filter(item => item.indexOf(this.seperator) > -1) // 选取包含 \t 的行
+        let linesValid = lines.filter(item => item.indexOf(this.seperator) > -1) // 选取包含分隔符的行
         let words = []
-        log(linesValid.length)
+        log('正常词条的行数：',linesValid.length)
         linesValid.forEach(item => {
             let currentWords = this.getWordsFromLine(item)
             words.push(...currentWords) // 拼接词组
@@ -108,7 +108,7 @@ class DictOther {
                 }
             })
          })
-        log(`处理文件：完成，共：${words.length } ${this.isGroupMode? '组': '条'}，用时 ${new Date().getTime() - startPoint} ms`)
+        log(`处理文件完成，共：${words.length } ${this.isGroupMode? '组': '条'}，用时 ${new Date().getTime() - startPoint} ms`)
         return words
     }
     decodeWord(word){
@@ -164,17 +164,8 @@ class DictOther {
      * @param groupIndex Number
      */
     addNewWord(word, groupIndex){
-        if(this.isGroupMode){
-            if (groupIndex !== -1){
-                this.wordsOrigin[groupIndex].dict.push(word)
-            } else {
-                let newWordGroup = new WordGroup(this.lastGroupIndex++,'- 未命名 -',[word])
-                this.wordsOrigin.unshift(newWordGroup) // 添加到第一组
-            }
-        } else {
-            log('TODO: 确定插入的位置')
-            this.wordsOrigin.push(word)
-        }
+        log('TODO: 确定插入的位置')
+        this.wordsOrigin.push(word)
         this.lastIndex = this.lastIndex + 1 // 新加的词添加后， lastIndex + 1
     }
 

@@ -74,10 +74,13 @@ const app = {
     mounted() {
         this.heightContent = innerHeight - 47 - 20 - 10
         // 载入主要操作码表文件
-        ipcRenderer.on('showFileContent', (event, filename, fileContent) => {
+        ipcRenderer.on('showFileContent', (event, filePath, fileName, fileContent) => {
             // 过滤移动到的文件列表，不显示正在显示的这个码表
-            this.dropdownFileList = this.dropdownFileList.filter(item => item.path !== filename)
-            this.dict = new DictOther(fileContent, filename, this.seperator, this.dictFormat)
+            this.dropdownFileList = this.dropdownFileList.filter(item => item.path !== fileName)
+
+            this.filePath = filePath
+            this.fileName = fileName
+            this.dict = new DictOther(fileContent, fileName, this.seperator, this.dictFormat)
             this.tip = '载入完成'
             setTimeout(()=>{
                 this.tip = ''
@@ -155,7 +158,7 @@ const app = {
     methods: {
         // 根据码表的一些参数，重新载入当前文件
         reloadCurrentFile(){
-            ipcRenderer.send('ToolWindow:loadOriginFile')
+            ipcRenderer.send('ToolWindow:loadFileContent', this.filePath)
         },
         // 改变分隔符
         changeSeperator(seperator){
@@ -559,10 +562,6 @@ const app = {
         openCurrentYaml(){
             ipcRenderer.send('openFileOutside', this.dict.filename)
         },
-        // 重新载入当前码表
-        reloadCurrentDict(){
-            ipcRenderer.send('loadDictFile', this.dict.filename)
-        }
     },
     watch: {
         code(newValue){

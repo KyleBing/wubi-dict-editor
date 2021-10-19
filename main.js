@@ -180,8 +180,8 @@ function showToolWindow (){
     })
 
     // 监听 window 的文件载入请求
-    ipcMain.on('ToolWindow:loadOriginFile', event => {
-        readFileFromConfigDir('origin.txt', toolWindow)
+    ipcMain.on('ToolWindow:loadFileContent', (event, filePath) => {
+        readFileFromDisk( filePath, toolWindow)
     })
 
     // 外部打开当前码表文件
@@ -193,6 +193,20 @@ function showToolWindow (){
         })
     })
 }
+
+
+// 读取文件 从硬盘
+function readFileFromDisk(filePath, responseWindow){
+    let fileName = path.basename(filePath) // 获取文件名
+    fs.readFile(filePath, {encoding: 'utf-8'}, (err, res) => {
+        if(err){
+            log(err)
+        } else {
+            responseWindow.send('showFileContent', filePath, fileName ,res)
+        }
+    })
+}
+
 
 
 let configWindow
@@ -338,21 +352,6 @@ function readFileFromConfigDir(fileName, responseWindow){
     })
 }
 
-// 读取文件 从硬盘
-function readFileFromDisk(filePath, responseWindow){
-    let fileName = path.basename(filePath) // 获取文件名
-    fs.readFile(filePath, {encoding: 'utf-8'}, (err, res) => {
-        if(err){
-            log(err)
-        } else {
-            if(responseWindow){
-                responseWindow.send('showFileContent', fileName ,res)
-            } else {
-                mainWindow.webContents.send('showFileContent', fileName ,res)
-            }
-        }
-    })
-}
 
 // 匹配文件名，返回对应文件的名字
 function getLabelNameFromFileName(fileName){

@@ -75,7 +75,7 @@
             <section>
                 <div class="title">载入码表文件</div>
                 <div class="content">
-                    <div v-if="dict.filename" @click="loadDictFile" class="btn btn-blue">{{ dict.filename}}</div>
+                    <div v-if="dict.filename" @click="loadDictFile" class="btn btn-primary">{{ dict.filename}}</div>
                     <div v-else @click="loadDictFile" class="btn btn-primary">选择码表文件</div>
                 </div>
             </section>
@@ -125,8 +125,7 @@
                 </div>
             </section>
 
-
-            <div class="btn btn-primary center" @click="reloadCurrentFile">重新载入</div>
+            <div class="btn btn-primary center" @click="">重新载入</div>
         </div>
 
         <div class="list-container">
@@ -173,7 +172,7 @@
             <div class="link-list">
                 <div class="link" ref="domBtnSelectAll" @click="selectAll">全选</div>
                 <div class="link" @click="resetInputs">清选</div>
-                <div class="link" @click="reloadCurrentDict">重载码表</div>
+                <div class="link" @click="reloadCurrentFile">重载码表</div>
                 <div class="link" @click="sort">排序</div>
                 <div class="link origin" @click="openCurrentYaml">{{ dict.filename }}</div>
             </div>
