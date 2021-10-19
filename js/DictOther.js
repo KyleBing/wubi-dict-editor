@@ -70,9 +70,9 @@ class DictOther {
 
         })
         log(`查重完成，用时 ${new Date().getTime() - startPoint} ms`)
-        log('WordMap count: ', wordMap.size)
-        log('RepetitionWord count: ', repetitionWords.length)
-        log('RepetitionWord + WordMap = ', repetitionWords.length + wordMap.size)
+        log('词条字典数量: ', wordMap.size)
+        log('重复词条数量: ', repetitionWords.length)
+        log('重复 + 词条字典 = ', repetitionWords.length + wordMap.size)
         return repetitionWords
     }
 
