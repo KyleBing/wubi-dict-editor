@@ -23,12 +23,12 @@ hr{
 .tool-panel{
   margin-top: 1px;
   background-color: $bg-panel-tool;
-  padding: 15px;
+  padding: 10px 15px;
   section{
     margin-bottom: 15px;
     .title{
       font-size: $fz-button;
-      margin-bottom: 10px;
+      margin-bottom: 7px;
       font-weight: bold;
       color: $text-tool-title;
     }
@@ -38,7 +38,9 @@ hr{
   }
 }
 
+
 .load-list{
+  align-items: center;
   display: flex;
   flex-flow: row nowrap;
   .btn-load{

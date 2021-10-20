@@ -64,8 +64,9 @@
          :style="`height: ${heightContent}px`"
          class="container tool-container">
         <div class="tool-panel">
+
+
             <section>
-                <div class="title">载入码表文件</div>
                 <div class="content">
                     <div class="load-list">
                         <div class="btn btn-ellipsis btn-primary btn-load" v-if="dict.filename" @click="loadDictFile" >{{ dict.filename}}</div>
@@ -96,7 +97,7 @@
             </section>
 
             <section>
-                <div class="title">码表间隔符</div>
+                <div class="title">码表分隔符</div>
                 <div class="content">
                     <div class="btn-list">
                         <div class="btn-item" v-for="item in seperatorArray" :key="item.name">

@@ -312,12 +312,19 @@ const app = {
 
         // 保存内容到文件
         saveToFile(){
-            log('保存文件路径： ', this.filePath)
-            ipcRenderer.send('ToolWindow:SaveFile', this.filePath, this.dict.toExportString(this.seperatorSave, this.dictFormatSave))
+            if (this.dict.lastIndex <= 1){ // 以 dict 的 lastIndex 作为判断有没有加载码表的依据
+                log('保存文件路径： ', this.filePath)
+                ipcRenderer.send(
+                    'ToolWindow:SaveFile',
+                    this.filePath,
+                    this.dict.toExportString(this.seperatorSave, this.dictFormatSave))
+            } else {
+                log('未加载任何码表文件')
+            }
         },
         // 选中全部展示的词条
         selectAll(){
-            if(this.wordsCount < 100000){
+            if(this.wordsCount < 100000){ // 最多同时选择 10w 条数据
                 if (this.dict.isGroupMode){
                     this.chosenWordIds.clear()
                     this.chosenWordIdArray = []

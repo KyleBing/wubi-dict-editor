@@ -114,8 +114,8 @@ function createWindow() {
 
 let toolWindow
 function showToolWindow (){
-    let width = IS_IN_DEVELOP ? 1600: 1000
-    let height = IS_IN_DEVELOP ? 700: 700
+    let width = IS_IN_DEVELOP ? 1400: 1000
+    let height = IS_IN_DEVELOP ? 600: 600
     toolWindow = new BrowserWindow({
         width,
         height,
