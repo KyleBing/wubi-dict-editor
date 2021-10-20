@@ -89,6 +89,7 @@ class DictOther {
         log('词条字典数量: ', wordMap.size)
         log('重复词条数量: ', repetitionWords.length)
         log('重复 + 词条字典 = ', repetitionWords.length + wordMap.size)
+        repetitionWords.forEach(item => log( item.toString()))
         return repetitionWords
     }
 
@@ -205,10 +206,10 @@ class DictOther {
     }
 
     // 转为 String
-    toString(){
+    toYamlString(){
         let fileContentString = ''
         this.wordsOrigin.forEach(item =>{
-            fileContentString = fileContentString + item.toString() + os.EOL
+            fileContentString = fileContentString + item.toYamlString() + os.EOL
         })
         return fileContentString
     }

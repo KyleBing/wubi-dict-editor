@@ -14,6 +14,9 @@ class Word{
         this.priority = priority || null
     }
     toString(){
+        return this.id + '\t' + this.word + '\t' + this.code + '\t' + this.priority
+    }
+    toYamlString(){
         return this.word + '\t' + this.code
     }
     // 复制一个对象

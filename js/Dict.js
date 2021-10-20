@@ -272,7 +272,7 @@ class Dict {
                 let tempGroupString = ''
                 tempGroupString = tempGroupString + `## ${group.groupName}${os.EOL}` // + groupName
                 group.dict.forEach(item =>{
-                    tempGroupString = tempGroupString + item.toString() + os.EOL
+                    tempGroupString = tempGroupString + item.toYamlString() + os.EOL
                 })
                 yamlBody = yamlBody + tempGroupString + os.EOL // 每组的末尾加个空行
             })
@@ -280,7 +280,7 @@ class Dict {
         } else {
             let yamlBody = ''
             this.wordsOrigin.forEach(item =>{
-                yamlBody = yamlBody + item.toString() + os.EOL
+                yamlBody = yamlBody + item.toYamlString() + os.EOL
             })
             return this.header + os.EOL + yamlBody
         }

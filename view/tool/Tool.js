@@ -73,6 +73,8 @@ const app = {
         }
     },
     mounted() {
+        if(IS_IN_DEVELOP) this.filePath = 'C:\\Users\\Administrator\\AppData\\Roaming\\Rime\\origin.txt'
+
         this.heightContent = innerHeight - 47 - 20 - 10
         // 载入主要操作码表文件
         ipcRenderer.on('showFileContent', (event, filePath, fileName, fileContent) => {
@@ -317,7 +319,7 @@ const app = {
         // 保存内容到文件
         saveToFile(){
             log('保存文件路径： ', this.filePath)
-            ipcRenderer.send('ToolWindow:SaveFile', this.filePath, this.dict.toString())
+            ipcRenderer.send('ToolWindow:SaveFile', this.filePath, this.dict.toYamlString())
         },
         // 选中全部展示的词条
         selectAll(){
