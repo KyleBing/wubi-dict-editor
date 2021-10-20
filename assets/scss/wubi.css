@@ -1453,26 +1453,48 @@ select option {
   padding: 0 5px 0 10px;
 }
 
+hr {
+  margin: 10px 0;
+  border-bottom: 1px solid #eee;
+}
+
 .tool-panel {
   padding: 15px;
 }
 .tool-panel section {
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 }
 .tool-panel section .title {
   font-size: 12px;
   margin-bottom: 10px;
   font-weight: bold;
-  color: #000;
+  color: #383f4a;
 }
+.load-list {
+  display: flex;
+  flex-flow: row nowrap;
+}
+.load-list .btn-load {
+  flex-grow: 1;
+}
+.load-list .btn-reload {
+  margin-left: 10px;
+  flex-shrink: 0;
+  width: 80px;
+}
+
 .btn-list {
   width: 100%;
   display: flex;
   flex-flow: row wrap;
   justify-content: flex-start;
+  margin-bottom: 10px;
 }
 .btn-list .btn-item {
   margin-right: 10px;
+}
+.btn-list:last-child {
+  margin-bottom: 0;
 }
 
 .dark-mode ::-webkit-scrollbar-track {

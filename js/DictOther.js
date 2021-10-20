@@ -79,7 +79,6 @@ class DictOther {
 
         for (let i = 0; i < repetitionWords.length - 1; i++) {
             if (repetitionWords[i].id === repetitionWords[i + 1].id ) {
-                log(repetitionWords[i].toString(), repetitionWords[i+1].toString())
                 repetitionWords.splice(i,1)
                 i = i - 1
             }
@@ -88,7 +87,6 @@ class DictOther {
         log('词条字典数量: ', wordMap.size)
         log('重复词条数量: ', repetitionWords.length)
         log('重复 + 词条字典 = ', repetitionWords.length + wordMap.size)
-        repetitionWords.forEach(item => log( item.toString()))
         return repetitionWords
     }
 

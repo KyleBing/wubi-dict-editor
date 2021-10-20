@@ -50,12 +50,14 @@ const app = {
             config: {}, // 全局配置
 
             // 码表配置
-            seperator: '\t', // 分隔符
+            seperatorRead: '\t', // 分隔符
+            seperatorSave: '\t', // 分隔符
             seperatorArray: [
                 {name: '空格', value: ' ',},
                 {name: 'Tab', value: '\t',}
             ], // 分隔符 数组
-            dictFormat: 'wc', // 码表格式默认值
+            dictFormatRead: 'wc', // 码表格式默认值
+            dictFormatSave: 'wc', // 码表格式默认值
             dictFormatArray: [
                 {name: '一码多词', value: 'cww',},
                 {name: '一码一词', value: 'cw',},
@@ -83,7 +85,7 @@ const app = {
 
             this.filePath = filePath
             this.fileName = fileName
-            this.dict = new DictOther(fileContent, fileName, this.seperator, this.dictFormat)
+            this.dict = new DictOther(fileContent, fileName, this.seperatorRead, this.dictFormatRead)
             this.tip = '载入完成'
             setTimeout(()=>{
                 this.tip = ''
@@ -168,11 +170,11 @@ const app = {
         },
         // 改变分隔符
         changeSeperator(seperator){
-            this.seperator = seperator
+            this.seperatorRead = seperator
         },
         // 改变码表格式
         changeDictFormat(dictFormat){
-            this.dictFormat = dictFormat
+            this.dictFormatRead = dictFormat
         },
         // 筛选词条字数
         changeFilterWordLength(length){

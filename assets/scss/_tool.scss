@@ -15,19 +15,37 @@
   }
 }
 
+hr{
+  margin: 10px 0;
+  border-bottom: 1px solid $color-border;
+}
+
 .tool-panel{
   padding: 15px;
   section{
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     .title{
       font-size: $fz-button;
       margin-bottom: 10px;
       font-weight: bold;
-      color: $text-main;
+      color: $text-tool-title;
     }
     .content {
 
     }
+  }
+}
+
+.load-list{
+  display: flex;
+  flex-flow: row nowrap;
+  .btn-load{
+    flex-grow: 1;
+  }
+  .btn-reload{
+    margin-left: 10px;
+    flex-shrink: 0;
+    width: 80px;
   }
 }
 
@@ -36,7 +54,11 @@
   display: flex;
   flex-flow: row wrap;
   justify-content: flex-start;
+  margin-bottom: 10px;
   .btn-item {
     margin-right: 10px;
+  }
+  &:last-child{
+    margin-bottom: 0;
   }
 }

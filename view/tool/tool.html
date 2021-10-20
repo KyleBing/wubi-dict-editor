@@ -10,14 +10,6 @@
 
 <div v-cloak id="app">
     <div class="search-bar" v-if="dict">
-        <div
-            :class="[
-                'btn',
-                {'btn-green': labelOfSaveBtn === '保存成功'},
-                {'btn-primary': labelOfSaveBtn !== '保存成功'} ]"
-            ref="domBtnSave"
-            @click="saveToFile">{{ labelOfSaveBtn }}
-        </div>
         <div class="dropdown">
             <div class="dropdown-link btn btn-blue" v-show="chosenWordIdArray.length > 0" @click.capture="showDropdown = !showDropdown">移动到...            </div>
             <div class="dropdown-body" v-show="showDropdown">
@@ -59,7 +51,7 @@
         <div class="btn btn-primary" @click="addNewWord">添加</div>
         <div class="btn btn-primary" @click="search">搜索</div>
         <div class="btn btn-roseo" v-show="chosenWordIdArray.length > 0" @click="deleteWords">删除</div>
-        <p class="notice">显示格式：编码 - 词条</p>
+        <p class="notice">显示格式：编码 - 词条 - 序号 - id</p>
 
         <template v-if="IS_IN_DEVELOP">
 
@@ -75,8 +67,11 @@
             <section>
                 <div class="title">载入码表文件</div>
                 <div class="content">
-                    <div v-if="dict.filename" @click="loadDictFile" class="btn btn-ellipsis btn-primary">{{ dict.filename}}</div>
-                    <div v-else @click="loadDictFile" class="btn btn-ellipsis btn-primary">选择码表文件</div>
+                    <div class="load-list">
+                        <div class="btn btn-ellipsis btn-primary btn-load" v-if="dict.filename" @click="loadDictFile" >{{ dict.filename}}</div>
+                        <div class="btn btn-ellipsis btn-primary btn-load" v-else @click="loadDictFile" >选择码表文件</div>
+                        <div class="btn btn-primary center btn-reload" @click="reloadCurrentFile">重新载入</div>
+                    </div>
                 </div>
             </section>
 
@@ -85,7 +80,7 @@
                 <div class="content">
                     <div class="btn-list">
                         <div class="btn-item" v-for="item in dictFormatArray" :key="item.name">
-                            <div :class="['btn btn-primary', {'btn-orange': dictFormat === item.value}]" @click="changeDictFormat(item.value)">{{item.name}}</div>
+                            <div :class="['btn btn-primary', {'btn-blue': dictFormatRead === item.value}]" @click="changeDictFormat(item.value)">{{item.name}}</div>
                         </div>
                     </div>
                 </div>
@@ -95,7 +90,7 @@
                 <div class="title">字数筛选</div>
                 <div class="content btn-list">
                     <div class="btn-item" v-for="item in filterCharacterLengthArray" :key="item.name">
-                        <div @click="changeFilterWordLength(item.value)" :class="['btn btn-primary', {'btn-green': filterCharacterLength === item.value}]">{{ item.name }}</div>
+                        <div @click="changeFilterWordLength(item.value)" :class="['btn btn-primary', {'btn-blue': filterCharacterLength === item.value}]">{{ item.name }}</div>
                     </div>
                 </div>
             </section>
@@ -105,7 +100,7 @@
                 <div class="content">
                     <div class="btn-list">
                         <div class="btn-item" v-for="item in seperatorArray" :key="item.name">
-                            <div :class="['btn btn-primary', {'btn-red': seperator === item.value}]" @click="changeSeperator(item.value)">{{item.name}}</div>
+                            <div :class="['btn btn-primary', {'btn-blue': seperatorRead === item.value}]" @click="changeSeperator(item.value)">{{item.name}}</div>
                         </div>
                     </div>
                 </div>
@@ -125,10 +120,31 @@
                 </div>
             </section>
 
-            <section>
-                <div class="btn btn-primary center" @click="reloadCurrentFile">重新载入</div>
-            </section>
+            <hr>
 
+            <section>
+                <div class="title">保存</div>
+                <!-- 分隔符 -->
+                <div class="btn-list">
+                    <div class="btn-item" v-for="item in seperatorArray" :key="item.name">
+                        <div :class="['btn btn-primary', {'btn-green': seperatorSave === item.value}]" @click="changeSeperator(item.value)">{{item.name}}</div>
+                    </div>
+                </div>
+                <!-- 码表格式 -->
+                <div class="btn-list">
+                    <div class="btn-item" v-for="item in dictFormatArray" :key="item.name">
+                        <div :class="['btn btn-primary', {'btn-green': dictFormatSave === item.value}]" @click="changeDictFormat(item.value)">{{item.name}}</div>
+                    </div>
+                </div>
+                <div v-if="filePath"
+                    :class="[
+                        'btn', 'center',
+                        {'btn-green': labelOfSaveBtn === '保存成功'},
+                        {'btn-primary': labelOfSaveBtn !== '保存成功'}]"
+                    ref="domBtnSave"
+                    @click="saveToFile">{{ labelOfSaveBtn }}
+                </div>
+            </section>
         </div>
 
         <div class="list-container">
