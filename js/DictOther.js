@@ -79,10 +79,9 @@ class DictOther {
 
         for (let i = 0; i < repetitionWords.length - 1; i++) {
             if (repetitionWords[i].id === repetitionWords[i + 1].id ) {
-                // TODO: 处理去重
                 log(repetitionWords[i].toString(), repetitionWords[i+1].toString())
-                // delete repetitionWords[i]
-                // i = i - 1
+                repetitionWords.splice(i,1)
+                i = i - 1
             }
         }
         log(`查重完成，用时 ${new Date().getTime() - startPoint} ms`)
