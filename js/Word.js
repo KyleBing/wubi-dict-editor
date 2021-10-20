@@ -19,6 +19,13 @@ class Word{
     toYamlString(){
         return this.word + '\t' + this.code
     }
+    toFileString(seperator, codeFirst){
+        if (codeFirst){
+            return this.code + seperator + this.word
+        } else {
+            return this.word + seperator + this.code
+        }
+    }
     // 复制一个对象
     clone(){
         return new Word(this.id, this.code, this.word, this.priority)

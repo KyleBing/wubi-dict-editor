@@ -168,14 +168,6 @@ const app = {
         reloadCurrentFile(){
             ipcRenderer.send('ToolWindow:loadFileContent', this.filePath)
         },
-        // 改变分隔符
-        changeSeperator(seperator){
-            this.seperatorRead = seperator
-        },
-        // 改变码表格式
-        changeDictFormat(dictFormat){
-            this.dictFormatRead = dictFormat
-        },
         // 筛选词条字数
         changeFilterWordLength(length){
             this.filterCharacterLength = parseInt(length)
@@ -321,7 +313,7 @@ const app = {
         // 保存内容到文件
         saveToFile(){
             log('保存文件路径： ', this.filePath)
-            ipcRenderer.send('ToolWindow:SaveFile', this.filePath, this.dict.toYamlString())
+            ipcRenderer.send('ToolWindow:SaveFile', this.filePath, this.dict.toExportString(this.seperatorSave, this.dictFormatSave))
         },
         // 选中全部展示的词条
         selectAll(){

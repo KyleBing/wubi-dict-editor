@@ -80,7 +80,7 @@
                 <div class="content">
                     <div class="btn-list">
                         <div class="btn-item" v-for="item in dictFormatArray" :key="item.name">
-                            <div :class="['btn btn-primary', {'btn-blue': dictFormatRead === item.value}]" @click="changeDictFormat(item.value)">{{item.name}}</div>
+                            <div :class="['btn btn-primary', {'btn-blue': dictFormatRead === item.value}]" @click="dictFormatRead = item.value">{{item.name}}</div>
                         </div>
                     </div>
                 </div>
@@ -100,7 +100,7 @@
                 <div class="content">
                     <div class="btn-list">
                         <div class="btn-item" v-for="item in seperatorArray" :key="item.name">
-                            <div :class="['btn btn-primary', {'btn-blue': seperatorRead === item.value}]" @click="changeSeperator(item.value)">{{item.name}}</div>
+                            <div :class="['btn btn-primary', {'btn-blue': seperatorRead === item.value}]" @click="seperatorRead = item.value">{{item.name}}</div>
                         </div>
                     </div>
                 </div>
@@ -127,13 +127,13 @@
                 <!-- 分隔符 -->
                 <div class="btn-list">
                     <div class="btn-item" v-for="item in seperatorArray" :key="item.name">
-                        <div :class="['btn btn-primary', {'btn-green': seperatorSave === item.value}]" @click="changeSeperator(item.value)">{{item.name}}</div>
+                        <div :class="['btn btn-primary', {'btn-green': seperatorSave === item.value}]" @click="seperatorSave = item.value">{{item.name}}</div>
                     </div>
                 </div>
                 <!-- 码表格式 -->
                 <div class="btn-list">
                     <div class="btn-item" v-for="item in dictFormatArray" :key="item.name">
-                        <div :class="['btn btn-primary', {'btn-green': dictFormatSave === item.value}]" @click="changeDictFormat(item.value)">{{item.name}}</div>
+                        <div :class="['btn btn-primary', {'btn-green': dictFormatSave === item.value}]" @click="dictFormatSave = item.value">{{item.name}}</div>
                     </div>
                 </div>
                 <div v-if="filePath"

@@ -1455,10 +1455,12 @@ select option {
 
 hr {
   margin: 10px 0;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid #ccc;
 }
 
 .tool-panel {
+  margin-top: 1px;
+  background-color: #f9f9f9;
   padding: 15px;
 }
 .tool-panel section {

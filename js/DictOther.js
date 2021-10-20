@@ -7,13 +7,10 @@ const os = require('os')
 class DictOther {
     constructor(fileContent, filename, seperator, dictFormat) {
         this.filename = filename // 文件路径
-        this.wordsOrigin = [] // 文件词条数组
         this.lastIndex = 0 // 最后一个 Index 的值，用于新添加词时，作为唯一的 id 传入
         this.seperator = seperator ||' ' // 默认间隔符为空格
         this.dictFormat = dictFormat || 'cww' // 码表格式： 一码多词什么的 cww: 一码多词 | wc: 一词一码 | cw: 一码一词
-
         this.characterMap = new Map() // 单字码表，用于根据此生成词语码表
-
         this.wordsOrigin = this.getDictWordsInNormalMode(fileContent)
     }
     // 总的词条数量
@@ -211,6 +208,40 @@ class DictOther {
         return fileContentString
     }
 
+    toExportString(seperator, dictFormat){
+        let startPoint = new Date().getTime()
+        let fileContentString = ''
+        switch (dictFormat){
+            case 'cww':
+                let codeMap = new Map() // code: [word, word, word]
+                this.wordsOrigin.forEach((word, index) => {
+                    let code = word.code
+                    if (codeMap.has(code)){ // 用 map 记录所有 code, 如果有就添加到对应的 value 中，没有就新增 map item
+                        codeMap.set(code, codeMap.get(code).concat(word))
+                    } else {
+                        codeMap.set(code, [word])
+                    }
+                })
+                codeMap.forEach((wordArray, code) => {
+                    let oneCodewordsString = ''
+                    wordArray.forEach(item => {oneCodewordsString = oneCodewordsString.concat(seperator + item.word)}) // seperater + wordsString
+                    fileContentString = fileContentString.concat(code, oneCodewordsString, os.EOL)
+                })
+                return fileContentString
+            case 'cw':
+                this.wordsOrigin.forEach(word => {
+                    fileContentString = fileContentString.concat(word.toFileString(seperator, true), os.EOL)
+                })
+                return fileContentString
+            case 'wc':
+                log('wc')
+                this.wordsOrigin.forEach(word => {
+                    fileContentString = fileContentString.concat(word.toFileString(seperator, false), os.EOL)
+                })
+        }
+        log(`词条文本已生成，用时 ${new Date().getTime() - startPoint} ms`)
+        return fileContentString
+    }
 
     // 在 origin 中调换两个词条的位置
     exchangePositionInOrigin(word1, word2){
@@ -256,7 +287,6 @@ class DictOther {
                 this.lastIndex++
                 return [new Word(this.lastIndex, code, word)]
         }
-
     }
 }
 

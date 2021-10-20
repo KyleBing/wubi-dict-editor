@@ -17,10 +17,12 @@
 
 hr{
   margin: 10px 0;
-  border-bottom: 1px solid $color-border;
+  border-bottom: 1px solid $border-color-input;
 }
 
 .tool-panel{
+  margin-top: 1px;
+  background-color: $bg-panel-tool;
   padding: 15px;
   section{
     margin-bottom: 15px;
