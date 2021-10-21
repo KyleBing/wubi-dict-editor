@@ -11,8 +11,8 @@ Windows, macOS, (Linux 未测试)
 
 ## 下载
 
- [去往下载页面](https://github.com/KyleBing/wubi-dict-editor/releases)
- [国内gitee下载页面](https://gitee.com/KyleBing/wubi-dict-editor/releases)
+ [> 去往下载页面 <](https://github.com/KyleBing/wubi-dict-editor/releases) 
+ [> 国内gitee下载页面 <](https://gitee.com/KyleBing/wubi-dict-editor/releases)
 
 ## 安装
 

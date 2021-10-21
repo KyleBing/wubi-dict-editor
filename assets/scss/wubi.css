@@ -1475,6 +1475,7 @@ hr {
 .load-list {
   align-items: center;
   display: flex;
+  justify-content: flex-end;
   flex-flow: row nowrap;
 }
 .load-list .btn-load {

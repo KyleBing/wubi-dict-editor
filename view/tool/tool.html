@@ -69,7 +69,7 @@
             <section>
                 <div class="content">
                     <div class="load-list">
-                        <div class="btn btn-ellipsis btn-primary btn-load" v-if="dict.filename" @click="loadDictFile" >{{ dict.filename}}</div>
+                        <div class="btn btn-ellipsis btn-orange btn-load" v-if="dict.filename" @click="loadDictFile" >{{ dict.filename}}</div>
                         <div class="btn btn-ellipsis btn-primary btn-load" v-else @click="loadDictFile" >选择码表文件</div>
                         <div class="btn btn-primary center btn-reload" @click="reloadCurrentFile">重新载入</div>
                     </div>
@@ -137,13 +137,16 @@
                         <div :class="['btn btn-primary', {'btn-green': dictFormatSave === item.value}]" @click="dictFormatSave = item.value">{{item.name}}</div>
                     </div>
                 </div>
-                <div v-if="filePath"
-                    :class="[
-                        'btn', 'center',
+                <div class="load-list">
+                    <div v-if="fileNameSave" class="btn btn-orange btn-load center">{{ fileNameSave }}</div>
+                    <div v-if="filePath"
+                         :class="[
+                        'btn', 'center', 'btn-reload',
                         {'btn-green': labelOfSaveBtn === '保存成功'},
                         {'btn-primary': labelOfSaveBtn !== '保存成功'}]"
-                    ref="domBtnSave"
-                    @click="saveToFile">{{ labelOfSaveBtn }}
+                         ref="domBtnSave"
+                         @click="saveToFile"> {{ labelOfSaveBtn }}
+                    </div>
                 </div>
             </section>
         </div>

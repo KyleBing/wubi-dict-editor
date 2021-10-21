@@ -42,6 +42,7 @@ hr{
 .load-list{
   align-items: center;
   display: flex;
+  justify-content: flex-end;
   flex-flow: row nowrap;
   .btn-load{
     flex-grow: 1;

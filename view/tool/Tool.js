@@ -1,5 +1,6 @@
 const {shakeDom, shakeDomFocus, log} = require('../../js/Utility')
 const {IS_IN_DEVELOP} = require('../../js/Global')
+const path = require('path')
 
 const Dict = require('../../js/Dict')
 const DictOther = require('../../js/DictOther')
@@ -72,6 +73,7 @@ const app = {
                 {name: '四', value: 4,},
                 {name: '五', value: 5,}
             ], // 筛选词条字数数组
+            fileNameSave: '' // 显示的保存文件名
         }
     },
     mounted() {
@@ -86,10 +88,8 @@ const app = {
             this.filePath = filePath
             this.fileName = fileName
             this.dict = new DictOther(fileContent, fileName, this.seperatorRead, this.dictFormatRead)
-            this.tip = '载入完成'
-            setTimeout(()=>{
-                this.tip = ''
-            }, 2000)
+            this.fileNameSave = this.filePathSave()
+            this.tipNotice('载入完成')
             // 载入新码表时，清除 word 保存 code
             this.word = ''
             this.refreshShowingWords()
@@ -98,6 +98,7 @@ const app = {
         })
         ipcRenderer.on('saveFileSuccess', () => {
             this.labelOfSaveBtn = '保存成功'
+            this.tipNotice('保存成功')
             this.$refs.domBtnSave.classList.add('btn-green')
             setTimeout(()=>{
                 this.$refs.domBtnSave.classList.remove('btn-green')
@@ -161,6 +162,34 @@ const app = {
     },
 
     methods: {
+        tipNotice(msg){
+            this.tip = msg
+            setTimeout(()=>{this.tip = ''}, 3000)
+        },
+        // 生成保存文件的文件名
+        filePathSave(withFullPath){
+            let filePathObject = path.parse(this.filePath)
+            let type = ''
+            switch (this.dictFormatSave){
+                case 'cww': type = '一码多词';break;
+                case 'wc': type = '一词一码';break;
+                case 'cw': type = '一码一词';break;
+            }
+            let seperater = ''
+            switch (this.seperatorSave){
+                case ' ': seperater = '空格分隔';break;
+                case '\t': seperater = 'Tab分隔';break;
+            }
+            if (withFullPath){
+                return path.join(
+                    filePathObject.dir,
+                    filePathObject.name + '_' + type + '_' + seperater + filePathObject.ext
+                )
+            } else {
+                return filePathObject.name + '_' + type + '_' + seperater + filePathObject.ext
+            }
+        },
+
         checkRepetitionInOrder(characterMode){
             this.words = this.dict.getRepetition(characterMode)
         },
@@ -312,11 +341,11 @@ const app = {
 
         // 保存内容到文件
         saveToFile(){
-            if (this.dict.lastIndex <= 1){ // 以 dict 的 lastIndex 作为判断有没有加载码表的依据
-                log('保存文件路径： ', this.filePath)
+            if (this.dict.lastIndex >= 1){ // 以 dict 的 lastIndex 作为判断有没有加载码表的依据
+                log('保存文件路径： ', this.filePathSave(true))
                 ipcRenderer.send(
                     'ToolWindow:SaveFile',
-                    this.filePath,
+                    this.filePathSave(true),
                     this.dict.toExportString(this.seperatorSave, this.dictFormatSave))
             } else {
                 log('未加载任何码表文件')
@@ -542,8 +571,7 @@ const app = {
                 this.saveToFile(this.targetDict)
                 this.saveToFile(this.dict)
             }
-            this.tip = '移动成功'
-            setTimeout(()=>{this.tip = ''}, 3000)
+            this.tipNotice('移动成功')
             this.resetDropList()
         },
         // 复制 dropdown
@@ -568,6 +596,12 @@ const app = {
             } else {
                 this.code = this.dict.decodeWord(newValue)
             }
+        },
+        seperatorSave(){
+            this.fileNameSave = this.filePathSave()
+        },
+        dictFormatSave(){
+            this.fileNameSave = this.filePathSave()
         },
         chosenWordIdArray(newValue){
             if (newValue.length === 0){
