@@ -171,13 +171,13 @@ class DictOther {
     addWordsInOrder(words){
         let startPoint = new Date().getTime()
         words.forEach(word => {
-            this.addWordToDict(word)
+            this.addWordToDictInOrder(word)
         })
         log(`添加 ${words.length } 条词条到指定码表, 用时 ${new Date().getTime() - startPoint} ms`)
     }
 
     // 依次序添加 word
-    addWordToDict(word){
+    addWordToDictInOrder(word){
         let insetPosition = null // 插入位置 index
         this.sort() // 插入之前排序码表
         for (let i=0; i<this.wordsOrigin.length-1; i++){ // -1 为了避免下面 i+1 为 undefined

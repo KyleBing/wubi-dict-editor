@@ -180,8 +180,7 @@ class Dict {
                 this.wordsOrigin.unshift(newWordGroup) // 添加到第一组
             }
         } else {
-            log('TODO: 确定插入的位置')
-            this.wordsOrigin.push(word)
+            this.addWordToDictInOrder()
         }
         this.lastIndex = this.lastIndex + 1 // 新加的词添加后， lastIndex + 1
     }
@@ -190,17 +189,17 @@ class Dict {
     addWordsInOrder(words, groupIndex){
         let startPoint = new Date().getTime()
         if (this.isGroupMode && groupIndex !== -1){
-            this.addWordToDictWithGroup(words, groupIndex)
+            this.addWordToDictInOrderWithGroup(words, groupIndex)
         } else {
             words.forEach(word => {
-                this.addWordToDict(word)
+                this.addWordToDictInOrder(word)
             })
         }
         log(`添加 ${words.length } 条词条到指定码表, 用时 ${new Date().getTime() - startPoint} ms`)
     }
 
     // 依次序添加 word
-    addWordToDict(word){
+    addWordToDictInOrder(word){
         let insetPosition = null // 插入位置 index
         for (let i=0; i<this.wordsOrigin.length-1; i++){ // -1 为了避免下面 i+1 为 undefined
             if (word.code >= this.wordsOrigin[i]  && word.code <= this.wordsOrigin[i+1].code){
@@ -212,13 +211,13 @@ class Dict {
             insetPosition = this.wordsOrigin.length
         }
         let wordInsert = word.clone() // 断开与别一个 dict 的引用链接，新建一个 word 对象，不然两个 dict 引用同一个 word
-        wordInsert.id = this.wordsOrigin.length + 1 // 给新的 words 一个新的唯一 id
+        wordInsert.id = this.lastIndex++ // 给新的 words 一个新的唯一 id
         this.wordsOrigin.splice(insetPosition, 0, wordInsert)
     }
 
 
     // 依次序添加 word groupMode
-    addWordToDictWithGroup(words, groupIndex){
+    addWordToDictInOrderWithGroup(words, groupIndex){
         let dictWords = this.wordsOrigin[groupIndex].dict
         log('TODO: add to group')
         words.forEach(word => {

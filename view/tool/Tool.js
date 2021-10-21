@@ -301,7 +301,7 @@ const app = {
             } else if (!this.code){
                 shakeDomFocus(this.$refs.domInputCode)
             } else {
-                this.dict.addWordToDict(new Word(this.dict.lastIndex, this.code, this.word))
+                this.dict.addWordToDictInOrder(new Word(this.dict.lastIndex, this.code, this.word))
                 this.refreshShowingWords()
                 log(this.code, this.word)
             }
