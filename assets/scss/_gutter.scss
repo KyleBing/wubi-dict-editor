@@ -13,3 +13,7 @@ $timer: 5px;
   .pr-#{$item}{padding-right: $timer * $item !important;}
   .p-#{$item}{padding: $timer * $item !important;}
 }
+
+.w-10{
+  width: 100%;
+}

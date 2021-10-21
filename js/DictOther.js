@@ -91,7 +91,7 @@ class DictOther {
     getDictWordsInNormalMode(fileContent){
         let startPoint = new Date().getTime()
         let lines = fileContent.split(os.EOL) // 拆分词条与编码成单行
-        this.lastIndex = lines.length
+        this.lastIndex = lines.length + 1
         let linesValid = lines.filter(item => item.indexOf(this.seperator) > -1) // 选取包含分隔符的行
         let words = []
         log('正常词条的行数：',linesValid.length)
@@ -154,7 +154,7 @@ class DictOther {
     sort(){
         let startPoint = new Date().getTime()
         this.wordsOrigin.sort((a,b) => a.code < b.code ? -1: 1)
-        log(`Sort 用时 ${new Date().getTime() - startPoint} ms`)
+        log(`排序用时 ${new Date().getTime() - startPoint} ms`)
     }
 
     /**
@@ -179,6 +179,7 @@ class DictOther {
     // 依次序添加 word
     addWordToDict(word){
         let insetPosition = null // 插入位置 index
+        this.sort() // 插入之前排序码表
         for (let i=0; i<this.wordsOrigin.length-1; i++){ // -1 为了避免下面 i+1 为 undefined
             if (word.code >= this.wordsOrigin[i]  && word.code <= this.wordsOrigin[i+1].code){
                 insetPosition = i + 1
@@ -189,7 +190,7 @@ class DictOther {
             insetPosition = this.wordsOrigin.length
         }
         let wordInsert = word.clone() // 断开与别一个 dict 的引用链接，新建一个 word 对象，不然两个 dict 引用同一个 word
-        wordInsert.id = this.wordsOrigin.length + 1 // 给新的 words 一个新的唯一 id
+        wordInsert.id = this.lastIndex++ // 给新的 words 一个新的唯一 id
         this.wordsOrigin.splice(insetPosition, 0, wordInsert)
     }
 
@@ -279,24 +280,22 @@ class DictOther {
             case 'cww':
                 code = wordArray[0]
                 for(let i=1; i<wordArray.length;i++){
-                    this.lastIndex++
                     words.push(new Word(this.lastIndex, code, wordArray[i]))
+                    this.lastIndex = this.lastIndex + 1
                 }
                 return words
             case 'cw':
                 code = wordArray[0]
                 word = wordArray[1]
-                this.lastIndex++
-                return [new Word(this.lastIndex, code, word)]
+                return [new Word(this.lastIndex++, code, word)]
             case 'wc':
                 word = wordArray[0]
                 code = wordArray[1]
-                this.lastIndex++
-                return [new Word(this.lastIndex, code, word)]
+                return [new Word(this.lastIndex++, code, word)]
             case 'w':
                 word = wordArray[0]
                 // code = getCodeFromWord(word)
-                return [new Word(this.lastIndex, code, word)]
+                return [new Word(this.lastIndex++, code, word)]
         }
     }
 }

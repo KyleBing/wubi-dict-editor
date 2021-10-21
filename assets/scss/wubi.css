@@ -390,6 +390,10 @@
   padding: 40px !important;
 }
 
+.w-10 {
+  width: 100%;
+}
+
 .animated {
   -webkit-animation-duration: 0.25s;
   animation-duration: 0.25s;

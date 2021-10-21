@@ -255,7 +255,10 @@ const app = {
             ipcRenderer.send('ToolWindow:LoadTargetDict', this.dropdownFileList[fileIndex].path) // 载入当前 index 的文件内容
         },
         sort(){
+            let startPoint = new Date().getTime()
             this.words.sort((a,b) => a.code < b.code ? -1: 1)
+            this.tipNotice('排序完成')
+            log(`排序用时 ${new Date().getTime() - startPoint} ms`)
         },
         enterKeyPressed(){
             switch (this.config.enterKeyBehavior){
@@ -298,9 +301,9 @@ const app = {
             } else if (!this.code){
                 shakeDomFocus(this.$refs.domInputCode)
             } else {
-                this.dict.addNewWord(new Word(this.dict.lastIndex, this.code, this.word) ,this.activeGroupId)
+                this.dict.addWordToDict(new Word(this.dict.lastIndex, this.code, this.word))
                 this.refreshShowingWords()
-                log(this.code, this.word, this.activeGroupId)
+                log(this.code, this.word)
             }
         },
         decodeWord(word){
@@ -344,13 +347,21 @@ const app = {
         },
 
         // 保存内容到文件
-        saveToFile(){
+        saveToFile(saveToOriginFile){
             if (this.dict.lastIndex >= 1){ // 以 dict 的 lastIndex 作为判断有没有加载码表的依据
-                log('保存文件路径： ', this.filePathSave(true))
-                ipcRenderer.send(
-                    'ToolWindow:SaveFile',
-                    this.filePathSave(true),
-                    this.dict.toExportString(this.seperatorSave, this.dictFormatSave))
+                if (saveToOriginFile){
+                    log('保存文件路径： ', this.filePath)
+                    ipcRenderer.send(
+                        'ToolWindow:SaveFile',
+                        this.filePath,
+                        this.dict.toExportString(this.seperatorSave, this.dictFormatSave))
+                } else {
+                    log('保存文件路径： ', this.filePathSave(true))
+                    ipcRenderer.send(
+                        'ToolWindow:SaveFile',
+                        this.filePathSave(true),
+                        this.dict.toExportString(this.seperatorSave, this.dictFormatSave))
+                }
             } else {
                 log('未加载任何码表文件')
             }
