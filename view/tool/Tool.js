@@ -62,7 +62,8 @@ const app = {
             dictFormatArray: [
                 {name: '一码多词', value: 'cww',},
                 {name: '一码一词', value: 'cw',},
-                {name: '一词一码', value: 'wc',}
+                {name: '一词一码', value: 'wc',},
+                {name: '纯词', value: 'w',}
             ], // 码表格式数组
             filterCharacterLength: 0, // 筛选词条字数默认值
             filterCharacterLengthArray: [
@@ -71,7 +72,7 @@ const app = {
                 {name: '二', value: 2,},
                 {name: '三', value: 3,},
                 {name: '四', value: 4,},
-                {name: '五', value: 5,}
+                {name: '五+', value: 5,}
             ], // 筛选词条字数数组
             fileNameSave: '' // 显示的保存文件名
         }
@@ -174,6 +175,7 @@ const app = {
                 case 'cww': type = '一码多词';break;
                 case 'wc': type = '一词一码';break;
                 case 'cw': type = '一码一词';break;
+                case 'w': type = '纯词';break;
             }
             let seperater = ''
             switch (this.seperatorSave){

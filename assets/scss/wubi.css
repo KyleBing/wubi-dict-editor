@@ -1443,7 +1443,7 @@ select option {
 }
 .tool-container .tool-panel {
   border-right: 1px solid #eee;
-  width: 300px;
+  width: 400px;
   flex-shrink: 0;
 }
 .tool-container .list-container {

@@ -227,20 +227,27 @@ class DictOther {
                     wordArray.forEach(item => {oneCodewordsString = oneCodewordsString.concat(seperator + item.word)}) // seperater + wordsString
                     fileContentString = fileContentString.concat(code, oneCodewordsString, os.EOL)
                 })
+                log(`词条文本已生成，用时 ${new Date().getTime() - startPoint} ms`)
                 return fileContentString
             case 'cw':
                 this.wordsOrigin.forEach(word => {
                     fileContentString = fileContentString.concat(word.toFileString(seperator, true), os.EOL)
                 })
+                log(`词条文本已生成，用时 ${new Date().getTime() - startPoint} ms`)
                 return fileContentString
             case 'wc':
-                log('wc')
                 this.wordsOrigin.forEach(word => {
                     fileContentString = fileContentString.concat(word.toFileString(seperator, false), os.EOL)
                 })
+                log(`词条文本已生成，用时 ${new Date().getTime() - startPoint} ms`)
+                return fileContentString
+            case 'w':
+                this.wordsOrigin.forEach(word => {
+                    fileContentString = fileContentString.concat(word.word, os.EOL)
+                })
+                log(`词条文本已生成，用时 ${new Date().getTime() - startPoint} ms`)
+                return fileContentString
         }
-        log(`词条文本已生成，用时 ${new Date().getTime() - startPoint} ms`)
-        return fileContentString
     }
 
     // 在 origin 中调换两个词条的位置
@@ -285,6 +292,10 @@ class DictOther {
                 word = wordArray[0]
                 code = wordArray[1]
                 this.lastIndex++
+                return [new Word(this.lastIndex, code, word)]
+            case 'w':
+                word = wordArray[0]
+                // code = getCodeFromWord(word)
                 return [new Word(this.lastIndex, code, word)]
         }
     }
