@@ -467,6 +467,17 @@ function createMenu(filesMenu) {
             ]
         },
         {
+            label: '码表处理',
+            submenu: [
+                {
+                    label: '码表处理工具',
+                    click() {
+                        showToolWindow()
+                    }
+                },
+            ]
+        },
+        {
             label: '关于',
             submenu: [
                 {label: '最小化', role: 'minimize'},
@@ -477,19 +488,9 @@ function createMenu(filesMenu) {
         },
     ]
     if(IS_IN_DEVELOP){
-        menuStructure.push(
-            {
-                label: '码表处理',
-                submenu: [
-                    {
-                        label: '处理一码多词：空格',
-                        click() {
-                            showToolWindow()
-                        }
-                    },
-                ]
-            }
-        )
+/*        menuStructure.push(
+
+        )*/
     }
     let menu = Menu.buildFromTemplate(menuStructure)
     Menu.setApplicationMenu(menu)

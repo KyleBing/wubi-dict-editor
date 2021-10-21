@@ -180,7 +180,7 @@ class Dict {
                 this.wordsOrigin.unshift(newWordGroup) // 添加到第一组
             }
         } else {
-            this.addWordToDictInOrder()
+            this.addWordToDictInOrder(word)
         }
         this.lastIndex = this.lastIndex + 1 // 新加的词添加后， lastIndex + 1
     }

@@ -157,15 +157,6 @@ class DictOther {
         log(`排序用时 ${new Date().getTime() - startPoint} ms`)
     }
 
-    /**
-     * 添加新 Word
-     * @param word Word
-     */
-    addNewWord(word){
-        log('TODO: 确定插入的位置')
-        this.wordsOrigin.push(word)
-        this.lastIndex = this.lastIndex + 1 // 新加的词添加后， lastIndex + 1
-    }
 
     // 依次序添加 words
     addWordsInOrder(words){

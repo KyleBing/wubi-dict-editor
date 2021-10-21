@@ -76,7 +76,7 @@
                     :buffer="1000"
                     :prerender="200"
                     :style="`height: ${heightContent}px`"
-                    v-if="words"
+                    v-if="words.length > 0"
                     :min-item-size="24"
                     class="virtual-list"
                     :items="words">
