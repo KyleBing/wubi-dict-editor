@@ -130,7 +130,6 @@ function showToolWindow (){
         toolWindow.webContents.openDevTools() // 打开调试窗口
     }
 
-
     toolWindow.loadURL(
         url.format({
             pathname: path.join(__dirname, 'view/tool/tool.html'),
@@ -263,6 +262,15 @@ function createConfigWindow() {
         })
     )
     configWindow.on('closed', function () {
+        let listeners = [
+            'requestFileList',
+            'requestConfigFile',
+            'requestSaveConfig',
+            'chooseRimeHomeDir'
+        ]
+        listeners.forEach(item => {
+            ipcMain.removeAllListeners(item)
+        })
         configWindow = null
     })
 
