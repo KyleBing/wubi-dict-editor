@@ -158,7 +158,6 @@ const app = {
                             this.chosenWordIds.add(this.words[i].id)
                         }
                     }
-
                 }
                 this.lastChosenWordIndex = null // shift 选择后，最后一个id定义为没有
 
@@ -486,6 +485,7 @@ const app = {
                 }
             })
         },
+        // TODO: 移动有问题，自我移动时，目标分组会消失
         // 将选中的词条移动到次码表
         moveWordsToSecondDict(){
             let wordsTransferring = [] // 被转移的 [Word]
