@@ -63,10 +63,12 @@
          v-if="!dict.isGroupMode"
          :style="`height: ${heightContent}px`"
          class="container tool-container">
-        <div class="tool-panel">
-
+        <div class="tool-panel"
+             :style="`height: ${heightContent}px`"
+        >
 
             <section>
+                <div class="title">码表读取</div>
                 <div class="content">
                     <div class="load-list">
                         <div class="btn btn-ellipsis btn-orange btn-load" v-if="dict.filename" @click="loadDictFile" >{{ dict.filename}}</div>
@@ -122,34 +124,53 @@
             </section>
 
             <hr>
-
+<!--保存-->
             <section>
-<!--                <div class="title">保存</div>-->
+                <div class="title">码表保存</div>
                 <!-- 分隔符 -->
-                <div class="btn-list">
-                    <div class="btn-item" v-for="item in seperatorArray" :key="item.name">
-                        <div :class="['btn btn-primary', {'btn-green': seperatorSave === item.value}]" @click="seperatorSave = item.value">{{item.name}}</div>
+                <div class="content">
+                    <div class="btn-list">
+                        <div class="btn-item" v-for="item in seperatorArray" :key="item.name">
+                            <div :class="['btn btn-primary', {'btn-green': seperatorSave === item.value}]" @click="seperatorSave = item.value">{{item.name}}</div>
+                        </div>
                     </div>
-                </div>
-                <!-- 码表格式 -->
-                <div class="btn-list">
-                    <div class="btn-item" v-for="item in dictFormatArray" :key="item.name">
-                        <div :class="['btn btn-primary', {'btn-green': dictFormatSave === item.value}]" @click="dictFormatSave = item.value">{{item.name}}</div>
+                    <!-- 码表格式 -->
+                    <div class="btn-list">
+                        <div class="btn-item" v-for="item in dictFormatArray" :key="item.name">
+                            <div :class="['btn btn-primary', {'btn-green': dictFormatSave === item.value}]" @click="dictFormatSave = item.value">{{item.name}}</div>
+                        </div>
                     </div>
-                </div>
-                <div class="load-list">
-                    <div v-if="fileNameSave" class="btn btn-orange btn-load btn-ellipsis center">{{ fileNameSave }}</div>
-                    <div v-if="filePath"
-                         :class="[
+                    <div class="load-list">
+                        <div v-if="fileNameSave" class="btn btn-orange btn-load btn-ellipsis center">{{ fileNameSave }}</div>
+                        <div v-if="filePath"
+                             :class="[
                         'btn', 'center', 'btn-reload',
                         {'btn-green': labelOfSaveBtn === '保存成功'},
                         {'btn-primary': labelOfSaveBtn !== '保存成功'}]"
-                         ref="domBtnSave"
-                         @click="saveToFile"> {{ labelOfSaveBtn }}
+                             ref="domBtnSave"
+                             @click="saveToFile"> {{ labelOfSaveBtn }}
+                        </div>
                     </div>
                 </div>
             </section>
+
+
+<!-- 编码生成
+            <hr>
+            <section>
+                <div class="title">编码生成</div>
+                <div class="content">
+                    <div class="load-list">
+                        <div class="btn btn-load btn-ellipsis btn-orange" v-if="dict.filename" @click="loadDictFile" >{{ dict.filename}}</div>
+                        <div class="btn btn-load btn-ellipsis btn-primary" v-else @click="loadDictFile" >选择参照码表文件，用于生成编码</div>
+                        <div class="btn ml-2  btn-primary center" @click="reloadCurrentFile">据此码表生成编码</div>
+                    </div>
+                </div>
+            </section>-->
         </div>
+
+
+<!-- 主词条列表  -->
 
         <div class="list-container">
             <div class="group">

@@ -16,14 +16,23 @@
 }
 
 hr{
-  margin: 10px 0;
-  border-bottom: 1px solid $border-color-input;
+  margin: 20px 0;
+  border-bottom: 1px solid $border-color-checkbox;
 }
 
 .tool-panel{
+  overflow-y: auto;
   margin-top: 1px;
   background-color: $bg-panel-tool;
-  padding: 10px 15px;
+  padding: 10px 15px 30px;
+  &::-webkit-scrollbar {
+    width: 1px;
+  }
+  &::-webkit-scrollbar-thumb {
+    border: none;
+    background-color: $border-color-checkbox;
+  }
+
   section{
     margin-bottom: 15px;
     .title{
@@ -33,7 +42,9 @@ hr{
       color: $text-tool-title;
     }
     .content {
-
+      @include border-radius(5px);
+      padding: 10px;
+      background-color: $bg-panel;
     }
   }
 }

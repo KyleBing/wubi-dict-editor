@@ -74,13 +74,15 @@ const app = {
                 {name: '四', value: 4,},
                 {name: '五+', value: 5,}
             ], // 筛选词条字数数组
-            fileNameSave: '' // 显示的保存文件名
+            fileNameSave: '', // 显示的保存文件名
+
+            refDict: null, // 参照字典
         }
     },
     mounted() {
         if(IS_IN_DEVELOP) this.filePath = 'C:\\Users\\Administrator\\AppData\\Roaming\\Rime\\origin.txt'
 
-        this.heightContent = innerHeight - 47 - 20 - 10
+        this.heightContent = innerHeight - 47 - 20 - 10 + 3
         // 载入主要操作码表文件
         ipcRenderer.on('showFileContent', (event, filePath, fileName, fileContent) => {
             // 过滤移动到的文件列表，不显示正在显示的这个码表
@@ -140,7 +142,7 @@ const app = {
 
         this.addKeyboardListener()
         onresize = ()=>{
-            this.heightContent = innerHeight - 47 - 20 - 10
+            this.heightContent = innerHeight - 47 - 20 - 10 + 3
         }
     },
     computed: {

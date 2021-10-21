@@ -1454,14 +1454,22 @@ select option {
 }
 
 hr {
-  margin: 10px 0;
-  border-bottom: 1px solid #ccc;
+  margin: 20px 0;
+  border-bottom: 1px solid #d6d6d6;
 }
 
 .tool-panel {
+  overflow-y: auto;
   margin-top: 1px;
   background-color: #f9f9f9;
-  padding: 10px 15px;
+  padding: 10px 15px 30px;
+}
+.tool-panel::-webkit-scrollbar {
+  width: 1px;
+}
+.tool-panel::-webkit-scrollbar-thumb {
+  border: none;
+  background-color: #d6d6d6;
 }
 .tool-panel section {
   margin-bottom: 15px;
@@ -1472,6 +1480,14 @@ hr {
   font-weight: bold;
   color: #383f4a;
 }
+.tool-panel section .content {
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  padding: 10px;
+  background-color: #f3f3f3;
+}
+
 .load-list {
   align-items: center;
   display: flex;
