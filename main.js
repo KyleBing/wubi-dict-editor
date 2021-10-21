@@ -139,6 +139,18 @@ function showToolWindow (){
         })
     )
     toolWindow.on('closed', function () {
+        let listeners = [
+            'requestConfigFile',
+            'ToolWindow:chooseDictFile',
+            'ToolWindow:SaveFile',
+            'ToolWindow:loadFileContent',
+            'ToolWindow:openFileOutside',
+            'ToolWindow:GetFileList',
+            'ToolWindow:LoadTargetDict'
+        ]
+        listeners.forEach(item => {
+            ipcMain.removeAllListeners(item)
+        })
         toolWindow = null
     })
 

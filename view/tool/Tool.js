@@ -627,9 +627,6 @@ const app = {
             }
         }
     },
-    beforeDestroy() {
-        // TODO: 去除所有 ipc 事件
-    }
 }
 
 new Vue(app)
