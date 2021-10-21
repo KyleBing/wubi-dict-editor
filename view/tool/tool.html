@@ -205,7 +205,7 @@
                     class="virtual-list"
                     :items="words">
                     <template v-slot="{ item, index }">
-                        <div class="word-item" @click="select(item.id, $event)">
+                        <div class="word-item" @click="select(index, item.id, $event)">
                             <div class="checkbox-cell">
 <!--                                <div :class="['checkbox-item', {active: chosenWordIdArray.some(i => i === item.id)}]"></div>-->
                                 <div :class="['checkbox-item', {active: chosenWordIds.has(item.id)}]"></div>

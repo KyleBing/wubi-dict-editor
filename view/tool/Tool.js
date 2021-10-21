@@ -34,7 +34,7 @@ const app = {
 
             chosenWordIds: new Set(),
             chosenWordIdArray: [], // 对应上面的 set 内容
-            lastChosenWordId: null, // 最后一次选中的 id
+            lastChosenWordIndex: null, // 最后一次选中的 index
 
             filePath: '', // 选择的文件路径
             fileName: '', // 选择的文件名
@@ -214,31 +214,30 @@ const app = {
         loadDictFile(){
             ipcRenderer.send('ToolWindow:chooseDictFile')
         },
-        // 词条选择操作
-        select(wordId, event){
+        select(index, wordId, event){
             if (event.shiftKey){
-                if (this.lastChosenWordId !== null){
+                if (this.lastChosenWordIndex !== null){
                     let a,b // 判断大小，调整大小顺序
-                    if (wordId > this.lastChosenWordId){
-                        a = this.lastChosenWordId
-                        b = wordId
+                    if (index > this.lastChosenWordIndex){
+                        a = this.lastChosenWordIndex
+                        b = index
                     } else {
-                        b = this.lastChosenWordId
-                        a = wordId
+                        b = this.lastChosenWordIndex
+                        a = index
                     }
                     for (let i=a; i<=b; i++){
-                        this.chosenWordIds.add(i)
+                        this.chosenWordIds.add(this.words[i].id)
                     }
                 }
-                this.lastChosenWordId = null // shift 选择后，最后一个id定义为没有
+                this.lastChosenWordIndex = null // shift 选择后，最后一个id定义为没有
 
             } else {
                 if (this.chosenWordIds.has(wordId)){
                     this.chosenWordIds.delete(wordId)
-                    this.lastChosenWordId = null
+                    this.lastChosenWordIndex = null
                 } else {
                     this.chosenWordIds.add(wordId)
-                    this.lastChosenWordId = wordId
+                    this.lastChosenWordIndex = index
                 }
             }
             this.chosenWordIdArray = [...this.chosenWordIds.values()]

@@ -32,7 +32,7 @@ const app = {
 
             chosenWordIds: new Set(),
             chosenWordIdArray: [], // 对应上面的 set 内容
-            lastChosenWordId: null, // 最后一次选中的 id
+            lastChosenWordIndex: null, // 最后一次选中的 index
 
 
             targetDict: {}, // 要移动到的码表
@@ -127,30 +127,48 @@ const app = {
     },
 
     methods: {
-        select(wordId, event){
+        tipNotice(msg){
+            this.tip = msg
+            setTimeout(()=>{this.tip = ''}, 3000)
+        },
+
+        select(index, wordId, event){
             if (event.shiftKey){
-                if (this.lastChosenWordId !== null){
+                if (this.lastChosenWordIndex !== null){
                     let a,b // 判断大小，调整大小顺序
-                    if (wordId > this.lastChosenWordId){
-                        a = this.lastChosenWordId
-                        b = wordId
+                    if (index > this.lastChosenWordIndex){
+                        a = this.lastChosenWordIndex
+                        b = index
                     } else {
-                        b = this.lastChosenWordId
-                        a = wordId
+                        b = this.lastChosenWordIndex
+                        a = index
                     }
-                    for (let i=a; i<=b; i++){
-                        this.chosenWordIds.add(i)
+
+                    if (this.dict.isGroupMode){
+                        // TODO: select batch words cross group
+                        if (this.activeGroupId !== -1){
+                            for (let i=a; i<=b; i++){
+                                this.chosenWordIds.add(this.dict.wordsOrigin[this.activeGroupId].dict[i].id)
+                            }
+                        } else {
+                            this.tipNotice('只能在单组内进行批量选择')
+                        }
+                    } else {
+                        for (let i=a; i<=b; i++){
+                            this.chosenWordIds.add(this.words[i].id)
+                        }
                     }
+
                 }
-                this.lastChosenWordId = null // shift 选择后，最后一个id定义为没有
+                this.lastChosenWordIndex = null // shift 选择后，最后一个id定义为没有
 
             } else {
                 if (this.chosenWordIds.has(wordId)){
                     this.chosenWordIds.delete(wordId)
-                    this.lastChosenWordId = null
+                    this.lastChosenWordIndex = null
                 } else {
                     this.chosenWordIds.add(wordId)
-                    this.lastChosenWordId = wordId
+                    this.lastChosenWordIndex = index
                 }
             }
             this.chosenWordIdArray = [...this.chosenWordIds.values()]
