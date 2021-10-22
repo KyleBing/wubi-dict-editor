@@ -30,10 +30,10 @@
   "config": {
     "forge": {
       "packagerConfig": {
-        "appVersion": "1.0.4",
+        "appVersion": "1.0.5",
         "name": "五笔码表助手",
         "appCopyright": "KyleBing(kylebing@163.com)",
-        "icon": "./assets/appIcon/appicon",
+        "icon": "./assets/img/appIcon/appicon",
         "win32metadata": {
           "ProductName": "五笔码表助手 Windows",
           "CompanyName": "kylebing.cn",
