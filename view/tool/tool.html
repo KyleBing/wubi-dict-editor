@@ -146,12 +146,12 @@
 
 
 
-            <section>
+            <section v-if="filePath">
                 <div class="title"></div>
                 <div class="content">
                     <div class="load-list">
                         <div v-if="fileNameSave" class="btn btn-orange btn-load btn-ellipsis center">{{ fileNameSave }}</div>
-                        <div v-if="filePath"
+                        <div
                              :class="[
                                     'btn', 'center', 'btn-reload',
                                     {'btn-green': labelOfSaveBtn === '保存成功'},
@@ -163,10 +163,10 @@
                 </div>
             </section>
 
-            <section>
+            <section v-if="filePath">
                 <div class="title"></div>
                 <div class="content">
-                    <div v-if="filePath"
+                    <div
                          :class="[
                             'btn', 'center',
                             {'btn-green': labelOfSaveBtn === '保存成功'},
