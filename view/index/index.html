@@ -19,7 +19,9 @@
             @click="saveToFile(dict)">{{ labelOfSaveBtn }}
         </div>
         <div class="dropdown">
-            <div class="dropdown-link btn btn-blue" v-show="chosenWordIdArray.length > 0" @click.capture="showDropdown = !showDropdown">移动到...            </div>
+            <div class="dropdown-link btn btn-blue"
+                 v-show="chosenWordIdArray.length > 0"
+                 @click.capture="showDropdown = !showDropdown">移动到...            </div>
             <div class="dropdown-body" v-show="showDropdown">
                 <div class="file-list shadow" v-if="dropdownFileList.length > 0">
                     <div :class="['file-list-item', {active: fileIndex === dropdownActiveFileIndex}]"
@@ -58,7 +60,7 @@
         </div>
         <div class="btn btn-primary" @click="addNewWord">添加</div>
         <div class="btn btn-primary" @click="search">搜索</div>
-        <div class="btn btn-roseo" v-show="chosenWordIds.length > 0" @click="deleteWords">删除</div>
+        <div class="btn btn-roseo" v-show="chosenWordIdArray.length > 0" @click="deleteWords">删除</div>
 
         <template v-if="IS_IN_DEVELOP">
 
