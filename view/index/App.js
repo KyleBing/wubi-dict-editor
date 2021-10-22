@@ -499,7 +499,7 @@ const app = {
             log('words transferring：', JSON.stringify(wordsTransferring))
 
             if (this.dict.filename === this.targetDict.filename){ // 如果是同词库移动
-                this.targetDict.deleteWords(this.chosenWordIds) // 删除移动的词条
+                this.targetDict.deleteWords(this.chosenWordIds, true) // 删除移动的词条
                 this.targetDict.addWordsInOrder(wordsTransferring, this.dropdownActiveGroupIndex)
                 log('after insert:( main:wordOrigin ):\n ', JSON.stringify(this.targetDict.wordsOrigin))
                 // 如果在同码表中移动：如，从一个分组移到别一个分组
