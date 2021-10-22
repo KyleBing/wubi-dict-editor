@@ -10,7 +10,7 @@ const { IS_IN_DEVELOP, CONFIG_FILE_PATH, CONFIG_FILE_NAME, DEFAULT_CONFIG } =  r
 let mainWindow // 主窗口
 let fileList = [] // 文件目录列表，用于移动词条
 
-function createWindow() {
+function createMainWindow() {
     let width = IS_IN_DEVELOP ? 1400: 800
     let height = IS_IN_DEVELOP ? 600: 600
     mainWindow = new BrowserWindow({
@@ -100,10 +100,10 @@ function createWindow() {
 
     // config 相关
     // 载入配置文件内容
-    ipcMain.on('requestConfigFile', event => {
+    ipcMain.on('MainWindow:RequestConfigFile', event => {
         let config = readConfigFile() // 没有配置文件时，返回 false
         if (config){ // 如果有配置文件
-            mainWindow.send('responseConfigFile', config) // 向窗口发送 config 内容
+            mainWindow.send('MainWindow:ResponseConfigFile', config) // 向窗口发送 config 内容
         }
     })
     // 保存配置文件内容
@@ -356,7 +356,7 @@ function readConfigFile(){
 }
 
 app.on('ready', ()=>{
-    createWindow()
+    createMainWindow()
     setRimeFolderMenu()
 })
 
@@ -367,7 +367,7 @@ app.on('window-all-closed', function () {
 
 app.on('activate', function () {
     if (mainWindow === null) {
-        createWindow()
+        createMainWindow()
     }
 })
 

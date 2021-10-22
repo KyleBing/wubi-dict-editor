@@ -89,12 +89,12 @@ const app = {
         })
 
         // 配置相关
-        ipcRenderer.on('responseConfigFile', (event, config) => {
+        ipcRenderer.on('MainWindow:ResponseConfigFile', (event, config) => {
             this.config = config
             this.activeGroupId = config.chosenGroupIndex // 首次载入时，定位到上次选中的分组
             log('窗口载入时获取到的 config 文件：', config)
         })
-        ipcRenderer.send('requestConfigFile')
+        ipcRenderer.send('MainWindow:RequestConfigFile')
 
 
         // 配置文件保存后，向主窗口更新配置文件内容
