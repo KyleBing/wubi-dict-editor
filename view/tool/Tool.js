@@ -17,7 +17,6 @@ const app = {
     components: {RecycleScroller: VirtualScroller.RecycleScroller},
     data() {
         return {
-            IS_IN_DEVELOP: IS_IN_DEVELOP, // 是否为开发模式
             tip: '', // 提示信息
             dict: {
                 deep: true
