@@ -1,5 +1,6 @@
 const Vue  = require('../../node_modules/vue/dist/vue.common.dev')
 const {ipcRenderer} = require('electron')
+const {log} = require('../../js/Utility')
 const { IS_IN_DEVELOP, CONFIG_FILE_PATH, CONFIG_FILE_NAME, DEFAULT_CONFIG } =  require('../../js/Global')
 
 
@@ -8,9 +9,8 @@ const app = {
     el: '#app',
     data() {
         return {
-            IS_IN_DEVELOP: IS_IN_DEVELOP, // 是否为开发模式
-            fileList: null,
-            // { "name": "luna_pinyin.sogou", "path": "luna_pinyin.sogou.dict.yaml" }
+            fileList: null, // 展示用的配置文件夹内的文件列表
+            // [{ "name": "luna_pinyin.sogou", "path": "luna_pinyin.sogou.dict.yaml" }]
             config: DEFAULT_CONFIG
         }
     },
@@ -33,7 +33,6 @@ const app = {
         // 选取配置目录后保存
         ipcRenderer.on('choosenRimeHomeDir', (event, dir) => {
             this.config.rimeHomeDir = dir[0]
-            this.saveConfig()
         })
 
         onresize = ()=>{
@@ -43,11 +42,6 @@ const app = {
     methods: {
         setInitFile(file){
             this.config.initFileName = file.path
-            this.saveConfig()
-        },
-        saveConfig(){
-            console.log(JSON.stringify(this.config))
-            ipcRenderer.send('requestSaveConfig', JSON.stringify(this.config))
         },
         loadConfig(){
             ipcRenderer.send('requestConfigFile')
@@ -57,17 +51,12 @@ const app = {
         }
     },
     watch: {
-        config: (newValue)=>{
-            switch (newValue.theme){
-                case "auto":
-                    document.documentElement.classList.add('auto-mode');
-                    document.documentElement.classList.remove('dark-mode');
-                    break;
-                case "black":
-                    document.documentElement.classList.add('dark-mode');
-                    document.documentElement.classList.remove('auto-mode');
-                    break;
-            }
+        config: {
+            handler(newValue) {
+                log(JSON.stringify(newValue))
+                ipcRenderer.send('requestSaveConfig', JSON.stringify(this.config))
+            },
+            deep: true
         },
     }
 }
