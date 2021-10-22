@@ -485,7 +485,6 @@ const app = {
                 }
             })
         },
-        // TODO: 移动有问题，自我移动时，目标分组会消失
         // 将选中的词条移动到次码表
         moveWordsToSecondDict(){
             let wordsTransferring = [] // 被转移的 [Word]
@@ -499,7 +498,7 @@ const app = {
             }
             log('words transferring：', JSON.stringify(wordsTransferring))
 
-            if (this.dict.filename === this.targetDict.filename){
+            if (this.dict.filename === this.targetDict.filename){ // 如果是同词库移动
                 this.targetDict.deleteWords(this.chosenWordIds) // 删除移动的词条
                 this.targetDict.addWordsInOrder(wordsTransferring, this.dropdownActiveGroupIndex)
                 log('after insert:( main:wordOrigin ):\n ', JSON.stringify(this.targetDict.wordsOrigin))

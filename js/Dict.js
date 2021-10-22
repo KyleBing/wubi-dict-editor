@@ -239,7 +239,7 @@ class Dict {
 
 
     // 删除词条
-    deleteWords(wordIdSet){
+    deleteWords(wordIdSet, isDeleteInSelf){ // isDeleteInSelf 在移动词条到自己分组时使用，不删除空的分组
         if (this.isGroupMode){
             let deleteGroupIds = [] // 记录 words 为 0 的 group，最后删除分组
             this.wordsOrigin.forEach((group, index) => {
@@ -248,7 +248,10 @@ class Dict {
                     deleteGroupIds.push(index)
                 }
             })
-            this.wordsOrigin = this.wordsOrigin.filter((group, index) => !deleteGroupIds.includes(index))
+            // config: 是否删除空的分组
+            if (!isDeleteInSelf){
+                this.wordsOrigin = this.wordsOrigin.filter((group, index) => !deleteGroupIds.includes(index))
+            }
         } else {
             this.wordsOrigin = this.wordsOrigin.filter(item => !wordIdSet.has(item.id))
         }
