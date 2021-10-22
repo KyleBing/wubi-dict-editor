@@ -15,6 +15,7 @@ const app = {
     components: {RecycleScroller: VirtualScroller.RecycleScroller},
     data() {
         return {
+            IS_IN_DEVELOP: IS_IN_DEVELOP, // 是否为开发模式，html 使用
             tip: '', // 提示信息
             dict: {
                 deep: true
@@ -484,7 +485,7 @@ const app = {
                 }
             })
         },
-        // 将选中的词条移动到次码表
+        // 将选中的词条移动到指定码表
         moveWordsToSecondDict(){
             let wordsTransferring = [] // 被转移的 [Word]
             if (this.dict.isGroupMode){

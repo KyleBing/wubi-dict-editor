@@ -17,6 +17,7 @@ const app = {
     components: {RecycleScroller: VirtualScroller.RecycleScroller},
     data() {
         return {
+            IS_IN_DEVELOP: IS_IN_DEVELOP, // 是否为开发模式，html 使用
             tip: '', // 提示信息
             dict: {
                 deep: true
@@ -555,35 +556,19 @@ const app = {
                 }
             })
         },
-        // 将选中的词条移动到次码表
+        // 将选中的词条移动到指定码表
         moveWordsToSecondDict(){
-            let wordsTransferring = [] // 被转移的 [Word]
-            if (this.dict.isGroupMode){
-                this.dict.wordsOrigin.forEach((group, index) => {
-                    let matchedWords = group.dict.filter(item => this.chosenWordIds.has(item.id))
-                    wordsTransferring = wordsTransferring.concat(matchedWords)
-                })
-            } else {
-                wordsTransferring = this.dict.wordsOrigin.filter(item => this.chosenWordIds.has(item.id))
-            }
+            let wordsTransferring = this.dict.wordsOrigin.filter(item => this.chosenWordIds.has(item.id)) // 被转移的 [Word]
             log('words transferring：', JSON.stringify(wordsTransferring))
 
-            if (this.dict.filename === this.targetDict.filename){
-                this.targetDict.deleteWords(this.chosenWordIds) // 删除移动的词条
-                this.targetDict.addWordsInOrder(wordsTransferring, this.dropdownActiveGroupIndex)
-                log('after insert:( main:wordOrigin ):\n ', JSON.stringify(this.targetDict.wordsOrigin))
-                // 如果在同码表中移动：如，从一个分组移到别一个分组
-                // 只保存 dictSecond 内容，重新载入 dict 内容
-                this.saveToFile(this.targetDict)
-                this.reloadCurrentDict()
-            } else {
-                this.targetDict.addWordsInOrder(wordsTransferring, this.dropdownActiveGroupIndex)
-                this.words = [...this.dict.wordsOrigin]
-                log('after insert:( main:wordOrigin ):\n ', JSON.stringify(this.targetDict.wordsOrigin))
-                this.deleteWords() // 删除当前词库已移动的词条
-                this.saveToFile(this.targetDict)
-                this.saveToFile(this.dict)
-            }
+            this.targetDict.addWordsInOrder(wordsTransferring, this.dropdownActiveGroupIndex)
+
+            this.words = [...this.dict.wordsOrigin]
+            log('after insert:( main:wordOrigin ):\n ', JSON.stringify(this.targetDict.wordsOrigin))
+
+            this.deleteWords() // 删除当前词库已移动的词条
+            this.saveToFile(this.targetDict)
+            this.saveToFile(this.dict)
             this.tipNotice('移动成功')
             this.resetDropList()
         },
