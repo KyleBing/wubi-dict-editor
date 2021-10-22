@@ -46,7 +46,7 @@ const app = {
         }
     },
     mounted() {
-        this.heightContent = innerHeight - 47 - 20 - 10
+        this.heightContent = innerHeight - 47 - 20 - 10 + 3
         // 载入主要操作码表文件
         ipcRenderer.on('showFileContent', (event, filename, res) => {
             // 过滤移动到的文件列表，不显示正在显示的这个码表
@@ -103,7 +103,7 @@ const app = {
 
         this.addKeyboardListener()
         onresize = ()=>{
-            this.heightContent = innerHeight - 47 - 20 - 10
+            this.heightContent = innerHeight - 47 - 20 - 10 + 3
         }
     },
     computed: {

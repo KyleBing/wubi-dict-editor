@@ -15,7 +15,7 @@ const app = {
         }
     },
     mounted() {
-        this.heightContent = innerHeight - 47 - 20 - 10
+        this.heightContent = innerHeight - 47 - 20 - 10 + 3
 
         // load file list
         ipcRenderer.on('responseFileList', (event, fileList) => {
@@ -36,7 +36,7 @@ const app = {
         })
 
         onresize = ()=>{
-            this.heightContent = innerHeight - 47 - 20 - 10
+            this.heightContent = innerHeight - 47 - 20 - 10 + 3
         }
     },
     methods: {

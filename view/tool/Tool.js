@@ -75,7 +75,7 @@ const app = {
             ], // 筛选词条字数数组
             fileNameSave: '', // 显示的保存文件名
 
-            refDict: null, // 参照字典
+            refDict: null, // 参照字典，用于生成唯一的单字字典，进行编码生成
         }
     },
     mounted() {
