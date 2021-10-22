@@ -64,12 +64,13 @@ function createMainWindow() {
     })
 
     // 监听载入次文件内容的请求
-    ipcMain.on('loadSecondDict', (event, filename) => {
-        fs.readFile(path.join(getRimeConfigDir(), filename), {encoding: 'utf-8'}, (err, res) => {
+    ipcMain.on('MainWindow:LoadSecondDict', (event, filename) => {
+        let filePath = path.join(getRimeConfigDir(), filename)
+        fs.readFile(filePath, {encoding: 'utf-8'}, (err, res) => {
             if(err){
                 log(err)
             } else {
-                mainWindow.webContents.send('setTargetDict',filename ,res)
+                mainWindow.webContents.send('setTargetDict', filename, filePath, res)
             }
         })
     })
@@ -210,11 +211,12 @@ function showToolWindow (){
 
     // 监听载入次文件内容的请求
     ipcMain.on('ToolWindow:LoadTargetDict', (event, filename) => {
-        fs.readFile(path.join(getRimeConfigDir(), filename), {encoding: 'utf-8'}, (err, res) => {
+        let filePath = path.join(getRimeConfigDir(), filename)
+        fs.readFile(filePath, {encoding: 'utf-8'}, (err, res) => {
             if(err){
                 log(err)
             } else {
-                toolWindow.webContents.send('ToolWindow:SetTargetDict',filename ,res)
+                toolWindow.webContents.send('ToolWindow:SetTargetDict',filename, filePath ,res)
             }
         })
     })
@@ -228,7 +230,7 @@ function readFileFromDisk(filePath, responseWindow){
         if(err){
             log(err)
         } else {
-            responseWindow.send('showFileContent', filePath, fileName ,res)
+            responseWindow.send('showFileContent', fileName, filePath, res)
         }
     })
 }
@@ -374,14 +376,15 @@ app.on('activate', function () {
 // 读取文件 从配置文件目录
 function readFileFromConfigDir(fileName, responseWindow){
     let rimeHomeDir = getRimeConfigDir()
-    fs.readFile(path.join(rimeHomeDir, fileName), {encoding: 'utf-8'}, (err, res) => {
+    let filePath = path.join(rimeHomeDir, fileName)
+    fs.readFile(filePath, {encoding: 'utf-8'}, (err, res) => {
         if(err){
             log(err)
         } else {
             if(responseWindow){
-                responseWindow.send('showFileContent', fileName ,res)
+                responseWindow.send('showFileContent', fileName, filePath, res)
             } else {
-                mainWindow.webContents.send('showFileContent', fileName ,res)
+                mainWindow.webContents.send('showFileContent', fileName, filePath, res)
             }
         }
     })

@@ -31,7 +31,7 @@
                     </div>
                 </div>
                 <div class="btn btn-blue shadow ml-1"
-                     @click="moveWordsToSecondDict"
+                     @click="moveWordsToTargetDict"
                      v-if="targetDict.isGroupMode && dropdownActiveGroupIndex !== -1 || !targetDict.isGroupMode && dropdownActiveFileIndex !== -1"
                 >确定</div>
             </div>
@@ -153,11 +153,11 @@
                         <div v-if="fileNameSave" class="btn btn-orange btn-load btn-ellipsis center">{{ fileNameSave }}</div>
                         <div v-if="filePath"
                              :class="[
-                        'btn', 'center', 'btn-reload',
-                        {'btn-green': labelOfSaveBtn === '保存成功'},
-                        {'btn-primary': labelOfSaveBtn !== '保存成功'}]"
+                                    'btn', 'center', 'btn-reload',
+                                    {'btn-green': labelOfSaveBtn === '保存成功'},
+                                    {'btn-primary': labelOfSaveBtn !== '保存成功'}]"
                              ref="domBtnSave"
-                             @click="saveToFile"> {{ labelOfSaveBtn }}
+                             @click="saveToFile(dict)"> {{ labelOfSaveBtn }}
                         </div>
                     </div>
                 </div>
@@ -168,11 +168,11 @@
                 <div class="content">
                     <div v-if="filePath"
                          :class="[
-                                        'btn', 'center',
-                                        {'btn-green': labelOfSaveBtn === '保存成功'},
-                                        {'btn-primary': labelOfSaveBtn !== '保存成功'}]"
+                            'btn', 'center',
+                            {'btn-green': labelOfSaveBtn === '保存成功'},
+                            {'btn-primary': labelOfSaveBtn !== '保存成功'}]"
                          ref="domBtnSave"
-                         @click="saveToFile(true)"> 保存到源文件
+                         @click="saveToFile(dict, true)"> 保存到源文件
                     </div>
                 </div>
             </section>

@@ -49,11 +49,11 @@ const app = {
     mounted() {
         this.heightContent = innerHeight - 47 - 20 - 10 + 3
         // 载入主要操作码表文件
-        ipcRenderer.on('showFileContent', (event, filename, res) => {
+        ipcRenderer.on('showFileContent', (event, fileName, filePath, res) => {
             // 过滤移动到的文件列表，不显示正在显示的这个码表
-            // this.dropdownFileList = this.dropdownFileList.filter(item => item.path !== filename)
+            // this.dropdownFileList = this.dropdownFileList.filter(item => item.path !== fileName)
 
-            this.dict = new Dict(res, filename)
+            this.dict = new Dict(res, fileName, filePath)
             // 载入新码表时，清除 word 保存 code
             this.word = ''
             this.refreshShowingWords()
@@ -79,8 +79,8 @@ const app = {
         ipcRenderer.send('loadInitDictFile')
 
         // 载入目标码表
-        ipcRenderer.on('setTargetDict', (event, filename, res) => {
-            this.targetDict = new Dict(res, filename)
+        ipcRenderer.on('setTargetDict', (event, fileName, filePath, res) => {
+            this.targetDict = new Dict(res, fileName, filePath)
         })
 
         // 载入主码表
@@ -181,7 +181,7 @@ const app = {
             this.dropdownActiveFileIndex = fileIndex
             this.dropdownActiveGroupIndex = -1 // 切换文件列表时，复位分组 fileIndex
             // this.dictSecond = {} // 立即清空次码表，分组列表也会立即消失，不会等下面的码表加载完成再清空
-            ipcRenderer.send('loadSecondDict', this.dropdownFileList[fileIndex].path) // 载入当前 index 的文件内容
+            ipcRenderer.send('MainWindow:LoadSecondDict', this.dropdownFileList[fileIndex].path) // 载入当前 index 的文件内容
         },
         sort(){
             this.dict.sort(this.activeGroupId)
@@ -486,7 +486,7 @@ const app = {
             })
         },
         // 将选中的词条移动到指定码表
-        moveWordsToSecondDict(){
+        moveWordsToTargetDict(){
             let wordsTransferring = [] // 被转移的 [Word]
             if (this.dict.isGroupMode){
                 this.dict.wordsOrigin.forEach((group, index) => {

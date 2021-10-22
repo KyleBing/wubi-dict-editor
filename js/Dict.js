@@ -6,8 +6,10 @@ const {shakeDom, log, shakeDomFocus} = require('./Utility')
 const os = require('os')
 
 class Dict {
-    constructor(fileContent, filename) {
-        this.filename = filename // 文件路径
+    constructor(fileContent, filename, filePath) {
+        this.dictTypeName = 'Dict'
+        this.filePath = filePath // 文件路径
+        this.filename = filename // 文件名字
         this.header = null // 文件头部内容
         this.wordsOrigin = [] // 文件词条数组
         this.lastIndex = 0 // 最后一个Word Index 的值，用于新添加词时，作为唯一的 id 传入
@@ -211,7 +213,7 @@ class Dict {
             insetPosition = this.wordsOrigin.length
         }
         let wordInsert = word.clone() // 断开与别一个 dict 的引用链接，新建一个 word 对象，不然两个 dict 引用同一个 word
-        wordInsert.id = this.lastIndex++ // 给新的 words 一个新的唯一 id
+        wordInsert.setId(this.lastIndex++) // 给新的 words 一个新的唯一 id
         this.wordsOrigin.splice(insetPosition, 0, wordInsert)
     }
 

@@ -84,13 +84,13 @@ const app = {
 
         this.heightContent = innerHeight - 47 - 20 - 10 + 3
         // 载入主要操作码表文件
-        ipcRenderer.on('showFileContent', (event, filePath, fileName, fileContent) => {
+        ipcRenderer.on('showFileContent', (event, fileName, filePath, fileContent) => {
             // 过滤移动到的文件列表，不显示正在显示的这个码表
             this.dropdownFileList = this.dropdownFileList.filter(item => item.path !== fileName)
 
             this.filePath = filePath
             this.fileName = fileName
-            this.dict = new DictOther(fileContent, fileName, this.seperatorRead, this.dictFormatRead)
+            this.dict = new DictOther(fileContent, fileName, filePath, this.seperatorRead, this.dictFormatRead)
             this.fileNameSave = this.filePathSave()
             this.tipNotice('载入完成')
             // 载入新码表时，清除 word 保存 code
@@ -117,8 +117,8 @@ const app = {
         ipcRenderer.send('ToolWindow:GetFileList')
 
         // 载入目标码表
-        ipcRenderer.on('ToolWindow:SetTargetDict', (event, filename, res) => {
-            this.targetDict = new Dict(res, filename)
+        ipcRenderer.on('ToolWindow:SetTargetDict', (event, filename, filePath, res) => {
+            this.targetDict = new Dict(res, filename, filePath)
         })
 
         // 载入主码表
@@ -300,7 +300,7 @@ const app = {
             } else if (!this.code){
                 shakeDomFocus(this.$refs.domInputCode)
             } else {
-                this.dict.addWordToDictInOrder(new Word(this.dict.lastIndex, this.code, this.word))
+                this.dict.addWordToDictInOrder(new Word(this.dict.lastIndex++, this.code, this.word))
                 this.refreshShowingWords()
                 log(this.code, this.word)
             }
@@ -346,15 +346,15 @@ const app = {
         },
 
         // 保存内容到文件
-        saveToFile(saveToOriginFile){
+        saveToFile(dict, isSaveToOriginalFilePath){
             if (this.dict.lastIndex >= 1){ // 以 dict 的 lastIndex 作为判断有没有加载码表的依据
-                if (saveToOriginFile){
-                    log('保存文件路径： ', this.filePath)
+                if (isSaveToOriginalFilePath){ // 保存到原来文件，针对工具里打开的文件，和词条移动的目标文件
+                    log('保存文件路径： ', dict.filePath)
                     ipcRenderer.send(
                         'ToolWindow:SaveFile',
-                        this.filePath,
-                        this.dict.toExportString(this.seperatorSave, this.dictFormatSave))
-                } else {
+                        dict.filePath,
+                        dict.toYamlString())
+                } else { // 保存成新文件，新文件名，只针对工具里打开的码表
                     log('保存文件路径： ', this.filePathSave(true))
                     ipcRenderer.send(
                         'ToolWindow:SaveFile',
@@ -557,7 +557,7 @@ const app = {
             })
         },
         // 将选中的词条移动到指定码表
-        moveWordsToSecondDict(){
+        moveWordsToTargetDict(){
             let wordsTransferring = this.dict.wordsOrigin.filter(item => this.chosenWordIds.has(item.id)) // 被转移的 [Word]
             log('words transferring：', JSON.stringify(wordsTransferring))
 
@@ -567,8 +567,8 @@ const app = {
             log('after insert:( main:wordOrigin ):\n ', JSON.stringify(this.targetDict.wordsOrigin))
 
             this.deleteWords() // 删除当前词库已移动的词条
-            this.saveToFile(this.targetDict)
-            this.saveToFile(this.dict)
+            this.saveToFile(this.targetDict, true)
+            this.saveToFile(this.dict, true)
             this.tipNotice('移动成功')
             this.resetDropList()
         },
