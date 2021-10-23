@@ -103,8 +103,15 @@ function createMainWindow() {
     // 载入配置文件内容
     ipcMain.on('MainWindow:RequestConfigFile', event => {
         let config = readConfigFile() // 没有配置文件时，返回 false
+
         if (config){ // 如果有配置文件
             mainWindow.send('MainWindow:ResponseConfigFile', config) // 向窗口发送 config 内容
+            if (configWindow){
+                configWindow.send('responseConfigFile', config) // 向窗口发送 config 内容
+            }
+            if (toolWindow){ // 如果有配置文件
+                toolWindow.send('responseConfigFile', config) // 向窗口发送 config 内容
+            }
         }
     })
     // 保存配置文件内容
@@ -140,7 +147,6 @@ function showToolWindow (){
     )
     toolWindow.on('closed', function () {
         let listeners = [
-            'requestConfigFile',
             'ToolWindow:chooseDictFile',
             'ToolWindow:SaveFile',
             'ToolWindow:loadFileContent',
@@ -154,15 +160,6 @@ function showToolWindow (){
         toolWindow = null
     })
 
-
-    // config 相关
-    // 载入配置文件内容
-    ipcMain.on('requestConfigFile', event => {
-        let config = readConfigFile() // 没有配置文件时，返回 false
-        if (config && toolWindow){ // 如果有配置文件
-            toolWindow.send('responseConfigFile', config) // 向窗口发送 config 内容
-        }
-    })
 
 
     // 选取码表文件目录
@@ -266,7 +263,6 @@ function createConfigWindow() {
     configWindow.on('closed', function () {
         let listeners = [
             'requestFileList',
-            'requestConfigFile',
             'requestSaveConfig',
             'chooseRimeHomeDir'
         ]
@@ -286,9 +282,7 @@ function createConfigWindow() {
     ipcMain.on('requestConfigFile', event => {
         let config = readConfigFile() // 没有配置文件时，返回 false
         if (config){ // 如果有配置文件
-            if (configWindow){
-                configWindow.send('responseConfigFile', config) // 向窗口发送 config 内容
-            }
+
         }
     })
 

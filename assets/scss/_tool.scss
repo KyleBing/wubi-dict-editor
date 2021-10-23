@@ -24,7 +24,7 @@ hr{
   overflow-y: auto;
   margin-top: 1px;
   background-color: $bg-panel-tool;
-  padding: 10px 15px 30px;
+  padding: 10px 15px 15px;
   &::-webkit-scrollbar {
     width: 3px;
   }
@@ -48,6 +48,9 @@ hr{
       @include border-radius(5px);
       padding: 10px;
       background-color: $bg-panel;
+    }
+    &:last-child{
+      margin-bottom: 0;
     }
   }
 }
@@ -79,5 +82,25 @@ hr{
   }
   &:last-child{
     margin-bottom: 0;
+  }
+}
+
+.readme{
+  .readme-item{
+    margin-bottom: 20px;
+    h3{
+      color: $text-tool-title;
+      margin-bottom: 5px;
+    }
+    p{
+      font-size: $fz-notice;
+      line-height: 1.5;
+      i{
+        white-space: nowrap;
+        font-weight: bold;
+        font-style: normal;
+        color: $color-main;
+      }
+    }
   }
 }

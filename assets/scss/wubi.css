@@ -1466,7 +1466,7 @@ hr {
   overflow-y: auto;
   margin-top: 1px;
   background-color: #f9f9f9;
-  padding: 10px 15px 30px;
+  padding: 10px 15px 15px;
 }
 .tool-panel::-webkit-scrollbar {
   width: 3px;
@@ -1493,6 +1493,9 @@ hr {
   border-radius: 5px;
   padding: 10px;
   background-color: #f3f3f3;
+}
+.tool-panel section:last-child {
+  margin-bottom: 0;
 }
 
 .load-list {
@@ -1522,6 +1525,24 @@ hr {
 }
 .btn-list:last-child {
   margin-bottom: 0;
+}
+
+.readme .readme-item {
+  margin-bottom: 20px;
+}
+.readme .readme-item h3 {
+  color: #383f4a;
+  margin-bottom: 5px;
+}
+.readme .readme-item p {
+  font-size: 11px;
+  line-height: 1.5;
+}
+.readme .readme-item p i {
+  white-space: nowrap;
+  font-weight: bold;
+  font-style: normal;
+  color: #FF2D70;
 }
 
 .dark-mode {
