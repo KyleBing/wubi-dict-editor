@@ -503,6 +503,7 @@ function createMenu(filesMenu) {
 function refreshWindows(){
     if(mainWindow) mainWindow.reload()
     if(configWindow) configWindow.reload()
+    if(toolWindow) toolWindow.reload()
 }
 
 // 设置菜单 - Rime 所有文件

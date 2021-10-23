@@ -2,13 +2,13 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>一码多词</title>
+    <title>码表处理工具</title>
     <link rel="stylesheet" href="../../assets/scss/wubi.css">
     <link rel="stylesheet" href="../../node_modules/vue-virtual-scroller/dist/vue-virtual-scroller.css">
 </head>
 <body>
 
-<div v-cloak id="app">
+<div v-cloak id="app" class="tool">
     <div class="search-bar" v-if="dict">
         <div class="dropdown">
             <div class="dropdown-link btn btn-blue" v-show="chosenWordIdArray.length > 0" @click.capture="showDropdown = !showDropdown">移动到...            </div>

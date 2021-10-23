@@ -83,6 +83,7 @@ $btn-sm-padding-lr: 3px;
 
 
 @each $name, $color in $btns {
+  // BTN
   .btn-#{$name}{
     @if $name == primary {
       color: $text-main;
@@ -106,9 +107,8 @@ $btn-sm-padding-lr: 3px;
       background-color: darken($color, 10%);
     }
   }
-}
 
-@each $name, $color in $btns {
+  // BTN-ALT
   .btn-alt-#{$name}{
     border: 1px solid transparent;
     background-color: transparent;

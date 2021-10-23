@@ -26,11 +26,14 @@ hr{
   background-color: $bg-panel-tool;
   padding: 10px 15px 30px;
   &::-webkit-scrollbar {
-    width: 1px;
+    width: 3px;
   }
   &::-webkit-scrollbar-thumb {
     border: none;
     background-color: $border-color-checkbox;
+  }
+  &:hover::-webkit-scrollbar-thumb{
+    background-color: inherit;
   }
 
   section{

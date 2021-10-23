@@ -8,7 +8,7 @@ $black-color-text: lighten(black, 90%);
 $black-color-text-info: lighten(black, 65%);
 $black-color-text-subtitle: lighten(black, 70%);
 $black-color-text-comment: lighten(black, 55%);
-$black-btn-bg: lighten(black, 35%);
+$black-btn-bg: lighten(black, 25%);
 $black-btn-bg-hover: lighten(black, 40%);
 $black-color-main: #81fffa;
 
@@ -114,61 +114,14 @@ $black-color-main: #81fffa;
       }
     }
   }
-  input, select {
-    color: $black-color-text;
-    &:focus {
-      border-color: $black-color-main;
-      @include box-shadow(0 0 0 2px transparentize($black-color-main, 0.5))
+  .checkbox-cell{
+    .checkbox-item{
+      background-color: $black-bg-highlight;
+      border-color: $black-bg-highlight;
     }
   }
-  input[type=checkbox] + label.checkbox {
-    background-color: $black-body-bg;
-    border-color: $black-color-border;
-  }
-  input[type=checkbox]:checked + label.checkbox {
-    border-color: $black-color-main;
-  }
-  label.checkbox:hover {
-    border-color: $black-color-main !important;
-  }
-  input[type=checkbox]:checked + label.checkbox {
-    &:after {
-      background-color: $black-color-main;
-    }
-  }
-  input {
-    background-color: $black-body-bg;
-    border-color: $black-color-border-highlight;
-  }
-  @each $name, $color in $btns {
-    .btn-#{$name} {
-      @if $name == primary {
-        color: $black-color-text;
-        background-color: $black-btn-bg;
-        border: 1px solid $black-btn-bg;
-      } @else {
-        color: white;
-        background-color: $color;
-        border: 1px solid $color;
-      }
-      &:hover {
-        @if $name == primary {
-          color: $black-color-text;
-          background-color: $black-btn-bg-hover;
-          border: 1px solid $black-btn-bg-hover;
-        } @else {
-          background-color: darken($color, 8%);
-          border-color: darken($color, 8%);
-        }
-      }
-      &:active {
-        @if $name == primary {
-        } @else {
-          background-color: darken($color, 10%);
-        }
-      }
-    }
-  }
+
+  /*CONFIG*/
   .config {
     section {
       margin-bottom: 30px;
@@ -209,6 +162,8 @@ $black-color-main: #81fffa;
       }
     }
   }
+
+  /*BUTTONS*/
   input[type=radio] + label.radio {
     background-color: $black-bg-highlight;
     border-color: $black-color-border-highlight;
@@ -242,7 +197,64 @@ $black-color-main: #81fffa;
       background-color: $green;
     }
   }
+  input, select {
+    color: $black-color-text;
+    &:focus {
+      border-color: $black-color-main;
+      @include box-shadow(0 0 0 2px transparentize($black-color-main, 0.5))
+    }
+  }
+  input[type=checkbox] + label.checkbox {
+    background-color: $black-body-bg;
+    border-color: $black-color-border;
+  }
+  input[type=checkbox]:checked + label.checkbox {
+    border-color: $black-color-main;
+  }
+  label.checkbox:hover {
+    border-color: $black-color-main !important;
+  }
+  input[type=checkbox]:checked + label.checkbox {
+    &:after {
+      background-color: $black-color-main;
+    }
+  }
+  input {
+    background-color: $black-body-bg;
+    border-color: $black-color-border-highlight;
+  }
+
   @each $name, $color in $btns {
+    // BTN
+    .btn-#{$name} {
+      @if $name == primary {
+        color: $black-color-text;
+        background-color: $black-btn-bg;
+        border: 1px solid $black-btn-bg;
+      } @else {
+        color: white;
+        background-color: $color;
+        border: 1px solid $color;
+      }
+      &:hover {
+        @if $name == primary {
+          color: $black-color-text;
+          background-color: $black-btn-bg-hover;
+          border: 1px solid $black-btn-bg-hover;
+        } @else {
+          background-color: darken($color, 8%);
+          border-color: darken($color, 8%);
+        }
+      }
+      &:active {
+        @if $name == primary {
+        } @else {
+          background-color: darken($color, 10%);
+        }
+      }
+    }
+
+    // BTN-ALT
     .btn-alt-#{$name} {
       border-color: transparent;
       background-color: transparent;
@@ -255,6 +267,32 @@ $black-color-main: #81fffa;
         color: $color;
       }
     }
+  }
+
+
+
+
+  /*TOOL*/
+  .tool{
+    .tool-panel{
+      border-right-color: $black-color-border;
+      background-color: $black-bg;
+      .title{
+        color: $black-color-text;
+      }
+      .content{
+        background-color: $black-body-bg;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        border: none;
+        background-color: $black-color-border-highlight;
+      }
+    }
+    hr{
+      border-color: $black-color-border;
+    }
+
   }
 }
 
