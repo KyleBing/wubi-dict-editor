@@ -106,12 +106,6 @@ function createMainWindow() {
 
         if (config){ // 如果有配置文件
             mainWindow.send('MainWindow:ResponseConfigFile', config) // 向窗口发送 config 内容
-            if (configWindow){
-                configWindow.send('responseConfigFile', config) // 向窗口发送 config 内容
-            }
-            if (toolWindow){ // 如果有配置文件
-                toolWindow.send('responseConfigFile', config) // 向窗口发送 config 内容
-            }
         }
     })
     // 保存配置文件内容
@@ -147,6 +141,7 @@ function showToolWindow (){
     )
     toolWindow.on('closed', function () {
         let listeners = [
+            'ToolWindow:RequestConfigFile',
             'ToolWindow:chooseDictFile',
             'ToolWindow:SaveFile',
             'ToolWindow:loadFileContent',
@@ -217,6 +212,17 @@ function showToolWindow (){
             }
         })
     })
+
+    // config 相关
+    ipcMain.on('ToolWindow:RequestConfigFile', event => {
+        let config = readConfigFile() // 没有配置文件时，返回 false
+
+        if (config){ // 如果有配置文件
+            if (toolWindow){ // 如果有配置文件
+                toolWindow.send('ToolWindow:ResponseConfigFile', config) // 向窗口发送 config 内容
+            }
+        }
+    })
 }
 
 
@@ -263,8 +269,8 @@ function createConfigWindow() {
     configWindow.on('closed', function () {
         let listeners = [
             'requestFileList',
-            'requestSaveConfig',
-            'chooseRimeHomeDir'
+            'ConfigWindow:RequestSaveConfig',
+            'ConfigWindow:ChooseRimeHomeDir'
         ]
         listeners.forEach(item => {
             ipcMain.removeAllListeners(item)
@@ -278,33 +284,34 @@ function createConfigWindow() {
     })
 
     // config 相关
-    // 载入配置文件内容
-    ipcMain.on('requestConfigFile', event => {
+    ipcMain.on('ConfigWindow:RequestConfigFile', event => {
         let config = readConfigFile() // 没有配置文件时，返回 false
         if (config){ // 如果有配置文件
-
+            if (configWindow){ // 如果有配置文件
+                configWindow.send('ConfigWindow:ResponseConfigFile', config) // 向窗口发送 config 内容
+            }
         }
     })
 
     // 保存配置文件内容
-    ipcMain.on('requestSaveConfig', (event, config) => {
-        writeConfigFile(config, configWindow)
+    ipcMain.on('ConfigWindow:RequestSaveConfig', (event, configString) => {
+        writeConfigFile(configString)
     })
 
     // 选取配置文件目录
-    ipcMain.on('chooseRimeHomeDir', event => {
+    ipcMain.on('ConfigWindow:ChooseRimeHomeDir', event => {
         let rimeHomeDir = dialog.showOpenDialogSync(configWindow,{
             properties: ['openDirectory'] // 选择文件夹
         })
         if (rimeHomeDir){
-            configWindow.send('choosenRimeHomeDir', rimeHomeDir)
+            configWindow.send('ConfigWindow:ChoosenRimeHomeDir', rimeHomeDir)
         }
     })
 }
 
 
 // config 文件保存在 用户文件夹下 / CONFIG_FILE_PATH/CONFIG_FILE_NAME 文件中
-function writeConfigFile(contentString, responseWindow){
+function writeConfigFile(contentString){
     let configPath = path.join(os.homedir(), CONFIG_FILE_PATH)
     fs.writeFile(path.join(configPath, CONFIG_FILE_NAME), contentString, {encoding: 'utf-8'}, err => {
         if(err){
@@ -325,17 +332,17 @@ function writeConfigFile(contentString, responseWindow){
                                     log(err)
                                 } else {
                                     // 配置保存成功后，向主窗口发送配置文件内容
-                                    mainWindow.send('updateConfigFile', JSON.parse(contentString))
+                                    if (toolWindow) toolWindow.send('ToolWindow:ResponseConfigFile', JSON.parse(contentString)) // 向窗口发送 config 内容
+                                    if (mainWindow) mainWindow.send('MainWindow:ResponseConfigFile', JSON.parse(contentString)) // 向窗口发送 config 内容
                                 }
                             })
                     }
                 })
             }
         } else {
-            // 配置文件保存成功后
-            responseWindow.send('saveConfigFileSuccess')
             // 配置保存成功后，向主窗口发送配置文件内容
-            mainWindow.send('updateConfigFile', JSON.parse(contentString))
+            if (toolWindow) toolWindow.send('ToolWindow:ResponseConfigFile', JSON.parse(contentString)) // 向窗口发送 config 内容
+            if (mainWindow) mainWindow.send('MainWindow:ResponseConfigFile', JSON.parse(contentString)) // 向窗口发送 config 内容
         }
     })
 

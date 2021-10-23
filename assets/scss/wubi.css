@@ -1985,6 +1985,12 @@ hr {
 .dark-mode .tool hr {
   border-color: #272b32;
 }
+.dark-mode .tool .readme .readme-item h3 {
+  color: #e6e6e6;
+}
+.dark-mode .tool .readme .readme-item p i {
+  color: #FF2D70;
+}
 
 @media (prefers-color-scheme: dark) {
   .auto-mode {
@@ -2426,6 +2432,12 @@ hr {
   }
   .auto-mode .tool hr {
     border-color: #272b32;
+  }
+  .auto-mode .tool .readme .readme-item h3 {
+    color: #e6e6e6;
+  }
+  .auto-mode .tool .readme .readme-item p i {
+    color: #FF2D70;
   }
 }
 

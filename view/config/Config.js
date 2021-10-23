@@ -25,13 +25,13 @@ const app = {
         ipcRenderer.send('requestFileList')
 
         // config
-        ipcRenderer.on('responseConfigFile', (event, config) => {
+        ipcRenderer.on('ConfigWindow:ResponseConfigFile', (event, config) => {
             this.config = config
         })
-        ipcRenderer.send('requestConfigFile')
+        ipcRenderer.send('ConfigWindow:RequestConfigFile')
 
         // 选取配置目录后保存
-        ipcRenderer.on('choosenRimeHomeDir', (event, dir) => {
+        ipcRenderer.on('ConfigWindow:ChoosenRimeHomeDir', (event, dir) => {
             this.config.rimeHomeDir = dir[0]
         })
 
@@ -43,18 +43,25 @@ const app = {
         setInitFile(file){
             this.config.initFileName = file.path
         },
-        loadConfig(){
-            ipcRenderer.send('requestConfigFile')
-        },
         chooseRimeHomeDir(){
-            ipcRenderer.send('chooseRimeHomeDir')
+            ipcRenderer.send('ConfigWindow:ChooseRimeHomeDir')
         }
     },
     watch: {
         config: {
             handler(newValue) {
+                switch (newValue.theme){
+                    case "auto":
+                        document.documentElement.classList.add('auto-mode');
+                        document.documentElement.classList.remove('dark-mode');
+                        break;
+                    case "black":
+                        document.documentElement.classList.add('dark-mode');
+                        document.documentElement.classList.remove('auto-mode');
+                        break;
+                }
                 log(JSON.stringify(newValue))
-                ipcRenderer.send('requestSaveConfig', JSON.stringify(this.config))
+                ipcRenderer.send('ConfigWindow:RequestSaveConfig', JSON.stringify(this.config))
             },
             deep: true
         },

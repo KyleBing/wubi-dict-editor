@@ -293,6 +293,20 @@ $black-color-main: #81fffa;
       border-color: $black-color-border;
     }
 
+
+    .readme{
+      .readme-item{
+        h3{
+          color: $black-color-text;
+        }
+        p{
+          i{
+            color: $color-main;
+          }
+        }
+      }
+    }
+
   }
 }
 

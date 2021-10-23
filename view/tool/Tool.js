@@ -127,11 +127,11 @@ const app = {
         })
 
         // 配置相关
-        ipcRenderer.on('responseConfigFile', (event, config) => {
+        ipcRenderer.on('ToolWindow:ResponseConfigFile', (event, config) => {
             this.config = config
             log('窗口载入时获取到的 config 文件：', config)
         })
-        ipcRenderer.send('requestConfigFile')
+        ipcRenderer.send('ToolWindow:RequestConfigFile')
 
 
         // 配置文件保存后，向主窗口更新配置文件内容
