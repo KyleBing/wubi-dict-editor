@@ -300,8 +300,9 @@ $black-color-main: #81fffa;
           color: $black-color-text;
         }
         p{
+          color: $black-color-text-subtitle;
           i{
-            color: $color-main;
+            color: $black-color-main;
           }
         }
       }

@@ -1536,6 +1536,7 @@ hr {
 }
 .readme .readme-item p {
   font-size: 11px;
+  color: #848484;
   line-height: 1.5;
 }
 .readme .readme-item p i {
@@ -1988,8 +1989,11 @@ hr {
 .dark-mode .tool .readme .readme-item h3 {
   color: #e6e6e6;
 }
+.dark-mode .tool .readme .readme-item p {
+  color: #b3b3b3;
+}
 .dark-mode .tool .readme .readme-item p i {
-  color: #FF2D70;
+  color: #81fffa;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -2436,8 +2440,11 @@ hr {
   .auto-mode .tool .readme .readme-item h3 {
     color: #e6e6e6;
   }
+  .auto-mode .tool .readme .readme-item p {
+    color: #b3b3b3;
+  }
   .auto-mode .tool .readme .readme-item p i {
-    color: #FF2D70;
+    color: #81fffa;
   }
 }
 
