@@ -1441,6 +1441,11 @@ select option {
   transition: all 0.3s;
 }
 
+.dict-map-content {
+  height: 100px;
+  overflow-y: auto;
+}
+
 .tool-container {
   display: flex;
   flex-flow: row nowrap;

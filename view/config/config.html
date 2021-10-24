@@ -136,7 +136,20 @@
         <div class="section-content">
             <div class="check-item">
                 <p>{{config.rimeHomeDir || '默认目录'}}</p>
-                <div class="btn btn-primary" @click="chooseRimeHomeDir">选择</div>
+                <div class="btn btn-primary" @click="chooseRimeHomeDir">选择目录</div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="section-title">
+            <h3>选择参考码表</h3>
+            <div class="desc">生成编码使用的码表，格式：前词后码，tab 分隔</div>
+        </div>
+        <div class="section-content">
+            <div class="check-item">
+                <p>{{config.hasSetDictMap || '请选择码表文件'}}</p>
+                <div class="btn btn-primary" @click="setDictMap">选择文件</div>
             </div>
         </div>
     </section>

@@ -167,7 +167,7 @@ function showToolWindow (){
         })
         console.log(dictFilePath)
         if (dictFilePath){
-            readFileFromDisk(dictFilePath[0], toolWindow)
+            readFileFromDiskAndResponse(dictFilePath[0], toolWindow)
         }
     })
 
@@ -185,7 +185,7 @@ function showToolWindow (){
 
     // 监听 window 的文件载入请求
     ipcMain.on('ToolWindow:loadFileContent', (event, filePath) => {
-        readFileFromDisk( filePath, toolWindow)
+        readFileFromDiskAndResponse( filePath, toolWindow)
     })
 
     // 外部打开当前码表文件
@@ -227,15 +227,24 @@ function showToolWindow (){
 
 
 // 读取文件 从硬盘
-function readFileFromDisk(filePath, responseWindow){
-    let fileName = path.basename(filePath) // 获取文件名
-    fs.readFile(filePath, {encoding: 'utf-8'}, (err, res) => {
-        if(err){
-            log(err)
+function readFileFromDisk(filePath){
+    let fileContent = fs.readFileSync(filePath, {encoding: 'utf-8'})
+        if(!fileContent){
+            return false
         } else {
-            responseWindow.send('showFileContent', fileName, filePath, res)
+            return fileContent
         }
-    })
+}
+
+// 读取文件并回馈给指定窗口
+function readFileFromDiskAndResponse(filePath, responseWindow){
+    let fileName = path.basename(filePath) // 获取文件名
+    let fileContent = readFileFromDisk(filePath)
+    if (fileContent){
+        responseWindow.send('showFileContent', fileName, filePath, fileContent)
+    } else {
+        log('读取文件错误')
+    }
 }
 
 
@@ -270,7 +279,8 @@ function createConfigWindow() {
         let listeners = [
             'requestFileList',
             'ConfigWindow:RequestSaveConfig',
-            'ConfigWindow:ChooseRimeHomeDir'
+            'ConfigWindow:ChooseRimeHomeDir',
+            'ConfigWindow:SetDictMapFile',
         ]
         listeners.forEach(item => {
             ipcMain.removeAllListeners(item)
@@ -305,6 +315,28 @@ function createConfigWindow() {
         })
         if (rimeHomeDir){
             configWindow.send('ConfigWindow:ChoosenRimeHomeDir', rimeHomeDir)
+        }
+    })
+
+    // 选取编码字典文件
+    ipcMain.on('ConfigWindow:SetDictMapFile', event => {
+        // 获取文件码表文件路径，返回值为路径数组
+        let dictMapPathArray = dialog.showOpenDialogSync(configWindow,{
+            defaultPath: getRimeConfigDir(), // 默认为 Rime 配置文件目录
+            filters: [
+                { name: '码表文件', extensions: ['text', 'txt', 'yaml'] },
+            ],
+            properties: ['openFile'] // 选择文件夹
+        })
+        if (dictMapPathArray.length > 0){
+            let filePath = dictMapPathArray[0]
+            let fileName = path.basename(filePath) // 获取文件名
+            let fileContent = readFileFromDisk(filePath)
+            if (fileContent){
+                configWindow.send('ConfigWindow:ShowDictMapContent', fileName, filePath, fileContent)
+            } else {
+                log('读取码表字典文件错误')
+            }
         }
     })
 }

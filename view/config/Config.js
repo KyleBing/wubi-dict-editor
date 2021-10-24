@@ -2,6 +2,7 @@ const Vue  = require('../../node_modules/vue/dist/vue.common.dev')
 const {ipcRenderer} = require('electron')
 const {log} = require('../../js/Utility')
 const { IS_IN_DEVELOP, CONFIG_FILE_PATH, CONFIG_FILE_NAME, DEFAULT_CONFIG } =  require('../../js/Global')
+const os = require('os')
 
 
 // Vue 2
@@ -11,7 +12,8 @@ const app = {
         return {
             fileList: null, // 展示用的配置文件夹内的文件列表
             // [{ "name": "luna_pinyin.sogou", "path": "luna_pinyin.sogou.dict.yaml" }]
-            config: DEFAULT_CONFIG
+            config: DEFAULT_CONFIG,
+            dictMapContent: '' // 字典文件内容
         }
     },
     mounted() {
@@ -35,6 +37,12 @@ const app = {
             this.config.rimeHomeDir = dir[0]
         })
 
+        // 读取字典文件的内容
+        ipcRenderer.on('ConfigWindow:ShowDictMapContent', (event, fileName, filePath, fileContent) => {
+            // TODO: 处理获取到的码表数据，筛选单字并存储
+        })
+
+
         onresize = ()=>{
             this.heightContent = innerHeight - 47 - 20 - 10 + 3
         }
@@ -42,6 +50,9 @@ const app = {
     methods: {
         setInitFile(file){
             this.config.initFileName = file.path
+        },
+        setDictMap(){
+            ipcRenderer.send('ConfigWindow:SetDictMapFile')
         },
         chooseRimeHomeDir(){
             ipcRenderer.send('ConfigWindow:ChooseRimeHomeDir')
