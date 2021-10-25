@@ -169,6 +169,7 @@ function showToolWindow (){
             ipcMain.removeAllListeners(item)
         })
         toolWindow = null
+        if(mainWindow) mainWindow.show()
     })
 
 
@@ -312,6 +313,8 @@ function createConfigWindow() {
             ipcMain.removeAllListeners(item)
         })
         configWindow = null
+        if(toolWindow) toolWindow.show()
+        if(mainWindow) mainWindow.show()
     })
 
     // 载入文件列表
