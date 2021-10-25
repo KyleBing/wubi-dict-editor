@@ -173,6 +173,13 @@ const app = {
             this.tip = msg
             setTimeout(()=>{this.tip = ''}, 3000)
         },
+        generateCodeForAllWords(){
+            this.dict.wordsOrigin.forEach(word => {
+                word.setCode(this.dictMap.decodeWord(word.word))
+            })
+            this.refreshShowingWords()
+            this.tipNotice('编码生成完成')
+        },
         // 生成保存文件的文件名
         filePathSave(withFullPath){
             let filePathObject = path.parse(this.filePath)

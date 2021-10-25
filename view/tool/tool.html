@@ -124,7 +124,8 @@
             </section>
 
             <hr>
-<!--保存-->
+
+            <!--保存-->
             <section>
                 <div class="title">码表保存</div>
                 <!-- 分隔符 -->
@@ -140,49 +141,47 @@
                             <div :class="['btn btn-primary', {'btn-green': dictFormatSave === item.value}]" @click="dictFormatSave = item.value">{{item.name}}</div>
                         </div>
                     </div>
-                </div>
-            </section>
-
-            <section v-if="filePath">
-                <div class="title"></div>
-                <div class="content">
-                    <div class="load-list">
+                    <!--  保存-->
+                    <div class="load-list mb-2">
                         <div v-if="fileNameSave" class="btn btn-orange btn-load btn-ellipsis center">{{ fileNameSave }}</div>
                         <div
-                             :class="[
+                            :class="[
                                     'btn', 'center', 'btn-reload',
                                     {'btn-green': labelOfSaveBtn === '保存成功'},
                                     {'btn-primary': labelOfSaveBtn !== '保存成功'}]"
-                             ref="domBtnSave"
-                             @click="saveToFile(dict)"> {{ labelOfSaveBtn }}
+                            ref="domBtnSave"
+                            @click="saveToFile(dict)"> {{ labelOfSaveBtn }}
+                        </div>
+                    </div>
+                    <div>
+                        <div
+                            :class="[
+                            'btn', 'center',
+                            {'btn-green': labelOfSaveBtn === '保存成功'},
+                            {'btn-primary': labelOfSaveBtn !== '保存成功'}]"
+                            ref="domBtnSave"
+                            @click="saveToFile(dict, true)"> 保存到源文件
                         </div>
                     </div>
                 </div>
             </section>
 
-            <section v-if="filePath">
-                <div class="title"></div>
-                <div class="content">
-                    <div
-                         :class="[
-                            'btn', 'center',
-                            {'btn-green': labelOfSaveBtn === '保存成功'},
-                            {'btn-primary': labelOfSaveBtn !== '保存成功'}]"
-                         ref="domBtnSave"
-                         @click="saveToFile(dict, true)"> 保存到源文件
-                    </div>
-                </div>
-            </section>
-
-<!-- 编码生成
             <hr>
+
+            <!-- 编码处理-->
             <section>
                 <div class="title">编码生成</div>
                 <div class="content">
-                    <div class="load-list">
-                        <div class="btn btn-load btn-ellipsis btn-orange" v-if="dict.filename" @click="loadDictFile" >{{ dict.filename}}</div>
-                        <div class="btn btn-load btn-ellipsis btn-primary" v-else @click="loadDictFile" >选择参照码表文件，用于生成编码</div>
-                        <div class="btn ml-2  btn-primary center" @click="reloadCurrentFile">据此码表生成编码</div>
+                    <div class="btn-list">
+                        <div class="btn  btn-primary center" @click="generateCodeForAllWords">生成所有词条的编码</div>
+                    </div>
+                </div>
+            </section>
+<!--            <section>
+                <div class="title">编码查错</div>
+                <div class="content">
+                    <div class="btn-list">
+                        <div class="btn  btn-primary center" @click="">据此码表生成编码</div>
                     </div>
                 </div>
             </section>-->

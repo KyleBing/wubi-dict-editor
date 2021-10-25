@@ -26,6 +26,9 @@ class Word{
             return this.word + seperator + this.code
         }
     }
+    setCode(code){
+        this.code = code
+    }
     setId(id){
         this.id = id
     }
