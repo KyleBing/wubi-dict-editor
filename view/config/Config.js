@@ -3,6 +3,7 @@ const {ipcRenderer} = require('electron')
 const {log} = require('../../js/Utility')
 const { IS_IN_DEVELOP, CONFIG_FILE_PATH, CONFIG_FILE_NAME, DEFAULT_CONFIG } =  require('../../js/Global')
 const os = require('os')
+const DictMap = require('../../js/DictMap')
 
 
 // Vue 2
@@ -40,6 +41,8 @@ const app = {
         // 读取字典文件的内容
         ipcRenderer.on('ConfigWindow:ShowDictMapContent', (event, fileName, filePath, fileContent) => {
             // TODO: 处理获取到的码表数据，筛选单字并存储
+            let dictMap = new DictMap(fileContent, fileName, filePath)
+            console.log(dictMap)
         })
 
 
