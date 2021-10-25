@@ -148,7 +148,7 @@
         </div>
         <div class="section-content">
             <div class="check-item">
-                <p>{{config.hasSetDictMap || '请选择码表文件'}}</p>
+                <p>{{config.hasSetDictMap? '已添加码表文件': '请选择码表文件'}}</p>
                 <div class="btn btn-primary" @click="setDictMap">选择文件</div>
             </div>
         </div>

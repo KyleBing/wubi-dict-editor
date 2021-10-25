@@ -75,7 +75,6 @@ const app = {
             log(fileList)
             this.dropdownFileList = fileList
         })
-
         ipcRenderer.send('loadInitDictFile')
 
         // 载入目标码表
@@ -96,11 +95,16 @@ const app = {
         })
         ipcRenderer.send('MainWindow:RequestConfigFile')
 
-
         // 配置文件保存后，向主窗口更新配置文件内容
         ipcRenderer.on('updateConfigFile', (event, config) => {
             this.config = config
         })
+
+        // 获取并设置字典文件
+        ipcRenderer.on('setDictMap', (event, dictMap) => {
+            console.log(dictMap)
+        })
+        ipcRenderer.send('getDictMap')
 
         this.addKeyboardListener()
         onresize = ()=>{

@@ -28,6 +28,8 @@ class DictOther {
         let bodyString = ''
         if (indexEndOfHeader > 0){
             bodyString = fileContent.substring(this.indexEndOfHeader)
+        } else {
+            bodyString = fileContent
         }
         // 处理词条
         let startPoint = new Date().getTime()

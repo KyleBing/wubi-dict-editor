@@ -6,6 +6,7 @@ const url = require("url")
 const path = require("path")
 const {shakeDom, log, shakeDomFocus} = require('./js/Utility')
 const { IS_IN_DEVELOP, CONFIG_FILE_PATH, CONFIG_FILE_NAME, DEFAULT_CONFIG, CONFIG_DICT_MAP_FILE_NAME } =  require('./js/Global')
+const DictMap = require('./js/DictMap')
 
 let mainWindow // 主窗口
 let fileList = [] // 文件目录列表，用于移动词条
@@ -99,8 +100,7 @@ function createMainWindow() {
         mainWindow.send('FileList', fileList)
     })
 
-    // config 相关
-    // 载入配置文件内容
+    // config 相关，载入配置文件内容
     ipcMain.on('MainWindow:RequestConfigFile', event => {
         let config = readConfigFile() // 没有配置文件时，返回 false
 
@@ -111,6 +111,16 @@ function createMainWindow() {
     // 保存配置文件内容
     ipcMain.on('saveConfigFileFromMainWindow', (event, configString) => {
         writeConfigFile(configString, mainWindow)
+    })
+
+    ipcMain.on('getDictMap', event => {
+        let dictMapFilePath = path.join(getAppConfigDir(), CONFIG_DICT_MAP_FILE_NAME)
+        let dictMapFileContent = readFileFromDisk(dictMapFilePath)
+        if (dictMapFileContent){
+            let dictMap = new DictMap(dictMapFileContent, CONFIG_DICT_MAP_FILE_NAME, dictMapFilePath)
+            if (mainWindow) mainWindow.send('setDictMap', dictMap.characterMap)
+            if (toolWindow) toolWindow.send('setDictMap', dictMap.characterMap)
+        }
     })
 }
 
