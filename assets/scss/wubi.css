@@ -1622,6 +1622,23 @@ hr {
 .dark-mode .input-item .btn-clear:hover {
   background-color: #FF2D70;
 }
+.dark-mode .modal {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+.dark-mode .modal .modal-panel {
+  border-color: #383838;
+  background-color: #1c1f24;
+}
+.dark-mode .modal-header {
+  color: #e6e6e6;
+}
+.dark-mode .modal-body input {
+  width: 100%;
+}
+.dark-mode .modal-footer {
+  display: flex;
+  justify-content: center;
+}
 .dark-mode .group {
   color: #e6e6e6;
 }
@@ -2072,6 +2089,23 @@ hr {
   }
   .auto-mode .input-item .btn-clear:hover {
     background-color: #FF2D70;
+  }
+  .auto-mode .modal {
+    background-color: rgba(0, 0, 0, 0.2);
+  }
+  .auto-mode .modal .modal-panel {
+    border-color: #383838;
+    background-color: #1c1f24;
+  }
+  .auto-mode .modal-header {
+    color: #e6e6e6;
+  }
+  .auto-mode .modal-body input {
+    width: 100%;
+  }
+  .auto-mode .modal-footer {
+    display: flex;
+    justify-content: center;
   }
   .auto-mode .group {
     color: #e6e6e6;

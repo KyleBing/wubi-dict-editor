@@ -42,6 +42,32 @@ $black-color-main: #81fffa;
       }
     }
   }
+
+
+  .modal{
+    background-color: rgba(0,0,0,0.2);
+    .modal-panel{
+      border-color: $black-color-border-highlight;
+      background-color: $black-bg;
+    }
+  }
+
+  .modal{
+    &-header{
+      color: $black-color-text;
+    }
+    &-body{
+      input{
+        width: 100%;
+      }
+    }
+    &-footer{
+      display: flex;
+      justify-content: center;
+    }
+  }
+
+
   .group {
     color: $black-color-text;
     .group-header {
