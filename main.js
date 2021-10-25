@@ -118,6 +118,14 @@ function createMainWindow() {
         if (dictMapFileContent){
             if (mainWindow) mainWindow.send('setDictMap', dictMapFileContent, CONFIG_DICT_MAP_FILE_NAME, dictMapFilePath)
             if (toolWindow) toolWindow.send('setDictMap', dictMapFileContent, CONFIG_DICT_MAP_FILE_NAME, dictMapFilePath)
+        } else {
+            // 如果没有设置码表字典文件，使用默认配置目录中的码表文件作为字典文件
+            let rimeWubiDefaultDictFilePath = path.join(getRimeConfigDir(), 'wubi86_jidian.dict.yaml')
+            let originalDictFileContent = readFileFromDisk(rimeWubiDefaultDictFilePath)
+            if (originalDictFileContent){
+                if (mainWindow) mainWindow.send('setDictMap', originalDictFileContent, CONFIG_DICT_MAP_FILE_NAME, dictMapFilePath)
+                if (toolWindow) toolWindow.send('setDictMap', originalDictFileContent, CONFIG_DICT_MAP_FILE_NAME, dictMapFilePath)
+            }
         }
     })
 }
