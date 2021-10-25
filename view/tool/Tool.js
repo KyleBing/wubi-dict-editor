@@ -6,7 +6,7 @@ const Dict = require('../../js/Dict')
 const DictOther = require('../../js/DictOther')
 const DictMap = require('../../js/DictMap')
 const Word = require('../../js/Word')
-const Vue  = require('../../node_modules/vue/dist/vue.common.dev')
+const Vue  = require('../../node_modules/vue/dist/vue.common.prod')
 
 const {ipcRenderer} = require('electron')
 const VirtualScroller = require('vue-virtual-scroller')

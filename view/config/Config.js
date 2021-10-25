@@ -1,4 +1,4 @@
-const Vue  = require('../../node_modules/vue/dist/vue.common.dev')
+const Vue  = require('../../node_modules/vue/dist/vue.common.prod')
 const {ipcRenderer} = require('electron')
 const {log} = require('../../js/Utility')
 const { IS_IN_DEVELOP, CONFIG_FILE_PATH, CONFIG_FILE_NAME, DEFAULT_CONFIG } =  require('../../js/Global')

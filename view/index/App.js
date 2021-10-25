@@ -4,7 +4,7 @@ const {IS_IN_DEVELOP} = require('../../js/Global')
 const Dict = require('../../js/Dict')
 const DictMap = require('../../js/DictMap')
 const Word = require('../../js/Word')
-const Vue  = require('../../node_modules/vue/dist/vue.common.dev')
+const Vue  = require('../../node_modules/vue/dist/vue.common.prod')
 
 const {ipcRenderer} = require('electron')
 const VirtualScroller = require('vue-virtual-scroller')
@@ -47,6 +47,8 @@ const app = {
             config: {}, // 全局配置
 
             dictMap: null, // main 返回的 dictMap，用于解码词条
+
+            wordEditing: null, // 正在编辑的词条
         }
     },
     mounted() {
@@ -139,6 +141,12 @@ const app = {
             setTimeout(()=>{this.tip = ''}, 3000)
         },
 
+        // 编辑词条
+        editWord(word){
+            this.wordEditing = word
+        },
+
+        // 选择操作
         select(index, wordId, event){
             if (event.shiftKey){
                 if (this.lastChosenWordIndex !== null){
