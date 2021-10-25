@@ -1,5 +1,3 @@
-const {IS_IN_DEVELOP} = require("./Global")
-
 function $(selector){
     return document.querySelector(selector)
 }

@@ -9,6 +9,21 @@
 <body>
 
 <div v-cloak id="app">
+    <div class="edit-modal modal" v-if="wordEditing">
+        <div class="modal-panel">
+            <div class="modal-header">
+                <div class="id">{{wordEditing.id}}</div>
+            </div>
+            <div class="modal-body">
+                <input ref="editInputWord" class="mb-1" type="text" v-model="wordEditing.word" >
+                <input ref="editInputCode" type="text" v-model="wordEditing.code" >
+            </div>
+            <div class="modal-footer">
+                <div class="btn btn-cyan mr-2" @click="generateCodeForWordEdit">生成编码</div>
+                <div class="btn btn-roseo" @click="confirmEditWord">确定</div>
+            </div>
+        </div>
+    </div>
     <div class="search-bar" v-if="dict">
         <div
             :class="[
@@ -94,15 +109,10 @@
                             <div class="id">{{ index }}</div>
                             <div class="id">{{ item.id }}</div>
                             <div class="operation">
-                                <div class="up" @click.stop="moveUp(item.id)">
-                                    <img src="../../assets/img/up.svg" alt="move up">
-                                </div>
-                                <div class="down" @click.stop="moveDown(item.id)">
-                                    <img src="../../assets/img/down.svg" alt="move down">
-                                </div>
-                                <div  class="down" @click.stop="deleteWord(item.id)">
-                                    <img src="../../assets/img/delete.svg" alt="move down">
-                                </div>
+                                <div class="up" @click.stop="editWord(item)"><img src="../../assets/img/edit.svg" alt="edit"></div>
+                                <div class="up" @click.stop="moveUp(item.id)"><img src="../../assets/img/up.svg" alt="move up"></div>
+                                <div class="down" @click.stop="moveDown(item.id)"><img src="../../assets/img/down.svg" alt="move down"></div>
+                                <div  class="down" @click.stop="deleteWord(item.id)"><img src="../../assets/img/delete.svg" alt="move down"></div>
                             </div>
                         </div>
                     </template>
@@ -171,15 +181,10 @@
                             <div class="id">{{ index }}</div>
                             <div class="id">{{ item.id }}</div>
                             <div class="operation">
-                                <div class="up" @click.stop="moveUp(item.id)">
-                                    <img src="../../assets/img/up.svg" alt="move up">
-                                </div>
-                                <div  class="down" @click.stop="moveDown(item.id)">
-                                    <img src="../../assets/img/down.svg" alt="move down">
-                                </div>
-                                <div  class="down" @click.stop="deleteWord(item.id)">
-                                    <img src="../../assets/img/delete.svg" alt="move down">
-                                </div>
+                                <div class="up" @click.stop="moveUp(item.id)"><img src="../../assets/img/up.svg" alt="move up"></div>
+                                <div  class="down" @click.stop="moveDown(item.id)"><img src="../../assets/img/down.svg" alt="move down"></div>
+                                <div class="up" @click.stop="editWord(item)"><img src="../../assets/img/edit.svg" alt="edit"></div>
+                                <div  class="down" @click.stop="deleteWord(item.id)"><img src="../../assets/img/delete.svg" alt="move down"></div>
                             </div>
                         </div>
                     </div>
