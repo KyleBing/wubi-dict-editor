@@ -9,6 +9,7 @@
 <body>
 
 <div v-cloak id="app">
+    <!--词条编辑窗口-->
     <div class="edit-modal modal" v-if="wordEditing">
         <div class="modal-panel">
             <div class="modal-header">
@@ -24,6 +25,7 @@
             </div>
         </div>
     </div>
+    <!--搜索框-->
     <div class="search-bar" v-if="dict">
         <div
             :class="[
@@ -109,10 +111,10 @@
                             <div class="id">{{ index }}</div>
                             <div class="id">{{ item.id }}</div>
                             <div class="operation">
-                                <div class="up" @click.stop="editWord(item)"><img src="../../assets/img/edit.svg" alt="edit"></div>
                                 <div class="up" @click.stop="moveUp(item.id)"><img src="../../assets/img/up.svg" alt="move up"></div>
                                 <div class="down" @click.stop="moveDown(item.id)"><img src="../../assets/img/down.svg" alt="move down"></div>
-                                <div  class="down" @click.stop="deleteWord(item.id)"><img src="../../assets/img/delete.svg" alt="move down"></div>
+                                <div class="up" @click.stop="editWord(item)"><img src="../../assets/img/edit.svg" alt="edit"></div>
+                                <div  class="down" @click.stop="deleteWord(item.id)"><img src="../../assets/img/delete.svg" alt="delete"></div>
                             </div>
                         </div>
                     </template>
@@ -184,7 +186,7 @@
                                 <div class="up" @click.stop="moveUp(item.id)"><img src="../../assets/img/up.svg" alt="move up"></div>
                                 <div  class="down" @click.stop="moveDown(item.id)"><img src="../../assets/img/down.svg" alt="move down"></div>
                                 <div class="up" @click.stop="editWord(item)"><img src="../../assets/img/edit.svg" alt="edit"></div>
-                                <div  class="down" @click.stop="deleteWord(item.id)"><img src="../../assets/img/delete.svg" alt="move down"></div>
+                                <div  class="down" @click.stop="deleteWord(item.id)"><img src="../../assets/img/delete.svg" alt="delete"></div>
                             </div>
                         </div>
                     </div>

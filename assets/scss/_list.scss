@@ -153,13 +153,13 @@ $border-color-checkbox: #d6d6d6;
     font-size: $fz-list - 2;
   }
   .operation{
-    width: 60px;
+    width: 100px;
     flex-grow: 0;
     flex-shrink: 0;
     opacity: 0.2;
     @extend .unselectable;
     display: flex;
-    justify-content: flex-start;
+    justify-content: flex-end;
     .up, .down{
       cursor: pointer;
       padding: 5px 6px;

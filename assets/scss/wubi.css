@@ -602,12 +602,12 @@
   font-size: 11px;
 }
 .word-item .operation {
-  width: 60px;
+  width: 100px;
   flex-grow: 0;
   flex-shrink: 0;
   opacity: 0.2;
   display: flex;
-  justify-content: flex-start;
+  justify-content: flex-end;
 }
 .word-item .operation .up, .word-item .operation .down {
   cursor: pointer;

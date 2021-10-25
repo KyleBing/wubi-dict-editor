@@ -77,6 +77,8 @@ const app = {
             ], // 筛选词条字数数组
             fileNameSave: '', // 显示的保存文件名
             dictMap: null, // main 返回的 dictMap，用于解码词条
+
+            wordEditing: null, // 正在编辑的词条
         }
     },
     mounted() {
@@ -173,6 +175,24 @@ const app = {
             this.tip = msg
             setTimeout(()=>{this.tip = ''}, 3000)
         },
+        // 确定编辑词条
+        confirmEditWord(){
+            this.wordEditing = null
+            if(this.config.autoDeployOnEdit) this.saveToFile(this.dict) // 根据配置，是否在编辑后保存码表文件
+        },
+        // 生成编辑词条的编码
+        generateCodeForWordEdit(){
+            if (this.wordEditing){
+                this.wordEditing.code = this.dictMap.decodeWord(this.wordEditing.word)
+            } else {
+                shakeDomFocus(this.$refs.editInputWord)
+            }
+        },
+        // 编辑词条
+        editWord(word){
+            this.wordEditing = word
+        },
+
         generateCodeForAllWords(){
             this.dict.wordsOrigin.forEach(word => {
                 word.setCode(this.dictMap.decodeWord(word.word))

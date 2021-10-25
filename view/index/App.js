@@ -49,7 +49,6 @@ const app = {
             dictMap: null, // main 返回的 dictMap，用于解码词条
 
             wordEditing: null, // 正在编辑的词条
-            lastEditWordPointer: null, // 用于取消时，恢复词条内容
         }
     },
     mounted() {
@@ -156,8 +155,7 @@ const app = {
         },
         // 编辑词条
         editWord(word){
-            this.lastEditWordPointer = word
-            this.wordEditing = word.clone()
+            this.wordEditing = word
         },
 
         // 选择操作
