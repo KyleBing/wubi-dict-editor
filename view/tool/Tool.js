@@ -178,7 +178,6 @@ const app = {
         // 确定编辑词条
         confirmEditWord(){
             this.wordEditing = null
-            if(this.config.autoDeployOnEdit) this.saveToFile(this.dict) // 根据配置，是否在编辑后保存码表文件
         },
         // 生成编辑词条的编码
         generateCodeForWordEdit(){
