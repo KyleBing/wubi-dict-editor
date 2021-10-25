@@ -6,6 +6,7 @@
 fix:
 - 编码生成
 
+
 ## v1.05
 - shift 批量选词
 - 工具窗口
@@ -18,7 +19,6 @@ enhance：
   - 滚动条宽度调整，更方便滚动
 fix:
   - ipc 多次响应侦听
-
 
 
 ## v1.04 `2021-10-16`
@@ -36,6 +36,7 @@ fix:
 - 任意词条 -> 任意位置
 
 <img width="912" alt="Screen Shot 2021-08-17 at 20 19 31" src="https://user-images.githubusercontent.com/12215982/129724470-ccffd5f4-6177-4291-8f68-02d91a8793a0.png">
+
 
 ## v1.02
 - 显示程序图标

@@ -1404,6 +1404,7 @@ select option {
   margin-right: 5px;
 }
 .config section .section-content .check-item .label {
+  width: 80px;
   white-space: nowrap;
 }
 .config section .section-content .check-item:last-child {
