@@ -80,6 +80,10 @@ $black-color-main: #81fffa;
       }
     }
   }
+  .operation{
+    .up, .down{
+    }
+  }
   .word-item {
     &:hover {
       background: $black-bg-hover;
