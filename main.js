@@ -489,6 +489,18 @@ function createMenu(filesMenu) {
                         refreshWindows()
                     }
                 },
+                {
+                    label: '打开调试窗口',
+                    click(menuItem, targetWindow) {
+                        targetWindow.openDevTools()
+                    }
+                },
+                {
+                    label: '关闭调试窗口',
+                    click(menuItem, targetWindow) {
+                        targetWindow.closeDevTools()
+                    }
+                },
             ]
         },
         {

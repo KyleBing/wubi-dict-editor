@@ -28,7 +28,7 @@ function shakeDomFocus(dom){
 }
 
 function log(...obj){
-    if (IS_IN_DEVELOP) console.log(...obj)
+    console.log(...obj)
 }
 
 module.exports = {

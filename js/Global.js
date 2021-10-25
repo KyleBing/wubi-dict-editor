@@ -1,5 +1,5 @@
-// const IS_IN_DEVELOP = false // 生产
-const IS_IN_DEVELOP = true // 开发
+const IS_IN_DEVELOP = false // 生产
+// const IS_IN_DEVELOP = true // 开发
 const CONFIG_FILE_NAME = 'config.json' // 配置文件 文件名
 const CONFIG_DICT_MAP_FILE_NAME = 'dict_map.txt' // 编码生成用的字典码表文件
 const CONFIG_FILE_PATH = 'wubi-dict-editor' // 配置文件存放的目录
