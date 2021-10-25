@@ -236,12 +236,11 @@ function showToolWindow (){
 
 // 读取文件 从硬盘
 function readFileFromDisk(filePath){
-    let fileContent = fs.readFileSync(filePath, {encoding: 'utf-8'})
-        if(!fileContent){
-            return false
-        } else {
-            return fileContent
-        }
+    try {
+        return fs.readFileSync(filePath, {encoding: 'utf-8'})
+    } catch (e) {
+        return false
+    }
 }
 
 // 读取文件并回馈给指定窗口

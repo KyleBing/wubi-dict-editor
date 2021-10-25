@@ -549,7 +549,9 @@ const app = {
             if (newValue.length < oldValue.length){
                 // 删除或清空时，不清空编码
             } else {
-                this.code = this.dictMap.decodeWord(newValue)
+                if (this.dictMap){
+                    this.code = this.dictMap.decodeWord(newValue)
+                }
             }
         },
         chosenWordIdArray(newValue){
