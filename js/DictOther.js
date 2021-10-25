@@ -112,45 +112,6 @@ class DictOther {
         log(`处理文件完成，共：${words.length } 条，用时 ${new Date().getTime() - startPoint} ms`)
         return words
     }
-    decodeWord(word){
-        try{
-            let decodeArray = [] // 每个字解码后的数组表
-            let letterArray = word.split('')
-            if (letterArray.length > 4){ // 只截取前三和后一
-                letterArray.splice(3,letterArray.length - 4)
-            }
-            letterArray.forEach(ch => {
-                decodeArray.push(this.characterMap.get(ch) || '')
-            })
-            let phraseCode = ''
-            switch (decodeArray.length){
-                case 0:
-                case 1:
-                    break
-                case 2: // 取一的前二码，二的前二码
-                    phraseCode =
-                        decodeArray[0].substring(0,2) +
-                        decodeArray[1].substring(0,2)
-                    break
-                case 3: // 取一二前一码，三前二码
-                    phraseCode =
-                        decodeArray[0].substring(0,1) +
-                        decodeArray[1].substring(0,1) +
-                        decodeArray[2].substring(0,2)
-                    break
-                default: // 取一二三前一码，最后的一码
-                    phraseCode =
-                        decodeArray[0].substring(0,1) +
-                        decodeArray[1].substring(0,1) +
-                        decodeArray[2].substring(0,1) +
-                        decodeArray[decodeArray.length - 1].substring(0,1)
-            }
-            log(phraseCode, decodeArray)
-            return phraseCode
-        } catch(err){
-            return ''
-        }
-    }
 
     // 排序
     sort(){

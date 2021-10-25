@@ -2,6 +2,7 @@ const {shakeDom, shakeDomFocus, log} = require('../../js/Utility')
 const {IS_IN_DEVELOP} = require('../../js/Global')
 
 const Dict = require('../../js/Dict')
+const DictMap = require('../../js/DictMap')
 const Word = require('../../js/Word')
 const Vue  = require('../../node_modules/vue/dist/vue.common.dev')
 
@@ -44,6 +45,8 @@ const app = {
             dropdownActiveGroupIndex: -1, // 选中的分组 ID
 
             config: {}, // 全局配置
+
+            dictMap: null, // main 返回的 dictMap，用于解码词条
         }
     },
     mounted() {
@@ -101,8 +104,8 @@ const app = {
         })
 
         // 获取并设置字典文件
-        ipcRenderer.on('setDictMap', (event, dictMap) => {
-            console.log(dictMap)
+        ipcRenderer.on('setDictMap', (event, fileContent, fileName, filePath) => {
+            this.dictMap = new DictMap(fileContent, fileName, filePath)
         })
         ipcRenderer.send('getDictMap')
 
@@ -546,7 +549,7 @@ const app = {
             if (newValue.length < oldValue.length){
                 // 删除或清空时，不清空编码
             } else {
-                this.code = this.dict.decodeWord(newValue)
+                this.code = this.dictMap.decodeWord(newValue)
             }
         },
         chosenWordIdArray(newValue){

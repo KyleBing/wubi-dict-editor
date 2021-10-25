@@ -4,6 +4,7 @@ const path = require('path')
 
 const Dict = require('../../js/Dict')
 const DictOther = require('../../js/DictOther')
+const DictMap = require('../../js/DictMap')
 const Word = require('../../js/Word')
 const Vue  = require('../../node_modules/vue/dist/vue.common.dev')
 
@@ -75,8 +76,7 @@ const app = {
                 {name: '五+', value: 5,}
             ], // 筛选词条字数数组
             fileNameSave: '', // 显示的保存文件名
-
-            refDict: null, // 参照字典，用于生成唯一的单字字典，进行编码生成
+            dictMap: null, // main 返回的 dictMap，用于解码词条
         }
     },
     mounted() {
@@ -139,8 +139,8 @@ const app = {
         })
 
         // 获取并设置字典文件
-        ipcRenderer.on('setDictMap', (event, dictMap) => {
-            console.log(dictMap)
+        ipcRenderer.on('setDictMap', (event, fileContent, fileName, filePath) => {
+            this.dictMap = new DictMap(fileContent, fileName, filePath)
         })
         ipcRenderer.send('getDictMap')
 
@@ -309,46 +309,6 @@ const app = {
                 log(this.code, this.word)
             }
         },
-        decodeWord(word){
-            try{
-                let decodeArray = [] // 每个字解码后的数组表
-                let letterArray = word.split('')
-                if (letterArray.length > 4){ // 只截取前三和后一
-                    letterArray.splice(3,letterArray.length - 4)
-                }
-                letterArray.forEach(ch => {
-                    decodeArray.push(this.dictMain.characterMap.get(ch) || '')
-                })
-                let phraseCode = ''
-                switch (decodeArray.length){
-                    case 0:
-                    case 1:
-                        break
-                    case 2: // 取一的前二码，二的前二码
-                        phraseCode =
-                            decodeArray[0].substring(0,2) +
-                            decodeArray[1].substring(0,2)
-                        break
-                    case 3: // 取一二前一码，三前二码
-                        phraseCode =
-                            decodeArray[0].substring(0,1) +
-                            decodeArray[1].substring(0,1) +
-                            decodeArray[2].substring(0,2)
-                        break
-                    default: // 取一二三前一码，最后的一码
-                        phraseCode =
-                            decodeArray[0].substring(0,1) +
-                            decodeArray[1].substring(0,1) +
-                            decodeArray[2].substring(0,1) +
-                            decodeArray[decodeArray.length - 1].substring(0,1)
-                }
-                log(phraseCode, decodeArray)
-                return phraseCode
-            } catch(err){
-                return ''
-            }
-        },
-
         // 保存内容到文件
         saveToFile(dict, isSaveToOriginalFilePath){
             if (this.dict.lastIndex >= 1){ // 以 dict 的 lastIndex 作为判断有没有加载码表的依据
@@ -596,7 +556,7 @@ const app = {
             if (newValue.length < oldValue.length){
                 // 删除或清空时，不清空编码
             } else {
-                this.code = this.dict.decodeWord(newValue)
+                this.code = this.dictMap.decodeWord(newValue)
             }
         },
         seperatorSave(){

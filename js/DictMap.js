@@ -4,7 +4,7 @@ const {log} = require('./Utility')
 const os = require('os')
 
 // 只接受 一词一码 的码表文件
-class DictOther {
+class DictMap {
     constructor(fileContent, filename, filePath) {
         this.dictTypeName = 'DictMap'
         this.filePath = filePath // 文件路径
@@ -53,6 +53,7 @@ class DictOther {
         log(`处理文件完成，共：${words.length } 条，用时 ${new Date().getTime() - startPoint} ms`)
         return words
     }
+
     decodeWord(word){
         try{
             let decodeArray = [] // 每个字解码后的数组表
@@ -117,4 +118,4 @@ class DictOther {
     }
 }
 
-module.exports = DictOther
+module.exports = DictMap

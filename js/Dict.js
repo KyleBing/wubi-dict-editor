@@ -16,8 +16,6 @@ class Dict {
         this.lastGroupIndex = 0 // 最后一个WordGroup Index 的值，用于新添加词时，作为唯一的 id 传入
         this.isGroupMode = false // 识别码表是否为分组形式的
 
-        this.characterMap = new Map() // 单字码表，用于根据此生成词语码表
-
         let indexEndOfHeader = fileContent.indexOf('...')
         if (indexEndOfHeader < 0){
             log('文件格式错误，没有 ... 这一行')
@@ -52,12 +50,6 @@ class Dict {
         linesValid.forEach((item, index) => {
             let currentWord = getWordFromLine(index, item)
             words.push(currentWord) // 获取词条
-            if (currentWord.word.length === 1
-                && currentWord.code.length >=2
-                && !this.characterMap.has(currentWord.word)) // map里不存在这个字
-            { // 编码长度为 4 的单字
-                this.characterMap.set(currentWord.word, currentWord.code)
-            }
          })
         log(`处理yaml码表文件：完成，共：${words.length } ${this.isGroupMode? '组': '条'}，用时 ${new Date().getTime() - startPoint} ms`)
         return words
@@ -109,45 +101,6 @@ class Dict {
             return wordsGroup
         } else {
             return [] // 文件内容为空时
-        }
-    }
-    decodeWord(word){
-        try{
-            let decodeArray = [] // 每个字解码后的数组表
-            let letterArray = word.split('')
-            if (letterArray.length > 4){ // 只截取前三和后一
-                letterArray.splice(3,letterArray.length - 4)
-            }
-            letterArray.forEach(ch => {
-                decodeArray.push(this.characterMap.get(ch) || '')
-            })
-            let phraseCode = ''
-            switch (decodeArray.length){
-                case 0:
-                case 1:
-                    break
-                case 2: // 取一的前二码，二的前二码
-                    phraseCode =
-                        decodeArray[0].substring(0,2) +
-                        decodeArray[1].substring(0,2)
-                    break
-                case 3: // 取一二前一码，三前二码
-                    phraseCode =
-                        decodeArray[0].substring(0,1) +
-                        decodeArray[1].substring(0,1) +
-                        decodeArray[2].substring(0,2)
-                    break
-                default: // 取一二三前一码，最后的一码
-                    phraseCode =
-                        decodeArray[0].substring(0,1) +
-                        decodeArray[1].substring(0,1) +
-                        decodeArray[2].substring(0,1) +
-                        decodeArray[decodeArray.length - 1].substring(0,1)
-            }
-            log(phraseCode, decodeArray)
-            return phraseCode
-        } catch(err){
-            return ''
         }
     }
 
