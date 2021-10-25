@@ -103,7 +103,6 @@ function createMainWindow() {
     // config 相关，载入配置文件内容
     ipcMain.on('MainWindow:RequestConfigFile', event => {
         let config = readConfigFile() // 没有配置文件时，返回 false
-
         if (config){ // 如果有配置文件
             mainWindow.send('MainWindow:ResponseConfigFile', config) // 向窗口发送 config 内容
         }
