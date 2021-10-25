@@ -94,7 +94,8 @@ class DictOther {
         let startPoint = new Date().getTime()
         let lines = fileContent.split(os.EOL) // 拆分词条与编码成单行
         this.lastIndex = lines.length + 1
-        let linesValid = lines.filter(item => item.indexOf(this.seperator) > -1) // 选取包含分隔符的行
+        // 如果为纯词模式，就使用所有的行，否则就根据分隔符进行筛选
+        let linesValid = this.dictFormat === 'w'? lines: lines.filter(item => item.indexOf(this.seperator) > -1)
         let words = []
         log('正常词条的行数：',linesValid.length)
         linesValid.forEach(item => {
@@ -249,7 +250,7 @@ class DictOther {
             case 'w':
                 word = wordArray[0]
                 // code = getCodeFromWord(word)
-                return [new Word(this.lastIndex++, code, word)]
+                return [new Word(this.lastIndex++, '', word)]
         }
     }
 }
