@@ -38,11 +38,16 @@ const app = {
             this.config.rimeHomeDir = dir[0]
         })
 
+        // 字典文件保存后
+        ipcRenderer.on('ConfigWindow:SaveDictMapSuccess', event => {
+            this.config.hasSetDictMap = true
+        })
+
         // 读取字典文件的内容
         ipcRenderer.on('ConfigWindow:ShowDictMapContent', (event, fileName, filePath, fileContent) => {
-            // TODO: 处理获取到的码表数据，筛选单字并存储
             let dictMap = new DictMap(fileContent, fileName, filePath)
-            console.log(dictMap)
+            let dictMapFileContent = dictMap.toExportString()
+            ipcRenderer.send('ConfigWindow:SaveDictMapFile', dictMapFileContent) // 保存取到的单字字典文本
         })
 
 

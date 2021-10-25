@@ -29,7 +29,7 @@ class DictOther {
         if (indexEndOfHeader > 0){
             bodyString = fileContent.substring(this.indexEndOfHeader)
         }
-
+        // 处理词条
         let startPoint = new Date().getTime()
         let lines = bodyString.split(os.EOL) // 拆分词条与编码成单行
         this.lastIndex = lines.length + 1
@@ -94,20 +94,24 @@ class DictOther {
     toExportString(){
         let startPoint = new Date().getTime()
         let fileContentString = ''
-        this.wordsOrigin.forEach(word => {
-            fileContentString = fileContentString.concat(word.toFileString(this.seperator, false), os.EOL)
+        this.characterMap.forEach((code, word) => {
+            fileContentString = fileContentString.concat(word, this.seperator, code, os.EOL)
         })
         log(`字典词条文本已生成，用时 ${new Date().getTime() - startPoint} ms`)
         return fileContentString
     }
 
-    // 从一条词条字符串中获取 word 对象
-    // 一编码对应多词
+    // 从一条词条字符串中获取 word 对象，只取单字的
+    // 单字时返回，多字时返回空
     getWordsFromLine(lineStr){
         let wordArray = lineStr.split(this.seperator)
         let word = wordArray[0]
         let code = wordArray[1]
-        return [new Word(this.lastIndex++, code, word)]
+        if (word.length > 1){
+            return []
+        } else {
+            return [new Word(this.lastIndex++, code, word)]
+        }
     }
 }
 

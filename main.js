@@ -5,7 +5,7 @@ const os = require('os')
 const url = require("url")
 const path = require("path")
 const {shakeDom, log, shakeDomFocus} = require('./js/Utility')
-const { IS_IN_DEVELOP, CONFIG_FILE_PATH, CONFIG_FILE_NAME, DEFAULT_CONFIG } =  require('./js/Global')
+const { IS_IN_DEVELOP, CONFIG_FILE_PATH, CONFIG_FILE_NAME, DEFAULT_CONFIG, CONFIG_DICT_MAP_FILE_NAME } =  require('./js/Global')
 
 let mainWindow // 主窗口
 let fileList = [] // 文件目录列表，用于移动词条
@@ -253,6 +253,8 @@ let configWindow
 function createConfigWindow() {
     let width = IS_IN_DEVELOP ? 1400 : 600
     let height = IS_IN_DEVELOP ? 600 : 600
+    // TODO：打开配置窗口的时候，先创建配置文件夹，供后面保存配置文件和字典文件使用
+
     configWindow = new BrowserWindow({
         width,
         height,
@@ -339,44 +341,72 @@ function createConfigWindow() {
             }
         }
     })
+
+    // 保存 DictMap 文件
+    ipcMain.on('ConfigWindow:SaveDictMapFile', ( event, fileContentString) => {
+        let configPath = path.join(os.homedir(), CONFIG_FILE_PATH)
+        console.log(configPath)
+        fs.writeFile(
+            path.join(configPath, CONFIG_DICT_MAP_FILE_NAME),
+            fileContentString,
+            {encoding: 'utf-8'},
+            err => {
+                if (err) {
+                    log(err)
+                } else {
+                    configWindow.send('ConfigWindow:SaveDictMapSuccess')
+                }
+            })
+    })
+
+
 }
 
 
 // config 文件保存在 用户文件夹下 / CONFIG_FILE_PATH/CONFIG_FILE_NAME 文件中
 function writeConfigFile(contentString){
     let configPath = path.join(os.homedir(), CONFIG_FILE_PATH)
-    fs.writeFile(path.join(configPath, CONFIG_FILE_NAME), contentString, {encoding: 'utf-8'}, err => {
-        if(err){
-            log('writeFileError: ',err)
-            log(configPath)
-            if (err.errno === -4058 || err.errno === -2){
-                log('config dir does not exist')
-                // 新建目录
-                fs.mkdir(configPath, err => { // 先建立文件夹
-                    if (err) {
-                        log(err)
-                    } else {
-                        fs.writeFile(
-                            path.join(configPath, CONFIG_FILE_NAME),
-                            contentString, {encoding: 'utf-8'},
-                            err => {
-                                if (err){
-                                    log(err)
-                                } else {
-                                    // 配置保存成功后，向主窗口发送配置文件内容
-                                    if (toolWindow) toolWindow.send('ToolWindow:ResponseConfigFile', JSON.parse(contentString)) // 向窗口发送 config 内容
-                                    if (mainWindow) mainWindow.send('MainWindow:ResponseConfigFile', JSON.parse(contentString)) // 向窗口发送 config 内容
-                                }
-                            })
-                    }
-                })
+    fs.writeFile(
+        path.join(configPath, CONFIG_FILE_NAME),
+        contentString, {encoding: 'utf-8'},
+        err => {
+            if (err) {
+                log('writeFileError: ', err)
+                log(configPath)
+                if (err.errno === -4058 || err.errno === -2) {
+                    log('config dir does not exist')
+                    // 新建目录
+                    fs.mkdir(configPath, err => { // 先建立文件夹
+                        if (err) {
+                            log(err)
+                        } else {
+                            fs.writeFile(
+                                path.join(configPath, CONFIG_FILE_NAME),
+                                contentString, {encoding: 'utf-8'},
+                                err => {
+                                    if (err) {
+                                        log(err)
+                                    } else {
+                                        // 配置保存成功后，向主窗口发送配置文件内容
+                                        if (toolWindow) toolWindow.send(
+                                            'ToolWindow:ResponseConfigFile',
+                                            JSON.parse(contentString)
+                                        ) // 向窗口发送 config 内容
+                                        if (mainWindow) mainWindow.send(
+                                            'MainWindow:ResponseConfigFile',
+                                            JSON.parse(contentString)
+                                        ) // 向窗口发送 config 内容
+                                    }
+                                })
+                        }
+                    })
+                }
+            } else {
+                // 配置保存成功后，向主窗口发送配置文件内容
+                if (toolWindow) toolWindow.send('ToolWindow:ResponseConfigFile', JSON.parse(contentString)) // 向窗口发送 config 内容
+                if (mainWindow) mainWindow.send('MainWindow:ResponseConfigFile', JSON.parse(contentString)) // 向窗口发送 config 内容
             }
-        } else {
-            // 配置保存成功后，向主窗口发送配置文件内容
-            if (toolWindow) toolWindow.send('ToolWindow:ResponseConfigFile', JSON.parse(contentString)) // 向窗口发送 config 内容
-            if (mainWindow) mainWindow.send('MainWindow:ResponseConfigFile', JSON.parse(contentString)) // 向窗口发送 config 内容
-        }
-    })
+        })
 
 }
 
@@ -488,16 +518,12 @@ function createMenu(filesMenu) {
         {
             label: '文件夹',
             submenu: [
+                {label: '打开 Rime 配置文件夹', click() {shell.openPath(getRimeConfigDir())}},
+                {label: '打开 Rime 程序文件夹', click() {shell.openPath(getRimeExecDir())}},
                 {
-                    label: '打开配置文件夹',
-                    click() {
-                        shell.openPath(getRimeConfigDir())
-                    }
-                },
-                {
-                    label: '打开程序文件夹',
-                    click() {
-                        shell.openPath(getRimeExecDir())
+                    label: '打开工具配置文件夹', click() {
+                        let configDir = path.join(os.homedir(), CONFIG_FILE_PATH)
+                        shell.openPath(configDir)
                     }
                 },
             ]
