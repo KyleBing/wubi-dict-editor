@@ -1,7 +1,10 @@
 # 五笔助手 for [Rime](https://github.com/rime)
-一个管理 Rime 五笔词库的工具，添加、删除词条
+一个管理 Rime 五笔词库的工具，添加、删除词条，可批量导入外部词库
 
 有其它问题，欢迎加群讨论: [878750538](https://jq.qq.com/?_wv=1027&k=st8cY2sI)
+
+<img src="https://user-images.githubusercontent.com/12215982/139462759-e6d8ebc6-180d-4d18-8c3c-68234f0ff1c0.png" width="150" />
+
 
 <img width="812" alt="Screen Shot 2021-08-09 at 21 35 34" src="https://user-images.githubusercontent.com/12215982/128715114-8e9f82ff-2bdb-4837-87ed-ecbf0ea7ee28.png">
 
