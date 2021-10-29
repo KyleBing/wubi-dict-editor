@@ -1,4 +1,4 @@
-# 五笔词库管理工具 for [Rime](https://github.com/rime)
+# 五笔助手 for [Rime](https://github.com/rime)
 一个管理 Rime 五笔词库的工具，添加、删除词条
 
 有其它问题，欢迎加群讨论: [878750538](https://jq.qq.com/?_wv=1027&k=st8cY2sI)
@@ -19,7 +19,7 @@ __windows__ 直接解压打开 `.exe` 文件即可
 __macOS__ 如果提示无法打开，文件损坏什么的，将 app 移到应用程序 `Applications` 文件夹后，打开终端 `Terminal`，这样操作：
 
 ```bash
-sudo xattr -rd com.apple.quarantine /Applications/五笔码表助手.app/
+sudo xattr -rd com.apple.quarantine /Applications/五笔助手.app/
 ```
 
 这样应该就能打开了。
