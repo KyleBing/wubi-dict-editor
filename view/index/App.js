@@ -57,7 +57,6 @@ const app = {
         ipcRenderer.on('showFileContent', (event, fileName, filePath, res) => {
             // 过滤移动到的文件列表，不显示正在显示的这个码表
             // this.dropdownFileList = this.dropdownFileList.filter(item => item.path !== fileName)
-
             this.dict = new Dict(res, fileName, filePath)
             // 载入新码表时，清除 word 保存 code
             this.word = ''
@@ -131,11 +130,15 @@ const app = {
         },
         // 当前载入的是否为 主 码表
         isInMainDict(){
-            return this.dict.filename === 'wubi86_jidian.dict.yaml'
+            return this.dict.fileName === 'wubi86_jidian.dict.yaml'
         }
     },
 
     methods: {
+        // 切换码表文件
+        switchToFile(file){
+            ipcRenderer.send('MainWindow:LoadFile', file.path)
+        },
         tipNotice(msg){
             this.tip = msg
             setTimeout(()=>{this.tip = ''}, 3000)
@@ -316,8 +319,8 @@ const app = {
 
         // 保存内容到文件
         saveToFile(dict){
-            log(dict.filename)
-            ipcRenderer.send('saveFile', dict.filename, dict.toYamlString())
+            log(dict.fileName)
+            ipcRenderer.send('saveFile', dict.fileName, dict.toYamlString())
         },
         // 选中全部展示的词条
         selectAll(){
@@ -325,8 +328,8 @@ const app = {
                 if (this.dict.isGroupMode){
                     this.chosenWordIds.clear()
                     this.chosenWordIdArray = []
-                    this.words.forEach(group => {
-                        group.forEach( item => {
+                    this.words.forEach(group => { // group 是 dictGroup
+                        group.dict.forEach( item => {
                             this.chosenWordIds.add(item.id)
                         })
                     })
@@ -525,7 +528,7 @@ const app = {
             }
             log('words transferring：', JSON.stringify(wordsTransferring))
 
-            if (this.dict.filename === this.targetDict.filename){ // 如果是同词库移动
+            if (this.dict.fileName === this.targetdict.fileName){ // 如果是同词库移动
                 this.targetDict.deleteWords(this.chosenWordIds, true) // 删除移动的词条
                 this.targetDict.addWordsInOrder(wordsTransferring, this.dropdownActiveGroupIndex)
                 log('after insert:( main:wordOrigin ):\n ', JSON.stringify(this.targetDict.wordsOrigin))
@@ -554,11 +557,11 @@ const app = {
         },
         // 打开当前码表源文件
         openCurrentYaml(){
-            ipcRenderer.send('openFileOutside', this.dict.filename)
+            ipcRenderer.send('openFileOutside', this.dict.fileName)
         },
         // 重新载入当前码表
         reloadCurrentDict(){
-            ipcRenderer.send('loadDictFile', this.dict.filename)
+            ipcRenderer.send('loadDictFile', this.dict.fileName)
         }
     },
     watch: {
