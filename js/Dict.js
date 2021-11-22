@@ -6,10 +6,10 @@ const {shakeDom, log, shakeDomFocus} = require('./Utility')
 const os = require('os')
 
 class Dict {
-    constructor(fileContent, filename, filePath) {
+    constructor(fileContent, fileName, filePath) {
         this.dictTypeName = 'Dict'
         this.filePath = filePath // 文件路径
-        this.filename = filename // 文件名字
+        this.fileName = fileName // 文件名字
         this.header = null // 文件头部内容
         this.wordsOrigin = [] // 文件词条数组
         this.lastIndex = 0 // 最后一个Word Index 的值，用于新添加词时，作为唯一的 id 传入
