@@ -1,12 +1,12 @@
 {
   "name": "wubi-dict-editor",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "private": true,
   "author": {
     "name": "KyleBing",
     "email": "kylebing@163.com"
   },
-  "date": "2021-10-25",
+  "date": "2021-11-22",
   "dateInit": "2021-07-24",
   "description": "五笔码表管理工具",
   "main": "main.js",
@@ -30,7 +30,7 @@
   "config": {
     "forge": {
       "packagerConfig": {
-        "appVersion": "1.0.6",
+        "appVersion": "1.0.7",
         "name": "五笔助手",
         "appCopyright": "KyleBing(kylebing@163.com)",
         "icon": "./assets/img/appIcon/appicon",

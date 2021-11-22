@@ -41,9 +41,10 @@ class Dict {
     }
 
     // 返回所有 word
-    getDictWordsInNormalMode(body){
+    getDictWordsInNormalMode(fileContent){
         let startPoint = new Date().getTime()
-        let lines = body.split(os.EOL) // 拆分词条与编码成单行
+        let EOL = this.getFileEOLFrom(fileContent)
+        let lines = fileContent.split(EOL) // 拆分词条与编码成单行
         this.lastIndex = lines.length
         let linesValid = lines.filter(item => item.indexOf('\t') > -1) // 选取包含 \t 的行
         let words = []
@@ -56,9 +57,10 @@ class Dict {
     }
 
     // 返回 word 分组
-    getDictWordsInGroupMode(body){
+    getDictWordsInGroupMode(fileContent){
         let startPoint = new Date().getTime()
-        let lines = body.split(os.EOL) // 拆分词条与编码成单行
+        let EOL = this.getFileEOLFrom(fileContent)
+        let lines = fileContent.split(EOL) // 拆分词条与编码成单行
         let wordsGroup = [] // 总分组
         let temp = null // 第一个分组
         let lastItemIsEmptyLine = false // 上一条是空，用于循环中判断是否需要新起一个 WordGroup
@@ -101,6 +103,14 @@ class Dict {
             return wordsGroup
         } else {
             return [] // 文件内容为空时
+        }
+    }
+    // 判断码表文件的换行符是 \r\n 还是 \n
+    getFileEOLFrom(fileContent){
+        if(fileContent.indexOf('\r\n') > 0){
+            return '\r\n'
+        } else {
+            return '\n'
         }
     }
 

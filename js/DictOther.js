@@ -92,7 +92,8 @@ class DictOther {
     // 返回所有 word
     getDictWordsInNormalMode(fileContent){
         let startPoint = new Date().getTime()
-        let lines = fileContent.split(os.EOL) // 拆分词条与编码成单行
+        let EOL = this.getFileEOLFrom(fileContent)
+        let lines = fileContent.split(EOL) // 拆分词条与编码成单行
         this.lastIndex = lines.length + 1
         // 如果为纯词模式，就使用所有的行，否则就根据分隔符进行筛选
         let linesValid = this.dictFormat === 'w'? lines: lines.filter(item => item.indexOf(this.seperator) > -1)
@@ -147,6 +148,15 @@ class DictOther {
         let wordInsert = word.clone() // 断开与别一个 dict 的引用链接，新建一个 word 对象，不然两个 dict 引用同一个 word
         wordInsert.setId(this.lastIndex++) // 给新的 words 一个新的唯一 id
         this.wordsOrigin.splice(insetPosition, 0, wordInsert)
+    }
+
+    // 判断码表文件的换行符是 \r\n 还是 \n
+    getFileEOLFrom(fileContent){
+        if(fileContent.indexOf('\r\n') > 0){
+            return '\r\n'
+        } else {
+            return '\n'
+        }
     }
 
 

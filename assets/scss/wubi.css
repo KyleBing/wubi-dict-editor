@@ -1233,7 +1233,7 @@ select option {
 }
 
 .catalog-list {
-  border-right: 1px solid #eee;
+  border-right: 1px solid #e6e6e6;
   width: 110px;
   flex-shrink: 0;
   overflow-y: auto;
@@ -1596,7 +1596,7 @@ hr {
 }
 
 .schema-list {
-  border-right: 1px solid #eee;
+  border-right: 1px solid #e6e6e6;
   flex-shrink: 0;
   overflow-y: auto;
 }
