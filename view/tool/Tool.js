@@ -166,7 +166,7 @@ const app = {
         },
         // 当前载入的是否为 主 码表
         isInMainDict(){
-            return this.dict.filename === 'wubi86_jidian.dict.yaml'
+            return this.dict.fileName === 'wubi86_jidian.dict.yaml'
         }
     },
 
@@ -571,7 +571,7 @@ const app = {
         },
         // 打开当前码表源文件
         openCurrentYaml(){
-            ipcRenderer.send('openFileOutside', this.dict.filename)
+            ipcRenderer.send('openFileOutside', this.dict.fileName)
         },
     },
     watch: {

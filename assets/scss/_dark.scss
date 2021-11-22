@@ -115,6 +115,19 @@ $black-color-main: #81fffa;
       }
     }
   }
+  .schema-list {
+    color: $black-color-text;
+    border-right-color: $black-color-border !important;
+    .schema-list-item {
+      &:hover {
+        background-color: $black-bg-hover !important;
+      }
+      &.active {
+        color: black !important;
+        background-color: $black-color-main !important;
+      }
+    }
+  }
   .footer {
     background-color: $black-bg;
     border-top-color: $black-color-border-highlight;

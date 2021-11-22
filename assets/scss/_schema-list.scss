@@ -1,22 +1,12 @@
-$catalog-height: 30px;
-$catalog-pd-tb: 5px;
-$catalog-pd-lr: 10px;
-
-.group-container{
-  display: flex;
-  justify-content: flex-start;
-  width: 100%;
-}
-.catalog-list{
+.schema-list{
   border-right: 1px solid $color-border;
-  width: 110px;
   flex-shrink: 0;
   overflow-y: auto;
-  .catalog-item{
+  .schema-list-item{
     @extend .unselectable;
     text-align: center;
     line-height: $catalog-height - $catalog-pd-tb * 2;
-    padding: $catalog-pd-tb $catalog-pd-lr;
+    padding: $catalog-pd-tb 30px;
     cursor: pointer;
     > div{
       height: $catalog-height - $catalog-pd-tb * 2;
@@ -41,7 +31,7 @@ $catalog-pd-lr: 10px;
   }
 }
 
-.group-list{
+.file-list{
   flex-grow: 1;
   overflow-y: auto;
 }

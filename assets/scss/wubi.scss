@@ -13,6 +13,8 @@
 @import "dropdown";
 @import "config";
 @import "tool";
+@import "schema-list";
+@import "app";
 @import "dark";
 
 
@@ -23,6 +25,11 @@ body{
 }
 
 .container{
+  position: relative;
+}
+
+.content{
+  flex-grow: 1;
   position: relative;
 }
 

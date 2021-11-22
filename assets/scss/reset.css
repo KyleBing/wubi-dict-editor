@@ -50,7 +50,6 @@ tt {
     background-color: rgba(0, 0, 0, 0.1);
     transition: all .2s;
     height: 20px;
-    border: 1px solid rgba(0, 0, 0, 0.2);
 }
 :hover::-webkit-scrollbar-thumb {
     transition: all .2s;

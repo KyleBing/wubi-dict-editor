@@ -528,7 +528,7 @@ const app = {
             }
             log('words transferring：', JSON.stringify(wordsTransferring))
 
-            if (this.dict.fileName === this.targetdict.fileName){ // 如果是同词库移动
+            if (this.dict.fileName === this.targetDict.fileName){ // 如果是同词库移动
                 this.targetDict.deleteWords(this.chosenWordIds, true) // 删除移动的词条
                 this.targetDict.addWordsInOrder(wordsTransferring, this.dropdownActiveGroupIndex)
                 log('after insert:( main:wordOrigin ):\n ', JSON.stringify(this.targetDict.wordsOrigin))

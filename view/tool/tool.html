@@ -88,7 +88,7 @@
                 <div class="title">码表读取</div>
                 <div class="content">
                     <div class="load-list">
-                        <div class="btn btn-ellipsis btn-orange btn-load" v-if="dict.filename" @click="loadDictFile" >{{ dict.filename}}</div>
+                        <div class="btn btn-ellipsis btn-orange btn-load" v-if="dict.fileName" @click="loadDictFile" >{{ dict.fileName}}</div>
                         <div class="btn btn-ellipsis btn-primary btn-load" v-else @click="loadDictFile" >选择码表文件</div>
                         <div class="btn btn-primary center btn-reload" @click="reloadCurrentFile">重新载入</div>
                     </div>
@@ -288,7 +288,7 @@
                 <div class="link" @click="resetInputs">清选</div>
                 <div class="link" @click="reloadCurrentFile">重载码表</div>
                 <div class="link" @click="sort">排序</div>
-                <div class="link origin" @click="openCurrentYaml">{{ dict.filename }}</div>
+                <div class="link origin" @click="openCurrentYaml">{{ dict.fileName }}</div>
             </div>
             <div class="info-list">
                 <div class="count">总<span class="number">{{dict.countDictOrigin}}</span></div>

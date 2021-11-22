@@ -11,8 +11,8 @@ let mainWindow // 主窗口
 let fileList = [] // 文件目录列表，用于移动词条
 
 function createMainWindow() {
-    let width = IS_IN_DEVELOP ? 1400: 800
-    let height = IS_IN_DEVELOP ? 600: 600
+    let width = IS_IN_DEVELOP ? 1500: 1000
+    let height = 700
     mainWindow = new BrowserWindow({
         width,
         height,
@@ -127,6 +127,11 @@ function createMainWindow() {
                 if (toolWindow) toolWindow.send('setDictMap', originalDictFileContent, CONFIG_DICT_MAP_FILE_NAME, dictMapFilePath)
             }
         }
+    })
+
+    // 载入文件内容
+    ipcMain.on('MainWindow:LoadFile', (event, fileName) => {
+        readFileFromConfigDir(fileName, mainWindow)
     })
 }
 
@@ -417,7 +422,8 @@ function readConfigFile(){
 
 app.on('ready', ()=>{
     createMainWindow()
-    setRimeFolderMenu()
+    getDictFileList() // 读取目录中的所有码表文件
+    createMenu() // 创建菜单
 })
 
 app.on('window-all-closed', function () {
@@ -472,7 +478,7 @@ function getLabelNameFromFileName(fileName){
 
 
 // 创建 menu
-function createMenu(filesMenu) {
+function createMenu() {
     let menuStructure = [
         {
             label: '词库工具',
@@ -506,10 +512,6 @@ function createMenu(filesMenu) {
         {
             label: '编辑',
             role: 'editMenu'
-        },
-        {
-            label: '选择词库',
-            submenu: filesMenu
         },
         {
             label: '布署',
@@ -572,8 +574,8 @@ function refreshWindows(){
     if(toolWindow) toolWindow.reload()
 }
 
-// 设置菜单 - Rime 所有文件
-function setRimeFolderMenu(){
+// 读取配置目录中的所有码表文件
+function getDictFileList(){
     let rimeFolderPath = getRimeConfigDir()
     fs.readdir(rimeFolderPath,(err, filePaths) => {
         if (err) {
@@ -591,17 +593,6 @@ function setRimeFolderMenu(){
             })
             // 排序路径
             fileList.sort((a,b) => a.name > b.name ? 1: -1)
-            // 添加菜单
-            fileList.forEach(item => {
-                filesMenu.push({
-                    label: item.name,
-                    click(sender, window, content) {
-                        window.title = sender.label // 点击对应菜单时，显示当前编辑词库的名字
-                        readFileFromConfigDir(item.path)
-                    }
-                },)
-            })
-            createMenu(filesMenu)
         }
     })
 }
