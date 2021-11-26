@@ -459,11 +459,10 @@ function readFileFromConfigDir(fileName, responseWindow){
 function getLabelNameFromFileName(fileName){
     let map = [
         {name: '拼音词库', path: 'pinyin_simp.dict.yaml'},
-        {name: '⒈ 五笔极点 - 主表', path: 'wubi86_jidian.dict.yaml'},
-        {name: '⒉ 五笔极点 - 临时', path: 'wubi86_jidian_addition.dict.yaml'},
-        {name: '⒊ 五笔极点 - 附加', path: 'wubi86_jidian_extra.dict.yaml'},
-        {name: '⒋ 五笔极点 - 用户', path: 'wubi86_jidian_user.dict.yaml'},
-        {name: '⒌ 五笔极点 - 英文', path: 'wubi86_jidian_english.dict.yaml'},
+        {name: '1 五笔极点 - 主表', path: 'wubi86_jidian.dict.yaml'},
+        {name: '2 五笔极点 - 附加', path: 'wubi86_jidian_extra.dict.yaml'},
+        {name: '3 五笔极点 - 用户', path: 'wubi86_jidian_user.dict.yaml'},
+        {name: '4 五笔极点 - 英文', path: 'wubi86_jidian_english.dict.yaml'},
 
         // 测试词库
         {name: '测试 - 主表 ⛳', path: 'test_main.dict.yaml'},
