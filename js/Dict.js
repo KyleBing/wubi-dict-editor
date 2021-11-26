@@ -107,9 +107,11 @@ class Dict {
     }
     // 判断码表文件的换行符是 \r\n 还是 \n
     getFileEOLFrom(fileContent){
-        if(fileContent.indexOf('\r\n') > 0){
+        if(fileContent.indexOf('\r\n') > -1){
+            log('文件换行符为： \\r\\n')
             return '\r\n'
         } else {
+            log('文件换行符为： \\n')
             return '\n'
         }
     }
@@ -279,6 +281,7 @@ class Dict {
 function getWordFromLine(index, lineStr){
     let wordArray = lineStr.split('\t')
     let code = wordArray[1]
+    code = code.replaceAll('\r', '') // 消除 v1.07 版本的错误
     let word = wordArray[0]
     let priority = wordArray.length > 2 ? wordArray[2] : null
     return new Word(index, code, word, priority)
