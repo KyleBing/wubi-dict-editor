@@ -16,6 +16,14 @@
 <img width="812" alt="Screen Shot 2021-11-02 at 23 16 34" src="https://user-images.githubusercontent.com/12215982/139876204-aef77bb8-683b-4042-8ec1-f366641eaae5.png">
 <img width="812" alt="Screen Shot 2021-11-02 at 23 17 27" src="https://user-images.githubusercontent.com/12215982/139876211-00e58bbc-9b49-43f0-83c2-8922109e0660.png">
 
+
+## 加载速度
+
+最多可处理 60万 条数据的码表
+<img width="674" alt="Screen Shot 2021-12-03 at 23 27 08" src="https://user-images.githubusercontent.com/12215982/144628323-1fe72bb4-602a-4d50-a904-7df9d7685b16.png">
+<img width="1463" alt="Screen Shot 2021-12-03 at 23 26 27" src="https://user-images.githubusercontent.com/12215982/144628297-be39d46f-e802-4204-a389-e3a935f61b81.png">
+
+
 ## 支持平台：
 Windows, macOS, (Linux 未测试)
 
