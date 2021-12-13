@@ -6,7 +6,6 @@ $radius-btn: $radius;
 $radius-switch: 15px;
 $btn-padding-tb: 2px;
 $btn-padding-lr: 8px;
-$fz-button: 12px;
 
 
 
@@ -41,6 +40,7 @@ $btns: (
   overflow: hidden;
 }
 .btn{
+  text-align: center;
   font-size: $fz-button;
   color: inherit;
   line-height: $height-btn - $btn-padding-tb * 2;

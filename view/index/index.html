@@ -12,18 +12,31 @@
     <!--词条编辑窗口-->
     <div class="edit-modal modal" v-if="wordEditing">
         <div class="modal-panel">
+            <div class="modal-close" @click="wordEditing = null"><img src="../../assets/img/delete_white.svg" alt="close"></div>
             <div class="modal-header">
                 <div class="id">{{wordEditing.id}}</div>
             </div>
             <div class="modal-body">
-                <input ref="editInputWord" type="text" placeholder="词条" v-model="wordEditing.word" >
-                <input ref="editInputCode" class="mt-1"  type="text" placeholder="编码" v-model="wordEditing.code" >
-                <input ref="editInputNote" class="mt-1"  type="text" placeholder="备注" v-model="wordEditing.note" >
-                <input ref="editInputPriority" class="mt-1"  type="text" placeholder="权重" v-model="wordEditing.priority" >
+                <div class="input-item">
+                    <label for="word">词条</label>
+                    <input ref="editInputWord" id="word" type="text" v-model="wordEditing.word" >
+                </div>
+                <div class="input-item mt-2">
+                    <label for="code">编码</label>
+                    <input ref="editInputCode" id="code" type="text" v-model="wordEditing.code" >
+                </div>
+                <div class="input-item mt-2">
+                    <label for="note">备注</label>
+                    <input ref="editInputNote" id="note" type="text" v-model="wordEditing.note" >
+                </div>
+                <div class="input-item mt-2">
+                    <label for="priority">权重</label>
+                    <input ref="editInputPriority" id="priority" type="text" v-model="wordEditing.priority" >
+                </div>
             </div>
             <div class="modal-footer">
-                <div class="btn btn-cyan mr-2" @click="generateCodeForWordEdit">生成编码</div>
-                <div class="btn btn-roseo" @click="confirmEditWord">确定</div>
+                <div class="btn btn-cyan " @click="generateCodeForWordEdit">生成编码</div>
+                <div class="btn btn-roseo ml-2" @click="confirmEditWord">确定</div>
             </div>
         </div>
     </div>

@@ -64,3 +64,9 @@
   @include transform(scaleY(.5))
 }
 
+.btn-like{
+  cursor: pointer;
+  &:active{
+    transform: translateY(2px);
+  }
+}

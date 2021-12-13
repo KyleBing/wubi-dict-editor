@@ -1,4 +1,3 @@
-$fz-list: 13px;
 $bg-td-highlighted: transparentize($color-main, 0.95);
 $height-word-item: 24px;
 
@@ -147,7 +146,6 @@ $border-color-checkbox: #d6d6d6;
   .note{
     color: $text-subtitle;
     width: 20%;
-    text-align: left;
     white-space: nowrap;
     font-size: $fz-list - 2;
   }

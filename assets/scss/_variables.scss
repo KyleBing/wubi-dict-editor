@@ -16,6 +16,7 @@ $gray             : #8E8E93;
 //ELEMTENT COLORS
 $color-main       : $roseo;
 $border-color-nav: transparentize($color-main, 0.8);
+$bg-highlight: transparentize($color-main, 0.2);
 
 //BACKGROUND COLOR
 $bg-td: #eee;
@@ -26,7 +27,11 @@ $bg-panel-tool: #f9f9f9;
 $bg-scroll-thumb: #cdcdcd;
 
 
+$fz-big: 20px;
 $fz-title: 15px;
+$fz-list: 13px;
+$fz-button: 12px;
+$fz-modal: 14px;
 
 
 $color-primary    : #409EFF;
