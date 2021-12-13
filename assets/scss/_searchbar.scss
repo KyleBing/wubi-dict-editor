@@ -66,6 +66,14 @@ input, select{
     flex-shrink: 0;
     width: 12rem;
   }
+  &.note{
+    flex-shrink: 0;
+    width: 10rem;
+  }
+  &.priority{
+    flex-shrink: 0;
+    width: 6rem;
+  }
   &:focus{
     border-color: transparentize($color-main, 0.4);
     @include box-shadow(0 0 0 2px transparentize($color-main, 0.7))

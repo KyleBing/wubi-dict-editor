@@ -163,7 +163,8 @@ class Dict {
                     }
                 })
             })
-            repetitionWords.push(new WordGroup('999', '重复的词条', groupRepeatedWords))
+            log(groupRepeatedWords)
+            repetitionWords.push(new WordGroup(999, '重复的词条', groupRepeatedWords))
         } else {
             this.wordsOrigin.forEach(word => {
                 if (filterSingleCharacter){
@@ -190,7 +191,7 @@ class Dict {
             // 排序后再去除重复项
             repetitionWords[0].dict.sort((a, b) => {
                 // log(a.word + a.code, b.word + b.code)
-                return (a.word + a.code) > (b.word + b.code)  ? 1 : -1
+                return (a.toYamlString()) > (b.toYamlString())  ? 1 : -1
             })
             log('重复词条数量:未去重之前 ', repetitionWords.length)
             for (let i = 0; i < repetitionWords[0].dict.length - 1; i++) {
@@ -203,7 +204,7 @@ class Dict {
             // 排序后再去除重复项
             repetitionWords.sort((a, b) => {
                 // log(a.word + a.code, b.word + b.code)
-                return (a.word + a.code) > (b.word + b.code)  ? 1 : -1
+                return (a.toYamlString()) > (b.toYamlString())  ? 1 : -1
             })
             log('重复词条数量:未去重之前 ', repetitionWords.length)
             for (let i = 0; i < repetitionWords.length - 1; i++) {
@@ -373,7 +374,8 @@ function getWordFromLine(index, lineStr){
     let code = wordArray[1]
     code = code.replaceAll('\r', '') // 消除 v1.07 版本的错误
     let word = wordArray[0]
-    let priority = wordArray.length > 2 ? wordArray[2] : null
-    return new Word(index, code, word, priority)
+    let priority = wordArray[2]
+    let note = wordArray[3]
+    return new Word(index, code, word, priority, note)
 }
 module.exports =  Dict

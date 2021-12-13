@@ -2,22 +2,32 @@
 class Word{
     /**
      *
-     * @param id Number
-     * @param code String
-     * @param word String
-     * @param priority String
+     * @param id Number ID
+     * @param code String 编码
+     * @param word String 词条
+     * @param priority String 权重
+     * @param note String 备注
      */
-    constructor(id, code, word, priority) {
+    constructor(id, code, word, priority, note) {
         this.id = id
         this.code = code
         this.word = word
-        this.priority = priority || null
+        this.priority = priority || ''
+        this.note = note || ''
     }
     toString(){
-        return this.id + '\t' + this.word + '\t' + this.code + '\t' + this.priority
+        return this.id + '\t' + this.word + '\t' + this.code + '\t' + this.priority + '\t' + this.note
     }
     toYamlString(){
-        return this.word + '\t' + this.code
+        if (this.priority && this.note){
+            return this.word + '\t' + this.code + '\t' + this.priority + '\t' + this.note
+        } else if (this.priority){
+            return this.word + '\t' + this.code + '\t' + this.priority
+        } else if (this.note){
+            return this.word + '\t' + this.code + '\t' + this.priority + '\t' + this.note
+        } else {
+            return this.word + '\t' + this.code
+        }
     }
     toFileString(seperator, codeFirst){
         if (codeFirst){
@@ -34,7 +44,7 @@ class Word{
     }
     // 复制一个对象
     clone(){
-        return new Word(this.id, this.code, this.word, this.priority)
+        return new Word(this.id, this.code, this.word, this.priority, this.note)
     }
     isEqualTo(word){
         return this.id === word.id

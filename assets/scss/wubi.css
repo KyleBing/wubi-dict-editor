@@ -588,10 +588,17 @@
   flex-grow: 1;
 }
 .word-item .priority {
+  white-space: nowrap;
   padding-right: 10px;
   text-align: right;
-  width: 10%;
   color: #848484;
+  font-size: 11px;
+}
+.word-item .note {
+  color: #848484;
+  width: 20%;
+  text-align: left;
+  white-space: nowrap;
   font-size: 11px;
 }
 .word-item .id {
@@ -1118,6 +1125,14 @@ input.code, select.code {
 input.word, select.word {
   flex-shrink: 0;
   width: 12rem;
+}
+input.note, select.note {
+  flex-shrink: 0;
+  width: 10rem;
+}
+input.priority, select.priority {
+  flex-shrink: 0;
+  width: 6rem;
 }
 input:focus, select:focus {
   border-color: rgba(255, 45, 112, 0.6);
@@ -2625,6 +2640,7 @@ body {
 }
 
 .main-tool {
+  border-left: 1px solid #e6e6e6;
   flex-shrink: 0;
   width: 200px;
 }

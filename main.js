@@ -11,7 +11,7 @@ let mainWindow // 主窗口
 let fileList = [] // 文件目录列表，用于移动词条
 
 function createMainWindow() {
-    let width = IS_IN_DEVELOP ? 1500: 1200
+    let width = IS_IN_DEVELOP ? 1500: 1400
     let height = 700
     mainWindow = new BrowserWindow({
         width,

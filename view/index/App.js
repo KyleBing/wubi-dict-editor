@@ -23,8 +23,12 @@ const app = {
             }, // 当前词库对象 Dict
             dictMain: {}, // 主码表 Dict
             keyword: '', // 搜索关键字
-            code: '',
-            word: '',
+
+            code: '', // 编码
+            word: '', // 词条
+            priority: '', // 优先级
+            note: '', // 备注
+
             activeGroupId: -1, // 组 index
             keywordUnwatch: null, // keyword watch 方法的撤消方法
             labelOfSaveBtn: '保存', // 保存按钮的文本
@@ -267,6 +271,7 @@ const app = {
 
         // 查重
         checkRepetition(includeCharacter){
+            this.setGroupId(-1) // 高亮分组定位到 【全部】
             this.words = this.dict.getRepetitionWords(includeCharacter)
         },
 
@@ -312,15 +317,17 @@ const app = {
             } else if (!this.code){
                 shakeDomFocus(this.$refs.domInputCode)
             } else {
-                this.dict.addNewWord(new Word(this.dict.lastIndex, this.code, this.word) ,this.activeGroupId)
+                this.dict.addNewWord(
+                    new Word(this.dict.lastIndex, this.code, this.word, this.priority, this.note) ,
+                    this.activeGroupId
+                )
                 this.refreshShowingWords()
-                log(this.code, this.word, this.activeGroupId)
+                log(this.code, this.word, this.priority, this.note, this.activeGroupId)
                 if (this.config.autoDeployOnAdd){
                     this.saveToFile(this.dict)
                 }
             }
         },
-
 
         // 保存内容到文件
         saveToFile(dict){

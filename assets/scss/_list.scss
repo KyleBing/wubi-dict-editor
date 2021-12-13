@@ -137,11 +137,18 @@ $border-color-checkbox: #d6d6d6;
     flex-grow: 1;
   }
   .priority{
+    white-space: nowrap;
     @extend .font-roboto;
     padding-right: 10px;
     text-align: right;
-    width: 10%;
     color: $text-subtitle;
+    font-size: $fz-list - 2;
+  }
+  .note{
+    color: $text-subtitle;
+    width: 20%;
+    text-align: left;
+    white-space: nowrap;
     font-size: $fz-list - 2;
   }
   .id{

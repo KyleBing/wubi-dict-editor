@@ -51,6 +51,7 @@ body{
 
 
 .main-tool{
+  border-left: 1px solid $border-color-panel;
   flex-shrink: 0;
   width: 200px;
 }
