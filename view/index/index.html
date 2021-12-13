@@ -203,9 +203,26 @@
                 </div>
             </div>
         </div>
+
+        <div class="main-tool">
+            <div class="tool-panel"
+                 :style="`height: ${heightContent}px`">
+                <section>
+                    <div class="title">查重</div>
+                    <div class="content">
+                        <div class="btn-list">
+                            <div class="btn-item">
+                                <div class="btn btn-primary" @click="checkRepetition(true)">单字</div>
+                            </div>
+                            <div class="btn-item">
+                                <div class="btn btn-primary" @click="checkRepetition(false)">词组</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
     </div>
-
-
 
     <!--FOOTER-->
     <div class="footer">

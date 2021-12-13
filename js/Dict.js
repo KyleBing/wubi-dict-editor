@@ -11,7 +11,7 @@ class Dict {
         this.filePath = filePath // 文件路径
         this.fileName = fileName // 文件名字
         this.header = null // 文件头部内容
-        this.wordsOrigin = [] // 文件词条数组
+        this.wordsOrigin = [] // 文件词条数组，groupMode 的时候，是 WordGroup Array，否则是 Word Array
         this.lastIndex = 0 // 最后一个Word Index 的值，用于新添加词时，作为唯一的 id 传入
         this.lastGroupIndex = 0 // 最后一个WordGroup Index 的值，用于新添加词时，作为唯一的 id 传入
         this.isGroupMode = false // 识别码表是否为分组形式的
@@ -132,6 +132,96 @@ class Dict {
         }
         log(`Sort 用时 ${new Date().getTime() - startPoint} ms`)
     }
+
+    // 查重，返回重复定义的字词
+    // includeCharacter 当包含单字时
+    getRepetitionWords(filterSingleCharacter){
+        let startPoint = new Date().getTime()
+        let wordMap = new Map()
+        let repetitionWords = []
+        if (this.isGroupMode){
+            // 分组模式时
+            let groupRepeatedWords = []
+            this.wordsOrigin.forEach(wordGroup => {
+                wordGroup.dict.forEach(word => {
+                    if (filterSingleCharacter){
+                        if (wordMap.has(word.word) && word.word.length === 1){
+                            groupRepeatedWords.push(word)
+                            let matchedWord = wordMap.get(word.word)
+                            if (matchedWord) groupRepeatedWords.push(matchedWord)
+                        } else { // 如果 map 中没有这个词的记录，添加这个记录
+                            wordMap.set(word.word, word)
+                        }
+                    } else {
+                        if (wordMap.has(word.word) && word.word.length > 1){ // 单字没必要查重，所以这里只搜索 2 个字以上的词
+                            groupRepeatedWords.push(word)
+                            let matchedWord = wordMap.get(word.word)
+                            if (matchedWord) groupRepeatedWords.push(matchedWord)
+                        } else { // 如果 map 中没有这个词的记录，添加这个记录
+                            wordMap.set(word.word, word)
+                        }
+                    }
+                })
+            })
+            repetitionWords.push(new WordGroup('999', '重复的词条', groupRepeatedWords))
+        } else {
+            this.wordsOrigin.forEach(word => {
+                if (filterSingleCharacter){
+                    if (wordMap.has(word.word) && word.word.length === 1){
+                        repetitionWords.push(word)
+                        let matchedWord = wordMap.get(word.word)
+                        if (matchedWord) repetitionWords.push(matchedWord)
+                    } else { // 如果 map 中没有这个词的记录，添加这个记录
+                        wordMap.set(word.word, word)
+                    }
+                } else {
+                    if (wordMap.has(word.word) && word.word.length > 1){ // 单字没必要查重，所以这里只搜索 2 个字以上的词
+                        repetitionWords.push(word)
+                        let matchedWord = wordMap.get(word.word)
+                        if (matchedWord) repetitionWords.push(matchedWord)
+                    } else { // 如果 map 中没有这个词的记录，添加这个记录
+                        wordMap.set(word.word, word)
+                    }
+                }
+            })
+        }
+
+        if(this.isGroupMode){
+            // 排序后再去除重复项
+            repetitionWords[0].dict.sort((a, b) => {
+                // log(a.word + a.code, b.word + b.code)
+                return (a.word + a.code) > (b.word + b.code)  ? 1 : -1
+            })
+            log('重复词条数量:未去重之前 ', repetitionWords.length)
+            for (let i = 0; i < repetitionWords[0].dict.length - 1; i++) {
+                if (repetitionWords[0].dict[i].id === repetitionWords[0].dict[i + 1].id ) {
+                    repetitionWords[0].dict.splice(i,1)
+                    i = i - 1
+                }
+            }
+        } else {
+            // 排序后再去除重复项
+            repetitionWords.sort((a, b) => {
+                // log(a.word + a.code, b.word + b.code)
+                return (a.word + a.code) > (b.word + b.code)  ? 1 : -1
+            })
+            log('重复词条数量:未去重之前 ', repetitionWords.length)
+            for (let i = 0; i < repetitionWords.length - 1; i++) {
+                if (repetitionWords[i].id === repetitionWords[i + 1].id ) {
+                    repetitionWords.splice(i,1)
+                    i = i - 1
+                }
+            }
+        }
+
+        log(`查重完成，用时 ${new Date().getTime() - startPoint} ms`)
+        log('词条字典数量: ', wordMap.size)
+        log('重复词条数量: ', repetitionWords.length)
+        log('重复 + 词条字典 = ', repetitionWords.length + wordMap.size)
+        log(repetitionWords)
+        return repetitionWords
+    }
+
 
     /**
      * 添加新 Word

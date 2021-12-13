@@ -224,9 +224,6 @@ const app = {
             }
         },
 
-        checkRepetitionInOrder(characterMode){
-            this.words = this.dict.getRepetition(characterMode)
-        },
         // 根据码表的一些参数，重新载入当前文件
         reloadCurrentFile(){
             ipcRenderer.send('ToolWindow:loadFileContent', this.filePath)

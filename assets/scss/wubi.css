@@ -2623,3 +2623,8 @@ body {
 [v-cloak] {
   display: none;
 }
+
+.main-tool {
+  flex-shrink: 0;
+  width: 200px;
+}

@@ -265,6 +265,11 @@ const app = {
             }
         },
 
+        // 查重
+        checkRepetition(includeCharacter){
+            this.words = this.dict.getRepetitionWords(includeCharacter)
+        },
+
         // GROUP OPERATION
         // 添加新组
         addGroupBeforeId(groupIndex){
