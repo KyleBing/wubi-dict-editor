@@ -43,25 +43,59 @@ $black-color-main: #81fffa;
     }
   }
 
-
-  .modal{
-    background-color: rgba(0,0,0,0.2);
-    .modal-panel{
-      border-color: $black-color-border-highlight;
+  // index
+  .main-tool{
+    border-color: $black-color-border;
+    .tool-panel{
+      border-right-color: $black-color-border;
       background-color: $black-bg;
+      .title{
+        color: $black-color-text;
+      }
+      .content{
+        background-color: $black-body-bg;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        border: none;
+        background-color: $black-color-border-highlight;
+      }
     }
   }
 
   .modal{
-    &-header{
-      color: $black-color-text;
-    }
-    &-body{
-      input{
-        width: 100%;
+    background-color: rgba(255,255,255,0.2);
+  }
+
+  .modal-panel{
+    border-color: $black-color-border-highlight;
+    background-color: $black-bg;
+    .modal-close{
+      background-color: transparentize(white, 0.9);
+      &:hover{
+        background-color: transparentize(white, 0.7);
       }
     }
-    &-footer{
+    .modal-header{
+      border-color: $black-color-border;
+      background-color: $black-bg;
+      color: $black-color-text;
+    }
+    .modal-body{
+      label{
+        color: white;
+      }
+      input{
+        border-color: $black-color-border-highlight ;
+        width: 100%;
+        &:focus{
+          border-color: $black-color-main;
+        }
+      }
+    }
+    .modal-footer{
+      border-color: $black-color-border;
+      background-color: $black-bg;
       display: flex;
       justify-content: center;
     }

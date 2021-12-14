@@ -1731,20 +1731,54 @@ hr {
 .dark-mode .input-item .btn-clear:hover {
   background-color: #FF2D70;
 }
-.dark-mode .modal {
-  background-color: rgba(0, 0, 0, 0.2);
+.dark-mode .main-tool {
+  border-color: #272b32;
 }
-.dark-mode .modal .modal-panel {
+.dark-mode .main-tool .tool-panel {
+  border-right-color: #272b32;
+  background-color: #1c1f24;
+}
+.dark-mode .main-tool .tool-panel .title {
+  color: #e6e6e6;
+}
+.dark-mode .main-tool .tool-panel .content {
+  background-color: #0f0f13;
+}
+.dark-mode .main-tool .tool-panel::-webkit-scrollbar-thumb {
+  border: none;
+  background-color: #383838;
+}
+.dark-mode .modal {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+.dark-mode .modal-panel {
   border-color: #383838;
   background-color: #1c1f24;
 }
-.dark-mode .modal-header {
+.dark-mode .modal-panel .modal-close {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+.dark-mode .modal-panel .modal-close:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+.dark-mode .modal-panel .modal-header {
+  border-color: #272b32;
+  background-color: #1c1f24;
   color: #e6e6e6;
 }
-.dark-mode .modal-body input {
+.dark-mode .modal-panel .modal-body label {
+  color: white;
+}
+.dark-mode .modal-panel .modal-body input {
+  border-color: #383838;
   width: 100%;
 }
-.dark-mode .modal-footer {
+.dark-mode .modal-panel .modal-body input:focus {
+  border-color: #81fffa;
+}
+.dark-mode .modal-panel .modal-footer {
+  border-color: #272b32;
+  background-color: #1c1f24;
   display: flex;
   justify-content: center;
 }
@@ -2210,20 +2244,54 @@ hr {
   .auto-mode .input-item .btn-clear:hover {
     background-color: #FF2D70;
   }
-  .auto-mode .modal {
-    background-color: rgba(0, 0, 0, 0.2);
+  .auto-mode .main-tool {
+    border-color: #272b32;
   }
-  .auto-mode .modal .modal-panel {
+  .auto-mode .main-tool .tool-panel {
+    border-right-color: #272b32;
+    background-color: #1c1f24;
+  }
+  .auto-mode .main-tool .tool-panel .title {
+    color: #e6e6e6;
+  }
+  .auto-mode .main-tool .tool-panel .content {
+    background-color: #0f0f13;
+  }
+  .auto-mode .main-tool .tool-panel::-webkit-scrollbar-thumb {
+    border: none;
+    background-color: #383838;
+  }
+  .auto-mode .modal {
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+  .auto-mode .modal-panel {
     border-color: #383838;
     background-color: #1c1f24;
   }
-  .auto-mode .modal-header {
+  .auto-mode .modal-panel .modal-close {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+  .auto-mode .modal-panel .modal-close:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+  }
+  .auto-mode .modal-panel .modal-header {
+    border-color: #272b32;
+    background-color: #1c1f24;
     color: #e6e6e6;
   }
-  .auto-mode .modal-body input {
+  .auto-mode .modal-panel .modal-body label {
+    color: white;
+  }
+  .auto-mode .modal-panel .modal-body input {
+    border-color: #383838;
     width: 100%;
   }
-  .auto-mode .modal-footer {
+  .auto-mode .modal-panel .modal-body input:focus {
+    border-color: #81fffa;
+  }
+  .auto-mode .modal-panel .modal-footer {
+    border-color: #272b32;
+    background-color: #1c1f24;
     display: flex;
     justify-content: center;
   }
