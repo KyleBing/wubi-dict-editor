@@ -754,6 +754,7 @@
 }
 
 .btn-green {
+  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.2);
   color: white;
   background: linear-gradient(to bottom, #4CD964, #37d552);
   border: 1px solid #4CD964;
@@ -780,6 +781,7 @@
 }
 
 .btn-cyan {
+  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.2);
   color: white;
   background: linear-gradient(to bottom, #5AC8FA, #41c0f9);
   border: 1px solid #5AC8FA;
@@ -806,6 +808,7 @@
 }
 
 .btn-blue {
+  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.2);
   color: white;
   background: linear-gradient(to bottom, #007AFF, #006ee6);
   border: 1px solid #007AFF;
@@ -832,6 +835,7 @@
 }
 
 .btn-purple {
+  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.2);
   color: white;
   background: linear-gradient(to bottom, #5856D6, #4441d1);
   border: 1px solid #5856D6;
@@ -858,6 +862,7 @@
 }
 
 .btn-yellow {
+  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.2);
   color: white;
   background: linear-gradient(to bottom, #FFCC00, #e6b800);
   border: 1px solid #FFCC00;
@@ -884,6 +889,7 @@
 }
 
 .btn-orange {
+  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.2);
   color: white;
   background: linear-gradient(to bottom, #FF9500, #e68600);
   border: 1px solid #FF9500;
@@ -910,6 +916,7 @@
 }
 
 .btn-roseo {
+  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.2);
   color: white;
   background: linear-gradient(to bottom, #FF2D70, #ff145f);
   border: 1px solid #FF2D70;
@@ -936,6 +943,7 @@
 }
 
 .btn-red {
+  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.2);
   color: white;
   background: linear-gradient(to bottom, #FF3B30, #ff2317);
   border: 1px solid #FF3B30;
@@ -962,6 +970,7 @@
 }
 
 .btn-gray {
+  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.2);
   color: white;
   background: linear-gradient(to bottom, #8E8E93, #818187);
   border: 1px solid #8E8E93;
@@ -1985,7 +1994,7 @@ hr {
 }
 .dark-mode .btn-green {
   color: white;
-  background: linear-gradient(to bottom, #4CD964, #2ac845);
+  background: linear-gradient(to bottom, #37d552, #2ac845);
   border: 1px solid #4CD964;
 }
 .dark-mode .btn-green:hover {
@@ -2009,7 +2018,7 @@ hr {
 }
 .dark-mode .btn-cyan {
   color: white;
-  background: linear-gradient(to bottom, #5AC8FA, #29b8f9);
+  background: linear-gradient(to bottom, #41c0f9, #29b8f9);
   border: 1px solid #5AC8FA;
 }
 .dark-mode .btn-cyan:hover {
@@ -2033,7 +2042,7 @@ hr {
 }
 .dark-mode .btn-blue {
   color: white;
-  background: linear-gradient(to bottom, #007AFF, #0062cc);
+  background: linear-gradient(to bottom, #006ee6, #0062cc);
   border: 1px solid #007AFF;
 }
 .dark-mode .btn-blue:hover {
@@ -2057,7 +2066,7 @@ hr {
 }
 .dark-mode .btn-purple {
   color: white;
-  background: linear-gradient(to bottom, #5856D6, #3331c8);
+  background: linear-gradient(to bottom, #4441d1, #3331c8);
   border: 1px solid #5856D6;
 }
 .dark-mode .btn-purple:hover {
@@ -2081,7 +2090,7 @@ hr {
 }
 .dark-mode .btn-yellow {
   color: white;
-  background: linear-gradient(to bottom, #FFCC00, #cca300);
+  background: linear-gradient(to bottom, #e6b800, #cca300);
   border: 1px solid #FFCC00;
 }
 .dark-mode .btn-yellow:hover {
@@ -2105,7 +2114,7 @@ hr {
 }
 .dark-mode .btn-orange {
   color: white;
-  background: linear-gradient(to bottom, #FF9500, #cc7700);
+  background: linear-gradient(to bottom, #e68600, #cc7700);
   border: 1px solid #FF9500;
 }
 .dark-mode .btn-orange:hover {
@@ -2129,7 +2138,7 @@ hr {
 }
 .dark-mode .btn-roseo {
   color: white;
-  background: linear-gradient(to bottom, #FF2D70, #f9004f);
+  background: linear-gradient(to bottom, #ff145f, #f9004f);
   border: 1px solid #FF2D70;
 }
 .dark-mode .btn-roseo:hover {
@@ -2153,7 +2162,7 @@ hr {
 }
 .dark-mode .btn-red {
   color: white;
-  background: linear-gradient(to bottom, #FF3B30, #fc0d00);
+  background: linear-gradient(to bottom, #ff2317, #fc0d00);
   border: 1px solid #FF3B30;
 }
 .dark-mode .btn-red:hover {
@@ -2177,7 +2186,7 @@ hr {
 }
 .dark-mode .btn-gray {
   color: white;
-  background: linear-gradient(to bottom, #8E8E93, #74747a);
+  background: linear-gradient(to bottom, #818187, #74747a);
   border: 1px solid #8E8E93;
 }
 .dark-mode .btn-gray:hover {
@@ -2505,7 +2514,7 @@ hr {
   }
   .auto-mode .btn-green {
     color: white;
-    background: linear-gradient(to bottom, #4CD964, #2ac845);
+    background: linear-gradient(to bottom, #37d552, #2ac845);
     border: 1px solid #4CD964;
   }
   .auto-mode .btn-green:hover {
@@ -2529,7 +2538,7 @@ hr {
   }
   .auto-mode .btn-cyan {
     color: white;
-    background: linear-gradient(to bottom, #5AC8FA, #29b8f9);
+    background: linear-gradient(to bottom, #41c0f9, #29b8f9);
     border: 1px solid #5AC8FA;
   }
   .auto-mode .btn-cyan:hover {
@@ -2553,7 +2562,7 @@ hr {
   }
   .auto-mode .btn-blue {
     color: white;
-    background: linear-gradient(to bottom, #007AFF, #0062cc);
+    background: linear-gradient(to bottom, #006ee6, #0062cc);
     border: 1px solid #007AFF;
   }
   .auto-mode .btn-blue:hover {
@@ -2577,7 +2586,7 @@ hr {
   }
   .auto-mode .btn-purple {
     color: white;
-    background: linear-gradient(to bottom, #5856D6, #3331c8);
+    background: linear-gradient(to bottom, #4441d1, #3331c8);
     border: 1px solid #5856D6;
   }
   .auto-mode .btn-purple:hover {
@@ -2601,7 +2610,7 @@ hr {
   }
   .auto-mode .btn-yellow {
     color: white;
-    background: linear-gradient(to bottom, #FFCC00, #cca300);
+    background: linear-gradient(to bottom, #e6b800, #cca300);
     border: 1px solid #FFCC00;
   }
   .auto-mode .btn-yellow:hover {
@@ -2625,7 +2634,7 @@ hr {
   }
   .auto-mode .btn-orange {
     color: white;
-    background: linear-gradient(to bottom, #FF9500, #cc7700);
+    background: linear-gradient(to bottom, #e68600, #cc7700);
     border: 1px solid #FF9500;
   }
   .auto-mode .btn-orange:hover {
@@ -2649,7 +2658,7 @@ hr {
   }
   .auto-mode .btn-roseo {
     color: white;
-    background: linear-gradient(to bottom, #FF2D70, #f9004f);
+    background: linear-gradient(to bottom, #ff145f, #f9004f);
     border: 1px solid #FF2D70;
   }
   .auto-mode .btn-roseo:hover {
@@ -2673,7 +2682,7 @@ hr {
   }
   .auto-mode .btn-red {
     color: white;
-    background: linear-gradient(to bottom, #FF3B30, #fc0d00);
+    background: linear-gradient(to bottom, #ff2317, #fc0d00);
     border: 1px solid #FF3B30;
   }
   .auto-mode .btn-red:hover {
@@ -2697,7 +2706,7 @@ hr {
   }
   .auto-mode .btn-gray {
     color: white;
-    background: linear-gradient(to bottom, #8E8E93, #74747a);
+    background: linear-gradient(to bottom, #818187, #74747a);
     border: 1px solid #8E8E93;
   }
   .auto-mode .btn-gray:hover {

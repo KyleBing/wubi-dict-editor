@@ -327,7 +327,9 @@ const app = {
                         wordGroup.dict.forEach(item => {
                             if (item.id === id){
                                 let correctCode = this.dictMap.decodeWord(item.word)
-                                item.setCode(correctCode)
+                                if (correctCode){ // 只有获取到编码内容时才重新设置编码
+                                    item.setCode(correctCode)
+                                }
                             }
                         })
                     })
@@ -336,8 +338,9 @@ const app = {
                     this.words.forEach(item => {
                         if (item.id === id){
                             let correctCode = this.dictMap.decodeWord(item.word)
-                            item.setCode(correctCode)
-                        }
+                            if (correctCode){
+                                item.setCode(correctCode)
+                            }                        }
                     })
                 }
             })

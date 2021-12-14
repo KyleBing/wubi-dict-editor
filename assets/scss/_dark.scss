@@ -321,7 +321,7 @@ $black-color-main: #81fffa;
         border: 1px solid $black-btn-bg;
       } @else {
         color: white;
-        background: linear-gradient(to bottom, $color, darken($color, 10%));
+        background: linear-gradient(to bottom, darken($color, 5%), darken($color, 10%));
         border: 1px solid $color;
       }
       &:hover {
