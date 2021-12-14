@@ -603,7 +603,7 @@
 }
 .word-item .note {
   color: #848484;
-  width: 20%;
+  padding-right: 10px;
   white-space: nowrap;
   font-size: 11px;
 }

@@ -320,6 +320,27 @@ const app = {
 
         // 选中词条纠错
         errorWordsCorrection(){
+            this.chosenWordIds.forEach(id => {
+                if (this.dict.isGroupMode){
+                    // 分组模式时
+                    this.words.forEach(wordGroup => {
+                        wordGroup.dict.forEach(item => {
+                            if (item.id === id){
+                                let correctCode = this.dictMap.decodeWord(item.word)
+                                item.setCode(correctCode)
+                            }
+                        })
+                    })
+                } else {
+                    // 非分组模式时
+                    this.words.forEach(item => {
+                        if (item.id === id){
+                            let correctCode = this.dictMap.decodeWord(item.word)
+                            item.setCode(correctCode)
+                        }
+                    })
+                }
+            })
         },
 
         // GROUP OPERATION
