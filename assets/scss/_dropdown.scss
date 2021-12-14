@@ -34,7 +34,7 @@ $bg-dropdown-highlight: transparentize($bg-dropdown, 0.95);
     line-height: $catalog-height - $catalog-pd-tb * 2;
     padding: $catalog-pd-tb $catalog-pd-lr;
     cursor: pointer;
-    border-bottom: 1px solid $color-border;
+    border-bottom: 1px solid $border-color;
     &:last-child{
       border-bottom: none;
     }
@@ -58,7 +58,7 @@ $bg-dropdown-highlight: transparentize($bg-dropdown, 0.95);
     background-color: rgba(0, 0, 0, 0);
   }
   &::-webkit-scrollbar-thumb {
-    background-color: $color-border;
+    background-color: $border-color;
   }
   &:hover::-webkit-scrollbar-thumb {
     background-color: transparentize($bg-dropdown, 0.3);

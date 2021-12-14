@@ -21,15 +21,15 @@
                     <label for="word">词条</label>
                     <input ref="editInputWord" id="word" type="text" v-model="wordEditing.word" >
                 </div>
-                <div class="input-item mt-2">
+                <div class="input-item mt-1">
                     <label for="code">编码</label>
                     <input ref="editInputCode" id="code" type="text" v-model="wordEditing.code" >
                 </div>
-                <div class="input-item mt-2">
+                <div class="input-item mt-1">
                     <label for="note">备注</label>
                     <input ref="editInputNote" id="note" type="text" v-model="wordEditing.note" >
                 </div>
-                <div class="input-item mt-2">
+                <div class="input-item mt-1">
                     <label for="priority">权重</label>
                     <input ref="editInputPriority" id="priority" type="text" v-model="wordEditing.priority" >
                 </div>
@@ -91,13 +91,13 @@
             </div>
         </div>
         <div class="input-item">
-            <input class="note" ref="domInputNote" @keyup.enter="enterKeyPressed" v-model="note" type="text" placeholder="备注">
+            <input class="note" ref="domInputNote" @keyup.enter="enterKeyPressed" v-model="note" type="text" placeholder="备注：可选">
             <div @click="note = ''" v-show="note" class="btn-clear">
                 <img src="../../assets/img/delete_white.svg" alt="clear">
             </div>
         </div>
         <div class="input-item">
-            <input class="priority" ref="domInputPriority" @keyup.enter="enterKeyPressed" v-model="priority" type="text" placeholder="优先级">
+            <input class="priority" ref="domInputPriority" @keyup.enter="enterKeyPressed" v-model="priority" type="text" placeholder="优先级：可选">
             <div @click="priority = ''" v-show="priority" class="btn-clear">
                 <img src="../../assets/img/delete_white.svg" alt="clear">
             </div>

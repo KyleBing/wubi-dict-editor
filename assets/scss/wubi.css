@@ -1647,8 +1647,8 @@ hr {
   position: absolute;
   right: 15px;
   top: 13px;
-  height: 20px;
-  width: 20px;
+  height: 15px;
+  width: 15px;
   -webkit-border-radius: 20px;
   -moz-border-radius: 20px;
   border-radius: 20px;
@@ -1669,12 +1669,12 @@ hr {
   background-color: #f9f9f9;
   text-align: center;
   font-weight: bold;
-  font-size: 20px;
+  font-size: 15px;
   line-height: 1.5;
 }
 .modal-panel .modal-body {
   padding: 20px 25px;
-  font-size: 14px;
+  font-size: 13px;
 }
 .modal-panel .modal-body .input-item {
   align-items: center;
@@ -1687,13 +1687,15 @@ hr {
   width: 50px;
 }
 .modal-panel .modal-body .input-item input {
-  padding-top: 5px;
-  padding-bottom: 5px;
+  border-color: #e2e2e2;
   flex-grow: 1;
+}
+.modal-panel .modal-body .input-item input:focus {
+  border-color: #FF2D70;
 }
 .modal-panel .modal-footer {
   border-top: 1px solid #eee;
-  padding: 15px 0;
+  padding: 10px 0;
   background-color: #f9f9f9;
   display: flex;
   justify-content: center;

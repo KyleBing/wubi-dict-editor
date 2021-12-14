@@ -24,8 +24,8 @@
     position: absolute;
     right: 15px;
     top: 13px;
-    height: 20px;
-    width: 20px;
+    height: 15px;
+    width: 15px;
     @include border-radius(20px);
     overflow: hidden;
     padding: 5px;
@@ -40,12 +40,12 @@
     }
   }
   .modal-header{
-    border-bottom: 1px solid $color-border;
+    border-bottom: 1px solid $border-color;
     padding: 10px 10px 5px;
     background-color: $bg-panel-tool;
     text-align: center;
     font-weight: bold;
-    font-size: $fz-big;
+    font-size: $fz-title;
     line-height: 1.5;
   }
   .modal-body{
@@ -61,16 +61,18 @@
         width: 50px;
       }
       input{
-        padding-top: 5px;
-        padding-bottom: 5px;
+        border-color: $border-color-input-modal;
         flex-grow: 1;
+        &:focus{
+          border-color: $color-main;
+        }
       }
     }
 
   }
   .modal-footer{
-    border-top: 1px solid $color-border;
-    padding: 15px 0;
+    border-top: 1px solid $border-color;
+    padding: 10px 0;
     background-color: $bg-panel-tool;
     display: flex;
     justify-content: center;

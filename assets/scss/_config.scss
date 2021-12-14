@@ -3,7 +3,7 @@
   .config-file-list-item{
     @extend .unselectable;
     padding: 3px 8px;
-    border-bottom: 1px solid $color-border;
+    border-bottom: 1px solid $border-color;
     cursor: pointer;
     display: flex;
     justify-content: space-between;
