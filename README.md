@@ -10,11 +10,17 @@
 > GitHub: [https://github.com/KyleBing/wubi-dict-editor](https://github.com/KyleBing/wubi-dict-editor) <br/>
 > Gitee: [https://gitee.com/KyleBing/wubi-dict-editor](https://gitee.com/KyleBing/wubi-dict-editor)
 
-
+主界面
 <img width="1000" alt="Screen Shot 2021-12-14 at 23 37 53" src="https://user-images.githubusercontent.com/12215982/146030612-43a0af6a-f893-4c6c-8b25-2de4ef29eefc.png">
+
+其它码表工具
 <img width="1000" alt="Screen Shot 2021-11-02 at 23 16 34" src="https://user-images.githubusercontent.com/12215982/139876204-aef77bb8-683b-4042-8ec1-f366641eaae5.png">
+
+暗黑模式
 <img width="1000" alt="Screen Shot 2021-11-02 at 23 17 27" src="https://user-images.githubusercontent.com/12215982/139876211-00e58bbc-9b49-43f0-83c2-8922109e0660.png">
 
+配置界面
+<img width="819" alt="Screen Shot 2021-12-14 at 23 53 11" src="https://user-images.githubusercontent.com/12215982/146032695-35857e96-bbf7-451a-924f-936e802adb86.png">
 
 ## 加载速度
 
