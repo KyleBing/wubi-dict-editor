@@ -87,11 +87,11 @@ $btn-sm-padding-lr: 3px;
   .btn-#{$name}{
     @if $name == primary {
       color: $text-main;
-      background-color: $color;
+      background: linear-gradient(to bottom, white, darken(white, 5%));
       border: 1px solid darken($color, 15%);
     } @else {
       color: white;
-      background-color: $color;
+      background: linear-gradient(to bottom, $color, darken($color, 5%));
       border: 1px solid $color;
     }
     &:hover{

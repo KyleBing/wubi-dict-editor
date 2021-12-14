@@ -729,7 +729,7 @@
 
 .btn-primary {
   color: #000;
-  background-color: white;
+  background: linear-gradient(to bottom, white, #f2f2f2);
   border: 1px solid #d9d9d9;
 }
 .btn-primary:hover {
@@ -755,7 +755,7 @@
 
 .btn-green {
   color: white;
-  background-color: #4CD964;
+  background: linear-gradient(to bottom, #4CD964, #37d552);
   border: 1px solid #4CD964;
 }
 .btn-green:hover {
@@ -781,7 +781,7 @@
 
 .btn-cyan {
   color: white;
-  background-color: #5AC8FA;
+  background: linear-gradient(to bottom, #5AC8FA, #41c0f9);
   border: 1px solid #5AC8FA;
 }
 .btn-cyan:hover {
@@ -807,7 +807,7 @@
 
 .btn-blue {
   color: white;
-  background-color: #007AFF;
+  background: linear-gradient(to bottom, #007AFF, #006ee6);
   border: 1px solid #007AFF;
 }
 .btn-blue:hover {
@@ -833,7 +833,7 @@
 
 .btn-purple {
   color: white;
-  background-color: #5856D6;
+  background: linear-gradient(to bottom, #5856D6, #4441d1);
   border: 1px solid #5856D6;
 }
 .btn-purple:hover {
@@ -859,7 +859,7 @@
 
 .btn-yellow {
   color: white;
-  background-color: #FFCC00;
+  background: linear-gradient(to bottom, #FFCC00, #e6b800);
   border: 1px solid #FFCC00;
 }
 .btn-yellow:hover {
@@ -885,7 +885,7 @@
 
 .btn-orange {
   color: white;
-  background-color: #FF9500;
+  background: linear-gradient(to bottom, #FF9500, #e68600);
   border: 1px solid #FF9500;
 }
 .btn-orange:hover {
@@ -911,7 +911,7 @@
 
 .btn-roseo {
   color: white;
-  background-color: #FF2D70;
+  background: linear-gradient(to bottom, #FF2D70, #ff145f);
   border: 1px solid #FF2D70;
 }
 .btn-roseo:hover {
@@ -937,7 +937,7 @@
 
 .btn-red {
   color: white;
-  background-color: #FF3B30;
+  background: linear-gradient(to bottom, #FF3B30, #ff2317);
   border: 1px solid #FF3B30;
 }
 .btn-red:hover {
@@ -963,7 +963,7 @@
 
 .btn-gray {
   color: white;
-  background-color: #8E8E93;
+  background: linear-gradient(to bottom, #8E8E93, #818187);
   border: 1px solid #8E8E93;
 }
 .btn-gray:hover {
@@ -1124,6 +1124,9 @@ input, select {
   -ms-transition: all, 0.5s;
   -o-transition: all, 0.5s;
   transition: all, 0.5s;
+}
+input::-webkit-input-placeholder, select::-webkit-input-placeholder {
+  color: #c2c2c2;
 }
 input.code, select.code {
   flex-shrink: 0;
@@ -1932,6 +1935,9 @@ hr {
 .dark-mode input, .dark-mode select {
   color: #e6e6e6;
 }
+.dark-mode input::-webkit-input-placeholder, .dark-mode select::-webkit-input-placeholder {
+  color: rgba(255, 255, 255, 0.3);
+}
 .dark-mode input:focus, .dark-mode select:focus {
   border-color: #81fffa;
   -webkit-box-shadow: 0 0 0 2px rgba(129, 255, 250, 0.5);
@@ -1957,7 +1963,7 @@ hr {
 }
 .dark-mode .btn-primary {
   color: #e6e6e6;
-  background-color: #404040;
+  background: linear-gradient(to bottom, #404040, #333333);
   border: 1px solid #404040;
 }
 .dark-mode .btn-primary:hover {
@@ -1979,7 +1985,7 @@ hr {
 }
 .dark-mode .btn-green {
   color: white;
-  background-color: #4CD964;
+  background: linear-gradient(to bottom, #4CD964, #2ac845);
   border: 1px solid #4CD964;
 }
 .dark-mode .btn-green:hover {
@@ -2003,7 +2009,7 @@ hr {
 }
 .dark-mode .btn-cyan {
   color: white;
-  background-color: #5AC8FA;
+  background: linear-gradient(to bottom, #5AC8FA, #29b8f9);
   border: 1px solid #5AC8FA;
 }
 .dark-mode .btn-cyan:hover {
@@ -2027,7 +2033,7 @@ hr {
 }
 .dark-mode .btn-blue {
   color: white;
-  background-color: #007AFF;
+  background: linear-gradient(to bottom, #007AFF, #0062cc);
   border: 1px solid #007AFF;
 }
 .dark-mode .btn-blue:hover {
@@ -2051,7 +2057,7 @@ hr {
 }
 .dark-mode .btn-purple {
   color: white;
-  background-color: #5856D6;
+  background: linear-gradient(to bottom, #5856D6, #3331c8);
   border: 1px solid #5856D6;
 }
 .dark-mode .btn-purple:hover {
@@ -2075,7 +2081,7 @@ hr {
 }
 .dark-mode .btn-yellow {
   color: white;
-  background-color: #FFCC00;
+  background: linear-gradient(to bottom, #FFCC00, #cca300);
   border: 1px solid #FFCC00;
 }
 .dark-mode .btn-yellow:hover {
@@ -2099,7 +2105,7 @@ hr {
 }
 .dark-mode .btn-orange {
   color: white;
-  background-color: #FF9500;
+  background: linear-gradient(to bottom, #FF9500, #cc7700);
   border: 1px solid #FF9500;
 }
 .dark-mode .btn-orange:hover {
@@ -2123,7 +2129,7 @@ hr {
 }
 .dark-mode .btn-roseo {
   color: white;
-  background-color: #FF2D70;
+  background: linear-gradient(to bottom, #FF2D70, #f9004f);
   border: 1px solid #FF2D70;
 }
 .dark-mode .btn-roseo:hover {
@@ -2147,7 +2153,7 @@ hr {
 }
 .dark-mode .btn-red {
   color: white;
-  background-color: #FF3B30;
+  background: linear-gradient(to bottom, #FF3B30, #fc0d00);
   border: 1px solid #FF3B30;
 }
 .dark-mode .btn-red:hover {
@@ -2171,7 +2177,7 @@ hr {
 }
 .dark-mode .btn-gray {
   color: white;
-  background-color: #8E8E93;
+  background: linear-gradient(to bottom, #8E8E93, #74747a);
   border: 1px solid #8E8E93;
 }
 .dark-mode .btn-gray:hover {
@@ -2449,6 +2455,9 @@ hr {
   .auto-mode input, .auto-mode select {
     color: #e6e6e6;
   }
+  .auto-mode input::-webkit-input-placeholder, .auto-mode select::-webkit-input-placeholder {
+    color: rgba(255, 255, 255, 0.3);
+  }
   .auto-mode input:focus, .auto-mode select:focus {
     border-color: #81fffa;
     -webkit-box-shadow: 0 0 0 2px rgba(129, 255, 250, 0.5);
@@ -2474,7 +2483,7 @@ hr {
   }
   .auto-mode .btn-primary {
     color: #e6e6e6;
-    background-color: #404040;
+    background: linear-gradient(to bottom, #404040, #333333);
     border: 1px solid #404040;
   }
   .auto-mode .btn-primary:hover {
@@ -2496,7 +2505,7 @@ hr {
   }
   .auto-mode .btn-green {
     color: white;
-    background-color: #4CD964;
+    background: linear-gradient(to bottom, #4CD964, #2ac845);
     border: 1px solid #4CD964;
   }
   .auto-mode .btn-green:hover {
@@ -2520,7 +2529,7 @@ hr {
   }
   .auto-mode .btn-cyan {
     color: white;
-    background-color: #5AC8FA;
+    background: linear-gradient(to bottom, #5AC8FA, #29b8f9);
     border: 1px solid #5AC8FA;
   }
   .auto-mode .btn-cyan:hover {
@@ -2544,7 +2553,7 @@ hr {
   }
   .auto-mode .btn-blue {
     color: white;
-    background-color: #007AFF;
+    background: linear-gradient(to bottom, #007AFF, #0062cc);
     border: 1px solid #007AFF;
   }
   .auto-mode .btn-blue:hover {
@@ -2568,7 +2577,7 @@ hr {
   }
   .auto-mode .btn-purple {
     color: white;
-    background-color: #5856D6;
+    background: linear-gradient(to bottom, #5856D6, #3331c8);
     border: 1px solid #5856D6;
   }
   .auto-mode .btn-purple:hover {
@@ -2592,7 +2601,7 @@ hr {
   }
   .auto-mode .btn-yellow {
     color: white;
-    background-color: #FFCC00;
+    background: linear-gradient(to bottom, #FFCC00, #cca300);
     border: 1px solid #FFCC00;
   }
   .auto-mode .btn-yellow:hover {
@@ -2616,7 +2625,7 @@ hr {
   }
   .auto-mode .btn-orange {
     color: white;
-    background-color: #FF9500;
+    background: linear-gradient(to bottom, #FF9500, #cc7700);
     border: 1px solid #FF9500;
   }
   .auto-mode .btn-orange:hover {
@@ -2640,7 +2649,7 @@ hr {
   }
   .auto-mode .btn-roseo {
     color: white;
-    background-color: #FF2D70;
+    background: linear-gradient(to bottom, #FF2D70, #f9004f);
     border: 1px solid #FF2D70;
   }
   .auto-mode .btn-roseo:hover {
@@ -2664,7 +2673,7 @@ hr {
   }
   .auto-mode .btn-red {
     color: white;
-    background-color: #FF3B30;
+    background: linear-gradient(to bottom, #FF3B30, #fc0d00);
     border: 1px solid #FF3B30;
   }
   .auto-mode .btn-red:hover {
@@ -2688,7 +2697,7 @@ hr {
   }
   .auto-mode .btn-gray {
     color: white;
-    background-color: #8E8E93;
+    background: linear-gradient(to bottom, #8E8E93, #74747a);
     border: 1px solid #8E8E93;
   }
   .auto-mode .btn-gray:hover {

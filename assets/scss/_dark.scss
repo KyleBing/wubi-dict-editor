@@ -283,6 +283,9 @@ $black-color-main: #81fffa;
     }
   }
   input, select {
+    &::-webkit-input-placeholder{
+      color: rgba(255,255,255,0.3);
+    }
     color: $black-color-text;
     &:focus {
       border-color: $black-color-main;
@@ -314,11 +317,11 @@ $black-color-main: #81fffa;
     .btn-#{$name} {
       @if $name == primary {
         color: $black-color-text;
-        background-color: $black-btn-bg;
+        background: linear-gradient(to bottom, $black-btn-bg, darken($black-btn-bg, 5%));
         border: 1px solid $black-btn-bg;
       } @else {
         color: white;
-        background-color: $color;
+        background: linear-gradient(to bottom, $color, darken($color, 10%));
         border: 1px solid $color;
       }
       &:hover {

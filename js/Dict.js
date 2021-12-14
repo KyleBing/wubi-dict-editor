@@ -223,7 +223,6 @@ class Dict {
         return repetitionWords
     }
 
-
     /**
      * 添加新 Word
      * @param word Word

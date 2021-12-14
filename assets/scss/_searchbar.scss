@@ -52,6 +52,9 @@ $height-clear: 16px;
 }
 
 input, select{
+  &::-webkit-input-placeholder{
+    color: $text-comment;
+  }
   font-size: inherit;
   line-height: $height-input - $padding-input-tb * 2;
   border: 1px solid $border-color-input;

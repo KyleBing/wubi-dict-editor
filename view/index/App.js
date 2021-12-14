@@ -8,6 +8,7 @@ const Vue  = require('../../node_modules/vue/dist/vue.common.prod')
 
 const {ipcRenderer} = require('electron')
 const VirtualScroller = require('vue-virtual-scroller')
+const WordGroup = require("../../js/WordGroup");
 
 
 // Vue 2
@@ -273,6 +274,39 @@ const app = {
         checkRepetition(includeCharacter){
             this.setGroupId(-1) // 高亮分组定位到 【全部】
             this.words = this.dict.getRepetitionWords(includeCharacter)
+        },
+        // 词组编码查错
+        getErrorWords(){
+            let errorWords = []
+            if(this.dict.isGroupMode){
+                // 分组模式时
+                this.dict.wordsOrigin.forEach(wordGroup => {
+                    wordGroup.dict.forEach(item => {
+                        if (item.word.length > 1) { // 只判断词条，不判断单字
+                            if (item.code !== this.dictMap.decodeWord(item.word)) {
+                                errorWords.push(item)
+                            }
+                        }
+                    })
+                })
+            } else {
+                // 非分组模式时
+                this.dict.wordsOrigin.forEach(item => {
+                    if (item.word.length > 1) { // 只判断词条，不判断单字
+                        if (item.code !== this.dictMap.decodeWord(item.word)) {
+                            errorWords.push(item)
+                        }
+                    }
+                })
+            }
+            let errorWordOrigin = []
+            if (this.dict.isGroupMode){
+                // 当是分组模式时，返回一个新的分组，不然无法显示正常
+                errorWordOrigin.push(new WordGroup(888, '编码可能错误的词条', errorWords))
+            } else {
+                errorWordOrigin = errorWords
+            }
+            this.words = errorWordOrigin
         },
 
         // GROUP OPERATION

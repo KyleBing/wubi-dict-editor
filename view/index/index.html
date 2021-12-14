@@ -96,14 +96,15 @@
                 <img src="../../assets/img/delete_white.svg" alt="clear">
             </div>
         </div>
-        <div class="input-item">
+        <div class="btn btn-primary" @click="addNewWord">添加</div>
+        <div class="btn btn-primary" @click="search">搜索</div>
+
+<!--        <div class="input-item">
             <input class="priority" ref="domInputPriority" @keyup.enter="enterKeyPressed" v-model="priority" type="text" placeholder="优先级：可选">
             <div @click="priority = ''" v-show="priority" class="btn-clear">
                 <img src="../../assets/img/delete_white.svg" alt="clear">
             </div>
-        </div>
-        <div class="btn btn-primary" @click="addNewWord">添加</div>
-        <div class="btn btn-primary" @click="search">搜索</div>
+        </div>-->
         <div class="btn btn-roseo" v-show="chosenWordIdArray.length > 0" @click="deleteWords">删除</div>
         <p class="notice">显示格式：<b>编码</b> - 词条 - 备注 - 权重 - id</p>
 
@@ -262,10 +263,7 @@
                     <div class="content">
                         <div class="btn-list">
                             <div class="btn-item">
-                                <div class="btn btn-primary" @click="checkRepetition(true)">单字</div>
-                            </div>
-                            <div class="btn-item">
-                                <div class="btn btn-primary" @click="checkRepetition(false)">词组</div>
+                                <div class="btn btn-primary" @click="getErrorWords()">词组查错</div>
                             </div>
                         </div>
                     </div>

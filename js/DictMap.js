@@ -87,7 +87,7 @@ class DictMap {
                         decodeArray[2].substring(0,1) +
                         decodeArray[decodeArray.length - 1].substring(0,1)
             }
-            log(phraseCode, decodeArray)
+            // log(phraseCode, decodeArray)
             return phraseCode
         } catch(err){
             return ''
