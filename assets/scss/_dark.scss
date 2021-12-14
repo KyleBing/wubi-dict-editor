@@ -317,9 +317,11 @@ $black-color-main: #81fffa;
     .btn-#{$name} {
       @if $name == primary {
         color: $black-color-text;
+        text-shadow: 1px 1px 0 rgba(0,0,0,0.2);
         background: linear-gradient(to bottom, $black-btn-bg, darken($black-btn-bg, 5%));
         border: 1px solid $black-btn-bg;
       } @else {
+        text-shadow: 1px 1px 0 rgba(0,0,0,0.2);
         color: white;
         background: linear-gradient(to bottom, darken($color, 5%), darken($color, 10%));
         border: 1px solid $color;
@@ -330,8 +332,8 @@ $black-color-main: #81fffa;
           background-color: $black-btn-bg-hover;
           border: 1px solid $black-btn-bg-hover;
         } @else {
-          background-color: darken($color, 8%);
-          border-color: darken($color, 8%);
+          background: linear-gradient(to bottom, $color, $color);
+          border-color: $color;
         }
       }
       &:active {

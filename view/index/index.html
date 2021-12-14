@@ -246,14 +246,27 @@
             <div class="tool-panel"
                  :style="`height: ${heightContent}px`">
                 <section>
+                    <div class="title">选择</div>
+                    <div class="content">
+                        <div class="btn-list">
+                            <div class="btn-item">
+                                <div class="btn btn-purple" @click="selectAll">全选</div>
+                            </div>
+                            <div class="btn-item">
+                                <div class="btn btn-purple" @click="resetInputs">取消选择</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section>
                     <div class="title">查重</div>
                     <div class="content">
                         <div class="btn-list">
                             <div class="btn-item">
-                                <div class="btn btn-primary" @click="checkRepetition(true)">单字</div>
+                                <div class="btn btn-blue" @click="checkRepetition(true)">单字</div>
                             </div>
                             <div class="btn-item">
-                                <div class="btn btn-primary" @click="checkRepetition(false)">词组</div>
+                                <div class="btn btn-blue" @click="checkRepetition(false)">词组</div>
                             </div>
                         </div>
                     </div>
@@ -263,7 +276,7 @@
                     <div class="content">
                         <div class="btn-list">
                             <div class="btn-item">
-                                <div class="btn btn-primary" @click="getErrorWords()">词组查错</div>
+                                <div class="btn btn-green" @click="getErrorWords">词组查错</div>
                             </div>
                         </div>
                     </div>
@@ -273,17 +286,35 @@
                     <div class="content">
                         <div class="btn-list">
                             <div class="btn-item">
-                                <div class="btn btn-blue" @click="errorWordsCorrection()">纠正选中的词条编码</div>
+                                <div class="btn btn-orange" @click="errorWordsCorrection">纠正选中的词条编码</div>
                             </div>
                         </div>
                     </div>
                 </section>
+
+                <section>
+                    <div class="title">其它</div>
+                    <div class="content">
+                        <div class="btn-list">
+                            <div class="btn-item">
+                                <div class="btn btn-primary" @click="reloadCurrentDict">重载码表</div>
+                            </div>
+                            <div class="btn-item">
+                                <div class="btn btn-primary" @click="sort">排序</div>
+                            </div>
+                            <div class="btn-item mt-1">
+                                <div class="btn btn-primary" @click="openCurrentYaml">默认编辑器打开当前码表</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
                 <section v-if="IS_IN_DEVELOP">
                     <div class="title">同步</div>
                     <div class="content">
                         <div class="btn-list">
                             <div class="btn-item">
-                                <div class="btn btn-primary" @click="getNetworkContent()">网络请求测试</div>
+                                <div class="btn btn-primary" @click="getNetworkContent">网络请求测试</div>
                             </div>
                         </div>
                     </div>
@@ -298,10 +329,7 @@
             <div class="link-list">
                 <div class="link" v-if="config.isToolPanelShowing" @click="toolPanelClose">关闭工具面板</div>
                 <div class="link" v-else @click="toolPanelExpand">展开工具面板</div>
-                <div class="link" ref="domBtnSelectAll" @click="selectAll">全选</div>
-                <div class="link" @click="resetInputs">清选</div>
                 <div class="link" @click="reloadCurrentDict">重载码表</div>
-                <div class="link" @click="sort">排序</div>
                 <div class="link origin" @click="openCurrentYaml">{{ dict.fileName }}</div>
             </div>
             <div class="info-list">

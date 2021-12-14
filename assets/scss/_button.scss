@@ -83,6 +83,10 @@ $btn-sm-padding-lr: 3px;
 
 
 @each $name, $color in $btns {
+
+  .color-#{$name}{
+    color: $color !important;
+  }
   // BTN
   .btn-#{$name}{
     @if $name == primary {
@@ -90,9 +94,8 @@ $btn-sm-padding-lr: 3px;
       background: linear-gradient(to bottom, white, darken(white, 5%));
       border: 1px solid darken($color, 15%);
     } @else {
-      text-shadow: 1px 1px 0 rgba(0,0,0,0.2);
       color: white;
-      background: linear-gradient(to bottom, $color, darken($color, 5%));
+      background-color: $color;
       border: 1px solid $color;
     }
     &:hover{
@@ -100,8 +103,8 @@ $btn-sm-padding-lr: 3px;
         background-color: darken($color, 3%);
         border-color: darken($color, 18%);
       } @else {
-        background-color: darken($color, 8%);
-        border-color: darken($color, 8%);
+        background-color: darken($color, 5%);
+        border-color: darken($color, 5%);
       }
     }
     &:active{
