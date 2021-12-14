@@ -11,7 +11,7 @@ let mainWindow // 主窗口
 let fileList = [] // 文件目录列表，用于移动词条
 
 function createMainWindow() {
-    let width = IS_IN_DEVELOP ? 1300: 1000
+    let width = IS_IN_DEVELOP ? 1500: 1000
     let height = 700
     mainWindow = new BrowserWindow({
         width,
@@ -459,10 +459,10 @@ function readFileFromConfigDir(fileName, responseWindow){
 function getLabelNameFromFileName(fileName){
     let map = [
         {name: '拼音词库', path: 'pinyin_simp.dict.yaml'},
-        {name: '1 五笔极点 - 主表', path: 'wubi86_jidian.dict.yaml'},
-        {name: '2 五笔极点 - 附加', path: 'wubi86_jidian_extra.dict.yaml'},
-        {name: '3 五笔极点 - 用户', path: 'wubi86_jidian_user.dict.yaml'},
-        {name: '4 五笔极点 - 英文', path: 'wubi86_jidian_english.dict.yaml'},
+        {name: 'jidian - 主表', path: 'wubi86_jidian.dict.yaml'},
+        {name: 'jidian - 附加', path: 'wubi86_jidian_extra.dict.yaml'},
+        {name: 'jidian - 用户', path: 'wubi86_jidian_user.dict.yaml'},
+        {name: 'jidian - 英文', path: 'wubi86_jidian_english.dict.yaml'},
 
         // 测试词库
         {name: '测试 - 主表 ⛳', path: 'test_main.dict.yaml'},
