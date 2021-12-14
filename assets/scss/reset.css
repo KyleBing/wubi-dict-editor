@@ -48,7 +48,7 @@ tt {
     border: 1px solid rgba(0,0,0,0.15);
     -moz-border-radius: 5px;
     border-radius: 5px;
-    background-color: rgba(0, 0, 0, 0.1);
+    background-color: rgba(0, 0, 0, 0.05);
     transition: all .2s;
     height: 20px;
 }
