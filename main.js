@@ -1,4 +1,4 @@
-const {app, BrowserWindow, Menu, ipcMain, shell, dialog} = require('electron')
+const {app, BrowserWindow, Menu, ipcMain, shell, dialog, net} = require('electron')
 const { exec } = require('child_process')
 const fs = require('fs')
 const os = require('os')
@@ -38,6 +38,19 @@ function createMainWindow() {
         mainWindow = null
         if (configWindow) configWindow.close()
         if (toolWindow) toolWindow.close()
+    })
+
+    ipcMain.on('getNetData', (event, requestData) => {
+        const request = net.request('https://kylebing.cn/dontstarve/?type=query&table=characters')
+        request.on('response', response => {
+            response.on('data', res => {
+                // res 是 uint8Array 数据
+                // 通过 `${res}` 可以转为 String
+                mainWindow.webContents.send('responseNetData', JSON.parse(`${res}`))
+            })
+            response.on('end', () => {})
+        })
+        request.end()
     })
 
 

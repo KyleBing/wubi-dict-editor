@@ -6,7 +6,7 @@ const DictMap = require('../../js/DictMap')
 const Word = require('../../js/Word')
 const Vue  = require('../../node_modules/vue/dist/vue.common.prod')
 
-const {ipcRenderer} = require('electron')
+const {ipcRenderer, net} = require('electron')
 const VirtualScroller = require('vue-virtual-scroller')
 const WordGroup = require("../../js/WordGroup");
 
@@ -109,6 +109,11 @@ const app = {
             this.config = config
         })
 
+        // 获取网络请求返回的数据
+        ipcRenderer.on('responseNetData', (event, data) => {
+            log(data)
+        })
+
         // 获取并设置字典文件
         ipcRenderer.on('setDictMap', (event, fileContent, fileName, filePath) => {
             this.dictMap = new DictMap(fileContent, fileName, filePath)
@@ -140,6 +145,10 @@ const app = {
     },
 
     methods: {
+        // 网络请求测试
+        getNetworkContent(){
+            ipcRenderer.send('getNetData')
+        },
         // 切换码表文件
         switchToFile(file){
             ipcRenderer.send('MainWindow:LoadFile', file.path)
