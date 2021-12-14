@@ -3,6 +3,7 @@ $black-body-bg: #0f0f13;
 $black-bg: #1c1f24;
 $black-bg-hover: lighten(#1c1f24, 5%);
 $black-bg-highlight: #383f4a;
+$black-bg-active: lighten($black-bg-highlight, 15%);
 $black-color-border: lighten($black-bg, 5%);
 $black-color-text: lighten(black, 90%);
 $black-color-text-info: lighten(black, 65%);
@@ -20,11 +21,8 @@ $black-color-main: #81fffa;
     background-color: rgba(0, 0, 0, 0);
   }
   ::-webkit-scrollbar-thumb {
-    background-color: $black-color-border !important;
-  }
-  :hover::-webkit-scrollbar-thumb {
-    background-color: $black-color-border-highlight !important;
-  }
+    border-color: lighten($black-color-border-highlight, 10%);
+    background-color: $black-color-border-highlight !important;  }
   body {
     background-color: $black-bg !important;
   }
@@ -134,6 +132,16 @@ $black-color-main: #81fffa;
       color: $black-color-text-subtitle;
     }
     .word {
+    }
+    .operation {
+      .up, .down{
+        &:hover{
+          background-color: $black-bg-highlight;
+        }
+        &:active{
+          background-color: $black-bg-active;
+        }
+      }
     }
   }
   .catalog-list {
