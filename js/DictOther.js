@@ -5,10 +5,10 @@ const {shakeDom, log, shakeDomFocus} = require('./Utility')
 const os = require('os')
 
 class DictOther {
-    constructor(fileContent, filename, filePath, seperator, dictFormat) {
+    constructor(fileContent, fileName, filePath, seperator, dictFormat) {
         this.dictTypeName = 'DictOther'
         this.filePath = filePath // 文件路径
-        this.filename = filename // 文件路径
+        this.fileName = fileName // 文件路径
         this.lastIndex = 0 // 最后一个 Index 的值，用于新添加词时，作为唯一的 id 传入
         this.seperator = seperator ||' ' // 默认间隔符为空格
         this.dictFormat = dictFormat || 'cww' // 码表格式： 一码多词什么的 cww: 一码多词 | wc: 一词一码 | cw: 一码一词
