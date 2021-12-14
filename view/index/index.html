@@ -242,7 +242,7 @@
             </div>
         </div>
 
-        <div class="main-tool">
+        <div class="main-tool" v-show="config.isToolPanelShowing">
             <div class="tool-panel"
                  :style="`height: ${heightContent}px`">
                 <section>
@@ -296,6 +296,8 @@
     <div class="footer">
         <div class="footer-toolbar">
             <div class="link-list">
+                <div class="link" v-if="config.isToolPanelShowing" @click="toolPanelClose">关闭工具面板</div>
+                <div class="link" v-else @click="toolPanelExpand">展开工具面板</div>
                 <div class="link" ref="domBtnSelectAll" @click="selectAll">全选</div>
                 <div class="link" @click="resetInputs">清选</div>
                 <div class="link" @click="reloadCurrentDict">重载码表</div>

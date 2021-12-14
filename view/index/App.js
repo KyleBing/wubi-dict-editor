@@ -145,6 +145,16 @@ const app = {
     },
 
     methods: {
+        // 工具面板展开
+        toolPanelExpand(){
+            this.config.isToolPanelShowing = true
+            ipcRenderer.send('saveConfigFileFromMainWindow', JSON.stringify(this.config))
+        },
+        // 工具面板关闭
+        toolPanelClose(){
+            this.config.isToolPanelShowing = false
+            ipcRenderer.send('saveConfigFileFromMainWindow', JSON.stringify(this.config))
+        },
         // 网络请求测试
         getNetworkContent(){
             ipcRenderer.send('getNetData')
