@@ -309,6 +309,10 @@ const app = {
             this.words = errorWordOrigin
         },
 
+        // 选中词条纠错
+        errorWordsCorrection(){
+        },
+
         // GROUP OPERATION
         // 添加新组
         addGroupBeforeId(groupIndex){
