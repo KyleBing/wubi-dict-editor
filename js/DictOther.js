@@ -1,6 +1,6 @@
 // 其它字典对象
 const Word = require("./Word")
-const {shakeDom, log, shakeDomFocus} = require('./Utility')
+const {shakeDom, log, shakeDomFocus, getUnicodeStringLength} = require('./Utility')
 
 const os = require('os')
 
@@ -52,7 +52,7 @@ class DictOther {
         let repetitionWords = []
         this.wordsOrigin.forEach(word => {
             if (filterSingleCharacter){
-                if (wordMap.has(word.word) && word.word.length === 1){
+                if (wordMap.has(word.word) && getUnicodeStringLength(word.word) === 1){
                     repetitionWords.push(word)
                     let matchedWord = wordMap.get(word.word)
                     if (matchedWord) repetitionWords.push(matchedWord)
@@ -60,7 +60,7 @@ class DictOther {
                     wordMap.set(word.word, word)
                 }
             } else {
-                if (wordMap.has(word.word) && word.word.length > 1){ // 单字没必要查重，所以这里只搜索 2 个字以上的词
+                if (wordMap.has(word.word) && getUnicodeStringLength(word.word) > 1){ // 单字没必要查重，所以这里只搜索 2 个字以上的词
                     repetitionWords.push(word)
                     let matchedWord = wordMap.get(word.word)
                     if (matchedWord) repetitionWords.push(matchedWord)
@@ -103,7 +103,7 @@ class DictOther {
             let currentWords = this.getWordsFromLine(item)
             words.push(...currentWords) // 拼接词组
             currentWords.forEach(currentWord => {
-                if (currentWord.word.length === 1
+                if (getUnicodeStringLength(currentWord.word) === 1
                     && currentWord.code.length >=2
                     && !this.characterMap.has(currentWord.word)) // map里不存在这个字
                 { // 编码长度为 4 的单字

@@ -1,4 +1,4 @@
-const {shakeDom, shakeDomFocus, log} = require('../../js/Utility')
+const {shakeDom, shakeDomFocus, log, getUnicodeStringLength} = require('../../js/Utility')
 const {IS_IN_DEVELOP} = require('../../js/Global')
 
 const Dict = require('../../js/Dict')
@@ -301,7 +301,7 @@ const app = {
                 // 分组模式时
                 this.dict.wordsOrigin.forEach(wordGroup => {
                     wordGroup.dict.forEach(item => {
-                        if (item.word.length > 1) { // 只判断词条，不判断单字
+                        if (getUnicodeStringLength(item.word) > 1) { // 只判断词条，不判断单字
                             // TODO: 字为 unicode 时，字符长度为 2
                             if (item.code !== this.dictMap.decodeWord(item.word)) {
                                 errorWords.push(item)
@@ -312,7 +312,7 @@ const app = {
             } else {
                 // 非分组模式时
                 this.dict.wordsOrigin.forEach(item => {
-                    if (item.word.length > 1) { // 只判断词条，不判断单字
+                    if (getUnicodeStringLength(item.word) > 1) { // 只判断词条，不判断单字
                         if (item.code !== this.dictMap.decodeWord(item.word)) {
                             errorWords.push(item)
                         }

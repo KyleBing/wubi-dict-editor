@@ -1,7 +1,7 @@
 // 字典对象
 const Word = require("./Word")
 const WordGroup = require("./WordGroup")
-const {shakeDom, log, shakeDomFocus} = require('./Utility')
+const {shakeDom, log, shakeDomFocus, getUnicodeStringLength} = require('./Utility')
 
 const os = require('os')
 
@@ -145,7 +145,7 @@ class Dict {
             this.wordsOrigin.forEach(wordGroup => {
                 wordGroup.dict.forEach(word => {
                     if (filterSingleCharacter){
-                        if (wordMap.has(word.word) && word.word.length === 1){
+                        if (wordMap.has(word.word) && getUnicodeStringLength(word.word) === 1){
                             groupRepeatedWords.push(word)
                             let matchedWord = wordMap.get(word.word)
                             if (matchedWord) groupRepeatedWords.push(matchedWord)
@@ -153,7 +153,7 @@ class Dict {
                             wordMap.set(word.word, word)
                         }
                     } else {
-                        if (wordMap.has(word.word) && word.word.length > 1){ // 单字没必要查重，所以这里只搜索 2 个字以上的词
+                        if (wordMap.has(word.word) && getUnicodeStringLength(word.word) > 1){ // 单字没必要查重，所以这里只搜索 2 个字以上的词
                             groupRepeatedWords.push(word)
                             let matchedWord = wordMap.get(word.word)
                             if (matchedWord) groupRepeatedWords.push(matchedWord)
@@ -168,7 +168,7 @@ class Dict {
         } else {
             this.wordsOrigin.forEach(word => {
                 if (filterSingleCharacter){
-                    if (wordMap.has(word.word) && word.word.length === 1){
+                    if (wordMap.has(word.word) && getUnicodeStringLength(word.word) === 1){
                         repetitionWords.push(word)
                         let matchedWord = wordMap.get(word.word)
                         if (matchedWord) repetitionWords.push(matchedWord)
@@ -176,7 +176,7 @@ class Dict {
                         wordMap.set(word.word, word)
                     }
                 } else {
-                    if (wordMap.has(word.word) && word.word.length > 1){ // 单字没必要查重，所以这里只搜索 2 个字以上的词
+                    if (wordMap.has(word.word) && getUnicodeStringLength(word.word) > 1){ // 单字没必要查重，所以这里只搜索 2 个字以上的词
                         repetitionWords.push(word)
                         let matchedWord = wordMap.get(word.word)
                         if (matchedWord) repetitionWords.push(matchedWord)
@@ -191,9 +191,11 @@ class Dict {
             // 排序后再去除重复项
             repetitionWords[0].dict.sort((a, b) => {
                 // log(a.word + a.code, b.word + b.code)
-                return (a.toYamlString()) > (b.toYamlString())  ? 1 : -1
+                return (a.toString()) > (b.toString())  ? 1 : -1
             })
-            log('重复词条数量:未去重之前 ', repetitionWords.length)
+            log('重复词条数量:未去重之前 ', repetitionWords.dict.length)
+            log('未处理的重复词条组')
+            console.table(repetitionWords.dict)
             for (let i = 0; i < repetitionWords[0].dict.length - 1; i++) {
                 if (repetitionWords[0].dict[i].id === repetitionWords[0].dict[i + 1].id ) {
                     repetitionWords[0].dict.splice(i,1)
@@ -204,9 +206,11 @@ class Dict {
             // 排序后再去除重复项
             repetitionWords.sort((a, b) => {
                 // log(a.word + a.code, b.word + b.code)
-                return (a.toYamlString()) > (b.toYamlString())  ? 1 : -1
+                return (a.toString()) > (b.toString())  ? 1 : -1
             })
             log('重复词条数量:未去重之前 ', repetitionWords.length)
+            log('未处理的重复词条组')
+            console.table(repetitionWords)
             for (let i = 0; i < repetitionWords.length - 1; i++) {
                 if (repetitionWords[i].id === repetitionWords[i + 1].id ) {
                     repetitionWords.splice(i,1)
@@ -219,7 +223,7 @@ class Dict {
         log('词条字典数量: ', wordMap.size)
         log('重复词条数量: ', repetitionWords.length)
         log('重复 + 词条字典 = ', repetitionWords.length + wordMap.size)
-        log(repetitionWords)
+        log('处理之后的：', repetitionWords)
         return repetitionWords
     }
 
