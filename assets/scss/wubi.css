@@ -763,7 +763,7 @@
 
 .btn-green {
   color: white;
-  background-color: #4CD964;
+  background: linear-gradient(to bottom, #4CD964, #47de60);
   border: 1px solid #4CD964;
 }
 .btn-green:hover {
@@ -793,7 +793,7 @@
 
 .btn-cyan {
   color: white;
-  background-color: #5AC8FA;
+  background: linear-gradient(to bottom, #5AC8FA, #56cafe);
   border: 1px solid #5AC8FA;
 }
 .btn-cyan:hover {
@@ -823,7 +823,7 @@
 
 .btn-blue {
   color: white;
-  background-color: #007AFF;
+  background: linear-gradient(to bottom, #007AFF, #007aff);
   border: 1px solid #007AFF;
 }
 .btn-blue:hover {
@@ -853,7 +853,7 @@
 
 .btn-purple {
   color: white;
-  background-color: #5856D6;
+  background: linear-gradient(to bottom, #5856D6, #5351db);
   border: 1px solid #5856D6;
 }
 .btn-purple:hover {
@@ -883,7 +883,7 @@
 
 .btn-yellow {
   color: white;
-  background-color: #FFCC00;
+  background: linear-gradient(to bottom, #FFCC00, #ffcc00);
   border: 1px solid #FFCC00;
 }
 .btn-yellow:hover {
@@ -913,7 +913,7 @@
 
 .btn-orange {
   color: white;
-  background-color: #FF9500;
+  background: linear-gradient(to bottom, #FF9500, #ff9500);
   border: 1px solid #FF9500;
 }
 .btn-orange:hover {
@@ -943,7 +943,7 @@
 
 .btn-roseo {
   color: white;
-  background-color: #FF2D70;
+  background: linear-gradient(to bottom, #FF2D70, #ff2d70);
   border: 1px solid #FF2D70;
 }
 .btn-roseo:hover {
@@ -973,7 +973,7 @@
 
 .btn-red {
   color: white;
-  background-color: #FF3B30;
+  background: linear-gradient(to bottom, #FF3B30, #ff3b30);
   border: 1px solid #FF3B30;
 }
 .btn-red:hover {
@@ -1003,7 +1003,7 @@
 
 .btn-gray {
   color: white;
-  background-color: #8E8E93;
+  background: linear-gradient(to bottom, #8E8E93, #888899);
   border: 1px solid #8E8E93;
 }
 .btn-gray:hover {

@@ -95,7 +95,7 @@ $btn-sm-padding-lr: 3px;
       border: 1px solid darken($color, 15%);
     } @else {
       color: white;
-      background-color: $color;
+      background: linear-gradient(to bottom, $color, saturate($color, 5%));
       border: 1px solid $color;
     }
     &:hover{
