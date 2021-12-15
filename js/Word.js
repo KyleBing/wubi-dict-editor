@@ -15,6 +15,9 @@ class Word{
         this.priority = priority || ''
         this.note = note || ''
     }
+    toComparableString(){
+        return this.word + '\t' + this.code + '\t' + this.id  + '\t' + this.priority + '\t' + this.note
+    }
     toString(){
         return this.id + '\t' + this.word + '\t' + this.code + '\t' + this.priority + '\t' + this.note
     }

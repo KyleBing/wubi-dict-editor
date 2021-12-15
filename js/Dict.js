@@ -191,7 +191,7 @@ class Dict {
             // 排序后再去除重复项
             repetitionWords[0].dict.sort((a, b) => {
                 // log(a.word + a.code, b.word + b.code)
-                return (a.toString()) > (b.toString())  ? 1 : -1
+                return (a.toComparableString()) > (b.toComparableString())  ? 1 : -1
             })
             log('重复词条数量:未去重之前 ', repetitionWords[0].dict.length)
             for (let i = 0; i < repetitionWords[0].dict.length - 1; i++) {
@@ -204,7 +204,7 @@ class Dict {
             // 排序后再去除重复项
             repetitionWords.sort((a, b) => {
                 // log(a.word + a.code, b.word + b.code)
-                return (a.toString()) > (b.toString())  ? 1 : -1
+                return (a.toComparableString()) > (b.toComparableString())  ? 1 : -1
             })
             log('重复词条数量:未去重之前 ', repetitionWords.length)
             for (let i = 0; i < repetitionWords.length - 1; i++) {

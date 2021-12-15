@@ -72,7 +72,7 @@ class DictOther {
         // 排序后再去除重复项
         repetitionWords.sort((a, b) => {
             // log(a.word + a.code, b.word + b.code)
-            return (a.word + a.code) > (b.word + b.code)  ? 1 : -1
+            return a.toComparableString() > b.toComparableString()  ? 1 : -1
         })
         log('重复词条数量:未去重之前 ', repetitionWords.length)
 
