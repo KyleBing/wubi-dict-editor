@@ -419,7 +419,7 @@ const app = {
         },
         // 选中全部展示的词条
         selectAll(){
-            if(this.wordsCount < 1000){
+            if(this.wordsCount < 100000){
                 if (this.dict.isGroupMode){
                     this.chosenWordIds.clear()
                     this.chosenWordIdArray = []
@@ -434,7 +434,7 @@ const app = {
                 this.chosenWordIdArray = [...this.chosenWordIds.values()]
             } else {
                 // 提示不能同时选择太多内容
-                this.tip = '不能同时选择大于 1000条 的词条内容'
+                this.tip = '不能同时选择大于 十万 条的词条内容'
                 shakeDom(this.$refs.domBtnSelectAll)
             }
         },
