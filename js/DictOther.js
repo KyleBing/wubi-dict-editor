@@ -38,9 +38,9 @@ class DictOther {
             case 2:
             case 3:
             case 4:
-                return this.wordsOrigin.filter(word => word.word.length === length)
+                return this.wordsOrigin.filter(word => getUnicodeStringLength(word.word) === length)
             default:
-                return this.wordsOrigin.filter(word => word.word.length > 4)
+                return this.wordsOrigin.filter(word => getUnicodeStringLength(word.word) > 4)
         }
     }
 

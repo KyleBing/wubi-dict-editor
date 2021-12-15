@@ -193,9 +193,7 @@ class Dict {
                 // log(a.word + a.code, b.word + b.code)
                 return (a.toString()) > (b.toString())  ? 1 : -1
             })
-            log('重复词条数量:未去重之前 ', repetitionWords.dict.length)
-            log('未处理的重复词条组')
-            console.table(repetitionWords.dict)
+            log('重复词条数量:未去重之前 ', repetitionWords[0].dict.length)
             for (let i = 0; i < repetitionWords[0].dict.length - 1; i++) {
                 if (repetitionWords[0].dict[i].id === repetitionWords[0].dict[i + 1].id ) {
                     repetitionWords[0].dict.splice(i,1)
@@ -209,8 +207,6 @@ class Dict {
                 return (a.toString()) > (b.toString())  ? 1 : -1
             })
             log('重复词条数量:未去重之前 ', repetitionWords.length)
-            log('未处理的重复词条组')
-            console.table(repetitionWords)
             for (let i = 0; i < repetitionWords.length - 1; i++) {
                 if (repetitionWords[i].id === repetitionWords[i + 1].id ) {
                     repetitionWords.splice(i,1)
