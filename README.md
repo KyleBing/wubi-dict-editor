@@ -170,3 +170,4 @@ WeaselDeployer.exe /deploy
 ## 解决的难题
 1. 查重并提取出所有重复的内容
 2. 词条根据词条编码判断插入位置
+3. 计算 unicode 字符串长度 .length 的问题
