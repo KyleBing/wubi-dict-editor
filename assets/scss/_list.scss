@@ -134,6 +134,10 @@ $border-color-checkbox: #d6d6d6;
     line-height: $height-word-item;
     flex-shrink: 0;
     flex-grow: 1;
+    max-width: 60%;
+    overflow-x: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
   .priority{
     white-space: nowrap;

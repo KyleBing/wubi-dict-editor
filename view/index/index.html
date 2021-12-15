@@ -142,7 +142,7 @@
                                     <div :class="['checkbox-item', {active: chosenWordIds.has(item.id)}]"></div>
                                 </div>
                                 <div title="编码" class="code">{{ item.code }}</div>
-                                <div title="词条" class="word">{{ item.word }}</div>
+                                <div :title="item.word" class="word">{{ item.word }}</div>
                                 <div title="备注" class="note">{{ item.note }}</div>
                                 <div title="权重" class="priority">{{ item.priority }}</div>
                                 <div v-if="IS_IN_DEVELOP" class="id">{{ index }}</div>
@@ -219,7 +219,7 @@
                                     <div :class="['checkbox-item', {active: chosenWordIds.has(item.id)}]"></div>
                                 </div>
                                 <div title="编码" class="code">{{ item.code }}</div>
-                                <div title="词条" class="word">{{ item.word }}</div>
+                                <div :title="item.word" class="word">{{ item.word }}</div>
                                 <div title="备注" class="note">{{ item.note }}</div>
                                 <div title="权重" class="priority">{{ item.priority }}</div>
                                 <div v-if="IS_IN_DEVELOP" class="id">{{ index }}</div>
