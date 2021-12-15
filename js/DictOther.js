@@ -152,9 +152,11 @@ class DictOther {
 
     // 判断码表文件的换行符是 \r\n 还是 \n
     getFileEOLFrom(fileContent){
-        if(fileContent.indexOf('\r\n') > 0){
+        if(fileContent.indexOf('\r\n') > -1){
+            log('文件换行符为： \\r\\n')
             return '\r\n'
         } else {
+            log('文件换行符为： \\n')
             return '\n'
         }
     }

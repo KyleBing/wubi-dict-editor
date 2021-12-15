@@ -33,7 +33,8 @@ class DictMap {
         }
         // 处理词条
         let startPoint = new Date().getTime()
-        let lines = bodyString.split(os.EOL) // 拆分词条与编码成单行
+        let EOL = this.getFileEOLFrom(fileContent)
+        let lines = fileContent.split(EOL) // 拆分词条与编码成单行
         this.lastIndex = lines.length + 1
         let linesValid = lines.filter(item => item.indexOf(this.seperator) > -1) // 选取包含分隔符的行
         let words = []
@@ -114,6 +115,17 @@ class DictMap {
             return []
         } else {
             return [new Word(this.lastIndex++, code, word)]
+        }
+    }
+
+    // 判断码表文件的换行符是 \r\n 还是 \n
+    getFileEOLFrom(fileContent){
+        if(fileContent.indexOf('\r\n') > -1){
+            log('文件换行符为： \\r\\n')
+            return '\r\n'
+        } else {
+            log('文件换行符为： \\n')
+            return '\n'
         }
     }
 }

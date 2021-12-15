@@ -302,6 +302,7 @@ const app = {
                 this.dict.wordsOrigin.forEach(wordGroup => {
                     wordGroup.dict.forEach(item => {
                         if (item.word.length > 1) { // 只判断词条，不判断单字
+                            // TODO: 字为 unicode 时，字符长度为 2
                             if (item.code !== this.dictMap.decodeWord(item.word)) {
                                 errorWords.push(item)
                             }
@@ -350,7 +351,8 @@ const app = {
                             let correctCode = this.dictMap.decodeWord(item.word)
                             if (correctCode){
                                 item.setCode(correctCode)
-                            }                        }
+                            }
+                        }
                     })
                 }
             })
