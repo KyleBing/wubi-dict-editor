@@ -1,6 +1,6 @@
 // 单字字典
 const Word = require("./Word")
-const {log} = require('./Utility')
+const {log, getUnicodeStringLength} = require('./Utility')
 const os = require('os')
 
 // 只接受 一词一码 的码表文件
@@ -43,7 +43,7 @@ class DictMap {
             let currentWords = this.getWordsFromLine(item)
             words.push(...currentWords) // 拼接词组
             currentWords.forEach(currentWord => {
-                if (currentWord.word.length === 1
+                if (getUnicodeStringLength(currentWord.word) === 1
                     && currentWord.code.length >=2
                     && !this.characterMap.has(currentWord.word)) // map里不存在这个字
                 { // 编码长度为 4 的单字
@@ -111,7 +111,7 @@ class DictMap {
         let wordArray = lineStr.split(this.seperator)
         let word = wordArray[0]
         let code = wordArray[1]
-        if (word.length > 1){
+        if (getUnicodeStringLength(word) > 1){
             return []
         } else {
             return [new Word(this.lastIndex++, code, word)]
