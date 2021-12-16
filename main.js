@@ -17,6 +17,7 @@ function createMainWindow() {
         width,
         height,
         icon: __dirname + '/assets/appIcon/appicon.ico', // windows icon
+        // icon: __dirname + '/assets/appIcon/linux.png', // linux icon
         webPreferences: {
             nodeIntegration: true,
             contextIsolation: false
@@ -640,7 +641,7 @@ function getRimeConfigDir(){
             case 'aix': break
             case 'darwin': return path.join(userHome + '/Library/Rime') // macOS
             case 'freebsd': break
-            case 'linux': break
+            case 'linux': return path.join(userHome + '/.config/ibus/rime/')
             case 'openbsd': break
             case 'sunos': break
             case 'win32': return path.join(userHome + '/AppData/Roaming/Rime') // windows
