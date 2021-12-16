@@ -2,7 +2,7 @@
 
 
 # 五笔助手 for [Rime](https://github.com/rime)
-一个管理 Rime 五笔词库的工具
+一个管理 Rime 五笔词库的工具 <br/>
 该工具主要服务于 [rime-wubi86-jidian](https://github.com/KyleBing/rime-wubi86-jidian) 这个五笔方案
 
 > 可添加、删除、批量导入外部词条、批量生成指定版本的五笔编码。<br/>
