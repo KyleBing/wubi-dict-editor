@@ -2,17 +2,17 @@
 
 
 # 五笔助手 for [Rime](https://github.com/rime)
-一个管理 Rime 五笔词库的工具。
-
-> 可添加、删除、批量导入外部词条、批量生成指定版本的五笔编码。
-> 基于 electron 开发，支持 `macOS` `Windows` `Ubuntu` 多个平台
-
+一个管理 Rime 五笔词库的工具
 该工具主要服务于 [rime-wubi86-jidian](https://github.com/KyleBing/rime-wubi86-jidian) 这个五笔方案
+
+> 可添加、删除、批量导入外部词条、批量生成指定版本的五笔编码。<br/>
+> 基于 electron 开发，支持 `macOS` `Windows` `Ubuntu` 多个平台 <br/>
+> GitHub: [https://github.com/KyleBing/wubi-dict-editor](https://github.com/KyleBing/wubi-dict-editor) <br/>
+> Gitee: [https://gitee.com/KyleBing/wubi-dict-editor](https://gitee.com/KyleBing/wubi-dict-editor)
+
 
 > 有其它问题，欢迎加群讨论: [878750538](https://jq.qq.com/?_wv=1027&k=st8cY2sI)
 
-> GitHub: [https://github.com/KyleBing/wubi-dict-editor](https://github.com/KyleBing/wubi-dict-editor) <br/>
-> Gitee: [https://gitee.com/KyleBing/wubi-dict-editor](https://gitee.com/KyleBing/wubi-dict-editor)
 
 主界面
 <img width="1000" alt="Screen Shot 2021-12-14 at 23 37 53" src="https://user-images.githubusercontent.com/12215982/146030612-43a0af6a-f893-4c6c-8b25-2de4ef29eefc.png">
