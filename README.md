@@ -2,7 +2,11 @@
 
 
 # 五笔助手 for [Rime](https://github.com/rime)
-一个管理 Rime 五笔词库的工具，添加、删除词条，可批量导入外部词库
+一个管理 Rime 五笔词库的工具。
+
+> 可添加、删除、批量导入外部词条、批量生成指定版本的五笔编码。
+> 基于 electron 开发，支持 `macOS` `Windows` `Ubuntu` 多个平台
+
 该工具主要服务于 [rime-wubi86-jidian](https://github.com/KyleBing/rime-wubi86-jidian) 这个五笔方案
 
 > 有其它问题，欢迎加群讨论: [878750538](https://jq.qq.com/?_wv=1027&k=st8cY2sI)
@@ -38,15 +42,22 @@ Windows, macOS, (Linux 未测试)
 
 ## 安装
 
-__windows__ 直接解压打开 `.exe` 文件即可
+### Windows
+直接解压打开 `.exe` 文件即可
 
-__macOS__ 如果提示无法打开，文件损坏什么的，将 app 移到应用程序 `Applications` 文件夹后，打开终端 `Terminal`，这样操作：
+### macOS
+如果提示无法打开，文件损坏什么的，将 app 移到应用程序 `Applications` 文件夹后，打开终端 `Terminal`，这样操作：
 
 ```bash
 sudo xattr -rd com.apple.quarantine /Applications/五笔助手.app/
 ```
-
 这样应该就能打开了。
+
+### Ubuntu
+打开下载解压好的 zip 包，指令执行包中的 `五笔助手` 程序即可
+```bash
+./五笔助手
+```
 
 
 ## 用到的技术
@@ -122,7 +133,7 @@ sudo xattr -rd com.apple.quarantine /Applications/五笔助手.app/
 - [x] 保存文件后，自动调用 rime 布署方法进行布署
   - [x] macOS `2021-07-28`
   - [x] Windows `2021-07-30`
-  - [ ] Linux
+  - [x] Linux `2021-12-16`
 
 #### 5. 文件操作
 - [x] 写入词库内容 `2021-07-26`
