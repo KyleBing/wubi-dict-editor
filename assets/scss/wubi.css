@@ -792,33 +792,33 @@
 }
 
 .color-cyan {
-  color: #5AC8FA !important;
+  color: #2fbcfa !important;
 }
 
 .btn-cyan {
   color: white;
-  background: linear-gradient(to bottom, #5AC8FA, #56cafe);
-  border: 1px solid #5AC8FA;
+  background: linear-gradient(to bottom, #2fbcfa, #2abeff);
+  border: 1px solid #2fbcfa;
 }
 .btn-cyan:hover {
-  background-color: #41c0f9;
-  border-color: #41c0f9;
+  background-color: #16b4f9;
+  border-color: #16b4f9;
 }
 .btn-cyan:active {
-  background-color: #29b8f9;
+  background-color: #06a9f0;
 }
 
 .btn-alt-cyan {
   border: 1px solid transparent;
   background-color: transparent;
-  color: #5AC8FA;
+  color: #2fbcfa;
 }
 .btn-alt-cyan:hover {
-  color: #5AC8FA;
-  border-color: #5AC8FA;
+  color: #2fbcfa;
+  border-color: #2fbcfa;
 }
 .btn-alt-cyan:active {
-  color: #5AC8FA;
+  color: #2fbcfa;
 }
 
 .color-blue {
@@ -2056,27 +2056,27 @@ hr {
 .theme-dark .btn-cyan {
   text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.2);
   color: white;
-  background: linear-gradient(to bottom, #41c0f9, #29b8f9);
-  border: 1px solid #5AC8FA;
+  background: linear-gradient(to bottom, #16b4f9, #06a9f0);
+  border: 1px solid #2fbcfa;
 }
 .theme-dark .btn-cyan:hover {
-  background: linear-gradient(to bottom, #5AC8FA, #5AC8FA);
-  border-color: #5AC8FA;
+  background: linear-gradient(to bottom, #2fbcfa, #2fbcfa);
+  border-color: #2fbcfa;
 }
 .theme-dark .btn-cyan:active {
-  background-color: #29b8f9;
+  background-color: #06a9f0;
 }
 .theme-dark .btn-alt-cyan {
   border-color: transparent;
   background-color: transparent;
-  color: #5AC8FA;
+  color: #2fbcfa;
 }
 .theme-dark .btn-alt-cyan:hover {
-  border-color: #5AC8FA;
-  color: #5AC8FA;
+  border-color: #2fbcfa;
+  color: #2fbcfa;
 }
 .theme-dark .btn-alt-cyan:active {
-  color: #5AC8FA;
+  color: #2fbcfa;
 }
 .theme-dark .btn-blue {
   text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.2);
@@ -2586,27 +2586,27 @@ hr {
   .theme-auto .btn-cyan {
     text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.2);
     color: white;
-    background: linear-gradient(to bottom, #41c0f9, #29b8f9);
-    border: 1px solid #5AC8FA;
+    background: linear-gradient(to bottom, #16b4f9, #06a9f0);
+    border: 1px solid #2fbcfa;
   }
   .theme-auto .btn-cyan:hover {
-    background: linear-gradient(to bottom, #5AC8FA, #5AC8FA);
-    border-color: #5AC8FA;
+    background: linear-gradient(to bottom, #2fbcfa, #2fbcfa);
+    border-color: #2fbcfa;
   }
   .theme-auto .btn-cyan:active {
-    background-color: #29b8f9;
+    background-color: #06a9f0;
   }
   .theme-auto .btn-alt-cyan {
     border-color: transparent;
     background-color: transparent;
-    color: #5AC8FA;
+    color: #2fbcfa;
   }
   .theme-auto .btn-alt-cyan:hover {
-    border-color: #5AC8FA;
-    color: #5AC8FA;
+    border-color: #2fbcfa;
+    color: #2fbcfa;
   }
   .theme-auto .btn-alt-cyan:active {
-    color: #5AC8FA;
+    color: #2fbcfa;
   }
   .theme-auto .btn-blue {
     text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.2);
