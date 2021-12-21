@@ -293,7 +293,7 @@
                 </section>
 
                 <section>
-                    <div class="title">其它</div>
+                    <div class="title">码表操作</div>
                     <div class="content">
                         <div class="btn-list">
                             <div class="btn-item">
@@ -314,6 +314,20 @@
                     <div class="content">
                         <div class="btn-list">
                             <div class="btn-item">
+                                <div class="btn btn-cyan" @click="uploadCurrentDict">上传</div>
+                            </div>
+                            <div class="btn-item">
+                                <div class="btn btn-cyan" @click="downloadCurrentDict">下载</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section v-if="IS_IN_DEVELOP">
+                    <div class="title">网络请求</div>
+                    <div class="content">
+                        <div class="btn-list">
+                            <div class="btn-item">
                                 <div class="btn btn-primary" @click="getNetworkContent">网络请求测试</div>
                             </div>
                         </div>
@@ -329,7 +343,6 @@
             <div class="link-list">
                 <div class="link" v-if="config.isToolPanelShowing" @click="toolPanelClose">关闭工具面板</div>
                 <div class="link" v-else @click="toolPanelExpand">展开工具面板</div>
-                <div class="link" @click="reloadCurrentDict">重载码表</div>
                 <div class="link origin" @click="openCurrentYaml">{{ dict.fileName }}</div>
             </div>
             <div class="info-list">

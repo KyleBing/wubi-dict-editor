@@ -143,6 +143,18 @@ function createMainWindow() {
         }
     })
 
+    ipcMain.on('MainWindow:LoadDictSync', ()=>{
+        let fileName = 'dictSync.dict.yaml'
+        let filePath = path.join(getRimeConfigDir(), fileName)
+        fs.readFile(filePath, {encoding: 'utf-8'}, (err, res) => {
+            if(err){
+                log(err)
+            } else {
+                mainWindow.webContents.send('setDictSync', fileName, filePath, res)
+            }
+        })
+    })
+
     // 载入文件内容
     ipcMain.on('MainWindow:LoadFile', (event, fileName) => {
         readFileFromConfigDir(fileName, mainWindow)

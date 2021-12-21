@@ -54,6 +54,10 @@ const app = {
             dictMap: null, // main 返回的 dictMap，用于解码词条
 
             wordEditing: null, // 正在编辑的词条
+
+
+            // 同步词库
+            dictSync: null
         }
     },
     mounted() {
@@ -94,6 +98,12 @@ const app = {
         // 载入主码表
         ipcRenderer.on('setMainDict', (event, filename, res) => {
             this.dictMain = new Dict(res, filename)
+        })
+
+        // 载入主码表
+        ipcRenderer.on('setDictSync', (event, fileName, filePath, res) => {
+            this.dictSync = new Dict(res, fileName)
+            this.syncDictWords() // 执行词库同步方法
         })
 
         // 配置相关
@@ -657,6 +667,43 @@ const app = {
         // 重新载入当前码表
         reloadCurrentDict(){
             ipcRenderer.send('loadDictFile', this.dict.fileName)
+        },
+
+        //
+        // 同步功能
+        //
+        uploadCurrentDict(){},
+        downloadCurrentDict(){
+            ipcRenderer.send('MainWindow:LoadDictSync') // TODO:请求远程当前词库内容
+        },
+        syncDictWords(){
+            // 同步词库内容
+            if (this.dict.isGroupMode){
+                // DictMap
+                let dictWordMap = new Map()
+                this.dict.wordsOrigin.forEach(group => {
+                    group.dict.forEach(word => {
+                        dictWordMap.set(word.word, word)
+                    })
+                })
+
+                let newWordGroup = new WordGroup(this.dict.lastGroupIndex + 1, '新增词',[],false)
+                this.dictSync.wordsOrigin.forEach(group => {
+                    group.dict.forEach(word => {
+                        if (dictWordMap.has(word.word)){ // 存在相同词
+                            log('相同词出现', word.toString())
+
+                        } else {
+                            newWordGroup.dict.push(word)
+                        }
+                    })
+                })
+                this.dict.wordsOrigin.unshift(newWordGroup)
+                this.tipNotice('同步完成，新增' + newWordGroup.dict.length + '词')
+            } else {
+
+            }
+
         }
     },
     watch: {

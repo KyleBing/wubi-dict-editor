@@ -52,6 +52,10 @@ class Word{
     isEqualTo(word){
         return this.id === word.id
     }
+    // compare a word to another word
+    isContentEqualTo(word){
+        return this.word === word.word && this.code === word.code
+    }
 }
 
 module.exports =  Word
