@@ -704,9 +704,13 @@ const app = {
                                     // 什么也不做
                                 } else {
                                     // 添加到这个组里，用户自行去重 **
+                                    this.dict.lastIndex = this.dict.lastIndex + 1
+                                    syncWord.id = this.dict.lastIndex
                                     originWordGroup.dict.push(syncWord)
                                 }
                             } else {
+                                this.dict.lastIndex = this.dict.lastIndex + 1
+                                syncWord.id = this.dict.lastIndex
                                 originWordGroup.dict.push(syncWord)
                             }
                         })

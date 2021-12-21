@@ -1558,15 +1558,15 @@ hr {
 }
 .tool-panel section .title {
   font-size: 12px;
-  margin-bottom: 7px;
+  margin-bottom: 5px;
   font-weight: bold;
-  color: #383f4a;
+  color: #333;
 }
 .tool-panel section .content {
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   border-radius: 5px;
-  padding: 10px;
+  padding: 8px;
   background-color: #f3f3f3;
 }
 .tool-panel section:last-child {

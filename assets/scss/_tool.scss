@@ -40,13 +40,13 @@ hr{
     margin-bottom: 15px;
     .title{
       font-size: $fz-button;
-      margin-bottom: 7px;
+      margin-bottom: 5px;
       font-weight: bold;
-      color: $text-tool-title;
+      color: $text-title;
     }
     .content {
       @include border-radius(5px);
-      padding: 10px;
+      padding: 8px;
       background-color: $bg-panel;
     }
     &:last-child{
