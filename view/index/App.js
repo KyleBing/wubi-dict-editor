@@ -686,12 +686,19 @@ const app = {
         config: (newValue) => {
             switch (newValue.theme){
                 case "auto":
-                    document.documentElement.classList.add('auto-mode');
-                    document.documentElement.classList.remove('dark-mode');
+                    document.documentElement.classList.add('theme-auto');
+                    document.documentElement.classList.remove('theme-dark');
+                    document.documentElement.classList.remove('theme-white');
                     break;
                 case "black":
-                    document.documentElement.classList.add('dark-mode');
-                    document.documentElement.classList.remove('auto-mode');
+                    document.documentElement.classList.remove('theme-auto');
+                    document.documentElement.classList.add('theme-dark');
+                    document.documentElement.classList.remove('theme-white');
+                    break;
+                case "white":
+                    document.documentElement.classList.remove('theme-auto');
+                    document.documentElement.classList.remove('theme-dark');
+                    document.documentElement.classList.add('theme-white');
                     break;
             }
         }

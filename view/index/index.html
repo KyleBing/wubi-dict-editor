@@ -148,14 +148,14 @@
                                 <div v-if="IS_IN_DEVELOP" class="id">{{ index }}</div>
                                 <div class="id">{{ item.id }}</div>
                                 <div class="operation">
-                                    <div v-if="config.theme === 'auto'" class="up" @click.stop="moveUp(item.id)"><img src="../../assets/img/up.svg" alt="move up"></div>
                                     <div v-if="config.theme === 'black'" class="up" @click.stop="moveUp(item.id)"><img src="../../assets/img/up_white.svg" alt="move up"></div>
-                                    <div v-if="config.theme === 'auto'" class="down" @click.stop="moveDown(item.id)"><img src="../../assets/img/down.svg" alt="move down"></div>
+                                    <div v-else class="up" @click.stop="moveUp(item.id)"><img src="../../assets/img/up.svg" alt="move up"></div>
                                     <div v-if="config.theme === 'black'" class="down" @click.stop="moveDown(item.id)"><img src="../../assets/img/down_white.svg" alt="move down"></div>
-                                    <div v-if="config.theme === 'auto'" class="up" @click.stop="editWord(item)"><img src="../../assets/img/edit.svg" alt="edit"></div>
+                                    <div v-else class="down" @click.stop="moveDown(item.id)"><img src="../../assets/img/down.svg" alt="move down"></div>
                                     <div v-if="config.theme === 'black'" class="up" @click.stop="editWord(item)"><img src="../../assets/img/edit_white.svg" alt="edit"></div>
-                                    <div v-if="config.theme === 'auto'" class="down" @click.stop="deleteWord(item.id)"><img src="../../assets/img/delete.svg" alt="delete"></div>
+                                    <div v-else class="up" @click.stop="editWord(item)"><img src="../../assets/img/edit.svg" alt="edit"></div>
                                     <div v-if="config.theme === 'black'" class="down" @click.stop="deleteWord(item.id)"><img src="../../assets/img/delete_white.svg" alt="delete"></div>
+                                    <div v-else class="down" @click.stop="deleteWord(item.id)"><img src="../../assets/img/delete.svg" alt="delete"></div>
                                 </div>
                             </div>
                         </template>
@@ -225,14 +225,14 @@
                                 <div v-if="IS_IN_DEVELOP" class="id">{{ index }}</div>
                                 <div class="id">{{ item.id }}</div>
                                 <div class="operation">
-                                    <div v-if="config.theme === 'auto'" class="up" @click.stop="moveUp(item.id)"><img src="../../assets/img/up.svg" alt="move up"></div>
                                     <div v-if="config.theme === 'black'" class="up" @click.stop="moveUp(item.id)"><img src="../../assets/img/up_white.svg" alt="move up"></div>
-                                    <div v-if="config.theme === 'auto'" class="down" @click.stop="moveDown(item.id)"><img src="../../assets/img/down.svg" alt="move down"></div>
+                                    <div v-else class="up" @click.stop="moveUp(item.id)"><img src="../../assets/img/up.svg" alt="move up"></div>
                                     <div v-if="config.theme === 'black'" class="down" @click.stop="moveDown(item.id)"><img src="../../assets/img/down_white.svg" alt="move down"></div>
-                                    <div v-if="config.theme === 'auto'" class="up" @click.stop="editWord(item)"><img src="../../assets/img/edit.svg" alt="edit"></div>
+                                    <div v-else class="down" @click.stop="moveDown(item.id)"><img src="../../assets/img/down.svg" alt="move down"></div>
                                     <div v-if="config.theme === 'black'" class="up" @click.stop="editWord(item)"><img src="../../assets/img/edit_white.svg" alt="edit"></div>
-                                    <div v-if="config.theme === 'auto'" class="down" @click.stop="deleteWord(item.id)"><img src="../../assets/img/delete.svg" alt="delete"></div>
+                                    <div v-else class="up" @click.stop="editWord(item)"><img src="../../assets/img/edit.svg" alt="edit"></div>
                                     <div v-if="config.theme === 'black'" class="down" @click.stop="deleteWord(item.id)"><img src="../../assets/img/delete_white.svg" alt="delete"></div>
+                                    <div v-else class="down" @click.stop="deleteWord(item.id)"><img src="../../assets/img/delete.svg" alt="delete"></div>
                                 </div>
                             </div>
                         </div>

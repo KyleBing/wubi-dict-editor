@@ -401,12 +401,16 @@ $black-color-main: #81fffa;
   }
 }
 
-.dark-mode {
+.theme-dark {
   @include dark-mode();
 }
 
-.auto-mode{
+.theme-auto{
   @media (prefers-color-scheme: dark) {
     @include dark-mode();
   }
+}
+
+.theme-white{
+
 }
