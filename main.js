@@ -143,12 +143,12 @@ function createMainWindow() {
         }
     })
 
-    ipcMain.on('MainWindow:LoadDictSync', ()=>{
-        let fileName = 'dictSync.dict.yaml'
+    ipcMain.on('MainWindow:LoadDictSync', (event, fileName)=>{
         let filePath = path.join(getRimeConfigDir(), fileName)
         fs.readFile(filePath, {encoding: 'utf-8'}, (err, res) => {
             if(err){
                 log(err)
+                mainWindow.webContents.send('setDictSync', fileName, filePath, '')
             } else {
                 mainWindow.webContents.send('setDictSync', fileName, filePath, res)
             }

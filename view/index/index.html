@@ -145,7 +145,7 @@
                                 <div :title="item.word" class="word">{{ item.word }}</div>
                                 <div title="备注" class="note">{{ item.note }}</div>
                                 <div title="权重" class="priority">{{ item.priority }}</div>
-                                <div v-if="IS_IN_DEVELOP" class="id">{{ index }}</div>
+                                <div v-if="IS_IN_DEVELOP" class="id">{{ index + 1 }}</div>
                                 <div class="id">{{ item.id }}</div>
                                 <div class="operation">
                                     <div v-if="config.theme === 'black'" class="up" @click.stop="moveUp(item.id)"><img src="../../assets/img/up_white.svg" alt="move up"></div>
@@ -222,7 +222,7 @@
                                 <div :title="item.word" class="word">{{ item.word }}</div>
                                 <div title="备注" class="note">{{ item.note }}</div>
                                 <div title="权重" class="priority">{{ item.priority }}</div>
-                                <div v-if="IS_IN_DEVELOP" class="id">{{ index }}</div>
+                                <div v-if="IS_IN_DEVELOP" class="id">{{ index + 1 }}</div>
                                 <div class="id">{{ item.id }}</div>
                                 <div class="operation">
                                     <div v-if="config.theme === 'black'" class="up" @click.stop="moveUp(item.id)"><img src="../../assets/img/up_white.svg" alt="move up"></div>

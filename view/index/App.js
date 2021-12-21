@@ -19,9 +19,7 @@ const app = {
         return {
             IS_IN_DEVELOP: IS_IN_DEVELOP, // 是否为开发模式，html 使用
             tip: '', // 提示信息
-            dict: {
-                deep: true
-            }, // 当前词库对象 Dict
+            dict: {},  // 当前词库对象 Dict
             dictMain: {}, // 主码表 Dict
             keyword: '', // 搜索关键字
 
@@ -100,7 +98,7 @@ const app = {
             this.dictMain = new Dict(res, filename)
         })
 
-        // 载入主码表
+        // 词库同步
         ipcRenderer.on('setDictSync', (event, fileName, filePath, res) => {
             this.dictSync = new Dict(res, fileName)
             this.syncDictWords() // 执行词库同步方法
@@ -674,36 +672,83 @@ const app = {
         //
         uploadCurrentDict(){},
         downloadCurrentDict(){
-            ipcRenderer.send('MainWindow:LoadDictSync') // TODO:请求远程当前词库内容
+            ipcRenderer.send('MainWindow:LoadDictSync', 'sync_' + this.dict.fileName) // TODO:请求远程当前词库内容
         },
+
+        // 同步词库内容
         syncDictWords(){
-            // 同步词库内容
-            if (this.dict.isGroupMode){
+            // 原来的词条数量
+            let originWordCount = this.dict.countDictOrigin
+
+            if (this.dict.isGroupMode){ // 分组模式时
                 // DictMap
-                let dictWordMap = new Map()
+                let wordGroupMap = new Map()
                 this.dict.wordsOrigin.forEach(group => {
-                    group.dict.forEach(word => {
-                        dictWordMap.set(word.word, word)
-                    })
+                    wordGroupMap.set(group.groupName, group)
                 })
 
-                let newWordGroup = new WordGroup(this.dict.lastGroupIndex + 1, '新增词',[],false)
-                this.dictSync.wordsOrigin.forEach(group => {
-                    group.dict.forEach(word => {
-                        if (dictWordMap.has(word.word)){ // 存在相同词
-                            log('相同词出现', word.toString())
-
-                        } else {
-                            newWordGroup.dict.push(word)
-                        }
-                    })
+                this.dictSync.wordsOrigin.forEach(syncWordGroup => {
+                    if (wordGroupMap.has(syncWordGroup.groupName)){
+                        // 1. 获取当前对应的 wordGroup
+                        let originWordGroup = wordGroupMap.get(syncWordGroup.groupName)
+                        // 2. 新建一个 OriginWordGroup.dict 的 map，用于确定是否存在相同词条
+                        let originWordMap = new Map()
+                        originWordGroup.dict.forEach(word => {
+                            originWordMap.set(word.word, word)
+                        })
+                        // 3. 对比词条内容
+                        syncWordGroup.dict.forEach(syncWord => {
+                            if (originWordMap.has(syncWord.word)){ // 存在词条相同
+                                let wordOrigin = originWordMap.get(syncWord.word)
+                                if (syncWord.isContentEqualTo(wordOrigin)){ // 如果两个词条编码和词条一模一样
+                                    // 什么也不做
+                                } else {
+                                    // 添加到这个组里，用户自行去重 **
+                                    originWordGroup.dict.push(syncWord)
+                                }
+                            } else {
+                                originWordGroup.dict.push(syncWord)
+                            }
+                        })
+                    } else {
+                        // 如果没有相同名字，直接添加
+                        this.dict.lastGroupIndex = this.dict.lastGroupIndex + 1
+                        let newWordGroup = new WordGroup(this.dict.lastGroupIndex, syncWordGroup.groupName, syncWordGroup.dict, false)
+                        this.dict.wordsOrigin.push(newWordGroup)
+                    }
                 })
-                this.dict.wordsOrigin.unshift(newWordGroup)
-                this.tipNotice('同步完成，新增' + newWordGroup.dict.length + '词')
             } else {
-
+                //
+                // 非分组模式时
+                //
+                // 1. 新建一个 wordMap
+                let originWordMap = new Map()
+                this.dict.wordsOrigin.forEach(word => {
+                    originWordMap.set(word.word, word)
+                })
+                // 2. 对比词条内容
+                this.dictSync.wordsOrigin.forEach(syncWord => {
+                    if (originWordMap.has(syncWord.word)) { // 存在词条相同
+                        let wordOrigin = originWordMap.get(syncWord.word)
+                        if (syncWord.isContentEqualTo(wordOrigin)) { // 如果两个词条编码和词条一模一样
+                            // 什么也不做
+                        } else {
+                            // 添加到这个组里，用户自行去重 **
+                            this.dict.lastIndex = this.dict.lastIndex + 1 // 更新 id, 不然 id 重复导致列表有不显示的
+                            syncWord.id = this.dict.lastIndex
+                            this.dict.wordsOrigin.push(syncWord)
+                        }
+                    } else {
+                        this.dict.lastIndex = this.dict.lastIndex + 1
+                        syncWord.id = this.dict.lastIndex
+                        this.dict.wordsOrigin.push(syncWord)
+                    }
+                })
             }
-
+            console.log(this.dict.wordsOrigin)
+            this.refreshShowingWords() // 刷新显示的词条
+            let afterWordCount = this.dict.countDictOrigin
+            this.tipNotice(`新增 ${afterWordCount - originWordCount} 条记录`)
         }
     },
     watch: {
