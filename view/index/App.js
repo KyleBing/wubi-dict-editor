@@ -667,6 +667,20 @@ const app = {
             ipcRenderer.send('loadDictFile', this.dict.fileName)
         },
 
+        // 导出选中词条到 plist 文件
+        exportSelectionToPlist(){
+            let wordsSelected = [] // 被选中的 [Word]
+            if (this.dict.isGroupMode){
+                this.dict.wordsOrigin.forEach((group, index) => {
+                    let matchedWords = group.dict.filter(item => this.chosenWordIds.has(item.id))
+                    wordsSelected = wordsSelected.concat(matchedWords)
+                })
+            } else {
+                wordsSelected = this.dict.wordsOrigin.filter(item => this.chosenWordIds.has(item.id))
+            }
+            ipcRenderer.send('MainWindow:ExportSelectionToPlistFile', wordsSelected)
+        },
+
         //
         // 同步功能
         //

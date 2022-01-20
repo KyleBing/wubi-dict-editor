@@ -1,4 +1,4 @@
-const {app, BrowserWindow, Menu, ipcMain, shell, dialog, net} = require('electron')
+const {app, BrowserWindow, Menu, ipcMain, shell, dialog, net, Notification} = require('electron')
 const { exec } = require('child_process')
 const fs = require('fs')
 const os = require('os')
@@ -6,6 +6,7 @@ const url = require("url")
 const path = require("path")
 const {shakeDom, log, shakeDomFocus} = require('./js/Utility')
 const { IS_IN_DEVELOP, CONFIG_FILE_PATH, CONFIG_FILE_NAME, DEFAULT_CONFIG, CONFIG_DICT_MAP_FILE_NAME } =  require('./js/Global')
+const plist = require("plist")
 
 let mainWindow // 主窗口
 let fileList = [] // 文件目录列表，用于移动词条
@@ -141,6 +142,39 @@ function createMainWindow() {
                 if (toolWindow) toolWindow.send('setDictMap', originalDictFileContent, CONFIG_DICT_MAP_FILE_NAME, dictMapFilePath)
             }
         }
+    })
+
+    // 保存选中词条到 plist 文件
+    ipcMain.on('MainWindow:ExportSelectionToPlistFile', (event, wordsSelected) => {
+
+        let wordsProcessed = wordsSelected.map(item => {
+            return {
+                phrase: item.word,
+                shortcut: item.code
+            }
+        })
+        let plistContentString = plist.build(wordsProcessed)
+        let exportFilePath = path.join(os.homedir(), 'Desktop', 'wubi-jidian86-export.plist')
+
+        fs.writeFile(
+            exportFilePath,
+            plistContentString,
+            {encoding: 'utf-8'},
+            err => {
+                if (err) {
+                    log(err)
+                } else {
+                    // notification
+                    if (Notification.isSupported()){
+                        console.log('notification is suppoerted')
+                        new Notification({
+                            title: '已成功导出文件',
+                            subtitle: `文件路径：${exportFilePath}`, // macOS
+                            body: `文件路径：${exportFilePath}`
+                        }).show()
+                    }
+                }
+            })
     })
 
     ipcMain.on('MainWindow:LoadDictSync', (event, fileName)=>{
