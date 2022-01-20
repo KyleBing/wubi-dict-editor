@@ -17,7 +17,8 @@
   "dependencies": {
     "electron-squirrel-startup": "^1.0.0",
     "vue": "^2.6.14",
-    "vue-virtual-scroller": "^1.0.10"
+    "vue-virtual-scroller": "^1.0.10",
+    "plist": "^3.0.4"
   },
   "devDependencies": {
     "@electron-forge/cli": "^6.0.0-beta.58",

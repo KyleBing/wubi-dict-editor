@@ -2761,7 +2761,7 @@ pkg-dir@^4.2.0:
   dependencies:
     find-up "^4.0.0"
 
-plist@^3.0.0, plist@^3.0.1:
+plist@^3.0.0, plist@^3.0.1, plist@^3.0.4:
   version "3.0.4"
   resolved "https://registry.nlark.com/plist/download/plist-3.0.4.tgz#a62df837e3aed2bb3b735899d510c4f186019cbe"
   integrity sha1-pi34N+Ou0rs7c1iZ1RDE8YYBnL4=
