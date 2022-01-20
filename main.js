@@ -166,7 +166,6 @@ function createMainWindow() {
                 } else {
                     // notification
                     if (Notification.isSupported()){
-                        console.log('notification is suppoerted')
                         new Notification({
                             title: '已成功导出文件',
                             subtitle: `文件路径：${exportFilePath}`, // macOS
@@ -236,6 +235,40 @@ function showToolWindow (){
         toolWindow = null
         if(mainWindow) mainWindow.show()
     })
+
+
+    // 保存选中词条到 plist 文件
+    ipcMain.on('ToolWindow:ExportSelectionToPlistFile', (event, wordsSelected) => {
+
+        let wordsProcessed = wordsSelected.map(item => {
+            return {
+                phrase: item.word,
+                shortcut: item.code
+            }
+        })
+        let plistContentString = plist.build(wordsProcessed)
+        let exportFilePath = path.join(os.homedir(), 'Desktop', 'wubi-jidian86-export.plist')
+
+        fs.writeFile(
+            exportFilePath,
+            plistContentString,
+            {encoding: 'utf-8'},
+            err => {
+                if (err) {
+                    log(err)
+                } else {
+                    // notification
+                    if (Notification.isSupported()){
+                        new Notification({
+                            title: '已成功导出文件',
+                            subtitle: `文件路径：${exportFilePath}`, // macOS
+                            body: `文件路径：${exportFilePath}`
+                        }).show()
+                    }
+                }
+            })
+    })
+
 
 
 

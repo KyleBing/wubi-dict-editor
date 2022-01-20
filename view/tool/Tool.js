@@ -570,6 +570,17 @@ const app = {
         openCurrentYaml(){
             ipcRenderer.send('openFileOutside', this.dict.fileName)
         },
+
+        // 导出选中词条到 plist 文件
+        exportSelectionToPlist(){
+            let wordsSelected = [] // 被选中的 [Word]
+            if (this.dict && this.dict.wordsOrigin.length > 0){
+                wordsSelected = this.dict.wordsOrigin.filter(item => this.chosenWordIds.has(item.id))
+                ipcRenderer.send('ToolWindow:ExportSelectionToPlistFile', wordsSelected)
+            } else {
+                this.tipNotice('没有任何词条')
+            }
+        },
     },
     watch: {
         code(newValue){

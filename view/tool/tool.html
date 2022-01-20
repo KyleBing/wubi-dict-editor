@@ -114,21 +114,21 @@
             </section>
 
             <section>
-                <div class="title">字数筛选</div>
-                <div class="content btn-list">
-                    <div class="btn-item" v-for="item in filterCharacterLengthArray" :key="item.name">
-                        <div @click="changeFilterWordLength(item.value)" :class="['btn btn-primary', {'btn-blue': filterCharacterLength === item.value}]">{{ item.name }}</div>
-                    </div>
-                </div>
-            </section>
-
-            <section>
                 <div class="title">码表分隔符</div>
                 <div class="content">
                     <div class="btn-list">
                         <div class="btn-item" v-for="item in seperatorArray" :key="item.name">
                             <div :class="['btn btn-primary', {'btn-blue': seperatorRead === item.value}]" @click="seperatorRead = item.value">{{item.name}}</div>
                         </div>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="title">字数筛选</div>
+                <div class="content btn-list">
+                    <div class="btn-item" v-for="item in filterCharacterLengthArray" :key="item.name">
+                        <div @click="changeFilterWordLength(item.value)" :class="['btn btn-primary', {'btn-blue': filterCharacterLength === item.value}]">{{ item.name }}</div>
                     </div>
                 </div>
             </section>
@@ -185,6 +185,17 @@
                             {'btn-primary': labelOfSaveBtn !== '保存成功'}]"
                             ref="domBtnSave"
                             @click="saveToFile(dict, true)"> 保存到源文件
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="title">Apple plist</div>
+                <div class="content">
+                    <div class="btn-list">
+                        <div class="btn-item">
+                            <div class="btn btn-cyan" @click="exportSelectionToPlist">导出选中词条到 plist 文件</div>
                         </div>
                     </div>
                 </div>
