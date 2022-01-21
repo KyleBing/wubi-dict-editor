@@ -34,7 +34,7 @@
 
 
 ## 支持平台：
-Windows, macOS, (Linux 未测试)
+Windows, macOS, Ubuntu
 
 ## 下载
 
