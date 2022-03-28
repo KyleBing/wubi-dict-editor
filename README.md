@@ -183,3 +183,10 @@ WeaselDeployer.exe /deploy
 1. 查重并提取出所有重复的内容
 2. 词条根据词条编码判断插入位置
 3. 计算 unicode 字符串长度 .length 的问题
+
+
+
+## 支持
+感谢 [JetBrains](https://www.jetbrains.com/?from=wubi-dict-editor@KyleBing) 提供的工具支持
+
+![JetBrains](https://resources.jetbrains.com/storage/products/company/brand/logos/jb_beam.svg?_ga=2.54620846.401568951.1648434626-301403838.1648434626)
