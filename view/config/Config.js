@@ -42,6 +42,7 @@ const app = {
         ipcRenderer.on('ConfigWindow:ResponseLogin', (event, resOfLogin) => {
             if (resOfLogin.success){
                 console.log('登录成功', resOfLogin.data)
+                this.$set(this.config, 'userInfo', resOfLogin.data)
             } else {
                 console.log('登录失败', resOfLogin.message)
             }
