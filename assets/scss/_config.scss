@@ -141,3 +141,16 @@ $height-switch: 14px;
   height: 100px;
   overflow-y: auto;
 }
+
+
+
+// login
+.login-panel{
+  display: flex;
+  flex-flow: row wrap;
+  .input-item{
+    label{
+      margin-right: 10px;
+    }
+  }
+}

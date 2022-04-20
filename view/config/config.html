@@ -201,6 +201,26 @@
             </div>
         </div>
     </section>
+
+    <section>
+        <div class="section-title">
+            <h3>同步</h3>
+            <div class="desc">同步用户词库</div>
+        </div>
+        <div class="section-content">
+            <div class="login-panel">
+                <div class="input-item">
+                    <label for="email">Email</label>
+                    <input ref="editInputWord" id="email" type="text" v-model="userInfo.email" >
+                </div>
+                <div class="input-item ml-3">
+                    <label for="password">密码</label>
+                    <input ref="editInputWord" id="password" type="text" v-model="userInfo.password" >
+                </div>
+                <div class="btn btn-primary ml-3" @click="login">登录</div>
+            </div>
+        </div>
+    </section>
 </div>
 
 <script src="Config.js"></script>

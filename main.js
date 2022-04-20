@@ -42,8 +42,9 @@ function createMainWindow() {
         if (toolWindow) toolWindow.close()
     })
 
+    // 网络请求测试
     ipcMain.on('getNetData', (event, requestData) => {
-        const request = net.request('https://kylebing.cn/dontstarve/?type=query&table=characters')
+        const request = net.request('https://kylebing.cn/diary-portal/diary/detail?diaryId=5312')
         request.on('response', response => {
             response.on('data', res => {
                 // res 是 uint8Array 数据
@@ -413,6 +414,26 @@ function createConfigWindow() {
         configWindow = null
         if(toolWindow) toolWindow.show()
         if(mainWindow) mainWindow.show()
+    })
+    // 处理登录请求
+    ipcMain.on('ConfigWindow:Login', (event, userInfo) => {
+        const request = net.request({
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            method: 'POST',
+            url: IS_IN_DEVELOP ? 'http://localhost:3000/user/login' : 'https://kylebing.cn/diary-portal/user/login'
+        })
+        console.log(userInfo)
+        request.write(JSON.stringify(userInfo))
+        request.on('response', response => {
+            response.on('data', chunk => {
+                let res = JSON.parse(chunk.toString())
+                configWindow.send('ConfigWindow:ResponseLogin', res)
+            })
+            response.on('end', () => {})
+        })
+        request.end()
     })
 
     // 载入文件列表

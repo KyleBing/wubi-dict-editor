@@ -14,10 +14,21 @@ const app = {
             fileList: null, // 展示用的配置文件夹内的文件列表
             // [{ "name": "luna_pinyin.sogou", "path": "luna_pinyin.sogou.dict.yaml" }]
             config: DEFAULT_CONFIG,
-            dictMapContent: '' // 字典文件内容
+            dictMapContent: '', // 字典文件内容
+            userInfo: {
+                email:'',
+                password: ''
+            }
         }
     },
     mounted() {
+        if (IS_IN_DEVELOP){
+            this.userInfo = {
+                email: 'test@163.com',
+                password: 'test'
+            }
+        }
+
         this.heightContent = innerHeight - 47 - 20 - 10 + 3
 
         // load file list
@@ -26,6 +37,15 @@ const app = {
             this.fileList = fileList
         })
         ipcRenderer.send('requestFileList')
+
+        // config
+        ipcRenderer.on('ConfigWindow:ResponseLogin', (event, resOfLogin) => {
+            if (resOfLogin.success){
+                console.log('登录成功', resOfLogin.data)
+            } else {
+                console.log('登录失败', resOfLogin.message)
+            }
+        })
 
         // config
         ipcRenderer.on('ConfigWindow:ResponseConfigFile', (event, config) => {
@@ -56,6 +76,9 @@ const app = {
         }
     },
     methods: {
+        login(){
+            ipcRenderer.send('ConfigWindow:Login', this.userInfo)
+        },
         setInitFile(file){
             this.config.initFileName = file.path
         },

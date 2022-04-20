@@ -1516,6 +1516,14 @@ select option {
   overflow-y: auto;
 }
 
+.login-panel {
+  display: flex;
+  flex-flow: row wrap;
+}
+.login-panel .input-item label {
+  margin-right: 10px;
+}
+
 .tool-container {
   display: flex;
   flex-flow: row nowrap;
