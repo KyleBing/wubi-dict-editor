@@ -4,7 +4,7 @@ const fs = require('fs')
 const os = require('os')
 const url = require("url")
 const path = require("path")
-const {shakeDom, log, shakeDomFocus} = require('./js/Utility')
+const {shakeDom, log, shakeDomFocus, dateFormatter} = require('./js/Utility')
 const { IS_IN_DEVELOP, CONFIG_FILE_PATH, CONFIG_FILE_NAME, DEFAULT_CONFIG, CONFIG_DICT_MAP_FILE_NAME } =  require('./js/Global')
 const plist = require("plist")
 
@@ -177,16 +177,41 @@ function createMainWindow() {
             })
     })
 
-    ipcMain.on('MainWindow:LoadDictSync', (event, fileName)=>{
-        let filePath = path.join(getRimeConfigDir(), fileName)
-        fs.readFile(filePath, {encoding: 'utf-8'}, (err, res) => {
+    ipcMain.on('MainWindow:SyncCurrentDict', (event, {dictName, dictContentYaml, userInfo})=>{
+        const request = net.request({
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            method: 'POST',
+            url: IS_IN_DEVELOP ? 'http://localhost:3000/diary/add' : 'https://kylebing.cn/diary-portal/diary/add'
+        })
+        request.write(JSON.stringify({
+            title: dictName,
+            content: escape(dictContentYaml), // 为了避免一些标点干扰出现的问题，直接全部转义，
+            weather: 'sunny',
+            category: 'life',
+            date: dateFormatter(new Date()),
+            uid: userInfo.uid,
+            token: userInfo.token,
+            email: userInfo.email
+        }))
+        request.on('response', response => {
+            response.on('data', chunk => {
+                let res = JSON.parse(chunk.toString())
+                mainWindow.send('MainWindow:SaveSuccess', res)
+            })
+            response.on('end', () => {})
+        })
+        request.end()
+
+       /* fs.readFile(filePath, {encoding: 'utf-8'}, (err, res) => {
             if(err){
                 log(err)
                 mainWindow.webContents.send('setDictSync', fileName, filePath, '')
             } else {
                 mainWindow.webContents.send('setDictSync', fileName, filePath, res)
             }
-        })
+        })*/
     })
 
     // 载入文件内容

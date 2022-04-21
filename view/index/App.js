@@ -80,6 +80,8 @@ const app = {
             }, 2000)
         })
 
+
+
         // 由 window 触发获取文件目录的请求，不然无法实现适时的获取到 主进程返回的数据
         ipcRenderer.send('GetFileList')
         ipcRenderer.on('FileList', (event, fileList) => {
@@ -102,6 +104,11 @@ const app = {
         ipcRenderer.on('setDictSync', (event, fileName, filePath, res) => {
             this.dictSync = new Dict(res, fileName)
             this.syncDictWords() // 执行词库同步方法
+        })
+
+        // 词库同步
+        ipcRenderer.on('MainWindow:SaveSuccess', (event, res) => {
+            console.log(res)
         })
 
         // 配置相关
@@ -681,12 +688,21 @@ const app = {
             ipcRenderer.send('MainWindow:ExportSelectionToPlistFile', wordsSelected)
         },
 
-        //
         // 同步功能
         //
-        uploadCurrentDict(){},
-        downloadCurrentDict(){
-            ipcRenderer.send('MainWindow:LoadDictSync', 'sync_' + this.dict.fileName) // TODO:请求远程当前词库内容
+        syncCurrentDict(){
+            if (this.config.hasOwnProperty('userInfo')){
+                ipcRenderer.send('MainWindow:SyncCurrentDict',
+                    {
+                        dictName: this.dict.fileName,
+                        dictContentYaml: this.dict.toYamlString(),
+                        userInfo: this.config.userInfo
+                    }
+                )
+            } else {
+                this.tip = '未登录，请先前往配置页面登录'
+            }
+
         },
 
         // 同步词库内容
