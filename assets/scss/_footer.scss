@@ -11,7 +11,9 @@
   color: $text-main;
 
   .tip{
-    color: $green;
+    color: $cyan;
+    font-weight: bold;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.1), -1px -1px 0 white;
   }
 
   .footer-toolbar{

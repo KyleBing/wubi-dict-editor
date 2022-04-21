@@ -8,6 +8,9 @@ const {shakeDom, log, shakeDomFocus, dateFormatter} = require('./js/Utility')
 const { IS_IN_DEVELOP, CONFIG_FILE_PATH, CONFIG_FILE_NAME, DEFAULT_CONFIG, CONFIG_DICT_MAP_FILE_NAME } =  require('./js/Global')
 const plist = require("plist")
 
+
+const SYNC_BASE_URL = 'https://kylebing.cn/diary-portal/dict'
+
 let mainWindow // 主窗口
 let fileList = [] // 文件目录列表，用于移动词条
 
@@ -44,7 +47,7 @@ function createMainWindow() {
 
     // 网络请求测试
     ipcMain.on('getNetData', (event, requestData) => {
-        const request = net.request('https://kylebing.cn/diary-portal/diary/detail?diaryId=5312')
+        const request = net.request(SYNC_BASE_URL + 'detail?diaryId=5312')
         request.on('response', response => {
             response.on('data', res => {
                 // res 是 uint8Array 数据
@@ -178,12 +181,34 @@ function createMainWindow() {
     })
 
     ipcMain.on('MainWindow:SyncCurrentDict', (event, {dictName, dictContentYaml, userInfo})=>{
+/*        const request = net.request({
+            // headers: {
+            //     'Content-Type': 'application/json',
+            // },
+            method: 'get',
+            url: IS_IN_DEVELOP ?
+                `http://localhost:3000/dict/detail-with-title?title=${dictName}&uid=${userInfo.uid}&token=${userInfo.password}&email=${userInfo.email}` :
+                `${SYNC_BASE_URL}/detail-with-title?title=${dictName}&uid=${userInfo.uid}&token=${userInfo.password}&email=${userInfo.email}`
+        })
+        console.log(userInfo)
+        request.on('response', response => {
+            response.on('data', chunk => {
+                let res = JSON.parse(chunk.toString())
+                let dictContent = unescape(res.data.content) // 将 content 转义回文字
+                mainWindow.send('MainWindow:SyncGetOnlineDictDataSuccess', dictContent)
+            })
+            response.on('end', () => {})
+        })
+        request.end()*/
+
         const request = net.request({
             headers: {
                 'Content-Type': 'application/json',
             },
             method: 'POST',
-            url: IS_IN_DEVELOP ? 'http://localhost:3000/diary/add' : 'https://kylebing.cn/diary-portal/diary/add'
+            url: IS_IN_DEVELOP ?
+                'http://localhost:3000/dict/add' :
+                '${SYNC_BASE_URL}/add'
         })
         request.write(JSON.stringify({
             title: dictName,
@@ -198,7 +223,7 @@ function createMainWindow() {
         request.on('response', response => {
             response.on('data', chunk => {
                 let res = JSON.parse(chunk.toString())
-                mainWindow.send('MainWindow:SaveSuccess', res)
+                mainWindow.send('MainWindow:SyncSaveDictDataSuccess', res)
             })
             response.on('end', () => {})
         })

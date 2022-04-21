@@ -107,7 +107,12 @@ const app = {
         })
 
         // 词库同步
-        ipcRenderer.on('MainWindow:SaveSuccess', (event, res) => {
+        ipcRenderer.on('MainWindow:SyncSaveDictDataSuccess', (event, res) => {
+            this.tipNotice('保存词库内容成功')
+            console.log(res)
+        })
+        ipcRenderer.on('MainWindow:SyncGetOnlineDictDataSuccess', (event, res) => {
+            this.tipNotice('获取词库内容成功')
             console.log(res)
         })
 
