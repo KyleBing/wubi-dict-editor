@@ -187,8 +187,8 @@ function createMainWindow() {
             // },
             method: 'get',
             url: IS_IN_DEVELOP ?
-                `http://localhost:3000/dict/detail-with-title?title=${dictName}&uid=${userInfo.uid}&token=${userInfo.password}&email=${userInfo.email}` :
-                `${SYNC_BASE_URL}/detail-with-title?title=${dictName}&uid=${userInfo.uid}&token=${userInfo.password}&email=${userInfo.email}`
+                `http://localhost:3000/dict/pull?title=${dictName}&uid=${userInfo.uid}&token=${userInfo.password}&email=${userInfo.email}` :
+                `${SYNC_BASE_URL}/pull?title=${dictName}&uid=${userInfo.uid}&token=${userInfo.password}&email=${userInfo.email}`
         })
         console.log(userInfo)
         request.on('response', response => {
@@ -205,17 +205,14 @@ function createMainWindow() {
             headers: {
                 'Content-Type': 'application/json',
             },
-            method: 'POST',
+            method: 'put',
             url: IS_IN_DEVELOP ?
-                'http://localhost:3000/dict/add' :
-                '${SYNC_BASE_URL}/add'
+                'http://localhost:3000/dict/push' :
+                '${SYNC_BASE_URL}/push'
         })
         request.write(JSON.stringify({
             title: dictName,
             content: escape(dictContentYaml), // 为了避免一些标点干扰出现的问题，直接全部转义，
-            weather: 'sunny',
-            category: 'life',
-            date: dateFormatter(new Date()),
             uid: userInfo.uid,
             token: userInfo.token,
             email: userInfo.email
