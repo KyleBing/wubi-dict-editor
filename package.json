@@ -16,10 +16,11 @@
     "make": "electron-forge make"
   },
   "dependencies": {
+    "axios": "^0.26.1",
     "electron-squirrel-startup": "^1.0.0",
+    "plist": "^3.0.4",
     "vue": "^2.6.14",
-    "vue-virtual-scroller": "^1.0.10",
-    "plist": "^3.0.4"
+    "vue-virtual-scroller": "^1.0.10"
   },
   "devDependencies": {
     "@electron-forge/cli": "^6.0.0-beta.58",

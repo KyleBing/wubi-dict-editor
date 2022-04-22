@@ -7,9 +7,10 @@ const path = require("path")
 const {shakeDom, log, shakeDomFocus, dateFormatter} = require('./js/Utility')
 const { IS_IN_DEVELOP, CONFIG_FILE_PATH, CONFIG_FILE_NAME, DEFAULT_CONFIG, CONFIG_DICT_MAP_FILE_NAME } =  require('./js/Global')
 const plist = require("plist")
+const axios = require("axios")
 
 
-const SYNC_BASE_URL = 'https://kylebing.cn/diary-portal/dict'
+const SERVER_BASE_URL = 'https://kylebing.cn/diary-portal'
 
 let mainWindow // 主窗口
 let fileList = [] // 文件目录列表，用于移动词条
@@ -44,21 +45,6 @@ function createMainWindow() {
         if (configWindow) configWindow.close()
         if (toolWindow) toolWindow.close()
     })
-
-    // 网络请求测试
-    ipcMain.on('getNetData', (event, requestData) => {
-        const request = net.request(SYNC_BASE_URL + 'detail?diaryId=5312')
-        request.on('response', response => {
-            response.on('data', res => {
-                // res 是 uint8Array 数据
-                // 通过 `${res}` 可以转为 String
-                mainWindow.webContents.send('responseNetData', JSON.parse(`${res}`))
-            })
-            response.on('end', () => {})
-        })
-        request.end()
-    })
-
 
     // 保存词库到文件
     ipcMain.on('saveFile', (event, filename, yamlString) => {
@@ -181,50 +167,52 @@ function createMainWindow() {
     })
 
     ipcMain.on('MainWindow:SyncCurrentDict', (event, {dictName, dictContentYaml, userInfo})=>{
-/*        const request = net.request({
-            // headers: {
-            //     'Content-Type': 'application/json',
-            // },
+/*
+        axios({
             method: 'get',
             url: IS_IN_DEVELOP ?
-                `http://localhost:3000/dict/pull?title=${dictName}&uid=${userInfo.uid}&token=${userInfo.password}&email=${userInfo.email}` :
-                `${SYNC_BASE_URL}/pull?title=${dictName}&uid=${userInfo.uid}&token=${userInfo.password}&email=${userInfo.email}`
-        })
-        console.log(userInfo)
-        request.on('response', response => {
-            response.on('data', chunk => {
-                let res = JSON.parse(chunk.toString())
-                let dictContent = unescape(res.data.content) // 将 content 转义回文字
-                mainWindow.send('MainWindow:SyncGetOnlineDictDataSuccess', dictContent)
-            })
-            response.on('end', () => {})
-        })
-        request.end()*/
+                'http://localhost:3000/dict/pull' :
+                '${SERVER_BASE_URL}/dict/push',
+            data: {
+                title: dictName,
+                uid: userInfo.uid,
+                token: userInfo.token,
+                email: userInfo.email
+            }
+        }).then(res => {
+            if (res.status === 200){
+                console.log(res.data)
+                mainWindow.send('MainWindow:SyncSaveDictDataSuccess', res.data)
+            } else {
+                console.log(res)
+            }
+        }).catch(err => {
+            console.log(err)
+        })*/
 
-        const request = net.request({
-            headers: {
-                'Content-Type': 'application/json',
-            },
+        axios({
             method: 'put',
             url: IS_IN_DEVELOP ?
                 'http://localhost:3000/dict/push' :
-                '${SYNC_BASE_URL}/push'
+                `${SERVER_BASE_URL}/dict/push`,
+            data: {
+                title: dictName,
+                content: escape(dictContentYaml), // 为了避免一些标点干扰出现的问题，直接全部转义，
+                uid: userInfo.uid,
+                token: userInfo.token,
+                email: userInfo.email
+            }
+        }).then(res => {
+            if (res.status === 200){
+                console.log(res.data)
+                mainWindow.send('MainWindow:SyncSaveDictDataSuccess', res.data)
+            } else {
+                console.log(res)
+            }
+        }).catch(err => {
+            console.log(err)
         })
-        request.write(JSON.stringify({
-            title: dictName,
-            content: escape(dictContentYaml), // 为了避免一些标点干扰出现的问题，直接全部转义，
-            uid: userInfo.uid,
-            token: userInfo.token,
-            email: userInfo.email
-        }))
-        request.on('response', response => {
-            response.on('data', chunk => {
-                let res = JSON.parse(chunk.toString())
-                mainWindow.send('MainWindow:SyncSaveDictDataSuccess', res)
-            })
-            response.on('end', () => {})
-        })
-        request.end()
+
 
        /* fs.readFile(filePath, {encoding: 'utf-8'}, (err, res) => {
             if(err){
@@ -464,23 +452,27 @@ function createConfigWindow() {
     })
     // 处理登录请求
     ipcMain.on('ConfigWindow:Login', (event, userInfo) => {
-        const request = net.request({
-            headers: {
-                'Content-Type': 'application/json',
-            },
+        let url = IS_IN_DEVELOP ?
+            'http://localhost:3000/user/login' :
+            `${SERVER_BASE_URL}/user/login`
+        console.log('url: ',url)
+        axios.post({
+            headers: {'content-type': 'application/json'},
             method: 'POST',
-            url: IS_IN_DEVELOP ? 'http://localhost:3000/user/login' : 'https://kylebing.cn/diary-portal/user/login'
-        })
-        console.log(userInfo)
-        request.write(JSON.stringify(userInfo))
-        request.on('response', response => {
-            response.on('data', chunk => {
-                let res = JSON.parse(chunk.toString())
+            url: url,
+            data: {
+                email: userInfo.email,
+                password: userInfo.password,
+            }
+        }).then(res => {
+            if (res.status === 200){
                 configWindow.send('ConfigWindow:ResponseLogin', res)
-            })
-            response.on('end', () => {})
+            } else {
+                console.log(res)
+            }
+        }).catch(err => {
+            console.log(err)
         })
-        request.end()
     })
 
     // 载入文件列表

@@ -22,13 +22,6 @@ const app = {
         }
     },
     mounted() {
-        if (IS_IN_DEVELOP){
-            this.userInfo = {
-                email: 'test@163.com',
-                password: 'test'
-            }
-        }
-
         this.heightContent = innerHeight - 47 - 20 - 10 + 3
 
         // load file list
@@ -42,6 +35,7 @@ const app = {
         ipcRenderer.on('ConfigWindow:ResponseLogin', (event, resOfLogin) => {
             if (resOfLogin.success){
                 console.log('登录成功', resOfLogin.data)
+                this.
                 this.$set(this.config, 'userInfo', resOfLogin.data)
             } else {
                 console.log('登录失败', resOfLogin.message)
@@ -51,6 +45,7 @@ const app = {
         // config
         ipcRenderer.on('ConfigWindow:ResponseConfigFile', (event, config) => {
             this.config = config
+            this.userInfo.email = config.userInfo && config.userInfo.email
         })
         ipcRenderer.send('ConfigWindow:RequestConfigFile')
 

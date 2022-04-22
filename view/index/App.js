@@ -175,10 +175,6 @@ const app = {
             this.config.isToolPanelShowing = false
             ipcRenderer.send('saveConfigFileFromMainWindow', JSON.stringify(this.config))
         },
-        // 网络请求测试
-        getNetworkContent(){
-            ipcRenderer.send('getNetData')
-        },
         // 切换码表文件
         switchToFile(file){
             ipcRenderer.send('MainWindow:LoadFile', file.path)

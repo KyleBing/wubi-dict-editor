@@ -1420,7 +1420,7 @@ select option {
   -moz-border-radius: 5px;
   border-radius: 5px;
   background-color: #f3f3f3;
-  padding: 10px 10px 10px 50px;
+  padding: 10px 30px;
 }
 .config section .section-content .check-item {
   margin-bottom: 10px;
@@ -1524,6 +1524,26 @@ select option {
 }
 .login-panel .input-item label {
   margin-right: 10px;
+}
+
+.login-user-info {
+  margin-top: 10px;
+  background-color: white;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  padding: 10px;
+  border: 1px solid #eee;
+}
+.login-user-info-item {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+}
+.login-user-info-item .label {
+  width: 80px;
+  margin-right: 10px;
+  color: #848484;
 }
 
 .tool-container {

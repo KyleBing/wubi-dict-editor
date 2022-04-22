@@ -58,7 +58,7 @@
     .section-content{
       @include border-radius(5px);
       background-color: $bg-panel;
-      padding: 10px 10px 10px 50px;
+      padding: 10px 30px;
       .check-item{
         margin-bottom: 10px;
         display: flex;
@@ -151,6 +151,24 @@ $height-switch: 14px;
   .input-item{
     label{
       margin-right: 10px;
+    }
+  }
+}
+
+.login-user-info{
+  margin-top: 10px;
+  background-color: white;
+  @include border-radius(5px);
+  padding: 10px;
+  border: 1px solid $border-color;
+  &-item{
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-start;
+    .label{
+      width: 80px;
+      margin-right: 10px;
+      color: $text-subtitle;
     }
   }
 }
