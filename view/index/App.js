@@ -123,18 +123,17 @@ const app = {
             this.dictMap = new DictMap(fileContent, fileName, filePath)
         })
 
-        // 词库同步
-        ipcRenderer.on('setDictSync', (event, fileName, filePath, res) => {
-            this.dictSync = new Dict(res, fileName)
-            this.syncDictWords() // 执行词库同步方法
-        })
-
-        // 词库同步
+        // 词库同步: 获取内容
         ipcRenderer.on('MainWindow:SyncDictResponseGetDictSuccess', (event, res) => {
             console.log(res)
-            this.tipNotice('保存词库内容成功')
-            this.dictSync = new Dict(res.data.content, res.data.title)
-            console.log(this.dictSync)
+            if (res.data === ''){
+                this.tipNotice('该词库以前未同步过')
+            } else {
+                this.tipNotice('获取词库内容成功')
+                this.dictSync = new Dict(res.data.content, res.data.title)
+                this.syncDictWords()
+                console.log(this.dictSync)
+            }
         })
 
 
