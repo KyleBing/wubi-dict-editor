@@ -16,7 +16,7 @@ let mainWindow // 主窗口
 let fileList = [] // 文件目录列表，用于移动词条
 
 function createMainWindow() {
-    let width = IS_IN_DEVELOP ? 1500: 1000
+    let width = IS_IN_DEVELOP ? 1500: 1100
     let height = 700
     mainWindow = new BrowserWindow({
         width,
@@ -192,7 +192,8 @@ function createMainWindow() {
         })
     })
 
-    ipcMain.on('MainWindow:SyncDictSaveCurrentDict', (event, {dictName, dictContentYaml, userInfo})=>{
+    ipcMain.on('MainWindow:SyncDictSaveCurrentDict', (event, dictName, dictContentYaml, userInfo)=>{
+        console.log('SyncDictSaveCurrentDict: ', dictName, dictContentYaml, userInfo)
         axios({
             method: 'put',
             url: IS_IN_DEVELOP ?
