@@ -175,7 +175,7 @@ function createMainWindow() {
             data: {
                 title: dictName,
                 uid: userInfo.uid,
-                token: userInfo.token,
+                password: userInfo.password,
                 email: userInfo.email
             }
         }).then(res => {
@@ -198,7 +198,7 @@ function createMainWindow() {
                 title: dictName,
                 content: escape(dictContentYaml), // 为了避免一些标点干扰出现的问题，直接全部转义，
                 uid: userInfo.uid,
-                token: userInfo.password,
+                password: userInfo.password,
                 email: userInfo.email
             }
         }).then(res => {
