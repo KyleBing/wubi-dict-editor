@@ -167,12 +167,11 @@ function createMainWindow() {
     })
 
     ipcMain.on('MainWindow:SyncCurrentDict', (event, {dictName, dictContentYaml, userInfo})=>{
-/*
         axios({
             method: 'get',
             url: IS_IN_DEVELOP ?
                 'http://localhost:3000/dict/pull' :
-                '${SERVER_BASE_URL}/dict/push',
+                '${SERVER_BASE_URL}/dict/pull',
             data: {
                 title: dictName,
                 uid: userInfo.uid,
@@ -188,9 +187,9 @@ function createMainWindow() {
             }
         }).catch(err => {
             console.log(err)
-        })*/
+        })
 
-        axios({
+/*        axios({
             method: 'put',
             url: IS_IN_DEVELOP ?
                 'http://localhost:3000/dict/push' :
@@ -211,7 +210,7 @@ function createMainWindow() {
             }
         }).catch(err => {
             console.log(err)
-        })
+        })*/
 
 
        /* fs.readFile(filePath, {encoding: 'utf-8'}, (err, res) => {
@@ -450,21 +449,25 @@ function createConfigWindow() {
         if(toolWindow) toolWindow.show()
         if(mainWindow) mainWindow.show()
     })
+
+
     // 处理登录请求
     ipcMain.on('ConfigWindow:Login', (event, userInfo) => {
-        let url = IS_IN_DEVELOP ?
-            'http://localhost:3000/user/login' :
-            `${SERVER_BASE_URL}/user/login`
-        console.log('url: ',url)
-        axios.post({
+        let requestData = {
+            email: userInfo.email,
+            password: userInfo.password,
+        }
+/*
+        let config = {
             headers: {'content-type': 'application/json'},
             method: 'POST',
-            url: url,
-            data: {
-                email: userInfo.email,
-                password: userInfo.password,
-            }
-        }).then(res => {
+            url: IS_IN_DEVELOP ?
+                'http://localhost:3000/user/login' :
+                `${SERVER_BASE_URL}/user/login`,
+            data: requestData
+        }
+        console.log(config)
+        axios(config).then(res => {
             if (res.status === 200){
                 configWindow.send('ConfigWindow:ResponseLogin', res)
             } else {
@@ -472,7 +475,36 @@ function createConfigWindow() {
             }
         }).catch(err => {
             console.log(err)
+        })*/
+
+        // 1. 新建 net.request 请求
+        const request = net.request({
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            method: 'POST',
+            url: 'http://localhost:3000/user/login'
         })
+        // 2. 通过 request.write() 方法，发送的 post 请求数据需要先进行序列化，变成纯文本的形式
+        request.write(JSON.stringify(requestData))
+
+        // 3. 处理返回结果
+        request.on('response', response => {
+            response.on('data', res => {
+                // res 是 Buffer 数据
+                // 通过 toString() 可以转为 String
+                // 详见： https://blog.csdn.net/KimBing/article/details/124299412
+                let data = JSON.parse(res.toString())
+                configWindow.send('ConfigWindow:ResponseLogin', data)
+            })
+            response.on('end', () => {
+            })
+        })
+
+        // 4. 记得关闭请求
+        request.end()
+
+
     })
 
     // 载入文件列表

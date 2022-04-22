@@ -1521,9 +1521,16 @@ select option {
 .login-panel {
   display: flex;
   flex-flow: row wrap;
+  align-items: center;
 }
 .login-panel .input-item label {
   margin-right: 10px;
+}
+.login-panel .login-tip {
+  margin-left: 15px;
+  color: #2fbcfa;
+  font-weight: bold;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1), -1px -1px 0 white;
 }
 
 .login-user-info {

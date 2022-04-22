@@ -18,7 +18,8 @@ const app = {
             userInfo: {
                 email:'',
                 password: ''
-            }
+            },
+            loginTip: ''
         }
     },
     mounted() {
@@ -35,10 +36,11 @@ const app = {
         ipcRenderer.on('ConfigWindow:ResponseLogin', (event, resOfLogin) => {
             if (resOfLogin.success){
                 console.log('登录成功', resOfLogin.data)
-                this.
+                this.tipNotice('登录成功')
                 this.$set(this.config, 'userInfo', resOfLogin.data)
             } else {
                 console.log('登录失败', resOfLogin.message)
+                this.tipNotice('登录失败')
             }
         })
 
@@ -72,6 +74,10 @@ const app = {
         }
     },
     methods: {
+        tipNotice(msg){
+            this.loginTip = msg
+            setTimeout(()=>{this.loginTip = ''}, 3000)
+        },
         login(){
             ipcRenderer.send('ConfigWindow:Login', this.userInfo)
         },
