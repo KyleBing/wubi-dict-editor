@@ -167,12 +167,13 @@ function createMainWindow() {
     })
 
     ipcMain.on('MainWindow:SyncCurrentDict', (event, {dictName, dictContentYaml, userInfo})=>{
+        console.log(dictName, userInfo)
         axios({
             method: 'get',
             url: IS_IN_DEVELOP ?
                 'http://localhost:3000/dict/pull' :
                 '${SERVER_BASE_URL}/dict/pull',
-            data: {
+            params: {
                 title: dictName,
                 uid: userInfo.uid,
                 password: userInfo.password,
