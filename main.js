@@ -166,8 +166,8 @@ function createMainWindow() {
             })
     })
 
-    ipcMain.on('MainWindow:SyncCurrentDict', (event, {dictName, dictContentYaml, userInfo})=>{
-        console.log(dictName, userInfo)
+
+    ipcMain.on('MainWindow:SyncDictGetCurrentDictContent', (event, {dictName, userInfo})=>{
         axios({
             method: 'get',
             url: IS_IN_DEVELOP ?
@@ -181,16 +181,19 @@ function createMainWindow() {
             }
         }).then(res => {
             if (res.status === 200){
-                console.log(res.data)
-                mainWindow.send('MainWindow:SyncSaveDictDataSuccess', res.data)
+                let dictRes = res.data
+                dictRes.data.content = unescape(dictRes.data.content)
+                mainWindow.send('MainWindow:SyncDictResponseGetDictSuccess', dictRes)
             } else {
                 console.log(res)
             }
         }).catch(err => {
             console.log(err)
         })
+    })
 
-/*        axios({
+    ipcMain.on('MainWindow:SyncDictSaveCurrentDict', (event, {dictName, dictContentYaml, userInfo})=>{
+        axios({
             method: 'put',
             url: IS_IN_DEVELOP ?
                 'http://localhost:3000/dict/push' :
@@ -211,18 +214,9 @@ function createMainWindow() {
             }
         }).catch(err => {
             console.log(err)
-        })*/
-
-
-       /* fs.readFile(filePath, {encoding: 'utf-8'}, (err, res) => {
-            if(err){
-                log(err)
-                mainWindow.webContents.send('setDictSync', fileName, filePath, '')
-            } else {
-                mainWindow.webContents.send('setDictSync', fileName, filePath, res)
-            }
-        })*/
+        })
     })
+
 
     // 载入文件内容
     ipcMain.on('MainWindow:LoadFile', (event, fileName) => {

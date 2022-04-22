@@ -100,22 +100,6 @@ const app = {
             this.dictMain = new Dict(res, filename)
         })
 
-        // 词库同步
-        ipcRenderer.on('setDictSync', (event, fileName, filePath, res) => {
-            this.dictSync = new Dict(res, fileName)
-            this.syncDictWords() // 执行词库同步方法
-        })
-
-        // 词库同步
-        ipcRenderer.on('MainWindow:SyncSaveDictDataSuccess', (event, res) => {
-            this.tipNotice('保存词库内容成功')
-            console.log(res)
-        })
-        ipcRenderer.on('MainWindow:SyncGetOnlineDictDataSuccess', (event, res) => {
-            this.tipNotice('获取词库内容成功')
-            console.log(res)
-        })
-
         // 配置相关
         ipcRenderer.on('MainWindow:ResponseConfigFile', (event, config) => {
             this.config = config
@@ -138,6 +122,23 @@ const app = {
         ipcRenderer.on('setDictMap', (event, fileContent, fileName, filePath) => {
             this.dictMap = new DictMap(fileContent, fileName, filePath)
         })
+
+        // 词库同步
+        ipcRenderer.on('setDictSync', (event, fileName, filePath, res) => {
+            this.dictSync = new Dict(res, fileName)
+            this.syncDictWords() // 执行词库同步方法
+        })
+
+        // 词库同步
+        ipcRenderer.on('MainWindow:SyncDictResponseGetDictSuccess', (event, res) => {
+            console.log(res)
+            this.tipNotice('保存词库内容成功')
+            this.dictSync = new Dict(res.data.content, res.data.title)
+            console.log(this.dictSync)
+        })
+
+
+        // INIT
         ipcRenderer.send('getDictMap')
 
         this.addKeyboardListener()
@@ -689,14 +690,24 @@ const app = {
             ipcRenderer.send('MainWindow:ExportSelectionToPlistFile', wordsSelected)
         },
 
-        // 同步功能
+       /*
+        *
+        * 同步功能过程：
+        * 1. 先获取线上已存在的当前文件名的内容
+        * 2-1. 如果有，获取并对比本地码表内容，增量合成一个新的
+        * 2-2. 如果没有，直接上传当前的本地内容
+        * 3. 上传新的词库内容
+        *
+        */
+
+        // 同步功能开始
         //
         syncCurrentDict(){
             if (this.config.hasOwnProperty('userInfo')){
-                ipcRenderer.send('MainWindow:SyncCurrentDict',
+                // 获取线上已存在的码表数据
+                ipcRenderer.send('MainWindow:SyncDictGetCurrentDictContent',
                     {
                         dictName: this.dict.fileName,
-                        dictContentYaml: this.dict.toYamlString(),
                         userInfo: this.config.userInfo
                     }
                 )
@@ -784,6 +795,7 @@ const app = {
             this.refreshShowingWords() // 刷新显示的词条
             let afterWordCount = this.dict.countDictOrigin
             this.tipNotice(`新增 ${afterWordCount - originWordCount} 条记录`)
+            // ipcRenderer.send('MainWindow:SyncDictSaveCurrentDict')
         }
     },
     watch: {
