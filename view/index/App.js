@@ -773,12 +773,12 @@ const app = {
                         // 2. 新建一个 OriginWordGroup.dict 的 map，用于确定是否存在相同词条
                         let originWordMap = new Map()
                         originWordGroup.dict.forEach(word => {
-                            originWordMap.set(word.word, word)
+                            originWordMap.set(word.word + word.code, word) // 将 word+code 作为 map 的 key，不然会有遗漏的
                         })
                         // 3. 对比词条内容
                         syncWordGroup.dict.forEach(syncWord => {
-                            if (originWordMap.has(syncWord.word)){ // 存在词条相同
-                                let wordOrigin = originWordMap.get(syncWord.word)
+                            if (originWordMap.has(syncWord.word + syncWord.code)){ // 存在词条相同
+                                let wordOrigin = originWordMap.get(syncWord.word + syncWord.code)
                                 if (syncWord.isContentEqualTo(wordOrigin)){ // 如果两个词条编码和词条一模一样
                                     // 什么也不做
                                 } else {
@@ -807,12 +807,12 @@ const app = {
                 // 1. 新建一个 wordMap
                 let originWordMap = new Map()
                 this.dict.wordsOrigin.forEach(word => {
-                    originWordMap.set(word.word, word)
+                    originWordMap.set(word.word + word.code, word)
                 })
                 // 2. 对比词条内容
                 this.dictSync.wordsOrigin.forEach(syncWord => {
-                    if (originWordMap.has(syncWord.word)) { // 存在词条相同
-                        let wordOrigin = originWordMap.get(syncWord.word)
+                    if (originWordMap.has(syncWord.word + syncWord.code)) { // 存在词条相同
+                        let wordOrigin = originWordMap.get(syncWord.word + syncWord.code)
                         if (syncWord.isContentEqualTo(wordOrigin)) { // 如果两个词条编码和词条一模一样
                             // 什么也不做
                         } else {
