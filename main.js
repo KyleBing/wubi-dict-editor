@@ -167,8 +167,39 @@ function createMainWindow() {
     })
 
 
-    ipcMain.on('MainWindow:SyncDictGetCurrentDictContent', (event, {dictName, userInfo})=>{
-        axios({
+    // 获取线上词库：增量同步本地词库
+    ipcMain.on('MainWindow:sync.get:INCREASE', (event, dictName, userInfo)=>{
+        getOnlineDictContent(dictName, userInfo)
+            .then(res => {
+                if (res.status === 200){
+                    let dictRes = res.data
+                    dictRes.data.content = unescape(dictRes.data.content)
+                    mainWindow.send('MainWindow:sync.get:INCREASE:SUCCESS', dictRes)
+                } else {
+                    console.log(res)
+                }
+            }).catch(err => {
+            console.log(err)
+        })
+    })
+    // 获取线上词库：覆盖本地词库
+    ipcMain.on('MainWindow:sync.get:OVERWRITE', (event, dictName, userInfo)=>{
+        getOnlineDictContent(dictName, userInfo)
+            .then(res => {
+                if (res.status === 200){
+                    let dictRes = res.data
+                    dictRes.data.content = unescape(dictRes.data.content)
+                    mainWindow.send('MainWindow:sync.get:OVERWRITE:SUCCESS', dictRes)
+                } else {
+                    console.log(res)
+                }
+            }).catch(err => {
+            console.log(err)
+        })
+    })
+
+    function getOnlineDictContent(dictName, userInfo){
+        return axios({
             method: 'get',
             url: IS_IN_DEVELOP ?
                 'http://localhost:3000/dict/pull' :
@@ -179,20 +210,12 @@ function createMainWindow() {
                 password: userInfo.password,
                 email: userInfo.email
             }
-        }).then(res => {
-            if (res.status === 200){
-                let dictRes = res.data
-                dictRes.data.content = unescape(dictRes.data.content)
-                mainWindow.send('MainWindow:SyncDictResponseGetDictSuccess', dictRes)
-            } else {
-                console.log(res)
-            }
-        }).catch(err => {
-            console.log(err)
         })
-    })
+    }
 
-    ipcMain.on('MainWindow:SyncDictSaveCurrentDict', (event, {dictName, dictContentYaml, userInfo})=>{
+    // 保存至线上词库，如果存在覆盖它
+    ipcMain.on('MainWindow:sync.save', (event, dictName, dictContentYaml, userInfo)=>{
+        console.log('SyncDictSaveCurrentDict: ', dictName, dictContentYaml, userInfo)
         axios({
             method: 'put',
             url: IS_IN_DEVELOP ?
@@ -208,7 +231,7 @@ function createMainWindow() {
         }).then(res => {
             if (res.status === 200){
                 console.log(res.data)
-                mainWindow.send('MainWindow:SyncSaveDictDataSuccess', res.data)
+                mainWindow.send('MainWindow:sync.save:SUCCESS', res.data)
             } else {
                 console.log(res)
             }

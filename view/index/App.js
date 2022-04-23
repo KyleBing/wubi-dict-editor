@@ -123,12 +123,12 @@ const app = {
             this.dictMap = new DictMap(fileContent, fileName, filePath)
         })
 
-        // 词库同步: 获取内容
-        ipcRenderer.on('MainWindow:SyncDictResponseGetDictSuccess', (event, res) => {
+        // 同步: 获取内容 增量
+        ipcRenderer.on('MainWindow:sync.get:INCREASE:SUCCESS', (event, res) => {
             console.log(res)
             if (res.data === ''){
                 this.tipNotice('该词库以前未同步过')
-                ipcRenderer.send('MainWindow:SyncDictSaveCurrentDict', this.dict.fileName, this.dict.toYamlString(), this.config.userInfo)
+                ipcRenderer.send('MainWindow:sync.save', this.dict.fileName, this.dict.toYamlString(), this.config.userInfo)
             } else {
                 this.tipNotice('获取词库内容成功')
                 this.dictSync = new Dict(res.data.content, res.data.title)
@@ -137,7 +137,22 @@ const app = {
             }
         })
 
-        ipcRenderer.on('MainWindow:SyncSaveDictDataSuccess', (event, res) => {
+        // 同步: 获取内容 覆盖
+        ipcRenderer.on('MainWindow:sync.get:OVERWRITE:SUCCESS', (event, res) => {
+            console.log(res)
+            if (res.data === ''){
+                this.tipNotice('该词库以前未同步过')
+            } else {
+                this.tipNotice('获取词库内容成功')
+                let filePath = this.dict.filePath
+                this.dict = new Dict(res.data.content, res.data.title, this.dict.filePath)
+                this.refreshShowingWords()
+                console.log(this.dict)
+            }
+        })
+
+        // 同步： 保存成功
+        ipcRenderer.on('MainWindow:sync.save:SUCCESS', (event, res) => {
             this.tipNotice(res.message)
             console.log(res)
         })
@@ -710,18 +725,34 @@ const app = {
         syncCurrentDict(){
             if (this.config.hasOwnProperty('userInfo')){
                 // 获取线上已存在的码表数据
-                ipcRenderer.send('MainWindow:SyncDictGetCurrentDictContent',
-                    {
-                        dictName: this.dict.fileName,
-                        userInfo: this.config.userInfo
-                    }
+                ipcRenderer.send(
+                    'MainWindow:sync.get:INCREASE',
+                    this.dict.fileName,
+                    this.config.userInfo
                 )
             } else {
                 this.tip = '未登录，请先前往配置页面登录'
             }
         },
-        syncUploadCurrentDict(){},
-        syncDownloadCurrentDict(){},
+
+        // 上传当前词库内容
+        syncUploadCurrentDict(){
+            ipcRenderer.send(
+                'MainWindow:sync.save',
+                this.dict.fileName,
+                this.dict.toYamlString(),
+                this.config.userInfo
+            )
+        },
+
+        // 下载当前词库名的内容，【 覆盖 】 本地词库
+        syncDownloadCurrentDict(){
+            ipcRenderer.send(
+                'MainWindow:sync.get:OVERWRITE',
+                this.dict.fileName,
+                this.config.userInfo
+            )
+        },
 
         // 同步词库内容
         syncDictWords(){
