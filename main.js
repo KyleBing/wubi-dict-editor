@@ -5,10 +5,9 @@ const os = require('os')
 const url = require("url")
 const path = require("path")
 const {shakeDom, log, shakeDomFocus, dateFormatter} = require('./js/Utility')
-const { IS_IN_DEVELOP, CONFIG_FILE_PATH, CONFIG_FILE_NAME, DEFAULT_CONFIG, CONFIG_DICT_MAP_FILE_NAME } =  require('./js/Global')
+const { IS_REQUEST_LOCAL, IS_IN_DEVELOP, CONFIG_FILE_PATH, CONFIG_FILE_NAME, DEFAULT_CONFIG, CONFIG_DICT_MAP_FILE_NAME } =  require('./js/Global')
 const plist = require("plist")
 const axios = require("axios")
-
 
 const SERVER_BASE_URL = 'https://kylebing.cn/diary-portal'
 
@@ -201,9 +200,9 @@ function createMainWindow() {
     function getOnlineDictContent(dictName, userInfo){
         return axios({
             method: 'get',
-            url: IS_IN_DEVELOP ?
+            url: IS_REQUEST_LOCAL ?
                 'http://localhost:3000/dict/pull' :
-                '${SERVER_BASE_URL}/dict/pull',
+                `${SERVER_BASE_URL}/dict/pull`,
             params: {
                 title: dictName,
                 uid: userInfo.uid,
@@ -218,7 +217,7 @@ function createMainWindow() {
         console.log('MainWindow:sync.save', dictName, dictContentYaml, userInfo)
         axios({
             method: 'put',
-            url: IS_IN_DEVELOP ?
+            url: IS_REQUEST_LOCAL ?
                 'http://localhost:3000/dict/push' :
                 `${SERVER_BASE_URL}/dict/push`,
             data: {
@@ -479,7 +478,7 @@ function createConfigWindow() {
         let config = {
             headers: {'content-type': 'application/json'},
             method: 'POST',
-            url: IS_IN_DEVELOP ?
+            url: IS_REQUEST_LOCAL ?
                 'http://localhost:3000/user/login' :
                 `${SERVER_BASE_URL}/user/login`,
             data: requestData
