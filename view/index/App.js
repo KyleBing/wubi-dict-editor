@@ -713,8 +713,9 @@ const app = {
             } else {
                 this.tip = '未登录，请先前往配置页面登录'
             }
-
         },
+        syncUploadCurrentDict(){},
+        syncDownloadCurrentDict(){},
 
         // 同步词库内容
         syncDictWords(){
