@@ -128,12 +128,18 @@ const app = {
             console.log(res)
             if (res.data === ''){
                 this.tipNotice('该词库以前未同步过')
+                ipcRenderer.send('MainWindow:SyncDictSaveCurrentDict', this.dict.fileName, this.dict.toYamlString(), this.config.userInfo)
             } else {
                 this.tipNotice('获取词库内容成功')
                 this.dictSync = new Dict(res.data.content, res.data.title)
                 this.syncDictWords()
                 console.log(this.dictSync)
             }
+        })
+
+        ipcRenderer.on('MainWindow:SyncSaveDictDataSuccess', (event, res) => {
+            this.tipNotice(res.message)
+            console.log(res)
         })
 
 
@@ -791,11 +797,12 @@ const app = {
                     }
                 })
             }
-            console.log(this.dict.wordsOrigin)
             this.refreshShowingWords() // 刷新显示的词条
             let afterWordCount = this.dict.countDictOrigin
+            console.log(`新增 ${afterWordCount - originWordCount} 条记录`)
             this.tipNotice(`新增 ${afterWordCount - originWordCount} 条记录`)
-            // ipcRenderer.send('MainWindow:SyncDictSaveCurrentDict')
+            // TODO 同步编辑待优化，用户手动选择，或者自动标记同步内容
+            ipcRenderer.send('MainWindow:SyncDictSaveCurrentDict', this.dict.fileName, this.dict.toYamlString(), this.config.userInfo)
         }
     },
     watch: {
