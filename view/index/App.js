@@ -832,8 +832,7 @@ const app = {
             let afterWordCount = this.dict.countDictOrigin
             console.log(`新增 ${afterWordCount - originWordCount} 条记录`)
             this.tipNotice(`新增 ${afterWordCount - originWordCount} 条记录`)
-            // TODO 同步编辑待优化，用户手动选择，或者自动标记同步内容
-            ipcRenderer.send('MainWindow:SyncDictSaveCurrentDict', this.dict.fileName, this.dict.toYamlString(), this.config.userInfo)
+            ipcRenderer.send('MainWindow:sync.save', this.dict.fileName, this.dict.toYamlString(), this.config.userInfo)
         }
     },
     watch: {

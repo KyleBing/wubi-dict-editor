@@ -215,7 +215,7 @@ function createMainWindow() {
 
     // 保存至线上词库，如果存在覆盖它
     ipcMain.on('MainWindow:sync.save', (event, dictName, dictContentYaml, userInfo)=>{
-        console.log('SyncDictSaveCurrentDict: ', dictName, dictContentYaml, userInfo)
+        console.log('MainWindow:sync.save', dictName, dictContentYaml, userInfo)
         axios({
             method: 'put',
             url: IS_IN_DEVELOP ?
