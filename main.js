@@ -418,7 +418,7 @@ function readFileFromDiskAndResponse(filePath, responseWindow){
 
 let configWindow
 function createConfigWindow() {
-    let width = IS_IN_DEVELOP ? 1400 : 600
+    let width = IS_IN_DEVELOP ? 1400 : 800
     let height = IS_IN_DEVELOP ? 600 : 600
     // TODO：打开配置窗口的时候，先创建配置文件夹，供后面保存配置文件和字典文件使用
 
