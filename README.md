@@ -59,6 +59,15 @@ sudo xattr -rd com.apple.quarantine /Applications/五笔助手.app/
 ./五笔助手
 ```
 
+## 关于同步
+
+1. 请先前往 [https://kylebing.cn/diary/](https://kylebing.cn/diary/) 注册账号
+2. 打开工具 <kbd>配置</kbd> 页面，在最下面<kbd>登录</kbd>即可
+3. 同步有三个按钮
+   1. <kbd>增量同步</kbd>：合并本地与线上的词库，并将最终的词库上传到线上
+   2. <kbd>覆盖本地</kbd>：将舍弃本地词库，用线上的词库覆盖本地词库内容
+   3. <kbd>覆盖线上</kbd>：将舍弃上线词库，用本地词库覆盖线上词库内容
+
 
 ## 用到的技术
 - `nodejs`
