@@ -209,6 +209,7 @@ const app = {
                 this.tipTimeoutHandler = setTimeout(()=>{
                     if (this.tips.length > 0){
                         this.tips.shift()
+                        clearTimeout(this.tipTimeoutHandler)
                         this.tipTimeoutHandler = null
                         this.tipNotice()
                     }
