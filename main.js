@@ -4,10 +4,11 @@ const fs = require('fs')
 const os = require('os')
 const url = require("url")
 const path = require("path")
-const {shakeDom, log, shakeDomFocus, dateFormatter} = require('./js/Utility')
+const {shakeDom, log, shakeDomFocus, dateFormatter, unicodeBase64Encode, unicodeBase64Decode} = require('./js/Utility')
 const { IS_REQUEST_LOCAL, IS_IN_DEVELOP, CONFIG_FILE_PATH, CONFIG_FILE_NAME, DEFAULT_CONFIG, CONFIG_DICT_MAP_FILE_NAME } =  require('./js/Global')
 const plist = require("plist")
 const axios = require("axios")
+const util = require("util");
 
 const SERVER_BASE_URL = 'https://kylebing.cn/diary-portal'
 
@@ -172,7 +173,7 @@ function createMainWindow() {
             .then(res => {
                 if (res.status === 200){
                     let dictRes = res.data
-                    dictRes.data.content = unescape(dictRes.data.content)
+                    dictRes.data.content = Buffer.from(dictRes.data.content, "base64").toString()
                     mainWindow.send('MainWindow:sync.get:INCREASE:SUCCESS', dictRes)
                 } else {
                     console.log(res)
@@ -187,7 +188,7 @@ function createMainWindow() {
             .then(res => {
                 if (res.status === 200){
                     let dictRes = res.data
-                    dictRes.data.content = unescape(dictRes.data.content)
+                    dictRes.data.content = Buffer.from(dictRes.data.content, "base64").toString()
                     mainWindow.send('MainWindow:sync.get:OVERWRITE:SUCCESS', dictRes)
                 } else {
                     console.log(res)
@@ -214,7 +215,11 @@ function createMainWindow() {
 
     // 保存至线上词库，如果存在覆盖它
     ipcMain.on('MainWindow:sync.save', (event, dictName, dictContentYaml, userInfo)=>{
-        console.log('MainWindow:sync.save', dictName, dictContentYaml, userInfo)
+        let finalContent = Buffer.from(dictContentYaml).toString('base64')
+        // console.log('MainWindow:sync.save', dictName, dictContentYaml, userInfo)
+        console.log('content size original: ', dictContentYaml.length)
+        console.log('content size escaped: ', (escape(dictContentYaml)).length)
+        console.log('content size unicodeEncode: ', finalContent.length)
         axios({
             method: 'put',
             url: IS_REQUEST_LOCAL ?
@@ -222,7 +227,7 @@ function createMainWindow() {
                 `${SERVER_BASE_URL}/dict/push`,
             data: {
                 title: dictName,
-                content: escape(dictContentYaml), // 为了避免一些标点干扰出现的问题，直接全部转义，
+                content: finalContent, // 为了避免一些标点干扰出现的问题，直接全部转义，
                 uid: userInfo.uid,
                 password: userInfo.password,
                 email: userInfo.email
