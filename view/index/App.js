@@ -18,7 +18,10 @@ const app = {
     data() {
         return {
             IS_IN_DEVELOP: IS_IN_DEVELOP, // 是否为开发模式，html 使用
-            tip: '', // 提示信息
+
+            tips: [], // 提示信息
+            tipTimeoutHandler: null, // time out handler
+
             dict: {},  // 当前词库对象 Dict
             dictMain: {}, // 主码表 Dict
             keyword: '', // 搜索关键字
@@ -127,10 +130,10 @@ const app = {
         ipcRenderer.on('MainWindow:sync.get:INCREASE:SUCCESS', (event, res) => {
             console.log(res)
             if (res.data === ''){
-                this.tipNotice('该词库以前未同步过')
+                this.tips.push('该词库以前未同步过')
                 ipcRenderer.send('MainWindow:sync.save', this.dict.fileName, this.dict.toYamlString(), this.config.userInfo)
             } else {
-                this.tipNotice('获取词库内容成功')
+                this.tips.push('获取词库内容成功')
                 this.dictSync = new Dict(res.data.content, res.data.title)
                 this.syncDictWords()
                 console.log(this.dictSync)
@@ -141,9 +144,9 @@ const app = {
         ipcRenderer.on('MainWindow:sync.get:OVERWRITE:SUCCESS', (event, res) => {
             console.log(res)
             if (res.data === ''){
-                this.tipNotice('该词库以前未同步过')
+                this.tips.push('该词库以前未同步过')
             } else {
-                this.tipNotice('获取词库内容成功')
+                this.tips.push('获取词库内容成功')
                 let filePath = this.dict.filePath
                 this.dict = new Dict(res.data.content, res.data.title, this.dict.filePath)
                 this.refreshShowingWords()
@@ -153,7 +156,7 @@ const app = {
 
         // 同步： 保存成功
         ipcRenderer.on('MainWindow:sync.save:SUCCESS', (event, res) => {
-            this.tipNotice(res.message)
+            this.tips.push(res.message)
             console.log(res)
         })
 
@@ -200,9 +203,17 @@ const app = {
         switchToFile(file){
             ipcRenderer.send('MainWindow:LoadFile', file.path)
         },
-        tipNotice(msg){
-            this.tip = msg
-            setTimeout(()=>{this.tip = ''}, 3000)
+
+        tipNotice(){
+            if (!this.tipTimeoutHandler){
+                this.tipTimeoutHandler = setTimeout(()=>{
+                    if (this.tips.length > 0){
+                        this.tips.shift()
+                        this.tipTimeoutHandler = null
+                        this.tipNotice()
+                    }
+                }, 3000)
+            }
         },
         // 确定编辑词条
         confirmEditWord(){
@@ -242,7 +253,7 @@ const app = {
                                 this.chosenWordIds.add(this.dict.wordsOrigin[this.activeGroupId].dict[i].id)
                             }
                         } else {
-                            this.tipNotice('只能在单组内进行批量选择')
+                            this.tips.push('只能在单组内进行批量选择')
                         }
                     } else {
                         for (let i=a; i<=b; i++){
@@ -471,7 +482,7 @@ const app = {
                 this.chosenWordIdArray = [...this.chosenWordIds.values()]
             } else {
                 // 提示不能同时选择太多内容
-                this.tip = '不能同时选择大于 十万 条的词条内容'
+                this.tips.push('不能同时选择大于 十万 条的词条内容')
                 shakeDom(this.$refs.domBtnSelectAll)
             }
         },
@@ -482,7 +493,7 @@ const app = {
             this.code = ''
             this.word = ''
             this.search()
-            this.tip = ''
+            this.tips = []
         },
         // 删除词条：单
         deleteWord(wordId){
@@ -567,13 +578,13 @@ const app = {
 
         // 上移词条
         moveUp(id){
-            this.tip = this.move(id, 'up')
+            this.tips.push(this.move(id, 'up'))
             let temp = this.words.pop()
             this.words.push(temp)
         },
         // 下移词条
         moveDown(id){
-            this.tip = this.move(id, 'down')
+            this.tips.push(this.move(id, 'down'))
             let temp = this.words.pop()
             this.words.push(temp)
         },
@@ -676,8 +687,7 @@ const app = {
                 this.saveToFile(this.targetDict)
                 this.saveToFile(this.dict)
             }
-            this.tip = '移动成功'
-            setTimeout(()=>{this.tip = ''}, 3000)
+            this.tips.push('移动成功')
             this.resetDropList()
         },
         // 复制 dropdown
@@ -731,7 +741,7 @@ const app = {
                     this.config.userInfo
                 )
             } else {
-                this.tip = '未登录，请先前往配置页面登录'
+                this.tips.push('未登录，请先前往配置页面登录')
             }
         },
 
@@ -831,11 +841,14 @@ const app = {
             this.refreshShowingWords() // 刷新显示的词条
             let afterWordCount = this.dict.countDictOrigin
             console.log(`新增 ${afterWordCount - originWordCount} 条记录`)
-            this.tipNotice(`新增 ${afterWordCount - originWordCount} 条记录`)
+            this.tips.push(`新增 ${afterWordCount - originWordCount} 条记录`)
             ipcRenderer.send('MainWindow:sync.save', this.dict.fileName, this.dict.toYamlString(), this.config.userInfo)
         }
     },
     watch: {
+        tips(){
+          this.tipNotice()
+        },
         code(newValue){
             this.code = newValue.replaceAll(/[^A-Za-z ]/g, '') // input.code 只允许输入字母
         },

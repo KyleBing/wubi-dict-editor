@@ -19,7 +19,10 @@ const app = {
     data() {
         return {
             IS_IN_DEVELOP: IS_IN_DEVELOP, // 是否为开发模式，html 使用
-            tip: '', // 提示信息
+
+            tips: [], // 提示信息
+            tipTimeoutHandler: null, // time out handler
+
             dict: {
                 deep: true
             }, // 当前词库对象 Dict
@@ -94,7 +97,7 @@ const app = {
             this.fileName = fileName
             this.dict = new DictOther(fileContent, fileName, filePath, this.seperatorRead, this.dictFormatRead)
             this.fileNameSave = this.filePathSave()
-            this.tipNotice('载入完成')
+            this.tips.push('载入完成')
             // 载入新码表时，清除 word 保存 code
             this.word = ''
             this.refreshShowingWords()
@@ -103,7 +106,7 @@ const app = {
         })
         ipcRenderer.on('saveFileSuccess', () => {
             this.labelOfSaveBtn = '保存成功'
-            this.tipNotice('保存成功')
+            this.tips.push('保存成功')
             this.$refs.domBtnSave.classList.add('btn-green')
             setTimeout(()=>{
                 this.$refs.domBtnSave.classList.remove('btn-green')
@@ -171,9 +174,16 @@ const app = {
     },
 
     methods: {
-        tipNotice(msg){
-            this.tip = msg
-            setTimeout(()=>{this.tip = ''}, 3000)
+        tipNotice(){
+            if (!this.tipTimeoutHandler){
+                this.tipTimeoutHandler = setTimeout(()=>{
+                    if (this.tips.length > 0){
+                        this.tips.shift()
+                        this.tipTimeoutHandler = null
+                        this.tipNotice()
+                    }
+                }, 3000)
+            }
         },
         // 确定编辑词条
         confirmEditWord(){
@@ -197,7 +207,7 @@ const app = {
                 word.setCode(this.dictMap.decodeWord(word.word))
             })
             this.refreshShowingWords()
-            this.tipNotice('编码生成完成')
+            this.tips.push('编码生成完成')
         },
         // 生成保存文件的文件名
         filePathSave(withFullPath){
@@ -283,7 +293,7 @@ const app = {
         sort(){
             let startPoint = new Date().getTime()
             this.words.sort((a,b) => a.code < b.code ? -1: 1)
-            this.tipNotice('排序完成')
+            this.tips.push('排序完成')
             log(`排序用时 ${new Date().getTime() - startPoint} ms`)
         },
         enterKeyPressed(){
@@ -369,7 +379,7 @@ const app = {
                 this.chosenWordIdArray = [...this.chosenWordIds.values()]
             } else {
                 // 提示不能同时选择太多内容
-                this.tip = '不能同时选择大于 1000条 的词条内容'
+                this.tips.push('不能同时选择大于 1000条 的词条内容')
                 shakeDom(this.$refs.domBtnSelectAll)
             }
         },
@@ -380,7 +390,7 @@ const app = {
             this.code = ''
             this.word = ''
             this.search()
-            this.tip = ''
+            this.tips = []
         },
         // 删除词条：单
         deleteWord(wordId){
@@ -463,13 +473,13 @@ const app = {
 
         // 上移词条
         moveUp(id){
-            this.tip = this.move(id, 'up')
+            this.tips.push(this.move(id, 'up'))
             let temp = this.words.pop()
             this.words.push(temp)
         },
         // 下移词条
         moveDown(id){
-            this.tip = this.move(id, 'down')
+            this.tips.push(this.move(id, 'down'))
             let temp = this.words.pop()
             this.words.push(temp)
         },
@@ -556,7 +566,7 @@ const app = {
             this.deleteWords() // 删除当前词库已移动的词条
             this.saveToFile(this.targetDict, true)
             this.saveToFile(this.dict, true)
-            this.tipNotice('移动成功')
+            this.tips.push('移动成功')
             this.resetDropList()
         },
         // 复制 dropdown
@@ -578,11 +588,14 @@ const app = {
                 wordsSelected = this.dict.wordsOrigin.filter(item => this.chosenWordIds.has(item.id))
                 ipcRenderer.send('ToolWindow:ExportSelectionToPlistFile', wordsSelected)
             } else {
-                this.tipNotice('没有任何词条')
+                this.tips.push('没有任何词条')
             }
         },
     },
     watch: {
+        tips(){
+            this.tipNotice()
+        },
         code(newValue){
             this.code = newValue.replaceAll(/[^A-Za-z ]/g, '') // input.code 只允许输入字母
         },
