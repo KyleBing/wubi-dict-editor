@@ -53,6 +53,12 @@
       .desc{
         font-size: $fz-button;
         color: $text-subtitle;
+        a{
+          text-decoration: underline;
+          &:hover{
+            color: $color-main;
+          }
+        }
       }
     }
     .section-content{

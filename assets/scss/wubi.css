@@ -1415,6 +1415,12 @@ select option {
   font-size: 12px;
   color: #848484;
 }
+.config section .section-title .desc a {
+  text-decoration: underline;
+}
+.config section .section-title .desc a:hover {
+  color: #FF2D70;
+}
 .config section .section-content {
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;

@@ -500,7 +500,9 @@ function createConfigWindow() {
                 'Content-Type': 'application/json',
             },
             method: 'POST',
-            url: 'http://localhost:3000/user/login'
+            url: IS_REQUEST_LOCAL ?
+                'http://localhost:3000/user/login' :
+                `${SERVER_BASE_URL}/user/login`
         })
         // 2. 通过 request.write() 方法，发送的 post 请求数据需要先进行序列化，变成纯文本的形式
         request.write(JSON.stringify(requestData))
