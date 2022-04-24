@@ -185,7 +185,7 @@ function createMainWindow() {
         })
     })
     // 获取线上词库：覆盖本地词库
-    ipcMain.on('MainWindow:sync.get:OVERWRITE', (event, fileName, userInfo)=>{
+    ipcMain.on('MainWindow:sync.get:OVERWRITE', (event, {fileName, userInfo})=>{
         getOnlineDictContent(fileName, userInfo)
             .then(res => {
                 if (res.status === 200){
