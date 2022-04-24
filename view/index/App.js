@@ -226,7 +226,7 @@ const app = {
                         clearTimeout(this.tipTimeoutHandler)
                         this.tipTimeoutHandler = null
                         this.tipNotice()
-                }, 3000)
+                }, 2000)
             }
         },
         // 确定编辑词条
