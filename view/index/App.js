@@ -131,7 +131,14 @@ const app = {
             console.log(res)
             if (res.data === ''){
                 this.tips.push('该词库以前未同步过')
-                ipcRenderer.send('MainWindow:sync.save', this.dict.fileName, this.dict.toYamlString(), this.config.userInfo)
+                ipcRenderer.send('MainWindow:sync.save',
+                    {
+                        fileName: this.dict.fileName,
+                        fileContentYaml: this.dict.toYamlString(),
+                        wordCount: this.dict.countDictOrigin,
+                        userInfo: this.config.userInfo
+                    }
+                )
                 console.log('MainWindow:sync.save')
             } else {
                 this.tips.push('获取词库内容成功')
@@ -744,8 +751,10 @@ const app = {
                 // 获取线上已存在的码表数据
                 ipcRenderer.send(
                     'MainWindow:sync.get:INCREASE',
-                    this.dict.fileName,
-                    this.config.userInfo
+                    {
+                        fileName: this.dict.fileName,
+                        userInfo: this.config.userInfo
+                    }
                 )
                 console.log('MainWindow:sync.get:INCREASE')
             } else {
@@ -757,9 +766,12 @@ const app = {
         syncUploadCurrentDict(){
             ipcRenderer.send(
                 'MainWindow:sync.save',
-                this.dict.fileName,
-                this.dict.toYamlString(),
-                this.config.userInfo
+                {
+                    fileName: this.dict.fileName,
+                    fileContentYaml: this.dict.toYamlString(),
+                    wordCount: this.dict.countDictOrigin,
+                    userInfo: this.config.userInfo
+                }
             )
             console.log('MainWindow:sync.save')
         },
@@ -768,8 +780,10 @@ const app = {
         syncDownloadCurrentDict(){
             ipcRenderer.send(
                 'MainWindow:sync.get:OVERWRITE',
-                this.dict.fileName,
-                this.config.userInfo
+                {
+                    fileName: this.dict.fileName,
+                    userInfo: this.config.userInfo
+                }
             )
             console.log('MainWindow:sync.get:OVERWRITE')
         },
@@ -852,7 +866,14 @@ const app = {
             let afterWordCount = this.dict.countDictOrigin
             console.log(`新增 ${afterWordCount - originWordCount} 条记录`)
             this.tips.push(`新增 ${afterWordCount - originWordCount} 条记录`)
-            ipcRenderer.send('MainWindow:sync.save', this.dict.fileName, this.dict.toYamlString(), this.config.userInfo)
+            ipcRenderer.send('MainWindow:sync.save',
+                {
+                    fileName: this.dict.fileName,
+                    fileContentYaml: this.dict.toYamlString(),
+                    wordCount: this.dict.countDictOrigin,
+                    userInfo: this.config.userInfo
+                }
+            )
             console.log('MainWindow:sync.save')
         }
     },

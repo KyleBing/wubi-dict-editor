@@ -168,8 +168,8 @@ function createMainWindow() {
 
 
     // 获取线上词库：增量同步本地词库
-    ipcMain.on('MainWindow:sync.get:INCREASE', (event, dictName, userInfo)=>{
-        getOnlineDictContent(dictName, userInfo)
+    ipcMain.on('MainWindow:sync.get:INCREASE', (event, {fileName, userInfo})=>{
+        getOnlineDictContent(fileName, userInfo)
             .then(res => {
                 if (res.status === 200){
                     let dictRes = res.data
@@ -185,8 +185,8 @@ function createMainWindow() {
         })
     })
     // 获取线上词库：覆盖本地词库
-    ipcMain.on('MainWindow:sync.get:OVERWRITE', (event, dictName, userInfo)=>{
-        getOnlineDictContent(dictName, userInfo)
+    ipcMain.on('MainWindow:sync.get:OVERWRITE', (event, fileName, userInfo)=>{
+        getOnlineDictContent(fileName, userInfo)
             .then(res => {
                 if (res.status === 200){
                     let dictRes = res.data
@@ -218,12 +218,12 @@ function createMainWindow() {
     }
 
     // 保存至线上词库，如果存在覆盖它
-    ipcMain.on('MainWindow:sync.save', (event, dictName, dictContentYaml, userInfo)=>{
-        console.log('MainWindow:sync.save', dictName, dictContentYaml, userInfo)
-        if (dictContentYaml.length < 20000){ // 限制整个文件的大小，最大 20000 字
-            let finalContent = Buffer.from(dictContentYaml).toString('base64')
-            console.log('content size original: ', dictContentYaml.length)
-            console.log('content size escaped: ', (escape(dictContentYaml)).length)
+    ipcMain.on('MainWindow:sync.save', (event, {fileName, fileContentYaml, wordCount, userInfo})=>{
+        console.log('MainWindow:sync.save', fileName, fileContentYaml, userInfo)
+        if (fileContentYaml.length < 20000){ // 限制整个文件的大小，最大 20000 字
+            let finalContent = Buffer.from(fileContentYaml).toString('base64')
+            console.log('content size original: ', fileContentYaml.length)
+            console.log('content size escaped: ', (escape(fileContentYaml)).length)
             console.log('content size unicodeEncode: ', finalContent.length)
 
             axios({
@@ -232,9 +232,11 @@ function createMainWindow() {
                     'http://localhost:3000/dict/push' :
                     `${SERVER_BASE_URL}/dict/push`,
                 data: {
-                    title: dictName,
+                    title: fileName,
                     content: finalContent, // 为了避免一些标点干扰出现的问题，直接全部转义，
                     uid: userInfo.uid,
+                    contentSize: fileContentYaml.length,
+                    wordCount: wordCount,
                     password: userInfo.password,
                     email: userInfo.email
                 }
