@@ -16,8 +16,8 @@ let mainWindow // 主窗口
 let fileList = [] // 文件目录列表，用于移动词条
 
 function createMainWindow() {
-    let width = IS_IN_DEVELOP ? 1700: 1000
-    let height = 700
+    let width = IS_IN_DEVELOP ? 1700: 1200
+    let height = 800
     mainWindow = new BrowserWindow({
         width,
         height,
@@ -220,34 +220,38 @@ function createMainWindow() {
     // 保存至线上词库，如果存在覆盖它
     ipcMain.on('MainWindow:sync.save', (event, dictName, dictContentYaml, userInfo)=>{
         console.log('MainWindow:sync.save', dictName, dictContentYaml, userInfo)
+        if (dictContentYaml.length < 20000){ // 限制整个文件的大小，最大 20000 字
+            let finalContent = Buffer.from(dictContentYaml).toString('base64')
+            console.log('content size original: ', dictContentYaml.length)
+            console.log('content size escaped: ', (escape(dictContentYaml)).length)
+            console.log('content size unicodeEncode: ', finalContent.length)
 
-        let finalContent = Buffer.from(dictContentYaml).toString('base64')
-        console.log('content size original: ', dictContentYaml.length)
-        console.log('content size escaped: ', (escape(dictContentYaml)).length)
-        console.log('content size unicodeEncode: ', finalContent.length)
-
-        axios({
-            method: 'put',
-            url: IS_REQUEST_LOCAL ?
-                'http://localhost:3000/dict/push' :
-                `${SERVER_BASE_URL}/dict/push`,
-            data: {
-                title: dictName,
-                content: finalContent, // 为了避免一些标点干扰出现的问题，直接全部转义，
-                uid: userInfo.uid,
-                password: userInfo.password,
-                email: userInfo.email
-            }
-        }).then(res => {
-            if (res.status === 200){
-                console.log(res.data)
-                mainWindow.send('MainWindow:sync.save:SUCCESS', res.data)
-            } else {
-                console.log(res)
-            }
-        }).catch(err => {
-            console.log(err)
-        })
+            axios({
+                method: 'put',
+                url: IS_REQUEST_LOCAL ?
+                    'http://localhost:3000/dict/push' :
+                    `${SERVER_BASE_URL}/dict/push`,
+                data: {
+                    title: dictName,
+                    content: finalContent, // 为了避免一些标点干扰出现的问题，直接全部转义，
+                    uid: userInfo.uid,
+                    password: userInfo.password,
+                    email: userInfo.email
+                }
+            }).then(res => {
+                if (res.status === 200){
+                    console.log(res.data)
+                    mainWindow.send('MainWindow:sync.save:SUCCESS', res.data)
+                } else {
+                    console.log(res)
+                }
+            }).catch(err => {
+                mainWindow.send('MainWindow:sync.save:FAIL', '上传失败')
+                console.log(err)
+            })
+        } else {
+            mainWindow.send('MainWindow:sync.save:FAIL', '同步内容超过 20000 字')
+        }
     })
 
 

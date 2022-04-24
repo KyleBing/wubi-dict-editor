@@ -163,6 +163,11 @@ const app = {
             console.log(res)
         })
 
+        // 同步： 保存失败
+        ipcRenderer.on('MainWindow:sync.save:FAIL', (event, message) => {
+            this.tips.push(message)
+        })
+
 
         // INIT
         ipcRenderer.send('getDictMap')
