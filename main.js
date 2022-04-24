@@ -173,7 +173,9 @@ function createMainWindow() {
             .then(res => {
                 if (res.status === 200){
                     let dictRes = res.data
-                    dictRes.data.content = Buffer.from(dictRes.data.content, "base64").toString()
+                    if (dictRes.data && dictRes.data.content){
+                        dictRes.data.content = Buffer.from(dictRes.data.content, "base64").toString()
+                    }
                     mainWindow.send('MainWindow:sync.get:INCREASE:SUCCESS', dictRes)
                 } else {
                     console.log(res)
@@ -188,7 +190,9 @@ function createMainWindow() {
             .then(res => {
                 if (res.status === 200){
                     let dictRes = res.data
-                    dictRes.data.content = Buffer.from(dictRes.data.content, "base64").toString()
+                    if (dictRes.data && dictRes.data.content){
+                        dictRes.data.content = Buffer.from(dictRes.data.content, "base64").toString()
+                    }
                     mainWindow.send('MainWindow:sync.get:OVERWRITE:SUCCESS', dictRes)
                 } else {
                     console.log(res)
@@ -215,11 +219,13 @@ function createMainWindow() {
 
     // 保存至线上词库，如果存在覆盖它
     ipcMain.on('MainWindow:sync.save', (event, dictName, dictContentYaml, userInfo)=>{
+        console.log('MainWindow:sync.save', dictName, dictContentYaml, userInfo)
+
         let finalContent = Buffer.from(dictContentYaml).toString('base64')
-        // console.log('MainWindow:sync.save', dictName, dictContentYaml, userInfo)
         console.log('content size original: ', dictContentYaml.length)
         console.log('content size escaped: ', (escape(dictContentYaml)).length)
         console.log('content size unicodeEncode: ', finalContent.length)
+
         axios({
             method: 'put',
             url: IS_REQUEST_LOCAL ?

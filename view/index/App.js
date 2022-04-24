@@ -132,6 +132,7 @@ const app = {
             if (res.data === ''){
                 this.tips.push('该词库以前未同步过')
                 ipcRenderer.send('MainWindow:sync.save', this.dict.fileName, this.dict.toYamlString(), this.config.userInfo)
+                console.log('MainWindow:sync.save')
             } else {
                 this.tips.push('获取词库内容成功')
                 this.dictSync = new Dict(res.data.content, res.data.title)
@@ -142,6 +143,7 @@ const app = {
 
         // 同步: 获取内容 覆盖
         ipcRenderer.on('MainWindow:sync.get:OVERWRITE:SUCCESS', (event, res) => {
+            console.log('MainWindow:sync.get:OVERWRITE:SUCCESS')
             console.log(res)
             if (res.data === ''){
                 this.tips.push('该词库以前未同步过')
@@ -157,6 +159,7 @@ const app = {
         // 同步： 保存成功
         ipcRenderer.on('MainWindow:sync.save:SUCCESS', (event, res) => {
             this.tips.push(res.message)
+            console.log('MainWindow:sync.save:SUCCESS')
             console.log(res)
         })
 
@@ -741,6 +744,7 @@ const app = {
                     this.dict.fileName,
                     this.config.userInfo
                 )
+                console.log('MainWindow:sync.get:INCREASE')
             } else {
                 this.tips.push('未登录，请先前往配置页面登录')
             }
@@ -754,6 +758,7 @@ const app = {
                 this.dict.toYamlString(),
                 this.config.userInfo
             )
+            console.log('MainWindow:sync.save')
         },
 
         // 下载当前词库名的内容，【 覆盖 】 本地词库
@@ -763,6 +768,7 @@ const app = {
                 this.dict.fileName,
                 this.config.userInfo
             )
+            console.log('MainWindow:sync.get:OVERWRITE')
         },
 
         // 同步词库内容
@@ -844,6 +850,7 @@ const app = {
             console.log(`新增 ${afterWordCount - originWordCount} 条记录`)
             this.tips.push(`新增 ${afterWordCount - originWordCount} 条记录`)
             ipcRenderer.send('MainWindow:sync.save', this.dict.fileName, this.dict.toYamlString(), this.config.userInfo)
+            console.log('MainWindow:sync.save')
         }
     },
     watch: {
