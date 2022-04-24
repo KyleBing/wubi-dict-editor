@@ -60,6 +60,7 @@ sudo xattr -rd com.apple.quarantine /Applications/五笔助手.app/
 ```
 
 ## 关于同步
+> 单个词库最大限制在 20000 字
 
 1. 请先前往 [https://kylebing.cn/diary/](https://kylebing.cn/diary/) 注册账号
 2. 打开工具 <kbd>配置</kbd> 页面，在最下面<kbd>登录</kbd>即可
