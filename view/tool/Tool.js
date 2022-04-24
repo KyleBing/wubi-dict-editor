@@ -175,14 +175,12 @@ const app = {
 
     methods: {
         tipNotice(){
-            if (!this.tipTimeoutHandler){
+            if (!this.tipTimeoutHandler && this.tips.length > 0){
                 this.tipTimeoutHandler = setTimeout(()=>{
-                    if (this.tips.length > 0){
-                        this.tips.shift()
-                        clearTimeout(this.tipTimeoutHandler)
-                        this.tipTimeoutHandler = null
-                        this.tipNotice()
-                    }
+                    this.tips.shift()
+                    clearTimeout(this.tipTimeoutHandler)
+                    this.tipTimeoutHandler = null
+                    this.tipNotice()
                 }, 3000)
             }
         },
