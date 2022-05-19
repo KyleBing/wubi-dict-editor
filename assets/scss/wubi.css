@@ -1605,6 +1605,27 @@ hr {
   font-weight: bold;
   color: #333;
 }
+.tool-panel section .title.green {
+  color: #4CD964;
+}
+.tool-panel section .title.roseo {
+  color: #FF2D70;
+}
+.tool-panel section .title.blue {
+  color: #007AFF;
+}
+.tool-panel section .title.purple {
+  color: #5856D6;
+}
+.tool-panel section .title.red {
+  color: #FF3B30;
+}
+.tool-panel section .title.yellow {
+  color: #FFCC00;
+}
+.tool-panel section .title.orange {
+  color: #FF9500;
+}
 .tool-panel section .content {
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
@@ -2885,5 +2906,5 @@ body {
 .main-tool {
   border-left: 1px solid #e6e6e6;
   flex-shrink: 0;
-  width: 200px;
+  width: 220px;
 }

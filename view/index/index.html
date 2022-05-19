@@ -96,15 +96,15 @@
                 <img src="../../assets/img/delete_white.svg" alt="clear">
             </div>
         </div>
-        <div class="btn btn-primary" @click="addNewWord">添加</div>
-        <div class="btn btn-primary" @click="search">搜索</div>
-
-<!--        <div class="input-item">
+        <div class="input-item">
             <input class="priority" ref="domInputPriority" @keyup.enter="enterKeyPressed" v-model="priority" type="text" placeholder="优先级：可选">
             <div @click="priority = ''" v-show="priority" class="btn-clear">
                 <img src="../../assets/img/delete_white.svg" alt="clear">
             </div>
-        </div>-->
+        </div>
+        <div class="btn btn-primary" @click="addNewWord">添加</div>
+        <div class="btn btn-primary" @click="search">搜索</div>
+
         <div class="btn btn-roseo" v-show="chosenWordIdArray.length > 0" @click="deleteWords">删除</div>
         <p class="notice">显示格式：<b>编码</b> - 词条 - 备注 - 权重 - id</p>
 
@@ -251,81 +251,64 @@
                     <div class="content">
                         <div class="btn-list">
                             <div class="btn-item">
-                                <div class="btn btn-roseo mb-1" @click="syncCurrentDict">增量：自动同步</div>
-                                <div class="btn btn-roseo mb-1" @click="syncUploadCurrentDict">覆盖：本地 --> 云</div>
-                                <div class="btn btn-roseo mb-1" @click="syncDownloadCurrentDict">覆盖：本地 <-- 云</div>
+                                <div class="btn btn-primary mb-1" @click="syncCurrentDict">增量：自动同步</div>
+                                <div class="btn btn-primary mb-1" @click="syncUploadCurrentDict">覆盖：本地 --> 云</div>
+                                <div class="btn btn-primary mb-1" @click="syncDownloadCurrentDict">覆盖：本地 <-- 云</div>
                             </div>
                         </div>
                     </div>
                 </section>
                 <section>
-                    <div class="title">选择</div>
+                    <div class="title">词条选择</div>
                     <div class="content">
                         <div class="btn-list">
                             <div class="btn-item">
-                                <div class="btn btn-green" @click="selectAll">全选</div>
+                                <div class="btn btn-primary" @click="selectAll">全选</div>
                             </div>
                             <div class="btn-item">
-                                <div class="btn btn-green" @click="resetInputs">清选</div>
+                                <div class="btn btn-primary" @click="resetInputs">取消选择</div>
                             </div>
                         </div>
                     </div>
                 </section>
                 <section>
-                    <div class="title">查重</div>
+                    <div class="title">查错、查重</div>
                     <div class="content">
                         <div class="btn-list">
                             <div class="btn-item">
-                                <div class="btn btn-cyan" @click="checkRepetition(true)">单字</div>
+                                <div class="btn btn-primary" @click="checkRepetition(true)">单字查重</div>
                             </div>
                             <div class="btn-item">
-                                <div class="btn btn-cyan" @click="checkRepetition(false)">词组</div>
+                                <div class="btn btn-primary" @click="checkRepetition(false)">词组查重</div>
                             </div>
                         </div>
-                    </div>
-                </section>
-                <section>
-                    <div class="title">查错</div>
-                    <div class="content">
                         <div class="btn-list">
                             <div class="btn-item">
-                                <div class="btn btn-blue" @click="getErrorWords">词组查错</div>
+                                <div class="btn btn-primary" @click="getErrorWords">词组查错</div>
                             </div>
                         </div>
-                    </div>
-                </section>
-                <section>
-                    <div class="title">纠错</div>
-                    <div class="content">
                         <div class="btn-list">
                             <div class="btn-item">
-                                <div class="btn btn-purple" @click="errorWordsCorrection">纠正选中词条编码</div>
+                                <div class="btn btn-primary" @click="errorWordsCorrection">纠正选中词条编码</div>
                             </div>
                         </div>
                     </div>
                 </section>
                 <section>
-                    <div class="title">码表操作</div>
+                    <div class="title">操作、导出</div>
                     <div class="content">
                         <div class="btn-list">
                             <div class="btn-item">
                                 <div class="btn btn-primary" @click="reloadCurrentDict">重载码表</div>
                             </div>
                             <div class="btn-item">
-                                <div class="btn btn-primary" @click="sort">排序</div>
+                                <div class="btn btn-primary" @click="sort">排序词条</div>
                             </div>
                             <div class="btn-item mt-1">
-                                <div class="btn btn-primary" @click="openCurrentYaml">默认编辑器打开当前码表</div>
+                                <div class="btn btn-primary" @click="openCurrentYaml">编辑源码表文件</div>
                             </div>
-                        </div>
-                    </div>
-                </section>
-                <section>
-                    <div class="title">Apple plist</div>
-                    <div class="content">
-                        <div class="btn-list">
-                            <div class="btn-item">
-                                <div class="btn btn-cyan" @click="exportSelectionToPlist">导出选中词条到 plist 文件</div>
+                            <div class="btn-item mt-1">
+                                <div class="btn btn-primary" @click="exportSelectionToPlist">导出选中词条到 .plist 文件</div>
                             </div>
                         </div>
                     </div>
