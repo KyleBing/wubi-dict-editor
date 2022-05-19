@@ -98,7 +98,7 @@
             </div>
         </div>
         <div class="input-item">
-            <input class="priority" ref="domInputPriority" @keyup.enter="enterKeyPressed" v-model="priority" type="text" placeholder="优先级：可选">
+            <input class="priority" ref="domInputPriority" @keyup.enter="enterKeyPressed" v-model="priority" type="text" placeholder="权重：可选">
             <div @click="priority = ''" v-show="priority" class="btn-clear">
                 <img src="../../assets/img/delete_white.svg" alt="clear">
             </div>
@@ -251,7 +251,7 @@
                     <div class="content">
                         <div class="btn-list">
                             <div class="btn-item">
-                                <div class="btn btn-primary mb-1" @click="syncCurrentDict">增量：自动同步</div>
+                                <div class="btn btn-primary mb-1" @click="syncCurrentDict">增量：本地 + 云</div>
                                 <div class="btn btn-primary mb-1" @click="syncUploadCurrentDict">覆盖：本地 --> 云</div>
                                 <div class="btn btn-primary mb-1" @click="syncDownloadCurrentDict">覆盖：本地 <-- 云</div>
                             </div>
