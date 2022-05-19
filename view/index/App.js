@@ -204,6 +204,10 @@ const app = {
     },
 
     methods: {
+        // 部署码表内容
+        applyRime(){
+            ipcRenderer.send('MainWindow:ApplyRime')
+        },
         // 工具面板展开
         toolPanelExpand(){
             this.config.isToolPanelShowing = true

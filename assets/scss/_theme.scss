@@ -1,4 +1,5 @@
 $black-color-border-highlight: lighten(black, 22%);
+$black-color-border-input: lighten(black, 32%);
 $black-body-bg: #0f0f13;
 $black-bg: #1c1f24;
 $black-bg-hover: lighten(#1c1f24, 5%);
@@ -247,10 +248,14 @@ $black-color-main: #81fffa;
       }
     }
   }
+  .login-user-info {
+    background-color: $black-bg;
+    border-color: $black-color-border;
+  }
 
-  /*BUTTONS*/
+    /*BUTTONS*/
   input[type=radio] + label.radio {
-    background-color: $black-bg-highlight;
+    background-color: $black-bg;
     border-color: $black-color-border-highlight;
   }
   input[type=radio]:checked + label.radio {
@@ -309,7 +314,7 @@ $black-color-main: #81fffa;
   }
   input {
     background-color: $black-body-bg;
-    border-color: $black-color-border-highlight;
+    border-color: $black-color-border-input;
   }
 
   @each $name, $color in $btns {
