@@ -42,6 +42,7 @@
     </div>
     <!--搜索框-->
     <div class="search-bar" v-if="dict">
+        <div class="btn btn-primary" @click="applyRime">部署</div>
         <div
             :class="[
                 'btn',
@@ -245,7 +246,6 @@
         <div class="main-tool" v-show="config.isToolPanelShowing">
             <div class="tool-panel"
                  :style="`height: ${heightContent}px`">
-
                 <section>
                     <div class="title">同步</div>
                     <div class="content">
@@ -295,7 +295,7 @@
                     </div>
                 </section>
                 <section>
-                    <div class="title">操作、导出</div>
+                    <div class="title">码表操作</div>
                     <div class="content">
                         <div class="btn-list">
                             <div class="btn-item">
@@ -313,6 +313,7 @@
                         </div>
                     </div>
                 </section>
+
             </div>
         </div>
     </div>

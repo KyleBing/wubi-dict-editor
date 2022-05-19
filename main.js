@@ -267,6 +267,10 @@ function createMainWindow() {
     ipcMain.on('MainWindow:LoadFile', (event, fileName) => {
         readFileFromConfigDir(fileName, mainWindow)
     })
+    // 载入文件内容
+    ipcMain.on('MainWindow:ApplyRime', event => {
+        applyRime()
+    })
 }
 
 let toolWindow
@@ -686,7 +690,7 @@ function getLabelNameFromFileName(fileName){
 function createMenu() {
     let menuStructure = [
         {
-            label: '词库工具',
+            label: '配置',
             submenu: [
                 {
                     label: '配置',
@@ -719,17 +723,6 @@ function createMenu() {
             role: 'editMenu'
         },
         {
-            label: '布署',
-            submenu: [
-                {
-                    label: '重新布署',
-                    click() {
-                        applyRime()
-                    }
-                },
-            ]
-        },
-        {
             label: '文件夹',
             submenu: [
                 {label: '打开 Rime 配置文件夹', click() {shell.openPath(getRimeConfigDir())}},
@@ -743,7 +736,7 @@ function createMenu() {
             ]
         },
         {
-            label: '码表处理',
+            label: '码表处理工具',
             submenu: [
                 {
                     label: '码表处理工具',

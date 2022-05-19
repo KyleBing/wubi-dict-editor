@@ -2011,8 +2011,12 @@ hr {
 .theme-dark .config-file-list .config-file-list-item:hover {
   background-color: #383f4a;
 }
+.theme-dark .login-user-info {
+  background-color: #1c1f24;
+  border-color: #272b32;
+}
 .theme-dark input[type=radio] + label.radio {
-  background-color: #383f4a;
+  background-color: #1c1f24;
   border-color: #383838;
 }
 .theme-dark input[type=radio]:checked + label.radio {
@@ -2067,7 +2071,7 @@ hr {
 }
 .theme-dark input {
   background-color: #0f0f13;
-  border-color: #383838;
+  border-color: #525252;
 }
 .theme-dark .btn-primary {
   color: #e6e6e6;
@@ -2541,8 +2545,12 @@ hr {
   .theme-auto .config-file-list .config-file-list-item:hover {
     background-color: #383f4a;
   }
+  .theme-auto .login-user-info {
+    background-color: #1c1f24;
+    border-color: #272b32;
+  }
   .theme-auto input[type=radio] + label.radio {
-    background-color: #383f4a;
+    background-color: #1c1f24;
     border-color: #383838;
   }
   .theme-auto input[type=radio]:checked + label.radio {
@@ -2597,7 +2605,7 @@ hr {
   }
   .theme-auto input {
     background-color: #0f0f13;
-    border-color: #383838;
+    border-color: #525252;
   }
   .theme-auto .btn-primary {
     color: #e6e6e6;
