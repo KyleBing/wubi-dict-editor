@@ -10,7 +10,7 @@ const plist = require("plist")
 const axios = require("axios")
 const util = require("util");
 
-const SERVER_BASE_URL = 'https://kylebing.cn/diary-portal'
+const SERVER_BASE_URL = 'https://kylebing.cn/portal'
 
 let mainWindow // 主窗口
 let fileList = [] // 文件目录列表，用于移动词条
@@ -215,7 +215,7 @@ function createMainWindow() {
             params: {
                 title: dictName,
                 uid: userInfo.uid,
-                password: userInfo.password,
+                token: userInfo.password,
                 email: userInfo.email
             }
         })
@@ -238,11 +238,13 @@ function createMainWindow() {
                 data: {
                     title: fileName,
                     content: finalContent, // 为了避免一些标点干扰出现的问题，直接全部转义，
-                    uid: userInfo.uid,
                     contentSize: fileContentYaml.length,
                     wordCount: wordCount,
-                    password: userInfo.password,
-                    email: userInfo.email
+                },
+                params:{
+                    token: userInfo.password,
+                    email: userInfo.email,
+                    uid: userInfo.uid,
                 }
             }).then(res => {
                 if (res.status === 200){
@@ -358,7 +360,6 @@ function showToolWindow (){
             readFileFromDiskAndResponse(dictFilePath[0], toolWindow)
         }
     })
-
 
     // 保存词库到文件
     ipcMain.on('ToolWindow:SaveFile', (event, filePath, fileConentString) => {
@@ -495,26 +496,6 @@ function createConfigWindow() {
             email: userInfo.email,
             password: userInfo.password,
         }
-/*
-        let config = {
-            headers: {'content-type': 'application/json'},
-            method: 'POST',
-            url: IS_REQUEST_LOCAL ?
-                'http://localhost:3000/user/login' :
-                `${SERVER_BASE_URL}/user/login`,
-            data: requestData
-        }
-        console.log(config)
-        axios(config).then(res => {
-            if (res.status === 200){
-                configWindow.send('ConfigWindow:ResponseLogin', res)
-            } else {
-                console.log(res)
-            }
-        }).catch(err => {
-            console.log(err)
-        })*/
-
         // 1. 新建 net.request 请求
         const request = net.request({
             headers: {
