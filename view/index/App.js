@@ -356,10 +356,11 @@ const app = {
         },
 
         // 查重
-        checkRepetition(includeCharacter){
+        checkRepetition(includeCharacter, isWithAllRepeatWord){
             this.setGroupId(-1) // 高亮分组定位到 【全部】
-            this.words = this.dict.getRepetitionWords(includeCharacter)
+            this.words = this.dict.getRepetitionWords(includeCharacter, isWithAllRepeatWord)
         },
+
         // 词组编码查错
         getErrorWords(){
             let errorWords = []
