@@ -46,7 +46,7 @@ class DictOther {
 
     // 查重，返回重复定义的字词
     // includeCharacter 当包含单字时
-    getRepetitionWords(filterSingleCharacter){
+    getRepetitionWords(filterSingleCharacter, isWithAllRepeatWord){
         let startPoint = new Date().getTime()
         let wordMap = new Map()
         let repetitionWords = []
@@ -54,16 +54,20 @@ class DictOther {
             if (filterSingleCharacter){
                 if (wordMap.has(word.word) && getUnicodeStringLength(word.word) === 1){
                     repetitionWords.push(word)
-                    let matchedWord = wordMap.get(word.word)
-                    if (matchedWord) repetitionWords.push(matchedWord)
+                    if (isWithAllRepeatWord){
+                        let matchedWord = wordMap.get(word.word)
+                        if (matchedWord) repetitionWords.push(matchedWord)
+                    }
                 } else { // 如果 map 中没有这个词的记录，添加这个记录
                     wordMap.set(word.word, word)
                 }
             } else {
                 if (wordMap.has(word.word) && getUnicodeStringLength(word.word) > 1){ // 单字没必要查重，所以这里只搜索 2 个字以上的词
                     repetitionWords.push(word)
-                    let matchedWord = wordMap.get(word.word)
-                    if (matchedWord) repetitionWords.push(matchedWord)
+                    if (isWithAllRepeatWord){
+                        let matchedWord = wordMap.get(word.word)
+                        if (matchedWord) repetitionWords.push(matchedWord)
+                    }
                 } else { // 如果 map 中没有这个词的记录，添加这个记录
                     wordMap.set(word.word, word)
                 }
