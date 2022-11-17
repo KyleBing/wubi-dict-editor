@@ -1,4 +1,4 @@
-const {shakeDom, shakeDomFocus, log} = require('../../js/Utility')
+const {shakeDom, shakeDomFocus, log, shuffle} = require('../../js/Utility')
 const {IS_IN_DEVELOP} = require('../../js/Global')
 const path = require('path')
 
@@ -297,6 +297,15 @@ const app = {
             this.tips.push('排序完成')
             log(`排序用时 ${new Date().getTime() - startPoint} ms`)
         },
+
+        // 全文乱序
+        shuffleAll(){
+            this.words = shuffle(this.words)
+            // 只是为了让其响应数组数据的变化
+            this.words.push(new Word(19910123, 'gutu', '邴新科', 999, '临时词条'))
+            this.words.pop()
+        },
+
         enterKeyPressed(){
             switch (this.config.enterKeyBehavior){
                 case "add":this.addNewWord(); break;

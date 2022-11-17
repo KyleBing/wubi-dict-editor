@@ -38,6 +38,23 @@ function log(...obj){
     console.log(...obj)
 }
 
+/**
+ * 数组乱序算法
+ * @param arr
+ * @return {*}
+ */
+function shuffle(arr) {
+    let length = arr.length,
+        r = length,
+        rand = 0;
+
+    while (r) {
+        rand = Math.floor(Math.random() * r--);
+        [arr[r], arr[rand]] = [arr[rand], arr[r]];
+    }
+    return arr;
+}
+
 
 // 格式化时间，输出字符串
 function dateFormatter(date, formatString) {
@@ -64,5 +81,5 @@ function dateFormatter(date, formatString) {
 
 
 module.exports = {
-    shakeDom, shakeDomFocus, log, getUnicodeStringLength, dateFormatter
+    shakeDom, shakeDomFocus, log, getUnicodeStringLength, dateFormatter, shuffle
 }

@@ -92,17 +92,6 @@
         >
 
             <section>
-                <div class="title">码表读取</div>
-                <div class="content">
-                    <div class="load-list">
-                        <div class="btn btn-ellipsis btn-orange btn-load" v-if="dict.fileName" @click="loadDictFile" >{{ dict.fileName}}</div>
-                        <div class="btn btn-ellipsis btn-primary btn-load" v-else @click="loadDictFile" >选择码表文件</div>
-                        <div class="btn btn-primary center btn-reload" @click="reloadCurrentFile">重新载入</div>
-                    </div>
-                </div>
-            </section>
-
-            <section>
                 <div class="title">码表格式</div>
                 <div class="content">
                     <div class="btn-list">
@@ -125,11 +114,32 @@
             </section>
 
             <section>
+                <div class="title">码表读取</div>
+                <div class="content">
+                    <div class="load-list">
+                        <div class="btn btn-ellipsis btn-orange btn-load" v-if="dict.fileName" @click="loadDictFile" >{{ dict.fileName}}</div>
+                        <div class="btn btn-ellipsis btn-primary btn-load" v-else @click="loadDictFile" >选择码表文件</div>
+                        <div class="btn btn-primary center btn-reload" @click="reloadCurrentFile">重新载入</div>
+                    </div>
+                </div>
+            </section>
+
+            <section>
                 <div class="title">字数筛选</div>
                 <div class="content btn-list">
                     <div class="btn-item" v-for="item in filterCharacterLengthArray" :key="item.name">
                         <div @click="changeFilterWordLength(item.value)" :class="['btn btn-primary', {'btn-blue': filterCharacterLength === item.value}]">{{ item.name }}</div>
                     </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="title">选择 & 排序</div>
+                <div class="content btn-list">
+                    <div class="btn-item"><div @click="selectAll" ref="domBtnSelectAll" class="btn btn-primary">全选</div></div>
+                    <div class="btn-item"><div @click="resetInputs" class="btn btn-primary">清选</div></div>
+                    <div class="btn-item"><div @click="sort" class="btn btn-primary">排序</div></div>
+                    <div class="btn-item"><div @click="shuffleAll" class="btn btn-primary">全部乱序</div></div>
                 </div>
             </section>
 
@@ -316,8 +326,6 @@
     <div class="footer">
         <div class="footer-toolbar">
             <div class="link-list">
-                <div class="link" ref="domBtnSelectAll" @click="selectAll">全选</div>
-                <div class="link" @click="resetInputs">清选</div>
                 <div class="link" @click="reloadCurrentFile">重载码表</div>
                 <div class="link" @click="sort">排序</div>
                 <div class="link origin" @click="openCurrentYaml">{{ dict.fileName }}</div>
