@@ -558,7 +558,17 @@ function createConfigWindow() {
             properties: ['openDirectory'] // 选择文件夹
         })
         if (rimeHomeDir){
-            configWindow.send('ConfigWindow:ChoosenRimeHomeDir', rimeHomeDir)
+            configWindow.send('ConfigWindow:ChosenRimeHomeDir', rimeHomeDir)
+        }
+    })
+
+    // 选取输入法程序目录
+    ipcMain.on('ConfigWindow:ChooseRimeExecDir', event => {
+        let rimeExecDir = dialog.showOpenDialogSync(configWindow,{
+            properties: ['openDirectory'] // 选择文件夹
+        })
+        if (rimeExecDir){
+            configWindow.send('ConfigWindow:ChosenRimeExecDir', rimeExecDir)
         }
     })
 

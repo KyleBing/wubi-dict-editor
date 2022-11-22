@@ -47,13 +47,24 @@ const app = {
         // config
         ipcRenderer.on('ConfigWindow:ResponseConfigFile', (event, config) => {
             this.config = config
+            // v1.15 添加 rimeExecDir 字段
+            if (config.hasOwnProperty('rimeExecDir')){
+
+            } else {
+                this.$set(this.config, 'rimeExecDir', '')
+            }
             this.userInfo.email = config.userInfo && config.userInfo.email
         })
         ipcRenderer.send('ConfigWindow:RequestConfigFile')
 
-        // 选取配置目录后保存
-        ipcRenderer.on('ConfigWindow:ChoosenRimeHomeDir', (event, dir) => {
+        // 选取 rime 配置目录后保存
+        ipcRenderer.on('ConfigWindow:ChosenRimeHomeDir', (event, dir) => {
             this.config.rimeHomeDir = dir[0]
+        })
+        // 选取 rime 程序目录后保存
+        ipcRenderer.on('ConfigWindow:ChosenRimeExecDir', (event, dir) => {
+            this.config.rimeExecDir = dir[0]
+            console.log(this.config)
         })
 
         // 字典文件保存后
@@ -89,6 +100,9 @@ const app = {
         },
         chooseRimeHomeDir(){
             ipcRenderer.send('ConfigWindow:ChooseRimeHomeDir')
+        },
+        chooseRimeExecDir(){
+            ipcRenderer.send('ConfigWindow:ChooseRimeExecDir')
         }
     },
     watch: {

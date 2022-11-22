@@ -137,13 +137,26 @@
 
     <section>
         <div class="section-title">
-            <h3>配置文件目录</h3>
+            <h3>选取输入法配置文件目录</h3>
             <div class="desc">工具自动读取的输入法配置文件目录</div>
         </div>
         <div class="section-content">
             <div class="check-item">
                 <p>{{config.rimeHomeDir || '默认目录'}}</p>
                 <div class="btn btn-primary" @click="chooseRimeHomeDir">选择目录</div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="section-title">
+            <h3>选取输入法程序目录</h3>
+            <div class="desc">程序安装在了什么位置，用于自动部署</div>
+        </div>
+        <div class="section-content">
+            <div class="check-item">
+                <p>{{config.rimeExecDir || '默认目录'}}</p>
+                <div class="btn btn-primary" @click="chooseRimeExecDir">选择目录</div>
             </div>
         </div>
     </section>

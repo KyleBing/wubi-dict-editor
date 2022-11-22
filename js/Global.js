@@ -16,6 +16,7 @@ const DEFAULT_CONFIG = {
     autoDeployOnEdit: false ,                       // 编辑词条后 是否自动布署
     enterKeyBehavior: 'add' ,                       // add | search
     rimeHomeDir: '' ,                               // 配置文件主目录
+    rimeExecDir: '' ,                               // 输入法程序主目录
     searchMethod: 'both' ,                          // 搜索匹配的内容  code | phrase | both | any
     chosenGroupIndex: -1 ,                          // 列表中选定的分组 id
     theme: 'auto' ,                                 // auto 跟随系统 | black
