@@ -251,9 +251,9 @@
                     <div class="content">
                         <div class="btn-list">
                             <div class="btn-item">
-                                <div class="btn btn-primary mb-1" @click="syncCurrentDict">增量：本地 + 云</div>
-                                <div class="btn btn-primary mb-1" @click="syncUploadCurrentDict">覆盖：本地 → 云</div>
-                                <div class="btn btn-primary mb-1" @click="syncDownloadCurrentDict">覆盖：本地 ← 云</div>
+                                <div class="btn btn-primary mb-1" @click="syncCurrentDict">本地 + 云：增量添加</div>
+                                <div class="btn btn-primary mb-1" @click="syncUploadCurrentDict">本地 → 云：覆盖云端</div>
+                                <div class="btn btn-primary mb-1" @click="syncDownloadCurrentDict">本地 ← 云：覆盖本地</div>
                             </div>
                         </div>
                     </div>
@@ -263,10 +263,10 @@
                     <div class="content">
                         <div class="btn-list">
                             <div class="btn-item">
-                                <div class="btn btn-primary" @click="selectAll">全选</div>
+                                <div class="btn btn-green" @click="selectAll">全选</div>
                             </div>
                             <div class="btn-item">
-                                <div class="btn btn-primary" @click="resetInputs">取消选择</div>
+                                <div class="btn btn-orange" @click="resetInputs">取消选择</div>
                             </div>
                         </div>
                     </div>
@@ -327,7 +327,7 @@
                                 <div class="btn btn-primary" @click="openCurrentYaml">编辑源码表文件</div>
                             </div>
                             <div class="btn-item mt-1">
-                                <div class="btn btn-primary" @click="exportSelectionToPlist">导出选中词条到 .plist 文件</div>
+                                <div class="btn btn-cyan" @click="exportSelectionToPlist">导出选中词条到 .plist 文件</div>
                             </div>
                         </div>
                     </div>
