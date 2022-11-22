@@ -259,7 +259,7 @@
                     </div>
                 </section>
                 <section>
-                    <div class="title">词条选择</div>
+                    <div class="title">选择</div>
                     <div class="content">
                         <div class="btn-list">
                             <div class="btn-item">
@@ -340,9 +340,12 @@
     <!--FOOTER-->
     <div class="footer">
         <div class="footer-toolbar">
+            <div class="footer-icon" v-if="config.isToolPanelShowing" @click="toolPanelClose">
+                <img src="../../assets/img/tool_panel_open.png"></div>
+            <div class="footer-icon" v-else @click="toolPanelExpand">
+                <img src="../../assets/img/tool_panel_close.png"></div>
+
             <div class="link-list">
-                <div class="link" v-if="config.isToolPanelShowing" @click="toolPanelClose">关闭工具面板</div>
-                <div class="link" v-else @click="toolPanelExpand">展开工具面板</div>
                 <div class="link origin" @click="openCurrentYaml">{{ dict.fileName }}</div>
             </div>
             <div class="info-list">

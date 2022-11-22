@@ -23,10 +23,10 @@
   font-family: "Comfortaa-v30", Roboto, SansSerif;
 }
 
-.btn-like, .modal-panel .modal-close {
+.btn-like, .modal-panel .modal-close, .footer .footer-icon {
   cursor: pointer;
 }
-.btn-like:active, .modal-panel .modal-close:active {
+.btn-like:active, .modal-panel .modal-close:active, .footer .footer-icon:active {
   transform: translateY(2px);
 }
 
@@ -1208,9 +1208,11 @@ select option {
   position: absolute;
   bottom: 0;
   border-top: 1px solid #eee;
-  padding: 5px 15px;
+  padding: 0 15px;
   font-size: 12px;
   display: flex;
+  height: 30px;
+  align-items: center;
   justify-content: space-between;
   color: #000;
 }
@@ -1252,6 +1254,13 @@ select option {
 }
 .footer .footer-toolbar .info-list > * {
   margin-right: 10px;
+}
+.footer .footer-icon {
+  margin-right: 20px;
+}
+.footer .footer-icon img {
+  display: block;
+  width: 100%;
 }
 
 .group-container {

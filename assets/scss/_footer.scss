@@ -4,9 +4,11 @@
   position: absolute;
   bottom: 0;
   border-top: 1px solid $border-color;
-  padding: 5px 15px;
+  padding: 0 15px;
   font-size: $fz-button;
   display: flex;
+  height: 30px;
+  align-items: center;
   justify-content: space-between;
   color: $text-main;
 
@@ -51,6 +53,14 @@
       }
       display: flex;
       justify-content: flex-start;
+    }
+  }
+  .footer-icon{
+    margin-right: 20px;
+    @extend .btn-like;
+    img{
+      display: block;
+      width: 100%;
     }
   }
 }
