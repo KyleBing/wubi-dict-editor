@@ -1258,6 +1258,8 @@ select option {
 .footer .footer-icon {
   margin-right: 20px;
   width: 20px;
+  display: flex;
+  align-items: center;
 }
 .footer .footer-icon img {
   display: block;

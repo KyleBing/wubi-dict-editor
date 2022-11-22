@@ -103,7 +103,13 @@ const app = {
         },
         chooseRimeExecDir(){
             ipcRenderer.send('ConfigWindow:ChooseRimeExecDir')
-        }
+        },
+        clearRimeHomeDir(){
+            this.config.rimeHomeDir = ''
+        },
+        clearRimeExecDir(){
+            this.config.rimeExecDir = ''
+        },
     },
     watch: {
         config: {

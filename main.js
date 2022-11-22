@@ -854,19 +854,25 @@ function getAppConfigDir(){
 function getRimeExecDir(){
     switch (os.platform()){
         case 'aix': break
-        case 'darwin':  // macOS
+        case 'darwin':
+            // macOS
             return path.join('/Library/Input Methods/Squirrel.app', 'Contents/MacOS')
         case 'freebsd': break
         case 'linux': break
         case 'openbsd': break
         case 'sunos': break
-        case 'win32': // windows
-            const PATH_RIME_BIN_WIN = 'C:/Program Files (x86)/Rime'
-            let execDirEntes = fs.readdirSync(PATH_RIME_BIN_WIN, {withFileTypes: true})
-            // 获取路径中 weasel 版本文件夹
-            // TODO：后续可能需要处理多版本的时候获取最新版本
-            let rimeDirEntes = execDirEntes.filter(item => item.name.includes('weasel'))
-            return path.join(PATH_RIME_BIN_WIN, rimeDirEntes[0].name)
+        case 'win32':
+            // windows
+            let configContent = readConfigFile()
+            if (configContent.rimeExecDir){ // 如果存在已配置的程序目录，使用它
+                return configContent.rimeExecDir
+            } else {
+                const PATH_RIME_BIN_WIN = 'C:/Program Files (x86)/Rime'
+                let execDirEntes = fs.readdirSync(PATH_RIME_BIN_WIN, {withFileTypes: true})
+                // 获取路径中 weasel 版本文件夹
+                // TODO：后续可能需要处理多版本的时候获取最新版本
+                let rimeDirEntes = execDirEntes.filter(item => item.name.includes('weasel'))
+                return path.join(PATH_RIME_BIN_WIN, rimeDirEntes[0].name)
+            }
     }
-
 }

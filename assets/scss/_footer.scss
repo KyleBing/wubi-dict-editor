@@ -59,6 +59,8 @@
     margin-right: 20px;
     @extend .btn-like;
     width: 20px;
+    display: flex;
+    align-items: center;
     img{
       display: block;
       width: 100%;

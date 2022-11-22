@@ -340,11 +340,10 @@
     <!--FOOTER-->
     <div class="footer">
         <div class="footer-toolbar">
-            <div class="footer-icon" v-if="config.isToolPanelShowing" @click="toolPanelClose">
-                <img src="../../assets/img/tool_panel_open.png"></div>
-            <div class="footer-icon" v-else @click="toolPanelExpand">
+            <div class="footer-icon" title="关闭工具面板" v-if="config.isToolPanelShowing" @click="toolPanelClose">
                 <img src="../../assets/img/tool_panel_close.png"></div>
-
+            <div class="footer-icon" title="开启工具面板"  v-else @click="toolPanelExpand">
+                <img src="../../assets/img/tool_panel_open.png"></div>
             <div class="link-list">
                 <div class="link origin" @click="openCurrentYaml">{{ dict.fileName }}</div>
             </div>
