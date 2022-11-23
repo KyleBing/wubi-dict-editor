@@ -266,13 +266,13 @@
                                 <div class="btn btn-green" @click="selectAll">全选</div>
                             </div>
                             <div class="btn-item">
-                                <div class="btn btn-orange" @click="resetInputs">取消选择</div>
+                                <div class="btn btn-orange" @click="resetInputs">清选</div>
                             </div>
                         </div>
                     </div>
                 </section>
                 <section>
-                    <div class="title">查重（同词） - 全部</div>
+                    <div class="title">查重 - 全部</div>
                     <div class="content">
                         <div class="btn-list">
                             <div class="btn-item">
@@ -285,7 +285,7 @@
                     </div>
                 </section>
                 <section>
-                    <div class="title">查重（同词） - 多余部分</div>
+                    <div class="title">查重 - 多余部分</div>
                     <div class="content">
                         <div class="btn-list">
                             <div class="btn-item">
@@ -339,23 +339,25 @@
 
     <!--FOOTER-->
     <div class="footer">
-        <div class="footer-toolbar">
-            <div class="footer-icon" title="关闭工具面板" v-if="config.isToolPanelShowing" @click="toolPanelClose">
-                <img src="../../assets/img/tool_panel_close.png"></div>
-            <div class="footer-icon" title="开启工具面板"  v-else @click="toolPanelExpand">
-                <img src="../../assets/img/tool_panel_open.png"></div>
-            <div class="link-list">
-                <div class="link origin" @click="openCurrentYaml">{{ dict.fileName }}</div>
-            </div>
+        <div class="footer-left">
             <div class="info-list">
                 <div class="count">总<span class="number">{{dict.countDictOrigin}}</span></div>
                 <div class="count"
                      v-if="dict.countDictOrigin !== dict.countDict">显<span class="number">{{wordsCount}}</span></div>
                 <div class="count">选<span class="number">{{chosenWordIds.size}}</span></div>
             </div>
+            <div class="link-list">
+                <div class="link origin" @click="openCurrentYaml">{{ dict.fileName }}</div>
+            </div>
         </div>
 
-        <div class="tip">{{tips.join(' , ')}}</div>
+        <div class="footer-right">
+            <div class="tip">{{tips.join(' , ')}}</div>
+            <div class="footer-icon" title="关闭工具面板" v-if="config.isToolPanelShowing" @click="toolPanelClose">
+                <img src="../../assets/img/tool_panel_close.png"></div>
+            <div class="footer-icon" title="开启工具面板"  v-else @click="toolPanelExpand">
+                <img src="../../assets/img/tool_panel_open.png"></div>
+        </div>
     </div>
 </div>
 

@@ -136,8 +136,8 @@
             <section>
                 <div class="title">选择 & 排序</div>
                 <div class="content btn-list">
-                    <div class="btn-item"><div @click="selectAll" ref="domBtnSelectAll" class="btn btn-primary">全选</div></div>
-                    <div class="btn-item"><div @click="resetInputs" class="btn btn-primary">清选</div></div>
+                    <div class="btn-item"><div @click="selectAll" ref="domBtnSelectAll" class="btn btn-green">全选</div></div>
+                    <div class="btn-item"><div @click="resetInputs" class="btn btn-orange">清选</div></div>
                     <div class="btn-item"><div @click="sort" class="btn btn-primary">排序</div></div>
                     <div class="btn-item"><div @click="shuffleAll" class="btn btn-primary">全部乱序</div></div>
                 </div>
@@ -192,24 +192,28 @@
                     <!--  保存-->
                     <div class="load-list mb-2">
                         <div v-if="fileNameSave" class="btn btn-orange btn-load btn-ellipsis center">{{ fileNameSave }}</div>
-                        <div
-                            :class="[
+                    </div>
+                    <div class="btn-list">
+                        <div class="btn-item">
+                            <div :class="[
                                     'btn', 'center', 'btn-reload',
                                     {'btn-green': labelOfSaveBtn === '保存成功'},
                                     {'btn-primary': labelOfSaveBtn !== '保存成功'}]"
-                            ref="domBtnSave"
-                            @click="saveToFile(dict)"> {{ labelOfSaveBtn }}
+                                 ref="domBtnSave"
+                                 @click="saveToFile(dict)"> {{ labelOfSaveBtn }}
+                            </div>
                         </div>
-                    </div>
-                    <div>
-                        <div
-                            :class="[
+
+                        <div class="btn-item">
+                            <div :class="[
                             'btn', 'center',
                             {'btn-green': labelOfSaveBtn === '保存成功'},
                             {'btn-primary': labelOfSaveBtn !== '保存成功'}]"
-                            ref="domBtnSave"
-                            @click="saveToFile(dict, true)"> 保存到源文件
+                                ref="domBtnSave"
+                                @click="saveToFile(dict, true)"> 保存到源文件
+                            </div>
                         </div>
+
                     </div>
                 </div>
             </section>
@@ -324,10 +328,9 @@
 
     <!--FOOTER-->
     <div class="footer">
-        <div class="footer-toolbar">
+        <div class="footer-left">
             <div class="link-list">
                 <div class="link" @click="reloadCurrentFile">重载码表</div>
-                <div class="link" @click="sort">排序</div>
                 <div class="link origin" @click="openCurrentYaml">{{ dict.fileName }}</div>
             </div>
             <div class="info-list">

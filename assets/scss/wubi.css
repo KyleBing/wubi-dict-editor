@@ -15,7 +15,7 @@
   font-family: "Roboto-v27-light", Roboto, SansSerif;
 }
 
-.font-roboto-regular, .footer .footer-toolbar .info-list .number {
+.font-roboto-regular, .footer .footer-left .info-list .number {
   font-family: "Roboto-v27-regular", Roboto, SansSerif;
 }
 
@@ -23,14 +23,14 @@
   font-family: "Comfortaa-v30", Roboto, SansSerif;
 }
 
-.btn-like, .modal-panel .modal-close, .footer .footer-icon {
+.btn-like, .modal-panel .modal-close, .footer-icon {
   cursor: pointer;
 }
-.btn-like:active, .modal-panel .modal-close:active, .footer .footer-icon:active {
+.btn-like:active, .modal-panel .modal-close:active, .footer-icon:active {
   transform: translateY(2px);
 }
 
-.unselectable, .schema-list .schema-list-item, .config-file-list .config-file-list-item, .file-list-item, .catalog-list .catalog-item, .footer .footer-toolbar .link-list .link, .btn, .word-item .operation, .word-item {
+.unselectable, .schema-list .schema-list-item, .config-file-list .config-file-list-item, .file-list-item, .catalog-list .catalog-item, .footer .footer-left .link-list .link, .btn, .word-item .operation, .word-item {
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -1221,47 +1221,52 @@ select option {
   font-weight: bold;
   text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1), -1px -1px 0 white;
 }
-.footer .footer-toolbar {
+.footer .footer-left {
   display: flex;
   justify-content: flex-start;
 }
-.footer .footer-toolbar > * {
+.footer .footer-left > * {
   margin-right: 30px;
   white-space: nowrap;
 }
-.footer .footer-toolbar .link-list {
+.footer .footer-left .link-list {
   display: flex;
   justify-content: flex-start;
 }
-.footer .footer-toolbar .link-list .link {
+.footer .footer-left .link-list .link {
   margin-right: 12px;
   cursor: pointer;
   transition: all 0.3s;
 }
-.footer .footer-toolbar .link-list .link:hover {
+.footer .footer-left .link-list .link:hover {
   transition: all 0.1s;
   color: #FF2D70;
 }
-.footer .footer-toolbar .link-list .origin {
+.footer .footer-left .link-list .origin {
   font-weight: bold;
 }
-.footer .footer-toolbar .info-list {
+.footer .footer-left .info-list {
   display: flex;
   justify-content: flex-start;
 }
-.footer .footer-toolbar .info-list .number {
+.footer .footer-left .info-list .number {
   margin-left: 2px;
 }
-.footer .footer-toolbar .info-list > * {
+.footer .footer-left .info-list > * {
   margin-right: 10px;
 }
-.footer .footer-icon {
-  margin-right: 20px;
+.footer .footer-right {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.footer-icon {
+  margin-left: 20px;
   width: 20px;
   display: flex;
   align-items: center;
 }
-.footer .footer-icon img {
+.footer-icon img {
   display: block;
   width: 100%;
 }

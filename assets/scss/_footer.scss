@@ -18,7 +18,7 @@
     text-shadow: 1px 1px 1px rgba(0,0,0,0.1), -1px -1px 0 white;
   }
 
-  .footer-toolbar{
+  .footer-left{
     > *{
       margin-right: 30px;
       white-space: nowrap;
@@ -55,15 +55,21 @@
       justify-content: flex-start;
     }
   }
-  .footer-icon{
-    margin-right: 20px;
-    @extend .btn-like;
-    width: 20px;
+  .footer-right{
     display: flex;
-    align-items: center;
-    img{
-      display: block;
-      width: 100%;
-    }
+    justify-content: flex-end;
+  }
+
+}
+
+.footer-icon{
+  margin-left: 20px;
+  @extend .btn-like;
+  width: 20px;
+  display: flex;
+  align-items: center;
+  img{
+    display: block;
+    width: 100%;
   }
 }

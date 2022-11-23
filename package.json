@@ -28,12 +28,13 @@
     "@electron-forge/maker-rpm": "^6.0.0-beta.58",
     "@electron-forge/maker-squirrel": "^6.0.0-beta.58",
     "@electron-forge/maker-zip": "^6.0.0-beta.58",
+    "@electron-forge/maker-dmg": "^6.0.3",
     "electron": "^13.1.7"
   },
   "config": {
     "forge": {
       "packagerConfig": {
-        "appVersion": "1.1.4",
+        "appVersion": "1.1.5",
         "name": "五笔助手",
         "appCopyright": "KyleBing(kylebing@163.com)",
         "icon": "./assets/img/appIcon/appicon",
