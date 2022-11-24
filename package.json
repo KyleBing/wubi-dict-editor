@@ -28,7 +28,7 @@
     "@electron-forge/maker-rpm": "^6.0.0-beta.58",
     "@electron-forge/maker-squirrel": "^6.0.0-beta.58",
     "@electron-forge/maker-zip": "^6.0.0-beta.58",
-    "@electron-forge/maker-dmg": "^6.0.3",
+    "@electron-forge/maker-dmg": "^6.0.0-beta.58",
     "electron": "^13.1.7"
   },
   "config": {
@@ -52,7 +52,7 @@
           }
         },
         {
-          "name": "@electron-forge/maker-dmg'",
+          "name": "@electron-forge/maker-dmg",
           "config": {
             "background": "./assets/dmg-background.png",
             "format": "ULFO"
