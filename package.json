@@ -54,6 +54,7 @@
         {
           "name": "@electron-forge/maker-dmg",
           "config": {
+            "background": "./assets/img/tool_panel_open.png"
           }
         },
         {

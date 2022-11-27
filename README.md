@@ -62,7 +62,7 @@ sudo xattr -rd com.apple.quarantine /Applications/五笔助手.app/
 ## 关于同步
 > 单个词库最大限制在 20000 字
 
-1. 请先前往 [https://kylebing.cn/diary/](https://kylebing.cn/diary/) 注册账号
+1. 请先前往 [http://kylebing.cn/diary/](http://kylebing.cn/diary/) 注册账号
 2. 打开工具 <kbd>配置</kbd> 页面，在最下面<kbd>登录</kbd>即可
 3. 同步有三个按钮
    1. <kbd>增量同步</kbd>：合并本地与线上的词库，并将最终的词库上传到线上

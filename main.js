@@ -10,7 +10,7 @@ const plist = require("plist")
 const axios = require("axios")
 const util = require("util");
 
-const SERVER_BASE_URL = 'https://kylebing.cn/portal'
+const SERVER_BASE_URL = 'http://kylebing.cn/portal'
 
 let mainWindow // 主窗口
 let fileList = [] // 文件目录列表，用于移动词条
