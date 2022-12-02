@@ -36,6 +36,31 @@
 }
 
 
+.rename-file-list{
+  .rename-file-list-item{
+    border-bottom: 1px solid $border-color;
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    &:hover{
+      @include border-radius(3px);
+      overflow: hidden;
+      border-bottom-color: transparent;
+      background-color: $bg-dropdown-highlight;
+    }
+    input{
+      width: 300px;
+      flex-shrink: 0;
+    }
+    .filepath{
+      flex-shrink: 0;
+
+    }
+  }
+}
+
+
+
 .config{
   .container {
     padding: 10px 25px;

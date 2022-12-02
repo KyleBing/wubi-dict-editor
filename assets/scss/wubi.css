@@ -1441,6 +1441,28 @@ select option {
   color: white;
 }
 
+.rename-file-list .rename-file-list-item {
+  border-bottom: 1px solid #eee;
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+}
+.rename-file-list .rename-file-list-item:hover {
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  overflow: hidden;
+  border-bottom-color: transparent;
+  background-color: rgba(0, 122, 255, 0.05);
+}
+.rename-file-list .rename-file-list-item input {
+  width: 300px;
+  flex-shrink: 0;
+}
+.rename-file-list .rename-file-list-item .filepath {
+  flex-shrink: 0;
+}
+
 .config .container {
   padding: 10px 25px;
 }

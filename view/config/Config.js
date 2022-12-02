@@ -11,8 +11,6 @@ const app = {
     el: '#app',
     data() {
         return {
-            fileList: null, // 展示用的配置文件夹内的文件列表
-            // [{ "name": "luna_pinyin.sogou", "path": "luna_pinyin.sogou.dict.yaml" }]
             config: DEFAULT_CONFIG,
             dictMapContent: '', // 字典文件内容
             userInfo: {
@@ -25,14 +23,19 @@ const app = {
     mounted() {
         this.heightContent = innerHeight - 47 - 20 - 10 + 3
 
-        // load file list
+        // RESPONSE OF FILE LIST
         ipcRenderer.on('responseFileList', (event, fileList) => {
             fileList.sort((a,b) => a.name > b.name ? 1: -1)
-            this.fileList = fileList
-        })
-        ipcRenderer.send('requestFileList')
+            console.log('获取码表文件列表成功')
+            if (this.config.fileNameList && this.config.fileNameList.length > 0){
 
-        // config
+            } else {
+                this.$set(this.config, 'fileNameList', fileList)
+                // [{ "name": "luna_pinyin.sogou", "path": "luna_pinyin.sogou.dict.yaml" }]
+            }
+        })
+
+        // config login
         ipcRenderer.on('ConfigWindow:ResponseLogin', (event, resOfLogin) => {
             if (resOfLogin.success){
                 console.log('登录成功', resOfLogin.data)
@@ -44,8 +47,9 @@ const app = {
             }
         })
 
-        // config
+        // RESPONSE OF CONFIG
         ipcRenderer.on('ConfigWindow:ResponseConfigFile', (event, config) => {
+            console.log('获取配置成功')
             this.config = config
             // v1.15 添加 rimeExecDir 字段
             if (config.hasOwnProperty('rimeExecDir')){
@@ -54,7 +58,11 @@ const app = {
                 this.$set(this.config, 'rimeExecDir', '')
             }
             this.userInfo.email = config.userInfo && config.userInfo.email
+
+            // after config is loaded, then request for fileList
+            ipcRenderer.send('requestFileList')
         })
+
         ipcRenderer.send('ConfigWindow:RequestConfigFile')
 
         // 选取 rime 配置目录后保存
@@ -64,7 +72,6 @@ const app = {
         // 选取 rime 程序目录后保存
         ipcRenderer.on('ConfigWindow:ChosenRimeExecDir', (event, dir) => {
             this.config.rimeExecDir = dir[0]
-            console.log(this.config)
         })
 
         // 字典文件保存后
@@ -131,7 +138,7 @@ const app = {
                         document.documentElement.classList.add('theme-white');
                         break;
                 }
-                log(JSON.stringify(newValue))
+                // log(JSON.stringify(newValue))
                 ipcRenderer.send('ConfigWindow:RequestSaveConfig', JSON.stringify(this.config))
             },
             deep: true
