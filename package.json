@@ -35,13 +35,13 @@
     "forge": {
       "packagerConfig": {
         "appVersion": "1.1.5",
-        "name": "五笔助手",
+        "name": "五笔码表助手",
         "appCopyright": "kylebing@163.com",
         "icon": "./assets/img/appIcon/appicon",
         "win32metadata": {
-          "ProductName": "五笔助手 Windows",
+          "ProductName": "五笔码表助手 Windows",
           "CompanyName": "kylebing.cn",
-          "FileDescription": "五笔助手 for 小狼毫"
+          "FileDescription": "五笔码表助手 for 小狼毫"
         }
       },
       "makers": [

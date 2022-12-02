@@ -1,7 +1,7 @@
 <img src="https://user-images.githubusercontent.com/12215982/139462759-e6d8ebc6-180d-4d18-8c3c-68234f0ff1c0.png" width="150" />
 
 
-# 五笔助手 for [Rime](https://github.com/rime)
+# 五笔码表助手 for [Rime](https://github.com/rime)
 一个管理 Rime 五笔词库的工具 <br/>
 该工具主要服务于 [rime-wubi86-jidian](https://github.com/KyleBing/rime-wubi86-jidian) 这个五笔方案
 
@@ -49,14 +49,14 @@ Windows, macOS, Ubuntu
 如果提示无法打开，文件损坏什么的，将 app 移到应用程序 `Applications` 文件夹后，打开终端 `Terminal`，这样操作：
 
 ```bash
-sudo xattr -rd com.apple.quarantine /Applications/五笔助手.app/
+sudo xattr -rd com.apple.quarantine /Applications/五笔码表助手.app/
 ```
 这样应该就能打开了。
 
 ### Ubuntu
-打开下载解压好的 zip 包，指令执行包中的 `五笔助手` 程序即可
+打开下载解压好的 zip 包，指令执行包中的 `五笔码表助手` 程序即可
 ```bash
-./五笔助手
+./五笔码表助手
 ```
 
 ## 关于同步
