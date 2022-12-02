@@ -17,7 +17,7 @@ const app = {
     components: {RecycleScroller: VirtualScroller.RecycleScroller},
     data() {
         return {
-            IS_IN_DEVELOP: IS_IN_DEVELOP, // 是否为开发模式，html 使用
+            IS_IN_DEVELOP, // 是否为开发模式，html 使用
 
             tips: [], // 提示信息
             tipTimeoutHandler: null, // time out handler
@@ -890,8 +890,8 @@ const app = {
             this.code = newValue.replaceAll(/[^A-Za-z ]/g, '') // input.code 只允许输入字母
         },
         word(newValue, oldValue){
-            if (newValue.length < oldValue.length){
-                // 删除或清空时，不清空编码
+            if (/[a-z]/i.test(newValue)){
+                // 当新词包含英文时， 删除 word 不改变 code
             } else {
                 if (this.dictMap){
                     this.code = this.dictMap.decodeWord(newValue)
