@@ -9,20 +9,45 @@ $catalog-pd-lr: 10px;
 }
 .catalog-list{
   border-right: 1px solid $border-color-panel;
-  width: 110px;
+  width: 150px;
   flex-shrink: 0;
   overflow-y: auto;
   .catalog-item{
+    display: flex;
+    justify-content: center;
+    flex-flow: row nowrap;
     @extend .unselectable;
     text-align: center;
     line-height: $catalog-height - $catalog-pd-tb * 2;
     padding: $catalog-pd-tb $catalog-pd-lr;
     cursor: pointer;
-    > div{
+    .catalog-title{
+      flex-grow: 1;
+      flex-shrink: 0;
       height: $catalog-height - $catalog-pd-tb * 2;
+    }
+    .up, .down{
+      flex-shrink: 0;
+      opacity: 0;
+      cursor: pointer;
+      padding: 5px 6px;
+      @include border-radius(2px);
+      img{
+        display: block;
+        width: 8px;
+      }
+      &:hover{
+        background-color: white;
+      }
+      &:active{
+        transform: translateY(1px);
+      }
     }
     &:hover{
       background-color: $bg-td-highlighted;
+      .up, .down{
+        opacity: 0.7;
+      }
     }
     &.active{
       background-color: $color-main;

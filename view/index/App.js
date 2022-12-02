@@ -56,7 +56,6 @@ const app = {
 
             wordEditing: null, // 正在编辑的词条
 
-
             // 同步词库
             dictSync: null
         }
@@ -82,7 +81,6 @@ const app = {
                 this.labelOfSaveBtn = '保存'
             }, 2000)
         })
-
 
 
         // 由 window 触发获取文件目录的请求，不然无法实现适时的获取到 主进程返回的数据
@@ -607,6 +605,41 @@ const app = {
             let temp = this.words.pop()
             this.words.push(temp)
         },
+
+        catalogMove(groupId, direction){
+            console.log(groupId, direction)
+            for (let i=0; i<this.dict.wordsOrigin.length; i++){
+                if (groupId === this.dict.wordsOrigin[i].id){
+                    let currentGroup = this.dict.wordsOrigin[i]
+                    let tempGroup = {}
+                    Object.assign(tempGroup, currentGroup)
+                    switch (direction){
+                        case 'up':
+                            if (i === 0){
+                                log('已到顶')
+                            } else {
+                                this.dict.wordsOrigin[i] = this.dict.wordsOrigin[i-1]
+                                this.dict.wordsOrigin[i-1] = tempGroup
+                                this.dict.wordsOrigin.push({})
+                                this.dict.wordsOrigin.pop()
+                            }
+                            break;
+                        case 'down':
+                            if (i === this.dict.wordsOrigin.length - 1){
+                                log('已到底')
+                            } else {
+                                this.dict.wordsOrigin[i] = this.dict.wordsOrigin[i+1]
+                                this.dict.wordsOrigin[i+1] = tempGroup
+                                this.dict.wordsOrigin.push({})
+                                this.dict.wordsOrigin.pop()
+                            }
+                            break;
+                    }
+                    break
+                }
+            }
+        },
+
         // 判断是否为第一个元素
         isFirstItem(id){
             if (this.dict.isGroupMode){ // 分组时的第一个元素

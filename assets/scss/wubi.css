@@ -1279,21 +1279,48 @@ select option {
 
 .catalog-list {
   border-right: 1px solid #e6e6e6;
-  width: 110px;
+  width: 150px;
   flex-shrink: 0;
   overflow-y: auto;
 }
 .catalog-list .catalog-item {
+  display: flex;
+  justify-content: center;
+  flex-flow: row nowrap;
   text-align: center;
   line-height: 20px;
   padding: 5px 10px;
   cursor: pointer;
 }
-.catalog-list .catalog-item > div {
+.catalog-list .catalog-item .catalog-title {
+  flex-grow: 1;
+  flex-shrink: 0;
   height: 20px;
+}
+.catalog-list .catalog-item .up, .catalog-list .catalog-item .down {
+  flex-shrink: 0;
+  opacity: 0;
+  cursor: pointer;
+  padding: 5px 6px;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+}
+.catalog-list .catalog-item .up img, .catalog-list .catalog-item .down img {
+  display: block;
+  width: 8px;
+}
+.catalog-list .catalog-item .up:hover, .catalog-list .catalog-item .down:hover {
+  background-color: white;
+}
+.catalog-list .catalog-item .up:active, .catalog-list .catalog-item .down:active {
+  transform: translateY(1px);
 }
 .catalog-list .catalog-item:hover {
   background-color: rgba(255, 45, 112, 0.05);
+}
+.catalog-list .catalog-item:hover .up, .catalog-list .catalog-item:hover .down {
+  opacity: 0.7;
 }
 .catalog-list .catalog-item.active {
   background-color: #FF2D70;
