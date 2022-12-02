@@ -21,7 +21,7 @@ const DEFAULT_CONFIG = {
     chosenGroupIndex: -1 ,                          // 列表中选定的分组 id
     theme: 'auto' ,                                 // auto 跟随系统 | black
     hasSetDictMap: false ,                          // 是否已经设置字典码表文件
-    isToolPanelShowing: true                        // index.htlm 工具面板是否展开
+    isToolPanelShowing: true                        // index.html 工具面板是否展开
 
 }
 
