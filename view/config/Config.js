@@ -138,7 +138,7 @@ const app = {
                         document.documentElement.classList.add('theme-white');
                         break;
                 }
-                // log(JSON.stringify(newValue))
+                // console.log(JSON.stringify(newValue))
                 ipcRenderer.send('ConfigWindow:RequestSaveConfig', JSON.stringify(this.config))
             },
             deep: true

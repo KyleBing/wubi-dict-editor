@@ -50,7 +50,7 @@ function createMainWindow() {
     ipcMain.on('saveFile', (event, filename, yamlString) => {
         fs.writeFile(path.join(getRimeConfigDir(), filename), yamlString, {encoding: "utf8"}, err => {
             if (!err){
-                log('saveFileSuccess')
+                console.log('saveFileSuccess')
                 try{
                     applyRime() // 布署
                 } catch (err){
@@ -77,7 +77,7 @@ function createMainWindow() {
         let filePath = path.join(getRimeConfigDir(), filename)
         fs.readFile(filePath, {encoding: 'utf-8'}, (err, res) => {
             if(err){
-                log(err)
+                console.log(err)
             } else {
                 mainWindow.webContents.send('setTargetDict', filename, filePath, res)
             }
@@ -89,7 +89,7 @@ function createMainWindow() {
         let mainDictFileName = 'wubi86_jidian.dict.yaml'
         fs.readFile(path.join(getRimeConfigDir(), mainDictFileName), {encoding: 'utf-8'}, (err, res) => {
             if(err){
-                log(err)
+                console.log(err)
             } else {
                 mainWindow.webContents.send('setMainDict', path.join(getRimeConfigDir(), mainDictFileName) ,res)
             }
@@ -99,9 +99,9 @@ function createMainWindow() {
     // 外部打开当前码表文件
     ipcMain.on('openFileOutside', (event, filename) => {
         shell.openPath(path.join(getRimeConfigDir(), filename)).then(res => {
-            log(res)
+            console.log(res)
         }).catch(err => {
-            log(err)
+            console.log(err)
         })
     })
     ipcMain.on('GetFileList', event => {
@@ -156,7 +156,7 @@ function createMainWindow() {
             {encoding: 'utf-8'},
             err => {
                 if (err) {
-                    log(err)
+                    console.log(err)
                 } else {
                     // notification
                     if (Notification.isSupported()){
@@ -334,7 +334,7 @@ function showToolWindow (){
             {encoding: 'utf-8'},
             err => {
                 if (err) {
-                    log(err)
+                    console.log(err)
                 } else {
                     // notification
                     if (Notification.isSupported()){
@@ -369,7 +369,7 @@ function showToolWindow (){
     ipcMain.on('ToolWindow:SaveFile', (event, filePath, fileConentString) => {
         fs.writeFile(filePath, fileConentString, {encoding: "utf8"}, err => {
             if (!err){
-                log('saveFileSuccess')
+                console.log('saveFileSuccess')
                 // applyRime() // 布署
                 toolWindow.webContents.send('saveFileSuccess')
             }
@@ -384,9 +384,9 @@ function showToolWindow (){
     // 外部打开当前码表文件
     ipcMain.on('ToolWindow:openFileOutside', (event, filename) => {
         shell.openPath(path.join(getRimeConfigDir(), filename)).then(res => {
-            log(res)
+            console.log(res)
         }).catch(err => {
-            log(err)
+            console.log(err)
         })
     })
 
@@ -399,7 +399,7 @@ function showToolWindow (){
         let filePath = path.join(getRimeConfigDir(), filename)
         fs.readFile(filePath, {encoding: 'utf-8'}, (err, res) => {
             if(err){
-                log(err)
+                console.log(err)
             } else {
                 toolWindow.webContents.send('ToolWindow:SetTargetDict',filename, filePath ,res)
             }
@@ -435,7 +435,7 @@ function readFileFromDiskAndResponse(filePath, responseWindow){
     if (fileContent){
         responseWindow.send('showFileContent', fileName, filePath, fileContent)
     } else {
-        log('读取文件错误')
+        console.log('读取文件错误')
     }
 }
 
@@ -589,7 +589,7 @@ function createConfigWindow() {
             if (fileContent){
                 configWindow.send('ConfigWindow:ShowDictMapContent', fileName, filePath, fileContent)
             } else {
-                log('读取码表字典文件错误')
+                console.log('读取码表字典文件错误')
             }
         }
     })
@@ -604,7 +604,7 @@ function createConfigWindow() {
             {encoding: 'utf-8'},
             err => {
                 if (err) {
-                    log(err)
+                    console.log(err)
                 } else {
                     configWindow.send('ConfigWindow:SaveDictMapSuccess')
                 }
@@ -621,7 +621,7 @@ function writeConfigFile(contentString){
         contentString, {encoding: 'utf-8'},
         err => {
             if (err) {
-                log(err)
+                console.log(err)
             } else {
                 // 配置保存成功后，向主窗口发送配置文件内容
                 if (toolWindow) toolWindow.send('ToolWindow:ResponseConfigFile', JSON.parse(contentString)) // 向窗口发送 config 内容
@@ -663,7 +663,7 @@ function readFileFromConfigDir(fileName, responseWindow){
     let filePath = path.join(rimeHomeDir, fileName)
     fs.readFile(filePath, {encoding: 'utf-8'}, (err, res) => {
         if(err){
-            log(err)
+            console.log(err)
         } else {
             if(responseWindow){
                 responseWindow.send('showFileContent', fileName, filePath, res)
@@ -787,7 +787,7 @@ function getDictFileList(){
     let rimeFolderPath = getRimeConfigDir()
     fs.readdir(rimeFolderPath,(err, filePaths) => {
         if (err) {
-            log(err)
+            console.log(err)
         } else {
             let filesMenu = []
             // 筛选 .yaml 文件
@@ -808,12 +808,12 @@ function getDictFileList(){
 // 布署 Rime
 function applyRime(){
     let rimeBinDir = getRimeExecDir()
-    log(path.join(rimeBinDir,'WeaselDeployer.exe'))
+    console.log(path.join(rimeBinDir,'WeaselDeployer.exe'))
     switch (os.platform()){
         case 'darwin':
             // macOS
             exec(`"${rimeBinDir}/Squirrel" --reload`, error => {
-                log(error)
+                console.log(error)
             })
             break
         case 'win32':
@@ -821,7 +821,7 @@ function applyRime(){
             let execFilePath = path.join(rimeBinDir,'WeaselDeployer.exe')
             exec(`"${execFilePath}" /deploy`, err => {
                 if (err){
-                    log(err)
+                    console.log(err)
                 }
             })
     }

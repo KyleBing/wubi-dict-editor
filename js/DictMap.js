@@ -38,7 +38,7 @@ class DictMap {
         this.lastIndex = lines.length + 1
         let linesValid = lines.filter(item => item.indexOf(this.seperator) > -1) // 选取包含分隔符的行
         let words = []
-        log('正常词条的行数：',linesValid.length)
+        console.log('正常词条的行数：',linesValid.length)
         linesValid.forEach(item => {
             let currentWords = this.getWordsFromLine(item)
             words.push(...currentWords) // 拼接词组
@@ -51,7 +51,7 @@ class DictMap {
                 }
             })
          })
-        log(`处理文件完成，共：${words.length } 条，用时 ${new Date().getTime() - startPoint} ms`)
+        console.log(`处理文件完成，共：${words.length } 条，用时 ${new Date().getTime() - startPoint} ms`)
         return words
     }
 
@@ -88,7 +88,7 @@ class DictMap {
                         decodeArray[2].substring(0,1) +
                         decodeArray[decodeArray.length - 1].substring(0,1)
             }
-            // log(phraseCode, decodeArray)
+            // console.log(phraseCode, decodeArray)
             return phraseCode
         } catch(err){
             return ''
@@ -101,7 +101,7 @@ class DictMap {
         this.characterMap.forEach((code, word) => {
             fileContentString = fileContentString.concat(word, this.seperator, code, os.EOL)
         })
-        log(`字典词条文本已生成，用时 ${new Date().getTime() - startPoint} ms`)
+        console.log(`字典词条文本已生成，用时 ${new Date().getTime() - startPoint} ms`)
         return fileContentString
     }
 
@@ -121,10 +121,10 @@ class DictMap {
     // 判断码表文件的换行符是 \r\n 还是 \n
     getFileEOLFrom(fileContent){
         if(fileContent.indexOf('\r\n') > -1){
-            log('文件换行符为： \\r\\n')
+            console.log('文件换行符为： \\r\\n')
             return '\r\n'
         } else {
-            log('文件换行符为： \\n')
+            console.log('文件换行符为： \\n')
             return '\n'
         }
     }

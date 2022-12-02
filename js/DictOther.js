@@ -75,10 +75,10 @@ class DictOther {
         })
         // 排序后再去除重复项
         repetitionWords.sort((a, b) => {
-            // log(a.word + a.code, b.word + b.code)
+            // console.log(a.word + a.code, b.word + b.code)
             return a.toComparableString() > b.toComparableString()  ? 1 : -1
         })
-        log('重复词条数量:未去重之前 ', repetitionWords.length)
+        console.log('重复词条数量:未去重之前 ', repetitionWords.length)
 
         for (let i = 0; i < repetitionWords.length - 1; i++) {
             if (repetitionWords[i].id === repetitionWords[i + 1].id ) {
@@ -86,10 +86,10 @@ class DictOther {
                 i = i - 1
             }
         }
-        log(`查重完成，用时 ${new Date().getTime() - startPoint} ms`)
-        log('词条字典数量: ', wordMap.size)
-        log('重复词条数量: ', repetitionWords.length)
-        log('重复 + 词条字典 = ', repetitionWords.length + wordMap.size)
+        console.log(`查重完成，用时 ${new Date().getTime() - startPoint} ms`)
+        console.log('词条字典数量: ', wordMap.size)
+        console.log('重复词条数量: ', repetitionWords.length)
+        console.log('重复 + 词条字典 = ', repetitionWords.length + wordMap.size)
         return repetitionWords
     }
 
@@ -102,7 +102,7 @@ class DictOther {
         // 如果为纯词模式，就使用所有的行，否则就根据分隔符进行筛选
         let linesValid = this.dictFormat === 'w'? lines: lines.filter(item => item.indexOf(this.seperator) > -1)
         let words = []
-        log('正常词条的行数：',linesValid.length)
+        console.log('正常词条的行数：',linesValid.length)
         linesValid.forEach(item => {
             let currentWords = this.getWordsFromLine(item)
             words.push(...currentWords) // 拼接词组
@@ -115,7 +115,7 @@ class DictOther {
                 }
             })
          })
-        log(`处理文件完成，共：${words.length } 条，用时 ${new Date().getTime() - startPoint} ms`)
+        console.log(`处理文件完成，共：${words.length } 条，用时 ${new Date().getTime() - startPoint} ms`)
         return words
     }
 
@@ -123,7 +123,7 @@ class DictOther {
     sort(){
         let startPoint = new Date().getTime()
         this.wordsOrigin.sort((a,b) => a.code < b.code ? -1: 1)
-        log(`排序用时 ${new Date().getTime() - startPoint} ms`)
+        console.log(`排序用时 ${new Date().getTime() - startPoint} ms`)
     }
 
 
@@ -133,7 +133,7 @@ class DictOther {
         words.forEach(word => {
             this.addWordToDictInOrder(word)
         })
-        log(`添加 ${words.length } 条词条到指定码表, 用时 ${new Date().getTime() - startPoint} ms`)
+        console.log(`添加 ${words.length } 条词条到指定码表, 用时 ${new Date().getTime() - startPoint} ms`)
     }
 
     // 依次序添加 word
@@ -157,10 +157,10 @@ class DictOther {
     // 判断码表文件的换行符是 \r\n 还是 \n
     getFileEOLFrom(fileContent){
         if(fileContent.indexOf('\r\n') > -1){
-            log('文件换行符为： \\r\\n')
+            console.log('文件换行符为： \\r\\n')
             return '\r\n'
         } else {
-            log('文件换行符为： \\n')
+            console.log('文件换行符为： \\n')
             return '\n'
         }
     }
@@ -199,25 +199,25 @@ class DictOther {
                     wordArray.forEach(item => {oneCodewordsString = oneCodewordsString.concat(seperator + item.word)}) // seperater + wordsString
                     fileContentString = fileContentString.concat(code, oneCodewordsString, os.EOL)
                 })
-                log(`词条文本已生成，用时 ${new Date().getTime() - startPoint} ms`)
+                console.log(`词条文本已生成，用时 ${new Date().getTime() - startPoint} ms`)
                 return fileContentString
             case 'cw':
                 this.wordsOrigin.forEach(word => {
                     fileContentString = fileContentString.concat(word.toFileString(seperator, true), os.EOL)
                 })
-                log(`词条文本已生成，用时 ${new Date().getTime() - startPoint} ms`)
+                console.log(`词条文本已生成，用时 ${new Date().getTime() - startPoint} ms`)
                 return fileContentString
             case 'wc':
                 this.wordsOrigin.forEach(word => {
                     fileContentString = fileContentString.concat(word.toFileString(seperator, false), os.EOL)
                 })
-                log(`词条文本已生成，用时 ${new Date().getTime() - startPoint} ms`)
+                console.log(`词条文本已生成，用时 ${new Date().getTime() - startPoint} ms`)
                 return fileContentString
             case 'w':
                 this.wordsOrigin.forEach(word => {
                     fileContentString = fileContentString.concat(word.word, os.EOL)
                 })
-                log(`词条文本已生成，用时 ${new Date().getTime() - startPoint} ms`)
+                console.log(`词条文本已生成，用时 ${new Date().getTime() - startPoint} ms`)
                 return fileContentString
         }
     }

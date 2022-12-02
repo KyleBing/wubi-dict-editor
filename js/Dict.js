@@ -18,7 +18,7 @@ class Dict {
 
         let indexEndOfHeader = fileContent.indexOf('...')
         if (indexEndOfHeader < 0){
-            log('文件格式错误，没有 ... 这一行')
+            console.log('文件格式错误，没有 ... 这一行')
         } else {
             this.indexEndOfHeader = indexEndOfHeader + 3
             this.header = fileContent.substring(0, this.indexEndOfHeader)
@@ -52,7 +52,7 @@ class Dict {
             let currentWord = getWordFromLine(index, item)
             words.push(currentWord) // 获取词条
          })
-        log(`处理yaml码表文件：完成，共：${words.length } ${this.isGroupMode? '组': '条'}，用时 ${new Date().getTime() - startPoint} ms`)
+        console.log(`处理yaml码表文件：完成，共：${words.length } ${this.isGroupMode? '组': '条'}，用时 ${new Date().getTime() - startPoint} ms`)
         return words
     }
 
@@ -79,7 +79,7 @@ class Dict {
                 temp.dict.push(getWordFromLine(index, item))
                 lastItemIsEmptyLine = false
             } else if (item.startsWith('#')) { // 注释
-                log(item)
+                console.log(item)
                 lastItemIsEmptyLine = false
             } else {
                 // 为空行时
@@ -95,7 +95,7 @@ class Dict {
                 lastItemIsEmptyLine = true
             }
         })
-        log(`处理yaml码表文件：完成，共：${wordsGroup.length } ${this.isGroupMode? '组': '条'}，用时 ${new Date().getTime() - startPoint} ms`)
+        console.log(`处理yaml码表文件：完成，共：${wordsGroup.length } ${this.isGroupMode? '组': '条'}，用时 ${new Date().getTime() - startPoint} ms`)
         if (temp){
             if (temp.dict.length > 0){
                 wordsGroup.push(temp) // 加上最后一个
@@ -108,10 +108,10 @@ class Dict {
     // 判断码表文件的换行符是 \r\n 还是 \n
     getFileEOLFrom(fileContent){
         if(fileContent.indexOf('\r\n') > -1){
-            log('文件换行符为： \\r\\n')
+            console.log('文件换行符为： \\r\\n')
             return '\r\n'
         } else {
-            log('文件换行符为： \\n')
+            console.log('文件换行符为： \\n')
             return '\n'
         }
     }
@@ -130,7 +130,7 @@ class Dict {
         } else {
             this.wordsOrigin.sort((a,b) => a.code < b.code ? -1: 1)
         }
-        log(`Sort 用时 ${new Date().getTime() - startPoint} ms`)
+        console.log(`Sort 用时 ${new Date().getTime() - startPoint} ms`)
     }
 
     // 查重，返回重复定义的字词
@@ -167,7 +167,7 @@ class Dict {
                     }
                 })
             })
-            log(groupRepeatedWords)
+            console.log(groupRepeatedWords)
             repetitionWords.push(new WordGroup(999, '重复的词条', groupRepeatedWords))
         } else {
             this.wordsOrigin.forEach(word => {
@@ -198,10 +198,10 @@ class Dict {
         if(this.isGroupMode){
             // 排序后再去除重复项
             repetitionWords[0].dict.sort((a, b) => {
-                // log(a.word + a.code, b.word + b.code)
+                // console.log(a.word + a.code, b.word + b.code)
                 return (a.toComparableString()) > (b.toComparableString())  ? 1 : -1
             })
-            log('重复词条数量:未去重之前 ', repetitionWords[0].dict.length)
+            console.log('重复词条数量:未去重之前 ', repetitionWords[0].dict.length)
             for (let i = 0; i < repetitionWords[0].dict.length - 1; i++) {
                 if (repetitionWords[0].dict[i].id === repetitionWords[0].dict[i + 1].id ) {
                     repetitionWords[0].dict.splice(i,1)
@@ -211,10 +211,10 @@ class Dict {
         } else {
             // 排序后再去除重复项
             repetitionWords.sort((a, b) => {
-                // log(a.word + a.code, b.word + b.code)
+                // console.log(a.word + a.code, b.word + b.code)
                 return (a.toComparableString()) > (b.toComparableString())  ? 1 : -1
             })
-            log('重复词条数量:未去重之前 ', repetitionWords.length)
+            console.log('重复词条数量:未去重之前 ', repetitionWords.length)
             for (let i = 0; i < repetitionWords.length - 1; i++) {
                 if (repetitionWords[i].id === repetitionWords[i + 1].id ) {
                     repetitionWords.splice(i,1)
@@ -223,11 +223,11 @@ class Dict {
             }
         }
 
-        log(`查重完成，用时 ${new Date().getTime() - startPoint} ms`)
-        log('词条字典数量: ', wordMap.size)
-        log('重复词条数量: ', repetitionWords.length)
-        log('重复 + 词条字典 = ', repetitionWords.length + wordMap.size)
-        log('处理之后的：', repetitionWords)
+        console.log(`查重完成，用时 ${new Date().getTime() - startPoint} ms`)
+        console.log('词条字典数量: ', wordMap.size)
+        console.log('重复词条数量: ', repetitionWords.length)
+        console.log('重复 + 词条字典 = ', repetitionWords.length + wordMap.size)
+        console.log('处理之后的：', repetitionWords)
         return repetitionWords
     }
 
@@ -260,7 +260,7 @@ class Dict {
                 this.addWordToDictInOrder(word)
             })
         }
-        log(`添加 ${words.length } 条词条到指定码表, 用时 ${new Date().getTime() - startPoint} ms`)
+        console.log(`添加 ${words.length } 条词条到指定码表, 用时 ${new Date().getTime() - startPoint} ms`)
     }
 
     // 依次序添加 word
@@ -284,7 +284,7 @@ class Dict {
     // 依次序添加 word groupMode
     addWordToDictInOrderWithGroup(words, groupIndex){
         let dictWords = this.wordsOrigin[groupIndex].dict
-        log('TODO: add to group')
+        console.log('TODO: add to group')
         words.forEach(word => {
             let insetPosition = null // 插入位置 index
             for (let i=0; i<dictWords.length-1; i++){ // -1 为了避免下面 i+1 为 undefined
@@ -328,7 +328,7 @@ class Dict {
 
     // 分组模式：删除分组
     deleteGroup(groupId){
-        log('要删除的分组 id: ',groupId)
+        console.log('要删除的分组 id: ',groupId)
         this.wordsOrigin = this.wordsOrigin.filter(group => group.id !== groupId)
     }
     // 转为 yaml String

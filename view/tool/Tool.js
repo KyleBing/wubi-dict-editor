@@ -116,7 +116,7 @@ const app = {
 
         // 由 window 触发获取文件目录的请求，不然无法实现适时的获取到 主进程返回的数据
         ipcRenderer.on('ToolWindow:FileList', (event, fileList) => {
-            log(fileList)
+            console.log(fileList)
             this.dropdownFileList = fileList
         })
         ipcRenderer.send('ToolWindow:GetFileList')
@@ -134,7 +134,7 @@ const app = {
         // 配置相关
         ipcRenderer.on('ToolWindow:ResponseConfigFile', (event, config) => {
             this.config = config
-            log('窗口载入时获取到的 config 文件：', config)
+            console.log('窗口载入时获取到的 config 文件：', config)
         })
         ipcRenderer.send('ToolWindow:RequestConfigFile')
 
@@ -295,7 +295,7 @@ const app = {
             let startPoint = new Date().getTime()
             this.words.sort((a,b) => a.code < b.code ? -1: 1)
             this.tips.push('排序完成')
-            log(`排序用时 ${new Date().getTime() - startPoint} ms`)
+            console.log(`排序用时 ${new Date().getTime() - startPoint} ms`)
         },
 
         // 全文乱序
@@ -329,7 +329,7 @@ const app = {
                         case "any": return item.code.includes(this.code) || item.word.includes(this.word)
                     }
                 })
-                log(`${this.code} ${this.word}: ` ,'搜索出', this.words.length, '条，', '用时: ', new Date().getTime() - startPoint, 'ms')
+                console.log(`${this.code} ${this.word}: ` ,'搜索出', this.words.length, '条，', '用时: ', new Date().getTime() - startPoint, 'ms')
             } else { // 如果 code, word 为空，恢复原有数据
                 this.refreshShowingWords()
             }
@@ -349,27 +349,27 @@ const app = {
             } else {
                 this.dict.addWordToDictInOrder(new Word(this.dict.lastIndex++, this.code, this.word))
                 this.refreshShowingWords()
-                log(this.code, this.word)
+                console.log(this.code, this.word)
             }
         },
         // 保存内容到文件
         saveToFile(dict, isSaveToOriginalFilePath){
             if (this.dict.lastIndex >= 1){ // 以 dict 的 lastIndex 作为判断有没有加载码表的依据
                 if (isSaveToOriginalFilePath){ // 保存到原来文件，针对工具里打开的文件，和词条移动的目标文件
-                    log('保存文件路径： ', dict.filePath)
+                    console.log('保存文件路径： ', dict.filePath)
                     ipcRenderer.send(
                         'ToolWindow:SaveFile',
                         dict.filePath,
                         dict.toYamlString())
                 } else { // 保存成新文件，新文件名，只针对工具里打开的码表
-                    log('保存文件路径： ', this.filePathSave(true))
+                    console.log('保存文件路径： ', this.filePathSave(true))
                     ipcRenderer.send(
                         'ToolWindow:SaveFile',
                         this.filePathSave(true),
                         this.dict.toExportString(this.seperatorSave, this.dictFormatSave))
                 }
             } else {
-                log('未加载任何码表文件')
+                console.log('未加载任何码表文件')
             }
         },
         // 选中全部展示的词条
@@ -433,7 +433,7 @@ const app = {
                                     group.dict[j - 1] = tempItem
                                     return ''
                                 } else {
-                                    log('已到顶')
+                                    console.log('已到顶')
                                     return '已到顶'
                                 }
                             } else if (direction === 'down'){
@@ -442,7 +442,7 @@ const app = {
                                     group.dict[j + 1] = tempItem
                                     return ''
                                 } else {
-                                    log('已到底')
+                                    console.log('已到底')
                                     return '已到底'
                                 }
                             }
@@ -462,7 +462,7 @@ const app = {
                                 this.words[i - 1] = tempItem
                                 return ''
                             } else {
-                                log('已到顶')
+                                console.log('已到顶')
                                 return '已到顶'
                             }
                         } else if (direction === 'down'){
@@ -472,7 +472,7 @@ const app = {
                                 this.words[i + 1] = tempItem
                                 return ''
                             } else {
-                                log('已到底')
+                                console.log('已到底')
                                 return '已到底'
                             }
                         }
@@ -536,7 +536,7 @@ const app = {
         // 绑定键盘事件： 键盘上下控制词条上下移动
         addKeyboardListener(){
             window.addEventListener('keydown', event => {
-                // log(event)
+                // console.log(event)
                 switch( event.key) {
                     case 's':
                         if (event.ctrlKey || event.metaKey){ // metaKey 是 macOS 的 Ctrl
@@ -566,12 +566,12 @@ const app = {
         // 将选中的词条移动到指定码表
         moveWordsToTargetDict(){
             let wordsTransferring = this.dict.wordsOrigin.filter(item => this.chosenWordIds.has(item.id)) // 被转移的 [Word]
-            log('words transferring：', JSON.stringify(wordsTransferring))
+            console.log('words transferring：', JSON.stringify(wordsTransferring))
 
             this.targetDict.addWordsInOrder(wordsTransferring, this.dropdownActiveGroupIndex)
 
             this.words = [...this.dict.wordsOrigin]
-            log('after insert:( main:wordOrigin ):\n ', JSON.stringify(this.targetDict.wordsOrigin))
+            console.log('after insert:( main:wordOrigin ):\n ', JSON.stringify(this.targetDict.wordsOrigin))
 
             this.deleteWords() // 删除当前词库已移动的词条
             this.saveToFile(this.targetDict, true)
@@ -628,7 +628,7 @@ const app = {
             if (newValue.length === 0){
                 this.showDropdown = false
             }
-            log('已选词条id: ', JSON.stringify(newValue))
+            console.log('已选词条id: ', JSON.stringify(newValue))
         },
         showDropdown(newValue){
             if (!newValue){ // 窗口关闭时，重置 index

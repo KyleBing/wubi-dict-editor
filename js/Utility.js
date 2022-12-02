@@ -34,10 +34,6 @@ function getUnicodeStringLength(str){
     return wordLength
 }
 
-function log(...obj){
-    console.log(...obj)
-}
-
 /**
  * 数组乱序算法
  * @param arr
@@ -81,5 +77,5 @@ function dateFormatter(date, formatString) {
 
 
 module.exports = {
-    shakeDom, shakeDomFocus, log, getUnicodeStringLength, dateFormatter, shuffle
+    shakeDom, shakeDomFocus, getUnicodeStringLength, dateFormatter, shuffle
 }
