@@ -678,10 +678,10 @@ function readFileFromConfigDir(fileName, responseWindow){
 // 匹配文件名，返回对应文件的名字
 function getLabelNameFromFileName(fileName){
     let map = [
-        {name: '拼音词库', path: 'pinyin_simp.dict.yaml'},
-        {name: '极点 - 主表', path: 'wubi86_jidian.dict.yaml'},
-        {name: '极点 - 附加', path: 'wubi86_jidian_extra.dict.yaml'},
-        {name: '极点 - 用户', path: 'wubi86_jidian_user.dict.yaml'},
+        {name: '❤ 用户词库', path: 'wubi86_jidian_user.dict.yaml'},
+        {name: '分类词库', path: 'wubi86_jidian_extra.dict.yaml'},
+        {name: '极点主表', path: 'wubi86_jidian.dict.yaml'},
+        {name: 'pīnyīn 词库', path: 'pinyin_simp.dict.yaml'},
         {name: '极点 - 英文', path: 'wubi86_jidian_english.dict.yaml'},
 
         // 测试词库
