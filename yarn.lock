@@ -7,9 +7,9 @@
   resolved "https://registry.npmjs.org/@babel/parser/-/parser-7.20.3.tgz"
   integrity sha512-OP/s5a94frIPXwjzEcv5S/tpQfc6XhxYUnmWpgdqMWGgYCuErA3SzozaRAMQgSZWKeTJxht9aWAkUY+0UzvOFg==
 
-"@electron-forge/cli@^6.0.4":
+"@electron-forge/cli@^6.0.3":
   version "6.0.4"
-  resolved "https://registry.npmmirror.com/@electron-forge/cli/-/cli-6.0.4.tgz"
+  resolved "https://registry.npmmirror.com/@electron-forge/cli/-/cli-6.0.4.tgz#0a98ebdf2ec09744129209effd3f10606ef5083c"
   integrity sha512-iyQyh0g/cSWVQs30wsAqmTmqgV8E/i9Cy/CsHwHxQlsHHcq8N61k1JlB2dpEV1Hy9Lxafql5TE3/6uI7939IEg==
   dependencies:
     "@electron-forge/core" "^6.0.4"
@@ -85,9 +85,9 @@
     fs-extra "^10.0.0"
     which "^2.0.2"
 
-"@electron-forge/maker-deb@^6.0.4":
+"@electron-forge/maker-deb@^6.0.3":
   version "6.0.4"
-  resolved "https://registry.npmmirror.com/@electron-forge/maker-deb/-/maker-deb-6.0.4.tgz"
+  resolved "https://registry.npmmirror.com/@electron-forge/maker-deb/-/maker-deb-6.0.4.tgz#5ac9a844f31898e0bd33b73919622583cc7ded75"
   integrity sha512-kBqRiPqAInPqBEZD1iRYiF2yb7Mhcdlrn80kCtTwTF8oAA6d081g6mcrMt12sf5GBGF8IXKzm6JqbqelpYbKww==
   dependencies:
     "@electron-forge/maker-base" "^6.0.4"
@@ -95,9 +95,9 @@
   optionalDependencies:
     electron-installer-debian "^3.0.0"
 
-"@electron-forge/maker-dmg@^6.0.4":
+"@electron-forge/maker-dmg@^6.0.3":
   version "6.0.4"
-  resolved "https://registry.npmmirror.com/@electron-forge/maker-dmg/-/maker-dmg-6.0.4.tgz"
+  resolved "https://registry.npmmirror.com/@electron-forge/maker-dmg/-/maker-dmg-6.0.4.tgz#c41ed8608295900ab3582699cf8297609071e8f4"
   integrity sha512-03Q6dVpZu7HdvBFtcZVoCSN0lA3Iqi3H/JjR82G0cWINwgwAKzBlGIcZmkfU+fdBAiO4Z6tUfaYrDDtBhpn1sQ==
   dependencies:
     "@electron-forge/maker-base" "^6.0.4"
@@ -106,9 +106,9 @@
   optionalDependencies:
     electron-installer-dmg "^4.0.0"
 
-"@electron-forge/maker-rpm@^6.0.4":
+"@electron-forge/maker-rpm@^6.0.3":
   version "6.0.4"
-  resolved "https://registry.npmmirror.com/@electron-forge/maker-rpm/-/maker-rpm-6.0.4.tgz"
+  resolved "https://registry.npmmirror.com/@electron-forge/maker-rpm/-/maker-rpm-6.0.4.tgz#3b84efaf2796bc43f346dc4f37274d6771717b1f"
   integrity sha512-uNLm6zpK8OgXl2Eq9/uaQyUBKEJhlzJf4zu0DtpPqp5qeu1EObDor0/5OH6MTEmjpGSZ616tdvVN+kwqjNeNHg==
   dependencies:
     "@electron-forge/maker-base" "^6.0.4"
@@ -116,9 +116,9 @@
   optionalDependencies:
     electron-installer-redhat "^3.2.0"
 
-"@electron-forge/maker-squirrel@^6.0.4":
+"@electron-forge/maker-squirrel@^6.0.3":
   version "6.0.4"
-  resolved "https://registry.npmmirror.com/@electron-forge/maker-squirrel/-/maker-squirrel-6.0.4.tgz"
+  resolved "https://registry.npmmirror.com/@electron-forge/maker-squirrel/-/maker-squirrel-6.0.4.tgz#21b09a5165b27cc156e3c15989f7fe157752d8ac"
   integrity sha512-1bZ5RgSex5Y45HSuOqjki2oHIq/CquVPP5sLYhObd2p2ABj4ZzyqErNFK1eerDIjoesici3KKCASqBpKf2N90Q==
   dependencies:
     "@electron-forge/maker-base" "^6.0.4"
@@ -127,9 +127,9 @@
   optionalDependencies:
     electron-winstaller "^5.0.0"
 
-"@electron-forge/maker-zip@^6.0.4":
+"@electron-forge/maker-zip@^6.0.3":
   version "6.0.4"
-  resolved "https://registry.npmmirror.com/@electron-forge/maker-zip/-/maker-zip-6.0.4.tgz"
+  resolved "https://registry.npmmirror.com/@electron-forge/maker-zip/-/maker-zip-6.0.4.tgz#db4cc7f44ccf1d30fa1bc95c36d6b9708d3e5888"
   integrity sha512-tjBi46qU4vKpYUNUIv5ar6hBDjr9G7+QIUiaOj4UIN3Rwa20EvsYMBoMJBxV/CUUwkQc1NBihUPLco7PAVNb+g==
   dependencies:
     "@electron-forge/maker-base" "^6.0.4"

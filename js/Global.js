@@ -1,5 +1,5 @@
-// const IS_IN_DEVELOP = false // 生产
-const IS_IN_DEVELOP = true // 开发
+const IS_IN_DEVELOP = false // 生产
+// const IS_IN_DEVELOP = true // 开发
 
 const IS_REQUEST_LOCAL = false // 同步请求，请求线上
 // const IS_REQUEST_LOCAL = true // 同步请求，请求本地
