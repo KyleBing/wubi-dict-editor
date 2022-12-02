@@ -83,11 +83,38 @@ const app = {
         })
 
 
-        // 由 window 触发获取文件目录的请求，不然无法实现适时的获取到 主进程返回的数据
-        ipcRenderer.send('GetFileList')
-        ipcRenderer.on('FileList', (event, fileList) => {
-            this.dropdownFileList = fileList
+
+        // 配置相关
+        ipcRenderer.on('MainWindow:ResponseConfigFile', (event, config) => {
+            this.config = config
+            this.activeGroupId = config.chosenGroupIndex // 首次载入时，定位到上次选中的分组
+            console.log('窗口载入时获取到的 config 文件：', config)
+
+            // request for file list
+            ipcRenderer.send('GetFileList')
         })
+        ipcRenderer.send('MainWindow:RequestConfigFile')
+
+
+        // 由 window 触发获取文件目录的请求，不然无法实现适时的获取到 主进程返回的数据
+        ipcRenderer.on('FileList', (event, fileList) => {
+            // 此时已经存在  config 了
+            if (this.config.fileNameList && this.config.fileNameList.length > 0){
+                let fileNameMap = new Map()
+                this.config.fileNameList.forEach(fileNamePair => {
+                    fileNameMap.set(fileNamePair.path, fileNamePair.name)
+                })
+                this.dropdownFileList = fileList.map(fileNameListItem => {
+                    return {
+                        name: fileNameMap.get(fileNameListItem.path) || fileNameListItem.name,
+                        path: fileNameListItem.path
+                    }
+                })
+            } else {
+                this.dropdownFileList = fileList
+            }
+        })
+
         ipcRenderer.send('loadInitDictFile')
 
         // 载入目标码表
@@ -99,14 +126,6 @@ const app = {
         ipcRenderer.on('setMainDict', (event, filename, res) => {
             this.dictMain = new Dict(res, filename)
         })
-
-        // 配置相关
-        ipcRenderer.on('MainWindow:ResponseConfigFile', (event, config) => {
-            this.config = config
-            this.activeGroupId = config.chosenGroupIndex // 首次载入时，定位到上次选中的分组
-            console.log('窗口载入时获取到的 config 文件：', config)
-        })
-        ipcRenderer.send('MainWindow:RequestConfigFile')
 
         // 配置文件保存后，向主窗口更新配置文件内容
         ipcRenderer.on('updateConfigFile', (event, config) => {
@@ -478,7 +497,7 @@ const app = {
 
         // 保存内容到文件
         saveToFile(dict){
-            console.log(dict.fileName)
+            console.log('save to: ',dict.fileName)
             ipcRenderer.send('saveFile', dict.fileName, dict.toYamlString())
         },
         // 选中全部展示的词条
@@ -801,28 +820,36 @@ const app = {
 
         // 上传当前词库内容
         syncUploadCurrentDict(){
-            ipcRenderer.send(
-                'MainWindow:sync.save',
-                {
-                    fileName: this.dict.fileName,
-                    fileContentYaml: this.dict.toYamlString(),
-                    wordCount: this.dict.countDictOrigin,
-                    userInfo: this.config.userInfo
-                }
-            )
-            console.log('MainWindow:sync.save')
+            if (this.config.hasOwnProperty('userInfo')){
+                ipcRenderer.send(
+                    'MainWindow:sync.save',
+                    {
+                        fileName: this.dict.fileName,
+                        fileContentYaml: this.dict.toYamlString(),
+                        wordCount: this.dict.countDictOrigin,
+                        userInfo: this.config.userInfo
+                    }
+                )
+                console.log('MainWindow:sync.save')
+            } else {
+                this.tips.push('未登录，请先前往配置页面登录')
+            }
         },
 
         // 下载当前词库名的内容，【 覆盖 】 本地词库
         syncDownloadCurrentDict(){
-            ipcRenderer.send(
-                'MainWindow:sync.get:OVERWRITE',
-                {
-                    fileName: this.dict.fileName,
-                    userInfo: this.config.userInfo
-                }
-            )
-            console.log('MainWindow:sync.get:OVERWRITE')
+            if (this.config.hasOwnProperty('userInfo')){
+                ipcRenderer.send(
+                    'MainWindow:sync.get:OVERWRITE',
+                    {
+                        fileName: this.dict.fileName,
+                        userInfo: this.config.userInfo
+                    }
+                )
+                console.log('MainWindow:sync.get:OVERWRITE')
+            } else {
+                this.tips.push('未登录，请先前往配置页面登录')
+            }
         },
 
         // 同步词库内容

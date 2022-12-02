@@ -1279,7 +1279,7 @@ select option {
 
 .catalog-list {
   border-right: 1px solid #e6e6e6;
-  width: 150px;
+  width: 130px;
   flex-shrink: 0;
   overflow-y: auto;
 }
