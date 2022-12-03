@@ -1726,7 +1726,8 @@ hr {
   margin-bottom: 10px;
 }
 .btn-list .btn-item {
-  margin-right: 10px;
+  margin-bottom: 3px;
+  margin-right: 5px;
 }
 .btn-list:last-child {
   margin-bottom: 0;

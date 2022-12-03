@@ -15,6 +15,8 @@ class Dict {
         this.lastIndex = 0 // 最后一个Word Index 的值，用于新添加词时，作为唯一的 id 传入
         this.lastGroupIndex = 0 // 最后一个WordGroup Index 的值，用于新添加词时，作为唯一的 id 传入
         this.isGroupMode = false // 识别码表是否为分组形式的
+        this.dictSetExceptCharacter = new Set() // 所有词组的 set
+
 
         let indexEndOfHeader = fileContent.indexOf('...')
         if (indexEndOfHeader < 0){
@@ -50,6 +52,7 @@ class Dict {
         let words = []
         linesValid.forEach((item, index) => {
             let currentWord = getWordFromLine(index, item)
+            this.dictSetExceptCharacter.add(currentWord.word)
             words.push(currentWord) // 获取词条
          })
         console.log(`处理yaml码表文件：完成，共：${words.length } ${this.isGroupMode? '组': '条'}，用时 ${new Date().getTime() - startPoint} ms`)

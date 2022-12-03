@@ -67,7 +67,8 @@ const app = {
                 {name: '一码多词', value: 'cww',},
                 {name: '一码一词', value: 'cw',},
                 {name: '一词一码', value: 'wc',},
-                {name: '纯词', value: 'w',}
+                {name: '纯词', value: 'w',},
+                {name: 'Rime自造词码表', value: 'rime_auto',}
             ], // 码表格式数组
             filterCharacterLength: 0, // 筛选词条字数默认值
             filterCharacterLengthArray: [
@@ -80,6 +81,8 @@ const app = {
             ], // 筛选词条字数数组
             fileNameSave: '', // 显示的保存文件名
             dictMap: null, // main 返回的 dictMap，用于解码词条
+
+            dictSetExceptCharacter: null, // 主码表，除了单字之外的所有词条 set
 
             wordEditing: null, // 正在编辑的词条
         }
@@ -102,7 +105,7 @@ const app = {
             this.word = ''
             this.refreshShowingWords()
             // this.search() // 配置项：切换码表是否自动搜索
-            ipcRenderer.send('loadMainDict') // 请求主码表文件
+            ipcRenderer.send('ToolWindow:loadMainDict') // 请求主码表文件
         })
         ipcRenderer.on('saveFileSuccess', () => {
             this.labelOfSaveBtn = '保存成功'
@@ -127,8 +130,9 @@ const app = {
         })
 
         // 载入主码表
-        ipcRenderer.on('setMainDict', (event, filename, res) => {
+        ipcRenderer.on('ToolWindow:setMainDict', (event, filename, res) => {
             this.dictMain = new Dict(res, filename)
+            console.log('dictMain载入完成，包含词条：',this.dictMain.dictSetExceptCharacter.size)
         })
 
         // 配置相关
@@ -246,6 +250,22 @@ const app = {
         // 查重
         checkRepetition(includeCharacter, isWithAllRepeatWord){
             this.words = this.dict.getRepetitionWords(includeCharacter, isWithAllRepeatWord)
+        },
+
+        // 去除权重为 0 的词条
+        removePriority0(){
+            this.dict.wordsOrigin = this.dict.wordsOrigin.filter(item => item.priority !== '0')
+            this.words = this.dict.wordsOrigin
+        },
+
+        // 去除主表已存在的词条
+        removeWordsAlreadyInMainDict(){
+            this.words = this.words.filter(item => !this.dictMain.dictSetExceptCharacter.has(item.word))
+        },
+
+        // 一键精简用户码表
+        reduceRimeUserDict(){
+
         },
 
         // 载入码表文件

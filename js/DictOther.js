@@ -73,6 +73,7 @@ class DictOther {
                 }
             }
         })
+        // 目前是有多个重复相同的词条存在的 差不多是 x2 倍数量，因为每次都会添加原有的比对词条
         // 排序后再去除重复项
         repetitionWords.sort((a, b) => {
             // console.log(a.word + a.code, b.word + b.code)
@@ -246,7 +247,7 @@ class DictOther {
     getWordsFromLine(lineStr){
         let wordArray = lineStr.split(this.seperator)
         let words = []
-        let code, word
+        let code, word, priority
         switch (this.dictFormat){
             case 'cww':
                 code = wordArray[0]
@@ -267,6 +268,11 @@ class DictOther {
                 word = wordArray[0]
                 // code = getCodeFromWord(word)
                 return [new Word(this.lastIndex++, '', word)]
+            case 'rime_auto':
+                word = wordArray[0]
+                code = wordArray[1]
+                priority = wordArray[2]
+                return [new Word(this.lastIndex++, code, word, priority)]
         }
     }
 }

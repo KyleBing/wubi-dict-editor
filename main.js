@@ -371,6 +371,18 @@ function showToolWindow() {
         }
     })
 
+    // 监听载入主文件内容的请求
+    ipcMain.on('ToolWindow:loadMainDict', event => {
+        let mainDictFileName = 'wubi86_jidian.dict.yaml'
+        fs.readFile(path.join(getRimeConfigDir(), mainDictFileName), {encoding: 'utf-8'}, (err, res) => {
+            if (err) {
+                console.log(err)
+            } else {
+                toolWindow.webContents.send('ToolWindow:setMainDict', path.join(getRimeConfigDir(), mainDictFileName), res)
+            }
+        })
+    })
+
     // 保存词库到文件
     ipcMain.on('ToolWindow:SaveFile', (event, filePath, fileConentString) => {
         fs.writeFile(filePath, fileConentString, {encoding: "utf8"}, err => {
