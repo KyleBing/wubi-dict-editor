@@ -260,7 +260,8 @@ const app = {
 
         // 去除主表已存在的词条
         removeWordsAlreadyInMainDict(){
-            this.words = this.words.filter(item => !this.dictMain.dictSetExceptCharacter.has(item.word))
+            this.dict.wordsOrigin = this.dict.wordsOrigin.filter(item => !this.dictMain.dictSetExceptCharacter.has(item.word))
+            this.words = this.dict.wordsOrigin
         },
 
         // 载入码表文件
