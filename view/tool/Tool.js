@@ -263,11 +263,6 @@ const app = {
             this.words = this.words.filter(item => !this.dictMain.dictSetExceptCharacter.has(item.word))
         },
 
-        // 一键精简用户码表
-        reduceRimeUserDict(){
-
-        },
-
         // 载入码表文件
         loadDictFile(){
             ipcRenderer.send('ToolWindow:chooseDictFile')
