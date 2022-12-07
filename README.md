@@ -14,6 +14,7 @@
 > 有其它问题，欢迎加群讨论: [878750538](https://jq.qq.com/?_wv=1027&k=st8cY2sI)
 
 
+## 一、界面截图
 主界面
 <img width="1000" alt="Screen Shot 2021-12-14 at 23 37 53" src="https://user-images.githubusercontent.com/12215982/146030612-43a0af6a-f893-4c6c-8b25-2de4ef29eefc.png">
 
@@ -26,32 +27,27 @@
 配置界面
 <img width="819" alt="Screen Shot 2021-12-14 at 23 53 11" src="https://user-images.githubusercontent.com/12215982/146032695-35857e96-bbf7-451a-924f-936e802adb86.png">
 
-## 加载速度
+## 二、处理速度
 
 最多可处理 60万 条数据的码表
 <img width="674" alt="Screen Shot 2021-12-03 at 23 27 08" src="https://user-images.githubusercontent.com/12215982/144628323-1fe72bb4-602a-4d50-a904-7df9d7685b16.png">
 <img width="1463" alt="Screen Shot 2021-12-03 at 23 26 27" src="https://user-images.githubusercontent.com/12215982/144628297-be39d46f-e802-4204-a389-e3a935f61b81.png">
 
 
-## 支持平台：
+## 三、支持平台：
 Windows, macOS, Ubuntu
 
-## 下载
+## 四、下载
 
  [> 去往下载页面 <](https://github.com/KyleBing/wubi-dict-editor/releases)
 
-## 安装
+## 五、安装 & 启动
 
 ### Windows
 直接解压打开 `.exe` 文件即可
 
 ### macOS
-如果提示无法打开，文件损坏什么的，将 app 移到应用程序 `Applications` 文件夹后，打开终端 `Terminal`，这样操作：
-
-```bash
-sudo xattr -rd com.apple.quarantine /Applications/五笔码表助手.app/
-```
-这样应该就能打开了。
+将 app 移到应用程序 `Applications` 文件夹即可
 
 ### Ubuntu
 打开下载解压好的 zip 包，指令执行包中的 `五笔码表助手` 程序即可
@@ -59,7 +55,7 @@ sudo xattr -rd com.apple.quarantine /Applications/五笔码表助手.app/
 ./五笔码表助手
 ```
 
-## 关于同步
+## 六、关于同步
 > 单个词库最大限制在 20000 字
 
 1. 请先前往 [http://kylebing.cn/diary/](http://kylebing.cn/diary/) 注册账号
@@ -70,10 +66,132 @@ sudo xattr -rd com.apple.quarantine /Applications/五笔码表助手.app/
    3. <kbd>覆盖线上</kbd>：将舍弃上线词库，用本地词库覆盖线上词库内容
 
 
-## 用到的技术
+## 七、用到的技术
 - `nodejs`
 - `javascript` `scss` `html`
 - `vue 2` [`electron`](https://github.com/electron/electron)
+
+## 八、自己生成对应系统的可执行文件
+
+由于我手头只有两种机器
+- `macOS(arm)`
+- `Windows`
+
+所以我只能生成这两种平台的可执行文件。像 `Ubuntu` `macOS(Intel)` 就需要自己生成了，生成之后可以将最终的文件分享给我哦。 
+
+接下来说一下生成最终可执行文件的步骤：以 `macOS（Intel）` 系统为例
+
+### 1. 前提：具备外网访问能力
+你需要具备一个硬性条件：具有访问外网的能力。
+> 原因： 在安装 `electron` 依赖的时候需要用到外网环境，国内网络是无法实现的，会提示网络超时。
+
+### 2. 让 Terminal（终端） 可以访问外网
+我们最终需要的是在终端中可以实现访问外网。
+
+如果你是用的 v2rayU，将模式调整到 Global （全局代理） 模式即可，其它软件也是类似的操作，都将它调整至全局模式。但不要忘了当这一切结束之后调回来。
+
+测试你的 terminal 是否可以访问外网，如果没有返回，就是不能访问外网
+
+```bash
+curl google.com
+
+# 返回结果
+<HTML><HEAD><meta http-equiv="content-type" content="text/html;charset=utf-8">
+<TITLE>301 Moved</TITLE></HEAD><BODY>
+<H1>301 Moved</H1>
+The document has moved
+<A HREF="http://www.google.com/">here</A>.
+</BODY></HTML>
+```
+
+### 3. 安装 `nodejs`
+
+`nodejs` 去这个网站下载，找到对应版本下载即可，下载 LTS 的版本即可。
+> [https://nodejs.org/en/](https://nodejs.org/en/)
+
+安装完成之后，打开 terminal 输入以下指令测试是否已经安装完成
+
+```bash
+node -v
+
+# 安装正常的返回结果，会是一个版本号，像这样：
+v16.18.1
+```
+
+### 4. 下载该仓库内容
+
+1. 你可以直接从 github 下载打包好的 zip 包解压
+    > [https://github.com/KyleBing/wubi-dict-editor/archive/refs/heads/master.zip](https://github.com/KyleBing/wubi-dict-editor/archive/refs/heads/master.zip)
+2. 如果你会用 git, 也可以用 git 克隆到本地
+    ```bash
+    git clone https://github.com/KyleBing/wubi-dict-editor.git
+    ```
+
+### 5. 安装依赖
+通过 terminal 进入到刚才已经下载或克隆的目录中 `/wubi-dict-editor`
+
+此时你执行 `ls -l` 看到的应该是类似这样的
+```bash
+Kyle@Kyles-mbp wubi-dict-editor % ls -l
+total 1256
+-rw-r--r--    1 Kyle  staff    3318 Dec  2 22:06 CHANGELOG.md
+-rw-r--r--    1 Kyle  staff   32453 Aug 11  2021 LICENSE
+-rw-r--r--    1 Kyle  staff    9908 Dec  7 14:09 README.md
+drwxr-xr-x    6 Kyle  staff     192 Nov 28 12:20 assets
+drwxr-xr-x    9 Kyle  staff     288 Dec  3 19:11 js
+-rw-r--r--    1 Kyle  staff   31138 Dec  3 19:11 main.js
+-rw-r--r--    1 Kyle  staff  420973 Dec  2 19:51 package-lock.json
+-rw-r--r--    1 Kyle  staff    1957 Dec  2 22:07 package.json
+drwxr-xr-x    6 Kyle  staff     192 Nov 28 12:20 view
+-rw-r--r--    1 Kyle  staff  131328 Dec  2 21:32 yarn.lock
+```
+
+执行以下指令，直到完成
+```bash
+npm i
+```
+
+### 6. 生出可执行文件
+
+```bash
+npm run make
+
+# 结果
+yarn run v1.22.10
+$ electron-forge make
+✔ Checking your system
+✔ Loading configuration
+✔ Resolving make targets
+✔ Loading configuration
+✔ Resolving make targets
+  › Making for the following targets: dmg, zip
+✔ Running package command
+  ✔ Preparing to package application
+  ✔ Running packaging hooks
+    ✔ Running generateAssets hook
+    ✔ Running prePackage hook
+  ✔ Packaging application
+    ✔ Packaging for arm64 on darwin [1s]
+  ✔ Running postPackage hook
+✔ Running preMake hook
+✔ Making distributables
+  ✔ Making a dmg distributable for darwin/arm64 [11s]
+  ✔ Making a zip distributable for darwin/arm64 [6s]
+✔ Running postMake hook
+  › Artifacts available at: /Users/kyle/github/wubi-dict-editor/out/make
+✨  Done in 21.54s.
+
+```
+
+
+执行完成之后，就会在当前目录中多出一个名为 `/out` 的目录，你生成的最终文件就在 `/out/make` 目录下，名为 `五笔码表助手-1.1.6.dmg` 差不多的名字。
+
+直接打开这个文件就可以安装使用了。
+
+
+
+
+
 
 ## 开发计划
 
