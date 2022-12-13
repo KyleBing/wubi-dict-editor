@@ -242,7 +242,11 @@ const app = {
                             let lastCategoryName = ''
                             res.data.data.forEach(item => {
                                 if (lastCategoryName !== item.category_name){
-                                    wordGroups.push(new WordGroup(item.category_id,item.category_name,[]))
+                                    wordGroups.push(new WordGroup(
+                                        item.category_id,
+                                        item.category_name,
+                                        [new Word(item.id, item.code, item.word,item.priority, item.comment)]
+                                    ))
                                 } else {
                                     wordGroups[wordGroups.length - 1].dict.push(new Word(item.id, item.code, item.word,item.priority, item.comment))
                                 }
