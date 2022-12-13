@@ -6,7 +6,7 @@
     "name": "KyleBing",
     "email": "kylebing@163.com"
   },
-  "date": "2022-12-02",
+  "date": "2022-12-13",
   "dateInit": "2021-07-24",
   "description": "五笔码表管理工具",
   "main": "main.js",
@@ -16,25 +16,26 @@
     "make": "electron-forge make"
   },
   "dependencies": {
-    "axios": "^0.26.1",
+    "axios": "^1.2.1",
     "electron-squirrel-startup": "^1.0.0",
     "plist": "^3.0.4",
     "vue": "^2.6.14",
     "vue-virtual-scroller": "^1.0.10"
   },
   "devDependencies": {
-    "@electron-forge/cli": "^6.0.3",
-    "@electron-forge/maker-deb": "^6.0.3",
-    "@electron-forge/maker-rpm": "^6.0.3",
-    "@electron-forge/maker-squirrel": "^6.0.3",
-    "@electron-forge/maker-zip": "^6.0.3",
+
+    "@electron-forge/cli": "^6.0.0-beta.58",
+    "@electron-forge/maker-deb": "^6.0.0-beta.58",
+    "@electron-forge/maker-rpm": "^6.0.0-beta.58",
+    "@electron-forge/maker-squirrel": "^6.0.0-beta.58",
+    "@electron-forge/maker-zip": "^6.0.0-beta.58",
     "@electron-forge/maker-dmg": "^6.0.3",
-    "electron": "^21.3.1"
+    "electron": "^13.1.7"
   },
   "config": {
     "forge": {
       "packagerConfig": {
-        "appVersion": "1.1.61",
+        "appVersion": "1.1.7",
         "name": "五笔码表助手",
         "appCopyright": "kylebing@163.com",
         "icon": "./assets/img/appIcon/appicon",
