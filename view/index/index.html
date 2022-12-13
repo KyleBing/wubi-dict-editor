@@ -260,6 +260,17 @@
         <div class="main-tool" v-show="config.isToolPanelShowing">
             <div class="tool-panel"
                  :style="`height: ${heightContent}px`">
+                <!-- 只有码表文件名为这个的时候才显示这个同步按钮 -->
+                <section v-if="dict.fileName === 'wubi86_jidian_extra.dict.yaml'">
+                    <div class="title">更新</div>
+                    <div class="content">
+                        <div class="btn-list">
+                            <div class="btn-item">
+                                <div class="btn btn-primary mb-1" @click="updateExtraDict">更新扩展词库</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
                 <section>
                     <div class="title">同步</div>
                     <div class="content">

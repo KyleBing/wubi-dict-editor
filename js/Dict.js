@@ -6,7 +6,7 @@ const {shakeDom, log, shakeDomFocus, getUnicodeStringLength} = require('./Utilit
 const os = require('os')
 
 class Dict {
-    constructor(fileContent, fileName, filePath) {
+    constructor(fileContent, fileName, filePath, header, ) {
         this.dictTypeName = 'Dict'
         this.filePath = filePath // 文件路径
         this.fileName = fileName // 文件名字
@@ -16,6 +16,7 @@ class Dict {
         this.lastGroupIndex = 0 // 最后一个WordGroup Index 的值，用于新添加词时，作为唯一的 id 传入
         this.isGroupMode = false // 识别码表是否为分组形式的
         this.dictSetExceptCharacter = new Set() // 所有词组的 set
+
 
 
         let indexEndOfHeader = fileContent.indexOf('...')

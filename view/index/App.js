@@ -10,6 +10,7 @@ const {ipcRenderer, net} = require('electron')
 const VirtualScroller = require('vue-virtual-scroller')
 const WordGroup = require("../../js/WordGroup");
 
+const axios = require('axios')
 
 // Vue 2
 const app = {
@@ -220,6 +221,45 @@ const app = {
     },
 
     methods: {
+
+        // 网络请求
+        updateExtraDict(){
+            if (this.config.userInfo.password){
+                axios({
+                    method: 'post',
+                    url: 'http://kylebing.cn/portal/wubi/word/export-extra',
+                    // url: 'http://localhost:3000/wubi/word/export-extra',
+                    headers: {
+                        'Diary-Token': this.config.userInfo.password
+                    }
+                })
+                    .then(res => {
+                        if (res.status === 200){
+                            this.tips.push('获取线上分类扩展词库内容成功')
+
+                            // 使用线上的更新数据更新到当前分类扩展词库中
+                            let wordGroups = []
+                            let lastCategoryName = ''
+                            res.data.data.forEach(item => {
+                                if (lastCategoryName !== item.category_name){
+                                    wordGroups.push(new WordGroup(item.category_id,item.category_name,[]))
+                                } else {
+                                    wordGroups[wordGroups.length - 1].dict.push(new Word(item.id, item.code, item.word,item.priority, item.comment))
+                                }
+                                lastCategoryName = item.category_name
+                            })
+                            this.dict.wordsOrigin = wordGroups
+                            this.refreshShowingWords()
+                        } else {
+                            this.tips.push(res.status, res.statusText)
+
+                        }
+                    })
+            } else {
+                this.tips.push('未登录用户，请先前往配置页面登录')
+            }
+        },
+
         // 部署码表内容
         applyRime(){
             ipcRenderer.send('MainWindow:ApplyRime')
