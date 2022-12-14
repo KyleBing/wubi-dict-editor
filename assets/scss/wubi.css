@@ -1808,6 +1808,9 @@ hr {
   font-weight: bold;
   color: #000;
 }
+.radio-list-item:hover {
+  font-weight: bold;
+}
 
 .modal {
   z-index: 999;
