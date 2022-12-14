@@ -1,6 +1,9 @@
 const IS_IN_DEVELOP = false // 生产
 // const IS_IN_DEVELOP = true // 开发
 
+const BASE_URL = 'http://kylebing.cn/portal/'
+// const BASE_URL = 'http://localhost:3000/'
+
 const IS_REQUEST_LOCAL = false // 同步请求，请求线上
 // const IS_REQUEST_LOCAL = true // 同步请求，请求本地
 
@@ -28,5 +31,6 @@ const DEFAULT_CONFIG = {
 
 
 module.exports = {
-    IS_REQUEST_LOCAL, IS_IN_DEVELOP, CONFIG_FILE_NAME,CONFIG_FILE_PATH, DEFAULT_CONFIG, CONFIG_DICT_MAP_FILE_NAME
+    BASE_URL, IS_REQUEST_LOCAL, IS_IN_DEVELOP, CONFIG_FILE_NAME,
+    CONFIG_FILE_PATH, DEFAULT_CONFIG, CONFIG_DICT_MAP_FILE_NAME
 }

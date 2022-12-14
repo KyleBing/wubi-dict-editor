@@ -271,18 +271,7 @@
                         </div>
                     </div>
                 </section>
-                <section>
-                    <div class="title">同步</div>
-                    <div class="content">
-                        <div class="btn-list">
-                            <div class="btn-item">
-                                <div class="btn btn-primary mb-1" @click="syncCurrentDict">本地 + 云：增量添加</div>
-                                <div class="btn btn-primary mb-1" @click="syncUploadCurrentDict">本地 → 云：覆盖云端</div>
-                                <div class="btn btn-primary mb-1" @click="syncDownloadCurrentDict">本地 ← 云：覆盖本地</div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
+
                 <section>
                     <div class="title">选择</div>
                     <div class="content">
@@ -296,6 +285,34 @@
                         </div>
                     </div>
                 </section>
+                <section v-show="chosenWordIdArray.length > 0">
+                    <div class="title">添加词条到线上扩展词库</div>
+                    <div class="content">
+                        <div class="radio-list">
+                            <div :class="['radio-list-item', {active: item.id === selectedCategoryId}]"
+                                 v-for="item in categories" :key="item.id"
+                                 @click="changeSelectedCategoryId(item.id)"
+                            >{{ item.name }}</div>
+                        </div>
+                        <div class="btn-item mt-2">
+                            <div class="btn btn-primary mb-1" @click="uploadChosenWordsToServer">确定上传</div>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <div class="title">同步</div>
+                    <div class="content">
+                        <div class="btn-list">
+                            <div class="btn-item">
+                                <div class="btn btn-primary mb-1" @click="syncCurrentDict">本地 + 云：增量添加</div>
+                                <div class="btn btn-primary mb-1" @click="syncUploadCurrentDict">本地 → 云：覆盖云端</div>
+                                <div class="btn btn-primary mb-1" @click="syncDownloadCurrentDict">本地 ← 云：覆盖本地</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
                 <section>
                     <div class="title">查重 - 全部</div>
                     <div class="content">

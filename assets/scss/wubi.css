@@ -23,10 +23,10 @@
   font-family: "Comfortaa-v30", Roboto, SansSerif;
 }
 
-.btn-like, .modal-panel .modal-close, .footer-icon {
+.btn-like, .modal-panel .modal-close, .radio-list-item, .footer-icon {
   cursor: pointer;
 }
-.btn-like:active, .modal-panel .modal-close:active, .footer-icon:active {
+.btn-like:active, .modal-panel .modal-close:active, .radio-list-item:active, .footer-icon:active {
   transform: translateY(2px);
 }
 
@@ -1793,6 +1793,20 @@ hr {
   width: 100%;
   display: flex;
   flex-flow: row nowrap;
+}
+
+.radio-list {
+  display: flex;
+  justify-content: flex-start;
+  flex-flow: row wrap;
+}
+.radio-list-item {
+  color: #848484;
+  margin-right: 5px;
+}
+.radio-list-item.active {
+  font-weight: bold;
+  color: #000;
 }
 
 .modal {

@@ -1,5 +1,5 @@
 const {shakeDom, shakeDomFocus, log, getUnicodeStringLength} = require('../../js/Utility')
-const {IS_IN_DEVELOP} = require('../../js/Global')
+const {IS_IN_DEVELOP, BASE_URL} = require('../../js/Global')
 
 const Dict = require('../../js/Dict')
 const DictMap = require('../../js/DictMap')
@@ -10,7 +10,7 @@ const {ipcRenderer, net} = require('electron')
 const VirtualScroller = require('vue-virtual-scroller')
 const WordGroup = require("../../js/WordGroup");
 
-const axios = require('axios')
+const wubiApi = require("../../js/wubiApi")
 
 // Vue 2
 const app = {
@@ -58,7 +58,11 @@ const app = {
             wordEditing: null, // 正在编辑的词条
 
             // 同步词库
-            dictSync: null
+            dictSync: null,
+
+            // 网络相关
+            categories: [],
+            selectedCategoryId: 10, // 线上的 [ 通用词库 ]
         }
     },
     mounted() {
@@ -83,8 +87,6 @@ const app = {
             }, 2000)
         })
 
-
-
         // 配置相关
         ipcRenderer.on('MainWindow:ResponseConfigFile', (event, config) => {
             this.config = config
@@ -93,6 +95,10 @@ const app = {
 
             // request for file list
             ipcRenderer.send('GetFileList')
+
+            // 载入配置文件之后，请求网络数据
+            // network
+            this.getOnlineCategories()
         })
         ipcRenderer.send('MainWindow:RequestConfigFile')
 
@@ -219,45 +225,79 @@ const app = {
             return this.dict.fileName === 'wubi86_jidian.dict.yaml'
         }
     },
-
     methods: {
+        // 获取线上的扩展词库分类列表
+        getOnlineCategories(){
+            wubiApi
+                .getCategories(this.config.userInfo.password)
+                .then(res => {
+                    this.categories = res.data
+                })
+        },
 
-        // 网络请求
+        // 改变上传到的类别 id
+        changeSelectedCategoryId(categoryId){
+            this.selectedCategoryId = categoryId
+        },
+
+        // 上传选中的词条到服务器
+        uploadChosenWordsToServer(){
+            let wordsSelected = [] // 被选中的 [Word]
+            if (this.dict.isGroupMode){
+                this.dict.wordsOrigin.forEach((group, index) => {
+                    let matchedWords = group.dict.filter(item => this.chosenWordIds.has(item.id))
+                    wordsSelected = wordsSelected.concat(matchedWords)
+                })
+            } else {
+                wordsSelected = this.dict.wordsOrigin.filter(item => this.chosenWordIds.has(item.id))
+            }
+
+            wubiApi
+                .uploadWordsBatch(
+                    this.config.userInfo.password,
+                    {
+                        category_id: this.selectedCategoryId,
+                        words: wordsSelected
+                    })
+                .then(res => {
+                    // 上传成功
+                    this.tips.push(res.message, `新增${res.data.addedCount}个词条，有${res.data.existCount}个词条是已经存在的`)
+                    // 删除已经上传的词条
+                    this.deleteWords()
+                })
+                .catch(err => {
+                    this.tips.push(err.message)
+                })
+        },
+
+        // 下载线上扩展词库到本地
         updateExtraDict(){
             if (this.config.userInfo.password){
-                axios({
-                    method: 'post',
-                    url: 'http://kylebing.cn/portal/wubi/word/export-extra',
-                    // url: 'http://localhost:3000/wubi/word/export-extra',
-                    headers: {
-                        'Diary-Token': this.config.userInfo.password
-                    }
-                })
+                wubiApi
+                    .updateExtraDict(this.config.userInfo.password)
                     .then(res => {
-                        if (res.status === 200){
-                            this.tips.push('获取线上分类扩展词库内容成功')
+                        this.tips.push('获取线上分类扩展词库内容成功')
 
-                            // 使用线上的更新数据更新到当前分类扩展词库中
-                            let wordGroups = []
-                            let lastCategoryName = ''
-                            res.data.data.forEach(item => {
-                                if (lastCategoryName !== item.category_name){
-                                    wordGroups.push(new WordGroup(
-                                        item.category_id,
-                                        item.category_name,
-                                        [new Word(item.id, item.code, item.word,item.priority, item.comment)]
-                                    ))
-                                } else {
-                                    wordGroups[wordGroups.length - 1].dict.push(new Word(item.id, item.code, item.word,item.priority, item.comment))
-                                }
-                                lastCategoryName = item.category_name
-                            })
-                            this.dict.wordsOrigin = wordGroups
-                            this.refreshShowingWords()
-                        } else {
-                            this.tips.push(res.status, res.statusText)
-
-                        }
+                        // 使用线上的更新数据更新到当前分类扩展词库中
+                        let wordGroups = []
+                        let lastCategoryName = ''
+                        res.data.forEach(item => {
+                            if (lastCategoryName !== item.category_name){
+                                wordGroups.push(new WordGroup(
+                                    item.category_id,
+                                    item.category_name,
+                                    [new Word(item.id, item.code, item.word,item.priority, item.comment)]
+                                ))
+                            } else {
+                                wordGroups[wordGroups.length - 1].dict.push(new Word(item.id, item.code, item.word,item.priority, item.comment))
+                            }
+                            lastCategoryName = item.category_name
+                        })
+                        this.dict.wordsOrigin = wordGroups
+                        this.refreshShowingWords()
+                    })
+                    .catch(err => {
+                        this.tips.push(err.message)
                     })
             } else {
                 this.tips.push('未登录用户，请先前往配置页面登录')

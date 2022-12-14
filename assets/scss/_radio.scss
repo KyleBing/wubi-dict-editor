@@ -1,0 +1,14 @@
+.radio-list{
+  display: flex;
+  justify-content: flex-start;
+  flex-flow: row wrap;
+  &-item{
+    color: $text-subtitle;
+    @extend .btn-like;
+    margin-right: 5px;
+    &.active{
+      font-weight: bold;
+      color: $text-main;
+    }
+  }
+}
