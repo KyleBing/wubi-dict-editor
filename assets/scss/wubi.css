@@ -3000,3 +3000,8 @@ body {
   flex-shrink: 0;
   width: 220px;
 }
+
+.backup-info {
+  font-size: 11px;
+  color: #848484;
+}

@@ -16,6 +16,7 @@ const {
 const plist = require("plist")
 const axios = require("axios")
 const util = require("util");
+const wubiApi = require("./js/wubiApi")
 
 const SERVER_BASE_URL = 'http://kylebing.cn/portal'
 
@@ -182,49 +183,32 @@ function createMainWindow() {
     ipcMain.on('MainWindow:sync.get:INCREASE', (event, {fileName, userInfo}) => {
         getOnlineDictContent(fileName, userInfo)
             .then(res => {
-                if (res.status === 200) {
-                    let dictRes = res.data
-                    if (dictRes.data && dictRes.data.content) {
-                        dictRes.data.content = Buffer.from(dictRes.data.content, "base64").toString()
-                    }
-                    mainWindow.send('MainWindow:sync.get:INCREASE:SUCCESS', dictRes)
-                } else {
-                    console.log(res)
+                if (res.data && res.data.content) {
+                    res.data.content = Buffer.from(res.data.content, "base64").toString()
                 }
-            }).catch(err => {
-            console.log(err)
-        })
+                mainWindow.send('MainWindow:sync.get:INCREASE:SUCCESS', res)
+            })
+            .catch(err => {
+                console.log(err)
+            })
     })
     // 获取线上词库：覆盖本地词库
     ipcMain.on('MainWindow:sync.get:OVERWRITE', (event, {fileName, userInfo}) => {
         getOnlineDictContent(fileName, userInfo)
             .then(res => {
-                if (res.status === 200) {
-                    let dictRes = res.data
-                    if (dictRes.data && dictRes.data.content) {
-                        dictRes.data.content = Buffer.from(dictRes.data.content, "base64").toString()
-                    }
-                    mainWindow.send('MainWindow:sync.get:OVERWRITE:SUCCESS', dictRes)
-                } else {
-                    console.log(res)
+                if (res.data && res.data.content) {
+                    res.data.content = Buffer.from(res.data.content, "base64").toString()
                 }
-            }).catch(err => {
-            console.log(err)
-        })
+                mainWindow.send('MainWindow:sync.get:OVERWRITE:SUCCESS', res)
+            })
+            .catch(err => {
+                console.log(err)
+            })
     })
 
     function getOnlineDictContent(dictName, userInfo) {
-        return axios({
-            method: 'get',
-            url: IS_REQUEST_LOCAL ?
-                'http://localhost:3000/dict/pull' :
-                `${SERVER_BASE_URL}/dict/pull`,
-            headers: {
-                'Diary-Token': userInfo.password
-            },
-            params: {
-                title: dictName,
-            }
+        return wubiApi.pullDictFileContent(userInfo.password,{
+            title: dictName,
         })
     }
 
@@ -237,28 +221,17 @@ function createMainWindow() {
             console.log('content size escaped: ', (escape(fileContentYaml)).length)
             console.log('content size unicodeEncode: ', finalContent.length)
 
-            axios({
-                method: 'put',
-                url: IS_REQUEST_LOCAL ?
-                    'http://localhost:3000/dict/push' :
-                    `${SERVER_BASE_URL}/dict/push`,
-                data: {
-                    title: fileName,
-                    content: finalContent, // 为了避免一些标点干扰出现的问题，直接全部转义，
-                    contentSize: fileContentYaml.length,
-                    wordCount: wordCount,
-                },
-                headers: {
-                    'Diary-Token': userInfo.password
-                },
-            })
+            wubiApi
+                .pushDictFileContent(
+                    userInfo.password,
+                    {
+                        title: fileName,
+                        content: finalContent, // 为了避免一些标点干扰出现的问题，直接全部转义，
+                        contentSize: fileContentYaml.length,
+                        wordCount: wordCount,
+                    })
                 .then(res => {
-                    if (res.status === 200) {
-                        console.log(res.data)
-                        mainWindow.send('MainWindow:sync.save:SUCCESS', res.data)
-                    } else {
-                        console.log(res)
-                    }
+                    mainWindow.send('MainWindow:sync.save:SUCCESS', res.data)
                 })
                 .catch(err => {
                     mainWindow.send('MainWindow:sync.save:FAIL', '上传失败')

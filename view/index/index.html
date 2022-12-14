@@ -266,7 +266,7 @@
                     <div class="content">
                         <div class="btn-list">
                             <div class="btn-item">
-                                <div class="btn btn-primary mb-1" @click="updateExtraDict">更新扩展词库</div>
+                                <div class="btn btn-primary mb-1" @click="updateExtraDict">更新线上扩展词库</div>
                             </div>
                         </div>
                     </div>
@@ -286,7 +286,7 @@
                     </div>
                 </section>
                 <section v-show="chosenWordIdArray.length > 0">
-                    <div class="title">上传到扩展词库</div>
+                    <div class="title">添加到线上扩展词库</div>
                     <div class="content">
                         <div class="radio-list">
                             <div :class="['radio-list-item', {active: item.id === selectedCategoryId}]"
@@ -295,13 +295,21 @@
                             >{{ item.name }}</div>
                         </div>
                         <div class="btn-item mt-2">
-                            <div class="btn btn-primary mb-1" @click="uploadChosenWordsToServer">确定上传</div>
+                            <div class="btn btn-roseo mb-1" @click="uploadChosenWordsToServer">确定上传</div>
                         </div>
                     </div>
                 </section>
 
                 <section>
                     <div class="title">同步</div>
+                    <div class="content mb-1">
+                        <div class="backup-info" v-if="dictBackupInfo">
+                            <p>上次同步时间</p>
+                            <p>{{dictBackupInfo.date_update_string}}</p>
+                            <p>词条数量：{{dictBackupInfo.word_count}}</p>
+                        </div>
+                        <div class="backup-info" v-else>未同步过</div>
+                    </div>
                     <div class="content">
                         <div class="btn-list">
                             <div class="btn-item">

@@ -1,4 +1,4 @@
-const {shakeDom, shakeDomFocus, log, getUnicodeStringLength} = require('../../js/Utility')
+const {shakeDom, shakeDomFocus, log, dateFormatter, getUnicodeStringLength} = require('../../js/Utility')
 const {IS_IN_DEVELOP, BASE_URL} = require('../../js/Global')
 
 const Dict = require('../../js/Dict')
@@ -63,6 +63,7 @@ const app = {
             // 网络相关
             categories: [],
             selectedCategoryId: 10, // 线上的 [ 通用词库 ]
+            dictBackupInfo: null // 当前词库在线上的备份信息
         }
     },
     mounted() {
@@ -77,6 +78,9 @@ const app = {
             this.refreshShowingWords()
             // this.search() // 配置项：切换码表是否自动搜索
             ipcRenderer.send('loadMainDict') // 请求主码表文件
+
+            // net
+            this.checkFileBackupExistence()
         })
         ipcRenderer.on('saveFileSuccess', () => {
             this.labelOfSaveBtn = '保存成功'
@@ -99,6 +103,7 @@ const app = {
             // 载入配置文件之后，请求网络数据
             // network
             this.getOnlineCategories()
+            this.checkFileBackupExistence()
         })
         ipcRenderer.send('MainWindow:RequestConfigFile')
 
@@ -188,6 +193,8 @@ const app = {
 
         // 同步： 保存成功
         ipcRenderer.on('MainWindow:sync.save:SUCCESS', (event, res) => {
+            // 更新备份状态信息
+            this.checkFileBackupExistence()
             this.tips.push(res.message)
             console.log('MainWindow:sync.save:SUCCESS')
             console.log(res)
@@ -226,6 +233,35 @@ const app = {
         }
     },
     methods: {
+        // 获取词库备份信息
+        checkFileBackupExistence(){
+            if (this.config.userInfo.password && this.dict.fileName){ // config 和 当前词库内容都已经载入时才请求备份信息
+                wubiApi
+                    .checkDictFileBackupExistence(this.config.userInfo.password, {
+                        fileName: this.dict.fileName
+                    })
+                    .then(res => {
+                        this.dictBackupInfo = res.data
+                        /* {
+                            "id": 28,
+                            "title": "wubi86_jidian_user.dict.yaml",
+                            "content_size": 2717,
+                            "word_count": 196,
+                            "date_init": "2022-04-23T02:17:57.000Z",
+                            "date_update": "2022-12-14T02:34:51.000Z",
+                            "comment": "",
+                            "uid": 3,
+                            "sync_count": 2
+                        }*/
+                        if (this.dictBackupInfo){
+                            console.log(this.dictBackupInfo)
+                            this.$set(this.dictBackupInfo,'date_init_string', dateFormatter(new Date(this.dictBackupInfo.date_init)))
+                            this.$set(this.dictBackupInfo,'date_update_string', dateFormatter(new Date(this.dictBackupInfo.date_update)))
+                        }
+
+                    })
+            }
+        },
         // 获取线上的扩展词库分类列表
         getOnlineCategories(){
             wubiApi
@@ -274,7 +310,7 @@ const app = {
         updateExtraDict(){
             if (this.config.userInfo.password){
                 wubiApi
-                    .updateExtraDict(this.config.userInfo.password)
+                    .pullExtraDict(this.config.userInfo.password)
                     .then(res => {
                         this.tips.push('获取线上分类扩展词库内容成功')
 
