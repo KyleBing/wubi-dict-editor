@@ -169,7 +169,7 @@ const app = {
                 )
                 console.log('MainWindow:sync.save')
             } else {
-                this.tips.push('获取线上词库到本地成功')
+                this.tips.push('下载成功')
                 this.dictSync = new Dict(res.data.content, res.data.title)
                 this.syncDictWords()
                 console.log(this.dictSync)
@@ -183,7 +183,7 @@ const app = {
             if (res.data === ''){
                 this.tips.push('该词库未同步过')
             } else {
-                this.tips.push('获取线上词库到本地成功')
+                this.tips.push('下载成功')
                 let filePath = this.dict.filePath
                 this.dict = new Dict(res.data.content, res.data.title, this.dict.filePath)
                 this.refreshShowingWords()
@@ -195,7 +195,7 @@ const app = {
         ipcRenderer.on('MainWindow:sync.save:SUCCESS', (event, res) => {
             // 更新备份状态信息
             this.checkFileBackupExistence()
-            this.tips.push(res.message)
+            this.tips.push('上传成功')
             console.log('MainWindow:sync.save:SUCCESS')
             console.log(res)
         })
