@@ -37,6 +37,18 @@
   user-select: none;
 }
 
+.d-flex {
+  display: flex;
+}
+
+.jc-center {
+  justify-content: center;
+}
+
+.al-center {
+  align-items: center;
+}
+
 .mt-0 {
   margin-top: 0px !important;
 }
@@ -1631,7 +1643,7 @@ select option {
 }
 .tool-container .tool-panel {
   border-right: 1px solid #eee;
-  width: 400px;
+  width: 500px;
   flex-shrink: 0;
 }
 .tool-container .list-container {

@@ -63,7 +63,8 @@ const app = {
             // 网络相关
             categories: [],
             selectedCategoryId: 10, // 线上的 [ 通用词库 ]
-            dictBackupInfo: null // 当前词库在线上的备份信息
+            dictBackupInfo: null,  // 当前词库在线上的备份信息
+            isDeleteAfterUpload: false, // 上传词条后是否在本地删除对应的词条
         }
     },
     mounted() {
@@ -302,8 +303,10 @@ const app = {
                     }
                     // 上传成功
                     this.tips.push(res.message, message)
-                    // 删除已经上传的词条
-                    this.deleteWords()
+                    if (this.isDeleteAfterUpload){
+                        // 删除已经上传的词条
+                        this.deleteWords()
+                    }
                 })
                 .catch(err => {
                     this.tips.push(err.message)
