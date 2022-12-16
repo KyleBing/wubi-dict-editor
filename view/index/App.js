@@ -296,8 +296,12 @@ const app = {
                         words: wordsSelected
                     })
                 .then(res => {
+                    let message = `添加 ${res.data.addedCount} 条`
+                    if (res.data.existCount > 0){
+                        message = message + `，已存在词条 ${res.data.existCount} 条`
+                    }
                     // 上传成功
-                    this.tips.push(res.message, `新增${res.data.addedCount}个词条，有${res.data.existCount}个词条是已经存在的`)
+                    this.tips.push(res.message, message)
                     // 删除已经上传的词条
                     this.deleteWords()
                 })
