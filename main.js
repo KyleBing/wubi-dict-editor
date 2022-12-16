@@ -673,7 +673,8 @@ function getLabelNameFromFileName(fileName) {
         {name: '分类词库', path: 'wubi86_jidian_extra.dict.yaml'},
         {name: '极点主表', path: 'wubi86_jidian.dict.yaml'},
         {name: 'pīnyīn 词库', path: 'pinyin_simp.dict.yaml'},
-        {name: '极点 - 英文', path: 'wubi86_jidian_english.dict.yaml'},
+        {name: '英文', path: 'wubi86_jidian_english.dict.yaml'},
+        {name: '扩展-行政区域', path: 'wubi86_jidian_extra_district.dict.yaml'},
 
         // 测试词库
         {name: '测试 - 主表 ⛳', path: 'test_main.dict.yaml'},
