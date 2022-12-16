@@ -16,7 +16,8 @@
 
 ## 一、界面截图
 主界面
-<img width="1000" alt="Screen Shot 2021-12-14 at 23 37 53" src="https://user-images.githubusercontent.com/12215982/146030612-43a0af6a-f893-4c6c-8b25-2de4ef29eefc.png">
+
+<img width="1362" alt="Screenshot 2022-12-16 at 21 28 54" src="https://user-images.githubusercontent.com/12215982/208109387-5062a921-8eef-4063-9936-42762197d6c8.png">
 
 其它码表工具
 <img width="1000" alt="Screen Shot 2021-11-02 at 23 16 34" src="https://user-images.githubusercontent.com/12215982/139876204-aef77bb8-683b-4042-8ec1-f366641eaae5.png">

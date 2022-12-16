@@ -171,7 +171,6 @@ class Dict {
                     }
                 })
             })
-            console.log(groupRepeatedWords)
             repetitionWords.push(new WordGroup(999, '重复的词条', groupRepeatedWords))
         } else {
             this.wordsOrigin.forEach(word => {

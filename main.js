@@ -214,7 +214,7 @@ function createMainWindow() {
 
     // 保存至线上词库，如果存在覆盖它
     ipcMain.on('MainWindow:sync.save', (event, {fileName, fileContentYaml, wordCount, userInfo}) => {
-        console.log('MainWindow:sync.save', fileName, fileContentYaml, userInfo)
+        console.log('MainWindow:sync.save', fileName)
         if (fileContentYaml.length < 20000) { // 限制整个文件的大小，最大 20000 字
             let finalContent = Buffer.from(fileContentYaml).toString('base64')
             console.log('content size original: ', fileContentYaml.length)
