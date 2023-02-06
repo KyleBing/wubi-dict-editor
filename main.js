@@ -6,6 +6,7 @@ const url = require("url")
 const path = require("path")
 const {shakeDom, log, shakeDomFocus, dateFormatter, unicodeBase64Encode, unicodeBase64Decode} = require('./js/Utility')
 const {
+    DEFAULT_BASE_URL,
     IS_REQUEST_LOCAL,
     IS_IN_DEVELOP,
     CONFIG_FILE_PATH,
@@ -14,11 +15,7 @@ const {
     CONFIG_DICT_MAP_FILE_NAME
 } = require('./js/Global')
 const plist = require("plist")
-const axios = require("axios")
-const util = require("util");
 const wubiApi = require("./js/wubiApi")
-
-const SERVER_BASE_URL = 'http://kylebing.cn/portal'
 
 let mainWindow // 主窗口
 let fileList = [] // 文件目录列表，用于移动词条
@@ -207,9 +204,10 @@ function createMainWindow() {
     })
 
     function getOnlineDictContent(dictName, userInfo) {
+        let config = readConfigFile() // 没有配置文件时，返回 false
         return wubiApi.pullDictFileContent(userInfo.password,{
             title: dictName,
-        })
+        }, config.baseURL)
     }
 
     // 保存至线上词库，如果存在覆盖它
@@ -221,6 +219,8 @@ function createMainWindow() {
             console.log('content size escaped: ', (escape(fileContentYaml)).length)
             console.log('content size unicodeEncode: ', finalContent.length)
 
+            let config = readConfigFile() // 没有配置文件时，返回 false
+
             wubiApi
                 .pushDictFileContent(
                     userInfo.password,
@@ -229,7 +229,7 @@ function createMainWindow() {
                         content: finalContent, // 为了避免一些标点干扰出现的问题，直接全部转义，
                         contentSize: fileContentYaml.length,
                         wordCount: wordCount,
-                    })
+                    }, config.baseURL)
                 .then(res => {
                     mainWindow.send('MainWindow:sync.save:SUCCESS', res.data)
                 })
@@ -491,7 +491,12 @@ function createConfigWindow() {
             email: userInfo.email,
             password: userInfo.password,
         }
+
+        let config = readConfigFile()
+
         // 1. 新建 net.request 请求
+        let baseURL = config.baseURL || DEFAULT_BASE_URL // 当配置文件中没有值时，使用默认值
+
         const request = net.request({
             headers: {
                 'Content-Type': 'application/json',
@@ -499,7 +504,7 @@ function createConfigWindow() {
             method: 'POST',
             url: IS_REQUEST_LOCAL ?
                 'http://localhost:3000/user/login' :
-                `${SERVER_BASE_URL}/user/login`
+                `${baseURL}/user/login`
         })
         // 2. 通过 request.write() 方法，发送的 post 请求数据需要先进行序列化，变成纯文本的形式
         request.write(JSON.stringify(requestData))
@@ -507,6 +512,7 @@ function createConfigWindow() {
         // 3. 处理返回结果
         request.on('response', response => {
             response.on('data', res => {
+                console.log(res.toString())
                 // res 是 Buffer 数据
                 // 通过 toString() 可以转为 String
                 // 详见： https://blog.csdn.net/KimBing/article/details/124299412

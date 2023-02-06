@@ -236,7 +236,22 @@
 
     <section>
         <div class="section-title">
-            <h3>10. 同步</h3>
+            <h3>10. 请求地址</h3>
+            <div class="desc">数据交互的线上地址</div>
+        </div>
+        <div class="section-content">
+            <div class="login-panel">
+                <div class="input-item">
+                    <label for="email">请求地址</label>
+                    <input ref="editInputWord" style="width: 300px" id="email" type="text" v-model.lazy="config.baseURL" >
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="section-title">
+            <h3>11. 同步</h3>
             <div class="desc">同步用户词库，账号请前往 <a target="_blank" href="http://kylebing.cn/diary">http://kylebing.cn/diary</a> 注册</div>
         </div>
         <div class="section-content">
@@ -260,8 +275,6 @@
                 <div class="login-user-info-item"><div class="label">token: </div><div class="token">{{config.userInfo.password}}</div></div>
             </div>
         </div>
-
-
     </section>
 </div>
 
