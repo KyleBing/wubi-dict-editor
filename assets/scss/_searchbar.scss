@@ -90,3 +90,51 @@ select{
 
   }
 }
+
+
+.word-redundancy-list{
+  position: absolute;
+  z-index: 9999;
+  top: 30px;
+  width: 400px;
+  left: 0;
+  background-color: white;
+  @include border-radius($radius);
+  overflow: hidden;
+  //border: 1px solid $border-color-panel;
+  padding: 5px 0 ;
+  @include box-shadow(2px 2px 5px transparentize(black, 0.8));
+  &-item{
+    display: flex;
+    justify-content: flex-start;
+    cursor: pointer;
+    padding: 0 10px;
+    white-space: nowrap;
+    .word{
+      margin-right: 20px;
+      color: $text-main;
+    }
+    .code{
+      margin-right: 20px;
+      color: $text-comment;
+    }
+    .origin{
+      &.blue{
+        color: $color-primary;
+      }
+      color: $color-success;
+    }
+    &:hover{
+      background-color: $bg-highlight;
+      .word{
+        color: white;
+      }
+      .code{
+        color: white;
+      }
+      .origin{
+        color: white;
+      }
+    }
+  }
+}

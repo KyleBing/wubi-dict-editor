@@ -1,5 +1,5 @@
-// const IS_IN_DEVELOP = false // 生产
-const IS_IN_DEVELOP = true // 开发
+const IS_IN_DEVELOP = false // 生产
+// const IS_IN_DEVELOP = true // 开发
 
 const DEFAULT_BASE_URL = 'https://kylebing.cn/portal/'
 // const BASE_URL = 'http://localhost:3000/'

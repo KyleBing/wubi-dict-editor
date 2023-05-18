@@ -84,6 +84,15 @@
             <div @click="word = ''" v-show="word" class="btn-clear">
                 <img src="../../assets/img/delete_white.svg" alt="clear">
             </div>
+
+            <div class="word-redundancy-list" v-if="wordsRedundancy.length > 0">
+                <div class="word-redundancy-list-item" v-for="word in wordsRedundancy" :key="word.id">
+                    <div class="word">{{ word.word }}</div>
+                    <div class="code">{{ word.code }}</div>
+                    <div class="origin" v-if="word.origin === '当前码表'">{{ word.origin }}</div>
+                    <div class="origin blue" v-else>{{ word.origin }}</div>
+                </div>
+            </div>
         </div>
         <div class="input-item">
             <input class="code" ref="domInputCode" @keyup.enter="enterKeyPressed" v-model="code" type="text" placeholder="编码">

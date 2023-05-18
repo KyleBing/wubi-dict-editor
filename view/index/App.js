@@ -32,6 +32,9 @@ const app = {
             priority: '', // 优先级
             note: '', // 备注
 
+            // 编码重复的词条
+            wordsRedundancy: [],
+
             activeGroupId: -1, // 组 index
             keywordUnwatch: null, // keyword watch 方法的撤消方法
             labelOfSaveBtn: '保存', // 保存按钮的文本
@@ -65,6 +68,7 @@ const app = {
             selectedCategoryId: 10, // 线上的 [ 通用词库 ]
             dictBackupInfo: null,  // 当前词库在线上的备份信息
             isDeleteAfterUpload: false, // 上传词条后是否在本地删除对应的词条
+
         }
     },
     mounted() {
@@ -255,7 +259,7 @@ const app = {
                             "sync_count": 2
                         }*/
                         if (this.dictBackupInfo){
-                            console.log(this.dictBackupInfo)
+                            // console.log(this.dictBackupInfo)
                             this.$set(this.dictBackupInfo,'date_init_string', dateFormatter(new Date(this.dictBackupInfo.date_init)))
                             this.$set(this.dictBackupInfo,'date_update_string', dateFormatter(new Date(this.dictBackupInfo.date_update)))
                         }
@@ -1074,7 +1078,30 @@ const app = {
         },
         code(newValue){
             this.code = newValue.replaceAll(/[^A-Za-z ]/g, '') // input.code 只允许输入字母
-            console.log(this.dictMain.wordsOrigin.filter(item => item.code === newValue))
+            // 主码表中的词
+            let wordsMainDictRedundancy = this.dictMain.wordsOrigin.filter(item => item.code === newValue)
+            wordsMainDictRedundancy = wordsMainDictRedundancy.map(item => {
+                item.origin = '主码表' // 标记主码表来源
+                return item
+            })
+
+            // 用户词库中的词
+            let wordsCurrentDictRedundancy = []
+            if (this.dict.isGroupMode){
+                this.dict.wordsOrigin.forEach(wordGroup => {
+                    wordsCurrentDictRedundancy.push(...wordGroup.dict.filter(item => item.code === newValue))
+                })
+            } else {
+                wordsCurrentDictRedundancy = this.dict.wordsOrigin.filter(item => item.code === newValue)
+            }
+
+            wordsCurrentDictRedundancy = wordsCurrentDictRedundancy.map(item => {
+                item.origin = '当前码表' // 标记主码表来源
+                return item
+            })
+
+
+            this.wordsRedundancy = wordsMainDictRedundancy.concat(wordsCurrentDictRedundancy)
         },
         word(newValue, oldValue){
             if (/[a-z]/i.test(newValue)){

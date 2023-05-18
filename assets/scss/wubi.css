@@ -1214,6 +1214,56 @@ select option {
   padding: 10px;
 }
 
+.word-redundancy-list {
+  position: absolute;
+  z-index: 9999;
+  top: 30px;
+  width: 400px;
+  left: 0;
+  background-color: white;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  overflow: hidden;
+  padding: 5px 0;
+  -webkit-box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+}
+.word-redundancy-list-item {
+  display: flex;
+  justify-content: flex-start;
+  cursor: pointer;
+  padding: 0 10px;
+  white-space: nowrap;
+}
+.word-redundancy-list-item .word {
+  margin-right: 20px;
+  color: #000;
+}
+.word-redundancy-list-item .code {
+  margin-right: 20px;
+  color: #c2c2c2;
+}
+.word-redundancy-list-item .origin {
+  color: #67C23A;
+}
+.word-redundancy-list-item .origin.blue {
+  color: #409EFF;
+}
+.word-redundancy-list-item:hover {
+  background-color: rgba(255, 45, 112, 0.8);
+}
+.word-redundancy-list-item:hover .word {
+  color: white;
+}
+.word-redundancy-list-item:hover .code {
+  color: white;
+}
+.word-redundancy-list-item:hover .origin {
+  color: white;
+}
+
 .footer {
   background-color: #f3f3f3;
   width: 100%;
