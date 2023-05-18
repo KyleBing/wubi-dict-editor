@@ -1074,6 +1074,7 @@ const app = {
         },
         code(newValue){
             this.code = newValue.replaceAll(/[^A-Za-z ]/g, '') // input.code 只允许输入字母
+            console.log(this.dictMain.wordsOrigin.filter(item => item.code === newValue))
         },
         word(newValue, oldValue){
             if (/[a-z]/i.test(newValue)){
