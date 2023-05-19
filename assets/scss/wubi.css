@@ -1986,6 +1986,37 @@ hr {
 .theme-dark .input-item .btn-clear:hover {
   background-color: #FF2D70;
 }
+.theme-dark .word-redundancy-list {
+  background-color: #1c1f24;
+  border: 1px solid #272b32;
+  -webkit-box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6);
+  -moz-box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6);
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6);
+}
+.theme-dark .word-redundancy-list-item .word {
+  color: #e6e6e6;
+}
+.theme-dark .word-redundancy-list-item .code {
+  color: #b3b3b3;
+}
+.theme-dark .word-redundancy-list-item .origin {
+  color: #67C23A;
+}
+.theme-dark .word-redundancy-list-item .origin.blue {
+  color: #409EFF;
+}
+.theme-dark .word-redundancy-list-item:hover {
+  background-color: #383f4a;
+}
+.theme-dark .word-redundancy-list-item:hover .word {
+  color: white;
+}
+.theme-dark .word-redundancy-list-item:hover .code {
+  color: white;
+}
+.theme-dark .word-redundancy-list-item:hover .origin {
+  color: white;
+}
 .theme-dark .main-tool {
   border-color: #272b32;
 }
@@ -2519,6 +2550,37 @@ hr {
   }
   .theme-auto .input-item .btn-clear:hover {
     background-color: #FF2D70;
+  }
+  .theme-auto .word-redundancy-list {
+    background-color: #1c1f24;
+    border: 1px solid #272b32;
+    -webkit-box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6);
+    -moz-box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6);
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6);
+  }
+  .theme-auto .word-redundancy-list-item .word {
+    color: #e6e6e6;
+  }
+  .theme-auto .word-redundancy-list-item .code {
+    color: #b3b3b3;
+  }
+  .theme-auto .word-redundancy-list-item .origin {
+    color: #67C23A;
+  }
+  .theme-auto .word-redundancy-list-item .origin.blue {
+    color: #409EFF;
+  }
+  .theme-auto .word-redundancy-list-item:hover {
+    background-color: #383f4a;
+  }
+  .theme-auto .word-redundancy-list-item:hover .word {
+    color: white;
+  }
+  .theme-auto .word-redundancy-list-item:hover .code {
+    color: white;
+  }
+  .theme-auto .word-redundancy-list-item:hover .origin {
+    color: white;
   }
   .theme-auto .main-tool {
     border-color: #272b32;

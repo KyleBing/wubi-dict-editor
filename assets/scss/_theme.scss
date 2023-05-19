@@ -42,6 +42,41 @@ $black-color-main: #81fffa;
     }
   }
 
+
+  .word-redundancy-list{
+    background-color: $black-bg;
+    border: 1px solid $black-color-border;
+    @include box-shadow(2px 2px 5px transparentize(black, 0.4));
+    &-item{
+      .word{
+        color: $black-color-text;
+      }
+      .code{
+        color: $black-color-text-subtitle;
+      }
+      .origin{
+        &.blue{
+          color: $color-primary;
+        }
+        color: $color-success;
+      }
+      &:hover{
+        background-color: $black-bg-highlight;
+        .word{
+          color: white;
+        }
+        .code{
+          color: white;
+        }
+        .origin{
+          color: white;
+        }
+      }
+    }
+  }
+
+
+
   // index
   .main-tool{
     border-color: $black-color-border;
@@ -402,7 +437,6 @@ $black-color-main: #81fffa;
         }
       }
     }
-
   }
 }
 
