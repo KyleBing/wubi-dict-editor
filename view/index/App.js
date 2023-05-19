@@ -72,7 +72,10 @@ const app = {
         }
     },
     mounted() {
-        this.heightContent = innerHeight - 47 - 20 - 10 + 3
+        // 为了消除奇怪的界面高度显示问题
+        setTimeout(()=> {
+            this.heightContent = innerHeight - 47 - 20 - 10 + 3
+        }, 300)
         // 载入主要操作码表文件
         ipcRenderer.on('showFileContent', (event, fileName, filePath, res) => {
             // 过滤移动到的文件列表，不显示正在显示的这个码表
