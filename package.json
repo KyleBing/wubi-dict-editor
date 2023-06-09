@@ -34,7 +34,7 @@
   "config": {
     "forge": {
       "packagerConfig": {
-        "appVersion": "1.1.9",
+        "appVersion": "1.1.91",
         "name": "五笔码表助手",
         "appCopyright": "kylebing@163.com",
         "icon": "./assets/img/appIcon/appicon",
