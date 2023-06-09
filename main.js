@@ -641,6 +641,8 @@ app.on('ready', () => {
     createMainWindow()
     getDictFileList() // 读取目录中的所有码表文件
     createMenu() // 创建菜单
+
+
 })
 
 app.on('window-all-closed', function () {
@@ -885,11 +887,11 @@ function getRimeExecDir() {
                 return configContent.rimeExecDir
             } else {
                 const PATH_RIME_BIN_WIN = 'C:/Program Files (x86)/Rime'
-                let execDirEntes = fs.readdirSync(PATH_RIME_BIN_WIN, {withFileTypes: true})
-                // 获取路径中 weasel 版本文件夹
-                // TODO：后续可能需要处理多版本的时候获取最新版本
-                let rimeDirEntes = execDirEntes.filter(item => item.name.includes('weasel'))
-                return path.join(PATH_RIME_BIN_WIN, rimeDirEntes[0].name)
+                let execDirEntries = fs.readdirSync(PATH_RIME_BIN_WIN, {withFileTypes: true})
+                execDirEntries.sort((a,b) => a.name > b.name?1:-1)
+                let rimeDirEntries = execDirEntries.filter(item => item.name.includes('weasel')) // 过滤带 weasel 字符的文件夹
+                return path.join(PATH_RIME_BIN_WIN, rimeDirEntries[rimeDirEntries.length - 1].name)
             }
     }
 }
+

@@ -1,12 +1,12 @@
 {
   "name": "wubi-dict-editor",
-  "version": "1.1.9",
+  "version": "1.1.91",
   "private": true,
   "author": {
     "name": "KyleBing",
     "email": "kylebing@163.com"
   },
-  "date": "2023-05-18",
+  "date": "2023-06-09",
   "dateInit": "2021-07-24",
   "description": "五笔码表管理工具",
   "main": "main.js",
