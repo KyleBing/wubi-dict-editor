@@ -1246,6 +1246,7 @@ select option {
   color: #c2c2c2;
 }
 .word-redundancy-list-item .origin {
+  margin-right: 20px;
   color: #67C23A;
 }
 .word-redundancy-list-item .origin.blue {

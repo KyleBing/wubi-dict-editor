@@ -91,6 +91,8 @@
                     <div class="code">{{ word.code }}</div>
                     <div class="origin" v-if="word.origin === '当前码表'">{{ word.origin }}</div>
                     <div class="origin blue" v-else>{{ word.origin }}</div>
+                    <div class="code">权重：{{ word.priority }}</div>
+                    <div class="code">{{ word.note }}</div>
                 </div>
             </div>
         </div>
@@ -386,6 +388,9 @@
                             </div>
                             <div class="btn-item">
                                 <div class="btn btn-primary" @click="sort">排序词条</div>
+                            </div>
+                            <div class="btn-item">
+                                <div class="btn btn-primary" @click="addPriority">添加通用权重</div>
                             </div>
                             <div class="btn-item mt-1">
                                 <div class="btn btn-primary" @click="openCurrentYaml">编辑源码表文件</div>

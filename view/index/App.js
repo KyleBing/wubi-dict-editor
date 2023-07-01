@@ -453,6 +453,9 @@ const app = {
             // this.dictSecond = {} // 立即清空次码表，分组列表也会立即消失，不会等下面的码表加载完成再清空
             ipcRenderer.send('MainWindow:LoadSecondDict', this.dropdownFileList[fileIndex].path) // 载入当前 index 的文件内容
         },
+        addPriority(){
+            this.dict.addCommonPriority()
+        },
         sort(){
             this.dict.sort(this.activeGroupId)
             this.refreshShowingWords()

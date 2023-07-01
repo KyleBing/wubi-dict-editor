@@ -235,6 +235,42 @@ class Dict {
     }
 
     /**
+     * 给所有词条添加权重
+     * 添加规则：
+     * 相同编码的词条，权重依次为 10 20 30 40 50
+     * 这样以后添加词条的时候，都可以指定词条的特定位置
+     */
+    addCommonPriority(){
+        this.sort()
+
+        // 1. 将词条根据编码划分成不同分组数组
+        let finalWordGroup = [
+            // {code: 'ggtt', words: [Word]}
+        ]
+
+        let lastCode = ''
+        this.wordsOrigin.forEach(word => {
+            if (lastCode === word.code){
+                finalWordGroup[finalWordGroup.length - 1].words.push(word)
+            } else {
+                finalWordGroup.push({code: word.code, words: [word]})
+                lastCode = word.code
+            }
+        })
+
+        // 2. 给每个 word 指定需要的权重
+        const PRIORITY_GAP = 10
+        finalWordGroup.forEach(wordGroupItem => {
+            let wordCount = wordGroupItem.words.length
+            wordGroupItem.words.forEach((word, index) => {
+                word.priority = PRIORITY_GAP * (wordCount - index)
+            })
+        })
+        // console.log(finalWordGroup.filter(item => item.words.length > 1))
+
+    }
+
+    /**
      * 添加新 Word
      * @param word Word
      * @param groupIndex Number
