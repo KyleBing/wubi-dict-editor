@@ -80,12 +80,16 @@
             </div>
         </div>
         <div class="input-item">
-            <input class="word" ref="domInputWord" @keyup.enter="enterKeyPressed" v-model="word" type="text" placeholder="词条">
+            <input class="word" ref="domInputWord"
+                   @focus="isSearchbarFocused = true"
+                   @focusout="isSearchbarFocused = false"
+                   @keyup.enter="enterKeyPressed"
+                   v-model="word" type="text" placeholder="词条">
             <div @click="word = ''" v-show="word" class="btn-clear">
                 <img src="../../assets/img/delete_white.svg" alt="clear">
             </div>
 
-            <div class="word-redundancy-list" v-if="wordsRedundancy.length > 0">
+            <div class="word-redundancy-list" v-if="wordsRedundancy.length > 0 && isSearchbarFocused">
                 <div class="word-redundancy-list-item" v-for="word in wordsRedundancy" :key="word.id">
                     <div class="word">{{ word.word }}</div>
                     <div class="code">{{ word.code }}</div>
@@ -97,7 +101,11 @@
             </div>
         </div>
         <div class="input-item">
-            <input class="code" ref="domInputCode" @keyup.enter="enterKeyPressed" v-model="code" type="text" placeholder="编码">
+            <input class="code" ref="domInputCode"
+                   @focus="isSearchbarFocused = true"
+                   @focusout="isSearchbarFocused = false"
+                   @keyup.enter="enterKeyPressed"
+                   v-model="code" type="text" placeholder="编码">
             <div @click="code = ''" v-show="code" class="btn-clear">
                 <img src="../../assets/img/delete_white.svg" alt="clear">
             </div>

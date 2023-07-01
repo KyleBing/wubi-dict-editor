@@ -34,6 +34,7 @@ const app = {
 
             // 编码重复的词条
             wordsRedundancy: [],
+            isSearchbarFocused: false, // 光标是否在 searchbar input
 
             activeGroupId: -1, // 组 index
             keywordUnwatch: null, // keyword watch 方法的撤消方法
