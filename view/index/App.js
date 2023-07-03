@@ -457,6 +457,15 @@ const app = {
         addPriority(){
             this.dict.addCommonPriority()
         },
+        generateSqlFile(){
+            let sqlArray = this.dict.wordsOrigin.map(word => {
+                let timeNow = dateFormatter(new Date())
+                return `INSERT into wubi_words(word, code, priority, date_create, comment, user_init, user_modify, category_id)
+                    VALUES(
+                        '${word.word}','${word.code}',${word.priority || 0},'${timeNow}','${word.note}', 3, 3, 1);`
+            })
+            ipcRenderer.send('saveFile', 'sql.sql', sqlArray.join('\n'))
+        },
         sort(){
             this.dict.sort(this.activeGroupId)
             this.refreshShowingWords()
