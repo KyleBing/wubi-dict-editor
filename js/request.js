@@ -1,12 +1,13 @@
 const axios = require('axios')
 
-function request(token, method, params, requestData, url){
+function request(userInfo, method, params, requestData, url){
     return new Promise((resolve, reject) => {
         axios({
             url,
             method,
             headers: {
-                'Diary-Token': token
+                'Diary-Token': userInfo.password,
+                'Diary-Uid': userInfo.uid
             },
             params,
             data: requestData
