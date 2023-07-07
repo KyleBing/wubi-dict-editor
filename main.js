@@ -205,7 +205,7 @@ function createMainWindow() {
 
     function getOnlineDictContent(dictName, userInfo) {
         let config = readConfigFile() // 没有配置文件时，返回 false
-        return wubiApi.pullDictFileContent(userInfo.password,{
+        return wubiApi.pullDictFileContent(userInfo,{
             title: dictName,
         }, config.baseURL)
     }
@@ -223,7 +223,7 @@ function createMainWindow() {
 
             wubiApi
                 .pushDictFileContent(
-                    userInfo.password,
+                    userInfo,
                     {
                         title: fileName,
                         content: finalContent, // 为了避免一些标点干扰出现的问题，直接全部转义，

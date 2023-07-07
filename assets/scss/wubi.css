@@ -611,6 +611,8 @@
   text-overflow: ellipsis;
 }
 .word-item .priority {
+  min-width: 50px;
+  flex-shrink: 0;
   white-space: nowrap;
   padding-right: 10px;
   text-align: right;
@@ -619,6 +621,8 @@
 }
 .word-item .note {
   color: #848484;
+  min-width: 50px;
+  flex-shrink: 0;
   padding-right: 10px;
   white-space: nowrap;
   font-size: 11px;

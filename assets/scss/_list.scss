@@ -140,6 +140,8 @@ $border-color-checkbox: #d6d6d6;
     text-overflow: ellipsis;
   }
   .priority{
+    min-width: 50px;
+    flex-shrink: 0;
     white-space: nowrap;
     @extend .font-roboto;
     padding-right: 10px;
@@ -149,6 +151,8 @@ $border-color-checkbox: #d6d6d6;
   }
   .note{
     color: $text-subtitle;
+    min-width: 50px;
+    flex-shrink: 0;
     padding-right: 10px;
     white-space: nowrap;
     font-size: $fz-list - 2;

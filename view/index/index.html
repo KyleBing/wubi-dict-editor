@@ -26,12 +26,12 @@
                     <input ref="editInputCode" id="code" type="text" v-model="wordEditing.code" >
                 </div>
                 <div class="input-item mt-1">
-                    <label for="note">备注</label>
-                    <input ref="editInputNote" id="note" type="text" v-model="wordEditing.note" >
-                </div>
-                <div class="input-item mt-1">
                     <label for="priority">权重</label>
                     <input ref="editInputPriority" id="priority" type="text" v-model="wordEditing.priority" >
+                </div>
+                <div class="input-item mt-1">
+                    <label for="note">备注</label>
+                    <input ref="editInputNote" id="note" type="text" v-model="wordEditing.note" >
                 </div>
             </div>
             <div class="modal-footer">
@@ -84,7 +84,7 @@
                    @focus="isSearchbarFocused = true"
                    @focusout="isSearchbarFocused = false"
                    @keyup.enter="enterKeyPressed"
-                   v-model="word" type="text" placeholder="词条">
+                   v-model="word" type="text" placeholder="*词条">
             <div @click="word = ''" v-show="word" class="btn-clear">
                 <img src="../../assets/img/delete_white.svg" alt="clear">
             </div>
@@ -105,28 +105,29 @@
                    @focus="isSearchbarFocused = true"
                    @focusout="isSearchbarFocused = false"
                    @keyup.enter="enterKeyPressed"
-                   v-model="code" type="text" placeholder="编码">
+                   v-model="code" type="text" placeholder="*编码">
             <div @click="code = ''" v-show="code" class="btn-clear">
                 <img src="../../assets/img/delete_white.svg" alt="clear">
             </div>
         </div>
         <div class="input-item">
-            <input class="note" ref="domInputNote" @keyup.enter="enterKeyPressed" v-model="note" type="text" placeholder="备注：可选">
-            <div @click="note = ''" v-show="note" class="btn-clear">
-                <img src="../../assets/img/delete_white.svg" alt="clear">
-            </div>
-        </div>
-        <div class="input-item">
-            <input class="priority" ref="domInputPriority" @keyup.enter="enterKeyPressed" v-model="priority" type="text" placeholder="权重：可选">
+            <input class="priority" ref="domInputPriority" @keyup.enter="enterKeyPressed" v-model="priority" type="text" placeholder="权重">
             <div @click="priority = ''" v-show="priority" class="btn-clear">
                 <img src="../../assets/img/delete_white.svg" alt="clear">
             </div>
         </div>
+        <div class="input-item">
+            <input class="note" ref="domInputNote" @keyup.enter="enterKeyPressed" v-model="note" type="text" placeholder="备注">
+            <div @click="note = ''" v-show="note" class="btn-clear">
+                <img src="../../assets/img/delete_white.svg" alt="clear">
+            </div>
+        </div>
+
         <div class="btn btn-primary" @click="addNewWord">添加</div>
         <div class="btn btn-primary" @click="search">搜索</div>
 
         <div class="btn btn-roseo" v-show="chosenWordIdArray.length > 0" @click="deleteWords">删除</div>
-        <p class="notice">显示格式：<b>编码</b> - 词条 - 备注 - 权重 - id</p>
+        <p class="notice">显示格式：<b>编码</b> - 词条 - 权重 - 备注 - id</p>
 
         <template v-if="IS_IN_DEVELOP">
 
@@ -163,8 +164,8 @@
                                 </div>
                                 <div title="编码" class="code">{{ item.code }}</div>
                                 <div :title="item.word" class="word">{{ item.word }}</div>
-                                <div title="备注" class="note">{{ item.note }}</div>
                                 <div title="权重" class="priority">{{ item.priority }}</div>
+                                <div title="备注" class="note">{{ item.note }}</div>
                                 <div v-if="IS_IN_DEVELOP" class="id">{{ index + 1 }}</div>
                                 <div class="id">{{ item.id }}</div>
                                 <div class="operation">
@@ -254,8 +255,8 @@
                                 </div>
                                 <div title="编码" class="code">{{ item.code }}</div>
                                 <div :title="item.word" class="word">{{ item.word }}</div>
-                                <div title="备注" class="note">{{ item.note }}</div>
                                 <div title="权重" class="priority">{{ item.priority }}</div>
+                                <div title="备注" class="note">{{ item.note }}</div>
                                 <div v-if="IS_IN_DEVELOP" class="id">{{ index + 1 }}</div>
                                 <div class="id">{{ item.id }}</div>
                                 <div class="operation">
@@ -404,7 +405,7 @@
                                 <div class="btn btn-primary" @click="openCurrentYaml">编辑源码表文件</div>
                             </div>
                             <div class="btn-item mt-1">
-                                <div class="btn btn-primary" @click="generateSqlFile">生成数据库文件</div>
+                                <div class="btn btn-primary" @click="generateSqlFile">生成 sql 文件</div>
                             </div>
                             <div class="btn-item mt-1">
                                 <div class="btn btn-cyan" @click="exportSelectionToPlist">导出选中词条到 .plist 文件</div>
