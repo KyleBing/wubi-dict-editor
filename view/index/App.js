@@ -111,7 +111,9 @@ const app = {
 
             // 载入配置文件之后，请求网络数据
             // network
-            this.getOnlineCategories()
+            if (this.config.userInfo){
+                this.getOnlineCategories()
+            }
             this.checkFileBackupExistence()
         })
         ipcRenderer.send('MainWindow:RequestConfigFile')
@@ -244,7 +246,7 @@ const app = {
     methods: {
         // 获取词库备份信息
         checkFileBackupExistence(){
-            if (this.config.userInfo.password && this.dict.fileName){ // config 和 当前词库内容都已经载入时才请求备份信息
+            if (this.config.userInfo && this.config.userInfo.password && this.dict.fileName){ // config 和 当前词库内容都已经载入时才请求备份信息
                 wubiApi
                     .checkDictFileBackupExistence(this.config.userInfo, {
                         fileName: this.dict.fileName

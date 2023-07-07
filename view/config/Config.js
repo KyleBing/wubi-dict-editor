@@ -17,7 +17,7 @@ const app = {
                 email:'',
                 password: ''
             },
-            loginTip: ''
+            loginTip: '',
         }
     },
     mounted() {
@@ -26,9 +26,28 @@ const app = {
         // RESPONSE OF FILE LIST
         ipcRenderer.on('responseFileList', (event, fileList) => {
             fileList.sort((a,b) => a.name > b.name ? 1: -1)
-            console.log('获取码表文件列表成功')
+            // console.log('获取码表文件列表成功', fileList)
             if (this.config.fileNameList && this.config.fileNameList.length > 0){
+                // console.log('已存在的码表名字对应：', this.config.fileNameList)
+                // 如果已经存在设置过的名字对，过滤没有的加上
+                let existFileNameMap = new Map()
+                this.config.fileNameList.forEach(existFile => {
+                    existFileNameMap.set(existFile.path, existFile)
+                })
+                fileList.forEach(newFile => {
+                    if (existFileNameMap.has(newFile.path)){
 
+                    } else {
+                        existFileNameMap.set(newFile.path, newFile)
+                    }
+                })
+                let finalFileNameList = []
+                // console.log('existFileNameMap：',existFileNameMap)
+                existFileNameMap.forEach(item => {
+                    finalFileNameList.push(item)
+                })
+                // console.log('finalFileNameList: ',finalFileNameList)
+                this.$set(this.config, 'fileNameList', finalFileNameList)
             } else {
                 this.$set(this.config, 'fileNameList', fileList)
                 // [{ "name": "luna_pinyin.sogou", "path": "luna_pinyin.sogou.dict.yaml" }]
@@ -138,7 +157,6 @@ const app = {
                         document.documentElement.classList.add('theme-white');
                         break;
                 }
-                // console.log(JSON.stringify(newValue))
                 ipcRenderer.send('ConfigWindow:RequestSaveConfig', JSON.stringify(this.config))
             },
             deep: true
