@@ -31,9 +31,13 @@ const app = {
                 // console.log('已存在的码表名字对应：', this.config.fileNameList)
                 // 如果已经存在设置过的名字对，过滤没有的加上
                 let existFileNameMap = new Map()
-                this.config.fileNameList.forEach(existFile => {
-                    existFileNameMap.set(existFile.path, existFile)
-                })
+                this.config.fileNameList
+                    .filter(item => { // 以获取到的本地文件列表为主。过滤掉其它不存在文件的记录
+                        return fileList.some(file => file.path === item.path )
+                    })
+                    .forEach(existFile => {
+                        existFileNameMap.set(existFile.path, existFile)
+                    })
                 fileList.forEach(newFile => {
                     if (existFileNameMap.has(newFile.path)){
 
