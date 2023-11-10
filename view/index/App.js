@@ -334,18 +334,21 @@ const app = {
                         // 使用线上的更新数据更新到当前分类扩展词库中
                         let wordGroups = []
                         let lastCategoryName = ''
-                        res.data.forEach(item => {
-                            if (lastCategoryName !== item.category_name){
-                                wordGroups.push(new WordGroup(
-                                    item.category_id,
-                                    item.category_name,
-                                    [new Word(item.id, item.code, item.word,item.priority, item.comment)]
-                                ))
-                            } else {
-                                wordGroups[wordGroups.length - 1].dict.push(new Word(item.id, item.code, item.word,item.priority, item.comment))
-                            }
-                            lastCategoryName = item.category_name
-                        })
+                        console.log(res.data.length)
+                        res.data
+                            .sort((a,b) => a.category_id - b.category_id)
+                            .forEach(item => {
+                                if (lastCategoryName !== item.category_name) {
+                                    wordGroups.push(new WordGroup(
+                                        item.category_id,
+                                        item.category_name,
+                                        [new Word(item.id, item.code, item.word, item.priority, item.comment)]
+                                    ))
+                                } else {
+                                    wordGroups[wordGroups.length - 1].dict.push(new Word(item.id, item.code, item.word, item.priority, item.comment))
+                                }
+                                lastCategoryName = item.category_name
+                            })
                         this.dict.wordsOrigin = wordGroups
                         this.refreshShowingWords()
                     })
