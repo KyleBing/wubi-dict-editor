@@ -8,7 +8,6 @@
 > 可添加、删除、批量导入外部词条、批量生成指定版本的五笔编码。<br/>
 > 基于 electron 开发，支持 `macOS` `Windows` `Ubuntu` 多个平台 <br/>
 > GitHub: [https://github.com/KyleBing/wubi-dict-editor](https://github.com/KyleBing/wubi-dict-editor) <br/>
-> Gitee: [https://gitee.com/KyleBing/wubi-dict-editor](https://gitee.com/KyleBing/wubi-dict-editor)
 
 
 > 有其它问题，欢迎加群讨论: [878750538](https://jq.qq.com/?_wv=1027&k=st8cY2sI)
@@ -28,15 +27,17 @@
 配置界面
 <img width="819" alt="Screen Shot 2021-12-14 at 23 53 11" src="https://user-images.githubusercontent.com/12215982/146032695-35857e96-bbf7-451a-924f-936e802adb86.png">
 
-## 二、处理速度
+
+## 二、、支持平台：
+Windows, macOS, Ubuntu
+
+## 三、处理速度
 
 最多可处理 60万 条数据的码表
+
 <img width="674" alt="Screen Shot 2021-12-03 at 23 27 08" src="https://user-images.githubusercontent.com/12215982/144628323-1fe72bb4-602a-4d50-a904-7df9d7685b16.png">
 <img width="1463" alt="Screen Shot 2021-12-03 at 23 26 27" src="https://user-images.githubusercontent.com/12215982/144628297-be39d46f-e802-4204-a389-e3a935f61b81.png">
 
-
-## 三、支持平台：
-Windows, macOS, Ubuntu
 
 ## 四、下载
 
@@ -57,14 +58,14 @@ Windows, macOS, Ubuntu
 ```
 
 ## 六、关于同步
-> 单个词库最大限制在 20000 字
+> 单个词库最大限制在 40000 字
 
 1. 请先前往 [http://kylebing.cn/diary/](http://kylebing.cn/diary/) 注册账号
 2. 打开工具 <kbd>配置</kbd> 页面，在最下面<kbd>登录</kbd>即可
 3. 同步有三个按钮
-   1. <kbd>增量同步</kbd>：合并本地与线上的词库，并将最终的词库上传到线上
-   2. <kbd>覆盖本地</kbd>：将舍弃本地词库，用线上的词库覆盖本地词库内容
-   3. <kbd>覆盖线上</kbd>：将舍弃上线词库，用本地词库覆盖线上词库内容
+   1. <kbd>本地 + 云：增量添加</kbd>：合并本地与线上的词库，并将最终的词库上传到线上
+   2. <kbd>本地 → 云：覆盖云端</kbd>：将舍弃上线词库，用本地词库覆盖线上词库内容
+   3。 <kbd>本地 ← 云：覆盖本地</kbd>：将舍弃本地词库，用线上的词库覆盖本地词库内容
 
 
 ## 七、用到的技术
@@ -263,7 +264,7 @@ $ electron-forge make
 
   
 #### 4. 系统相关
-- [x] 保存文件后，自动调用 rime 布署方法进行布署
+- [x] 保存文件后，自动调用 rime 部署方法进行部署
   - [x] macOS `2021-07-28`
   - [x] Windows `2021-07-30`
   - [x] Linux `2021-12-16`
@@ -279,7 +280,7 @@ $ electron-forge make
 - [x] 自定义码表文件对应的名字 `2022-12-02`
 - [x] 添加配置页面 `2021-10-14`
 - [x] 指定初始载入码表 `2021-10-14`
-- [x] 保存后是否立即布署 `2021-10-15`
+- [x] 保存后是否立即部署 `2021-10-15`
 - [x] 回车键是搜索 | 添加新用户词 `2021-10-15`
   - [x] 搜索时，编码 | 词条 | 同时 | 任一 `2021-10-16`
 - [x] 记录最后一次选中的分组 `2021-10-16`
@@ -300,7 +301,7 @@ $ electron-forge make
   - [x] 能提升词条优先级
 
 
-## 布署指令
+## 部署指令
 
 macOS
 ```bash

@@ -30,8 +30,10 @@ const DEFAULT_CONFIG = {
     // [{ "name": "luna_pinyin.sogou", "path": "luna_pinyin.sogou.dict.yaml" }]
 }
 
+const SYNC_MAX_WORD_COUNT = 40000
+
 
 module.exports = {
     DEFAULT_BASE_URL, IS_REQUEST_LOCAL, IS_IN_DEVELOP, CONFIG_FILE_NAME,
-    CONFIG_FILE_PATH, DEFAULT_CONFIG, CONFIG_DICT_MAP_FILE_NAME
+    CONFIG_FILE_PATH, DEFAULT_CONFIG, CONFIG_DICT_MAP_FILE_NAME, SYNC_MAX_WORD_COUNT
 }

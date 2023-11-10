@@ -12,7 +12,8 @@ const {
     CONFIG_FILE_PATH,
     CONFIG_FILE_NAME,
     DEFAULT_CONFIG,
-    CONFIG_DICT_MAP_FILE_NAME
+    CONFIG_DICT_MAP_FILE_NAME,
+    SYNC_MAX_WORD_COUNT
 } = require('./js/Global')
 const plist = require("plist")
 const wubiApi = require("./js/wubiApi")
@@ -213,7 +214,7 @@ function createMainWindow() {
     // 保存至线上词库，如果存在覆盖它
     ipcMain.on('MainWindow:sync.save', (event, {fileName, fileContentYaml, wordCount, userInfo}) => {
         console.log('MainWindow:sync.save', fileName)
-        if (fileContentYaml.length < 20000) { // 限制整个文件的大小，最大 20000 字
+        if (fileContentYaml.length < SYNC_MAX_WORD_COUNT) { // 限制整个文件的大小
             let finalContent = Buffer.from(fileContentYaml).toString('base64')
             console.log('content size original: ', fileContentYaml.length)
             console.log('content size escaped: ', (escape(fileContentYaml)).length)
