@@ -1,4 +1,4 @@
-const {app, BrowserWindow, Menu, ipcMain, shell, dialog, net, Notification} = require('electron')
+const {app, globalShortcut, BrowserWindow, Menu, ipcMain, shell, dialog, net, Notification} = require('electron')
 const {exec} = require('child_process')
 const fs = require('fs')
 const os = require('os')
@@ -642,7 +642,28 @@ app.on('ready', () => {
     getDictFileList() // 读取目录中的所有码表文件
     createMenu() // 创建菜单
 
+    // Register a 'CommandOrControl+X' shortcut listener.
+    const ret = globalShortcut.register('CommandOrControl+Shift+Alt+I', () => {
+        console.log('ctrl + shift + alt + i is pressed')
+        mainWindow.show()
+    })
 
+    if (!ret) {
+        console.log('registration failed')
+    }
+
+    // Check whether a shortcut is registered.
+    console.log(globalShortcut.isRegistered('CommandOrControl+Shift+Alt+I'))
+
+})
+
+
+app.on('will-quit', () => {
+    // Unregister a shortcut.
+    globalShortcut.unregister('CommandOrControl+Shift+Alt+I')
+
+    // Unregister all shortcuts.
+    globalShortcut.unregisterAll()
 })
 
 app.on('window-all-closed', function () {
