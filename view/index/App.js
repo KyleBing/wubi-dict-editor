@@ -132,7 +132,7 @@ const app = {
                         name: fileNameMap.get(fileNameListItem.path) || fileNameListItem.name,
                         path: fileNameListItem.path
                     }
-                })
+                }).sort((a,b) => a.name > b.name ? 1:-1)
             } else {
                 this.dropdownFileList = fileList
             }
