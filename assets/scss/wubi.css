@@ -686,6 +686,9 @@
 }
 
 .btn {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
   text-align: center;
   font-size: 12px;
   color: inherit;
@@ -703,6 +706,9 @@
   -ms-transition: all 0.3s;
   -o-transition: all 0.3s;
   transition: all 0.3s;
+}
+.btn .icon {
+  margin-right: 5px;
 }
 .btn:active {
   -webkit-transform: translateY(2px);

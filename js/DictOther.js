@@ -97,7 +97,8 @@ class DictOther {
     // 返回所有 word
     getDictWordsInNormalMode(fileContent){
         let startPoint = new Date().getTime()
-        let EOL = this.getFileEOLFrom(fileContent)
+        fileContent = fileContent.replace('/\r\n/g','\n')
+        let EOL = '\n'
         let lines = fileContent.split(EOL) // 拆分词条与编码成单行
         this.lastIndex = lines.length + 1
         // 如果为纯词模式，就使用所有的行，否则就根据分隔符进行筛选
@@ -155,16 +156,6 @@ class DictOther {
         this.wordsOrigin.splice(insetPosition, 0, wordInsert)
     }
 
-    // 判断码表文件的换行符是 \r\n 还是 \n
-    getFileEOLFrom(fileContent){
-        if(fileContent.indexOf('\r\n') > -1){
-            console.log('文件换行符为： \\r\\n')
-            return '\r\n'
-        } else {
-            console.log('文件换行符为： \\n')
-            return '\n'
-        }
-    }
 
 
     // 删除词条

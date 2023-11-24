@@ -43,6 +43,7 @@
     <!--搜索框-->
     <div class="search-bar" v-if="dict">
         <div class="btn btn-primary" @click="applyRime">部署</div>
+        <div class="btn btn-primary" @click="reloadCurrentDict">刷新</div>
         <div
             :class="[
                 'btn',
