@@ -51,6 +51,10 @@ function createMainWindow() {
         if (configWindow) configWindow.close()
         if (toolWindow) toolWindow.close()
     })
+    mainWindow.on('show', ()=> {
+        console.log('main window:showed')
+        mainWindow.send('MainWindow:onWindowShowed') // 向 vue 发送窗口显示的事件
+    })
 
     // 保存词库到文件
     ipcMain.on('saveFile', (event, filename, yamlString) => {

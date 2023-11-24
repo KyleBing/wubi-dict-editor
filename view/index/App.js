@@ -77,6 +77,11 @@ const app = {
         setTimeout(()=> {
             this.heightContent = innerHeight - 47 - 20 - 10 + 3
         }, 300)
+
+        // 窗口显示时 WINDOWS SHOWED
+        ipcRenderer.on('MainWindow:onWindowShowed', (event) => {
+            this.$refs.domInputWord.focus()
+        })
         // 载入主要操作码表文件
         ipcRenderer.on('showFileContent', (event, fileName, filePath, res) => {
             // 过滤移动到的文件列表，不显示正在显示的这个码表
@@ -87,6 +92,7 @@ const app = {
             this.refreshShowingWords()
             // this.search() // 配置项：切换码表是否自动搜索
             ipcRenderer.send('loadMainDict') // 请求主码表文件
+            this.tips.push('已载入码表')
 
             // net
             this.checkFileBackupExistence()
