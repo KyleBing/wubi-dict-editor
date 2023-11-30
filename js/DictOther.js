@@ -3,6 +3,8 @@ const Word = require("./Word")
 const {shakeDom, log, shakeDomFocus, getUnicodeStringLength} = require('./Utility')
 
 const os = require('os')
+const EOL = '\n'
+
 
 class DictOther {
     constructor(fileContent, fileName, filePath, seperator, dictFormat) {
@@ -97,8 +99,8 @@ class DictOther {
     // 返回所有 word
     getDictWordsInNormalMode(fileContent){
         let startPoint = new Date().getTime()
-        fileContent = fileContent.replace('/\r\n/g','\n')
-        let EOL = '\n'
+        fileContent = fileContent.replace(/\r\n/g,'\n')
+
         let lines = fileContent.split(EOL) // 拆分词条与编码成单行
         this.lastIndex = lines.length + 1
         // 如果为纯词模式，就使用所有的行，否则就根据分隔符进行筛选
@@ -167,7 +169,7 @@ class DictOther {
     toYamlString(){
         let fileContentString = ''
         this.wordsOrigin.forEach(item =>{
-            fileContentString = fileContentString + item.toYamlString() + os.EOL
+            fileContentString = fileContentString + item.toYamlString() + EOL
         })
         return fileContentString
     }
@@ -189,25 +191,25 @@ class DictOther {
                 codeMap.forEach((wordArray, code) => {
                     let oneCodewordsString = ''
                     wordArray.forEach(item => {oneCodewordsString = oneCodewordsString.concat(seperator + item.word)}) // seperater + wordsString
-                    fileContentString = fileContentString.concat(code, oneCodewordsString, os.EOL)
+                    fileContentString = fileContentString.concat(code, oneCodewordsString, EOL)
                 })
                 console.log(`词条文本已生成，用时 ${new Date().getTime() - startPoint} ms`)
                 return fileContentString
             case 'cw':
                 this.wordsOrigin.forEach(word => {
-                    fileContentString = fileContentString.concat(word.toFileString(seperator, true), os.EOL)
+                    fileContentString = fileContentString.concat(word.toFileString(seperator, true), EOL)
                 })
                 console.log(`词条文本已生成，用时 ${new Date().getTime() - startPoint} ms`)
                 return fileContentString
             case 'wc':
                 this.wordsOrigin.forEach(word => {
-                    fileContentString = fileContentString.concat(word.toFileString(seperator, false), os.EOL)
+                    fileContentString = fileContentString.concat(word.toFileString(seperator, false), EOL)
                 })
                 console.log(`词条文本已生成，用时 ${new Date().getTime() - startPoint} ms`)
                 return fileContentString
             case 'w':
                 this.wordsOrigin.forEach(word => {
-                    fileContentString = fileContentString.concat(word.word, os.EOL)
+                    fileContentString = fileContentString.concat(word.word, EOL)
                 })
                 console.log(`词条文本已生成，用时 ${new Date().getTime() - startPoint} ms`)
                 return fileContentString

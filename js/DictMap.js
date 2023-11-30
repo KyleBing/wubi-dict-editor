@@ -2,6 +2,8 @@
 const Word = require("./Word")
 const {log, getUnicodeStringLength} = require('./Utility')
 const os = require('os')
+const EOL = '\n'
+
 
 // 只接受 一词一码 的码表文件
 class DictMap {
@@ -33,7 +35,7 @@ class DictMap {
         }
         // 处理词条
         let startPoint = new Date().getTime()
-        fileContent = fileContent.replace('/\r\n/g','\n')
+        fileContent = fileContent.replace(/\r\n/g,'\n')
         let EOL = '\n'
         let lines = fileContent.split(EOL) // 拆分词条与编码成单行
         this.lastIndex = lines.length + 1
@@ -100,7 +102,7 @@ class DictMap {
         let startPoint = new Date().getTime()
         let fileContentString = ''
         this.characterMap.forEach((code, word) => {
-            fileContentString = fileContentString.concat(word, this.seperator, code, os.EOL)
+            fileContentString = fileContentString.concat(word, this.seperator, code, EOL)
         })
         console.log(`字典词条文本已生成，用时 ${new Date().getTime() - startPoint} ms`)
         return fileContentString

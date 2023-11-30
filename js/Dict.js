@@ -4,6 +4,8 @@ const WordGroup = require("./WordGroup")
 const {shakeDom, log, shakeDomFocus, getUnicodeStringLength} = require('./Utility')
 
 const os = require('os')
+const EOL = '\n'
+
 
 class Dict {
     constructor(fileContent, fileName, filePath, header, ) {
@@ -28,6 +30,7 @@ class Dict {
             this.isGroupMode = this.header.includes('dict_grouped: true') // 根据有没有这一段文字进行判断，是否为分组形式的码表
             let body = fileContent.substring(this.indexEndOfHeader)
             this.wordsOrigin = this.isGroupMode? this.getDictWordsInGroupMode(body): this.getDictWordsInNormalMode(body)
+            console.log('处理后的词条：',this.wordsOrigin)
         }
     }
     // 总的词条数量
@@ -46,8 +49,7 @@ class Dict {
     // 返回所有 word
     getDictWordsInNormalMode(fileContent){
         let startPoint = new Date().getTime()
-        fileContent = fileContent.replace('/\r\n/g','\n')
-        let EOL = '\n'
+        fileContent = fileContent.replace(/\r\n/g,'\n')
         let lines = fileContent.split(EOL) // 拆分词条与编码成单行
         this.lastIndex = lines.length
         let linesValid = lines.filter(item => item.indexOf('\t') > -1) // 选取包含 \t 的行
@@ -61,11 +63,21 @@ class Dict {
         return words
     }
 
+    removeDoubleReturn(fileContent){
+        if (fileContent.indexOf('\n\n') > -1){
+            fileContent = fileContent.replace(/\n\n/g, '\n')
+            this.removeDoubleReturn(fileContent)
+        } else {
+            // fileContent = fileContent.replace(/##/g, '\n##')
+            return fileContent
+        }
+    }
+
     // 返回 word 分组
     getDictWordsInGroupMode(fileContent){
+        console.log(fileContent)
         let startPoint = new Date().getTime()
-        fileContent = fileContent.replace('/\r\n/g','\n')
-        let EOL = '\n'
+        fileContent = fileContent.replace(/\r\n/g,'\n')
         let lines = fileContent.split(EOL) // 拆分词条与编码成单行
         let wordsGroup = [] // 总分组
         let temp = null // 第一个分组
@@ -368,19 +380,19 @@ class Dict {
         if (this.isGroupMode){
             this.wordsOrigin.forEach(group => {
                 let tempGroupString = ''
-                tempGroupString = tempGroupString + `## ${group.groupName}${os.EOL}` // + groupName
+                tempGroupString = tempGroupString + `## ${group.groupName}${EOL}` // + groupName
                 group.dict.forEach(item =>{
-                    tempGroupString = tempGroupString + item.toYamlString() + os.EOL
+                    tempGroupString = tempGroupString + item.toYamlString() + EOL
                 })
-                yamlBody = yamlBody + tempGroupString + os.EOL // 每组的末尾加个空行
+                yamlBody = yamlBody + tempGroupString + EOL // 每组的末尾加个空行
             })
-            return this.header + os.EOL + yamlBody
+            return this.header + EOL + yamlBody
         } else {
             let yamlBody = ''
             this.wordsOrigin.forEach(item =>{
-                yamlBody = yamlBody + item.toYamlString() + os.EOL
+                yamlBody = yamlBody + item.toYamlString() + EOL
             })
-            return this.header + os.EOL + yamlBody
+            return this.header + EOL + yamlBody
         }
     }
 
