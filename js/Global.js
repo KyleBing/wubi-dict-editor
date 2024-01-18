@@ -1,7 +1,7 @@
 const IS_IN_DEVELOP = false // 生产
 // const IS_IN_DEVELOP = true // 开发
 
-const DEFAULT_BASE_URL = 'https://kylebing.cn/portal/'
+const DEFAULT_BASE_URL = 'http://kylebing.cn/portal/'
 // const BASE_URL = 'http://localhost:3000/'
 
 const IS_REQUEST_LOCAL = false // 同步请求，请求线上
@@ -14,7 +14,7 @@ const CONFIG_FILE_PATH = 'wubi-dict-editor' // 配置文件存放的目录
 
 const DEFAULT_CONFIG = {
     initFileName: 'wubi86_jidian_user.dict.yaml' ,  // 初始文件信息
-    baseURL: 'https://kylebing.cn/portal/',         // BASE_URL
+    baseURL: 'http://kylebing.cn/portal/',         // BASE_URL
     autoDeployOnAdd: false ,                        // 添词后 是否自动布署
     autoDeployOnDelete: false ,                     // 删词后 是否自动布署
     autoDeployOnEdit: false ,                       // 编辑词条后 是否自动布署
