@@ -226,6 +226,7 @@ function createMainWindow() {
 
             let config = readConfigFile() // 没有配置文件时，返回 false
 
+            console.log('config: ', config)
             wubiApi
                 .pushDictFileContent(
                     userInfo,

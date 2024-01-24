@@ -1,6 +1,6 @@
 {
   "name": "wubi-dict-editor",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "private": true,
   "author": {
     "name": "KyleBing",
@@ -34,7 +34,7 @@
   "config": {
     "forge": {
       "packagerConfig": {
-        "appVersion": "1.2.3",
+        "appVersion": "1.2.4",
         "name": "五笔码表助手",
         "appCopyright": "kylebing@163.com",
         "icon": "./assets/img/appIcon/appicon",

@@ -30,7 +30,7 @@ class Dict {
             this.isGroupMode = this.header.includes('dict_grouped: true') // 根据有没有这一段文字进行判断，是否为分组形式的码表
             let body = fileContent.substring(this.indexEndOfHeader)
             this.wordsOrigin = this.isGroupMode? this.getDictWordsInGroupMode(body): this.getDictWordsInNormalMode(body)
-            console.log('处理后的词条：',this.wordsOrigin)
+            // console.log('处理后的词条：',this.wordsOrigin)
         }
     }
     // 总的词条数量
@@ -75,7 +75,7 @@ class Dict {
 
     // 返回 word 分组
     getDictWordsInGroupMode(fileContent){
-        console.log(fileContent)
+        // console.log(fileContent)
         let startPoint = new Date().getTime()
         fileContent = fileContent.replace(/\r\n/g,'\n')
         let lines = fileContent.split(EOL) // 拆分词条与编码成单行

@@ -256,7 +256,7 @@ const app = {
                 wubiApi
                     .checkDictFileBackupExistence(this.config.userInfo, {
                         fileName: this.dict.fileName
-                    })
+                    }, this.config.baseURL)
                     .then(res => {
                         this.dictBackupInfo = res.data
                         /* {
@@ -282,7 +282,7 @@ const app = {
         // 获取线上的扩展词库分类列表
         getOnlineCategories(){
             wubiApi
-                .getCategories(this.config.userInfo)
+                .getCategories(this.config.userInfo, this.config.baseURL)
                 .then(res => {
                     this.categories = res.data
                 })
@@ -311,7 +311,7 @@ const app = {
                     {
                         category_id: this.selectedCategoryId,
                         words: wordsSelected
-                    })
+                    }, this.config.baseURL)
                 .then(res => {
                     let message = `添加 ${res.data.addedCount} 条`
                     if (res.data.existCount > 0){
@@ -332,8 +332,9 @@ const app = {
         // 下载线上扩展词库到本地
         updateExtraDict(){
             if (this.config.userInfo.password){
+                console.log('config: ', this.config)
                 wubiApi
-                    .pullExtraDict(this.config.userInfo)
+                    .pullExtraDict(this.config.userInfo, this.config.baseURL)
                     .then(res => {
                         this.tips.push('获取线上分类扩展词库内容成功')
 
