@@ -687,7 +687,7 @@
 
 .btn {
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
   text-align: center;
   font-size: 12px;
