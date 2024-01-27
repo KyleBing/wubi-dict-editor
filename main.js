@@ -585,7 +585,7 @@ function createConfigWindow() {
             ],
             properties: ['openFile'] // 选择文件夹
         })
-        if (dictMapPathArray.length > 0) {
+        if (dictMapPathArray && dictMapPathArray.length > 0) {
             let filePath = dictMapPathArray[0]
             let fileName = path.basename(filePath) // 获取文件名
             let fileContent = readFileFromDisk(filePath)

@@ -104,7 +104,7 @@ const app = {
 
         // 读取字典文件的内容
         ipcRenderer.on('ConfigWindow:ShowDictMapContent', (event, fileName, filePath, fileContent) => {
-            let dictMap = new DictMap(fileContent, fileName, filePath)
+            let dictMap = new DictMap(fileContent)
             let dictMapFileContent = dictMap.toExportString()
             ipcRenderer.send('ConfigWindow:SaveDictMapFile', dictMapFileContent) // 保存取到的单字字典文本
         })

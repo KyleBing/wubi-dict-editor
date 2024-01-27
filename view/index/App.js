@@ -168,7 +168,7 @@ const app = {
 
         // 获取并设置字典文件
         ipcRenderer.on('setDictMap', (event, fileContent, fileName, filePath) => {
-            this.dictMap = new DictMap(fileContent, fileName, filePath)
+            this.dictMap = new DictMap(null, fileContent)
         })
 
         // 同步: 获取内容 增量
@@ -543,7 +543,7 @@ const app = {
                 // 分组模式时
                 this.dict.wordsOrigin.forEach(wordGroup => {
                     wordGroup.dict.forEach(item => {
-                        if (getUnicodeStringLength(item.word) > 1) { // 只判断词条，不判断单字
+                        if (getUnicodeStringLength(item.word) > 1 && !/[a-zA-Z0-9]+/.test(item.word)) { // 只判断词条，不判断单字
                             // TODO: 字为 unicode 时，字符长度为 2
                             if (item.code !== this.dictMap.decodeWord(item.word)) {
                                 errorWords.push(item)
@@ -554,7 +554,7 @@ const app = {
             } else {
                 // 非分组模式时
                 this.dict.wordsOrigin.forEach(item => {
-                    if (getUnicodeStringLength(item.word) > 1) { // 只判断词条，不判断单字
+                    if (getUnicodeStringLength(item.word) > 1 && !/[a-zA-Z0-9]+/.test(item.word)) { // 只判断词条，不判断单字
                         if (item.code !== this.dictMap.decodeWord(item.word)) {
                             errorWords.push(item)
                         }
@@ -571,17 +571,68 @@ const app = {
             this.words = errorWordOrigin
         },
 
+
+        // 单字编码查错
+        getErrorWordsSingle(){
+            let errorWords = []
+            if(this.dict.isGroupMode){
+                // 分组模式时
+                this.dict.wordsOrigin.forEach(wordGroup => {
+                    wordGroup.dict.forEach(item => {
+                        if (getUnicodeStringLength(item.word) === 1) {
+                            if (item.code !== this.dictMap.decodeWordSingle(`${item.word}-${item.code.length}`)) {
+                                errorWords.push(item)
+                            }
+                        }
+                    })
+                })
+            } else {
+                // 非分组模式时
+                this.dict.wordsOrigin.forEach(item => {
+                    if (getUnicodeStringLength(item.word) === 1) {
+                        if (item.code !== this.dictMap.decodeWordSingle(`${item.word}-${item.code.length}`)) {
+                            errorWords.push(item)
+                        }
+                    }
+                })
+            }
+            let errorWordOrigin = []
+            if (this.dict.isGroupMode){
+                // 当是分组模式时，返回一个新的分组，不然无法显示正常
+                errorWordOrigin.push(new WordGroup(888, '编码可能错误的词条', errorWords))
+            } else {
+                errorWordOrigin = errorWords
+            }
+            this.words = errorWordOrigin
+        },
+
+
         // 选中词条纠错
-        errorWordsCorrection(){
+        correctErrorWords(){
+            let timeStart = new Date().getTime()
+            let correctionCount = 0
+            let errorCount = 0
             this.chosenWordIds.forEach(id => {
                 if (this.dict.isGroupMode){
                     // 分组模式时
                     this.words.forEach(wordGroup => {
                         wordGroup.dict.forEach(item => {
                             if (item.id === id){
-                                let correctCode = this.dictMap.decodeWord(item.word)
-                                if (correctCode){ // 只有获取到编码内容时才重新设置编码
-                                    item.setCode(correctCode)
+                                if (getUnicodeStringLength(item.word) === 1){ // 单字时
+                                    let correctCode = this.dictMap.decodeWordSingle(`${item.word}-${item.code.length}`)
+                                    if (correctCode){
+                                        item.setCode(correctCode)
+                                        correctionCount = correctionCount + 1
+                                    } else {
+                                        item.setCode('orz')
+                                        errorCount = errorCount + 1
+                                    }
+                                } else {
+                                    let correctCode = this.dictMap.decodeWord(item.word)
+                                    if (correctCode){
+                                        item.setCode(correctCode)
+                                        correctionCount = correctionCount + 1
+                                    }
                                 }
                             }
                         })
@@ -590,14 +641,29 @@ const app = {
                     // 非分组模式时
                     this.words.forEach(item => {
                         if (item.id === id){
-                            let correctCode = this.dictMap.decodeWord(item.word)
-                            if (correctCode){
-                                item.setCode(correctCode)
+                            if (getUnicodeStringLength(item.word) === 1){ // 单字时
+                                let correctCode = this.dictMap.decodeWordSingle(`${item.word}-${item.code.length}`)
+                                if (correctCode){
+                                    item.setCode(correctCode)
+                                    correctionCount = correctionCount + 1
+                                } else {
+                                    item.setCode('orz')
+                                    errorCount = errorCount + 1
+                                }
+                            } else {
+                                let correctCode = this.dictMap.decodeWord(item.word)
+                                if (correctCode){
+                                    item.setCode(correctCode)
+                                    correctionCount = correctionCount + 1
+                                }
                             }
                         }
                     })
                 }
             })
+
+            console.log(`用时：${new Date().getTime() - timeStart} ms`)
+            console.log(`显示词条数为： ${this.chosenWordIds.size}，纠正：${correctionCount} 个，需要删除：${errorCount} 个`)
         },
 
         // GROUP OPERATION
