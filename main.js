@@ -704,6 +704,7 @@ function readFileFromConfigDir(fileName, responseWindow) {
 // 匹配文件名，返回对应文件的名字
 function getLabelNameFromFileName(fileName) {
     let map = [
+        {name: 'iOS仓', path: 'wubi86_jidian_user_hamster.dict.yaml'},
         {name: '❤ 用户词库', path: 'wubi86_jidian_user.dict.yaml'},
         {name: '分类词库', path: 'wubi86_jidian_extra.dict.yaml'},
         {name: '极点主表', path: 'wubi86_jidian.dict.yaml'},
