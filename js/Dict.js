@@ -394,7 +394,7 @@ class Dict {
             let yamlBody =
                 this.wordsOrigin
                     .map(item => {
-                        return item.toString()
+                        return item.toYamlString()
                     })
                     .join(EOL)
             return this.header + EOL + yamlBody
