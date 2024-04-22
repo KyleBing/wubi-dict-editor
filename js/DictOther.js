@@ -159,7 +159,6 @@ class DictOther {
     }
 
 
-
     // 删除词条
     deleteWords(wordIdSet){
         this.wordsOrigin = this.wordsOrigin.filter(item => !wordIdSet.has(item.id))
@@ -167,11 +166,11 @@ class DictOther {
 
     // 转为 String
     toYamlString(){
-        let fileContentString = ''
-        this.wordsOrigin.forEach(item =>{
-            fileContentString = fileContentString + item.toYamlString() + EOL
-        })
-        return fileContentString
+        return this.wordsOrigin
+            .map(item => {
+                item.toYamlString()
+            })
+            .join(EOL)
     }
 
     toExportString(seperator, dictFormat){

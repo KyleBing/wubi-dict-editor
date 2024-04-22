@@ -378,20 +378,25 @@ class Dict {
     toYamlString(){
         let yamlBody = ''
         if (this.isGroupMode){
-            this.wordsOrigin.forEach(group => {
-                let tempGroupString = ''
-                tempGroupString = tempGroupString + `## ${group.groupName}${EOL}` // + groupName
-                group.dict.forEach(item =>{
-                    tempGroupString = tempGroupString + item.toYamlString() + EOL
-                })
-                yamlBody = yamlBody + tempGroupString + EOL // 每组的末尾加个空行
-            })
+            // 为了避免最后多出的空格，改用 join
+            let tempGroupString =
+                this.wordsOrigin
+                    .map(group => {
+                        let tempGroupString = ''
+                        tempGroupString = tempGroupString + `## ${group.groupName}${EOL}` // + groupName
+                        let groupWordsYamlStringArray = group.dict.map(item => item.toYamlString())
+                        return tempGroupString + groupWordsYamlStringArray.join(EOL)
+                    })
+                    .join(EOL + EOL)
+            yamlBody = yamlBody + tempGroupString // 每组的末尾加个空行
             return this.header + EOL + yamlBody
         } else {
-            let yamlBody = ''
-            this.wordsOrigin.forEach(item =>{
-                yamlBody = yamlBody + item.toYamlString() + EOL
-            })
+            let yamlBody =
+                this.wordsOrigin
+                    .map(item => {
+                        return item.toString()
+                    })
+                    .join(EOL)
             return this.header + EOL + yamlBody
         }
     }
