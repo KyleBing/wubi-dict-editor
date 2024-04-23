@@ -167,6 +167,7 @@
                                 <div :title="item.word" class="word">{{ item.word }}</div>
                                 <div title="权重" class="priority">{{ item.priority }}</div>
                                 <div title="备注" class="note">{{ item.note }}</div>
+                                <div title="标识" class="indicator">{{ item.indicator }}</div>
                                 <div v-if="IS_IN_DEVELOP" class="id">{{ index + 1 }}</div>
                                 <div class="id">{{ item.id }}</div>
                                 <div class="operation">
@@ -258,6 +259,7 @@
                                 <div :title="item.word" class="word">{{ item.word }}</div>
                                 <div title="权重" class="priority">{{ item.priority }}</div>
                                 <div title="备注" class="note">{{ item.note }}</div>
+                                <div title="标识" class="indicator">{{ item.indicator }}</div>
                                 <div v-if="IS_IN_DEVELOP" class="id">{{ index + 1 }}</div>
                                 <div class="id">{{ item.id }}</div>
                                 <div class="operation">
@@ -284,6 +286,11 @@
                 <!-- 只有码表文件名为这个的时候才显示这个同步按钮 -->
                 <section v-if="dict.fileName === 'wubi86_jidian_extra.dict.yaml'">
                     <div class="title">更新</div>
+                    <div class="content">
+                        <div class="backup-info">
+                            <p>当前词库只是线上数据库的一个镜像，如果你使用线上的词库就不需要编辑当前词库。</p>
+                        </div>
+                    </div>
                     <div class="content">
                         <div class="btn-list">
                             <div class="btn-item">

@@ -7,13 +7,15 @@ class Word{
      * @param word String 词条
      * @param priority String 权重
      * @param note String 备注
+     * @param indicator String 程序层面的注释，比如标记搜索出的词条在哪个词组分类下
      */
-    constructor(id, code, word, priority, note) {
+    constructor(id, code, word, priority, note, indicator = '') {
         this.id = id
         this.code = code
         this.word = word
         this.priority = priority || ''
         this.note = note || ''
+        this.indicator = indicator
     }
     toComparableString(){
         return this.word + '\t' + this.code + '\t' + this.id  + '\t' + this.priority + '\t' + this.note

@@ -152,12 +152,16 @@ class Dict {
             let groupRepeatedWords = []
             this.wordsOrigin.forEach(wordGroup => {
                 wordGroup.dict.forEach(word => {
+                    word.indicator = wordGroup.groupName  // +查重的每个词里都标记属于哪个分组
                     if (filterSingleCharacter){
                         if (wordMap.has(word.word) && getUnicodeStringLength(word.word) === 1){
                             groupRepeatedWords.push(word)
                             if (isWithAllRepeatWord){
                                 let matchedWord = wordMap.get(word.word) // 获取匹配到的原词条
-                                if (matchedWord) groupRepeatedWords.push(matchedWord)
+                                if (matchedWord){
+                                    // matchedWord.indicator = wordGroup.groupName
+                                    groupRepeatedWords.push(matchedWord)
+                                }
                             }
                         } else { // 如果 map 中没有这个词的记录，添加这个记录
                             wordMap.set(word.word, word)
@@ -167,7 +171,10 @@ class Dict {
                             groupRepeatedWords.push(word)
                             if (isWithAllRepeatWord) {
                                 let matchedWord = wordMap.get(word.word)
-                                if (matchedWord) groupRepeatedWords.push(matchedWord)
+                                if (matchedWord){
+                                    // matchedWord.indicator = wordGroup.groupName
+                                    groupRepeatedWords.push(matchedWord)
+                                }
                             }
                         } else { // 如果 map 中没有这个词的记录，添加这个记录
                             wordMap.set(word.word, word)

@@ -10,7 +10,7 @@ $bg-dropdown-highlight: transparentize($bg-dropdown, 0.95);
     z-index: 100;
     position: absolute;
     top: 30px;
-    left: 0;
+    left: 60px;
     display: flex;
     flex-flow: row nowrap;
     align-items: flex-start;
@@ -18,15 +18,18 @@ $bg-dropdown-highlight: transparentize($bg-dropdown, 0.95);
 }
 
 .file-list{
-  margin-left: 5px;
+  margin-left: 15px;
   max-height: 400px;
-  border: 1px solid lighten($bg-dropdown, 20%);
+  //border: 1px solid lighten($bg-dropdown, 20%);
   @include border-radius($radius);
   overflow: hidden;
   color: $text-main;
   flex-shrink: 0;
   background-color: white;
   overflow-y: auto;
+  &:first-child{
+    margin-left: 0;
+  }
   &-item{
     min-width: 100px;
     @extend .unselectable;
@@ -52,7 +55,7 @@ $bg-dropdown-highlight: transparentize($bg-dropdown, 0.95);
   }
   &::-webkit-scrollbar {
     z-index: 50;
-    width: 1px;
+    width: 2px;
   }
   &::-webkit-scrollbar-track {
     background-color: rgba(0, 0, 0, 0);
