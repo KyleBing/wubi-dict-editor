@@ -629,7 +629,6 @@
 }
 .word-item .indicator {
   color: #FF2D70;
-  min-width: 50px;
   flex-shrink: 0;
   white-space: nowrap;
   font-size: 11px;
