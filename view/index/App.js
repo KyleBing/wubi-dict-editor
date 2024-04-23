@@ -560,6 +560,7 @@ const app = {
                 // 分组模式时
                 this.dict.wordsOrigin.forEach(wordGroup => {
                     wordGroup.dict.forEach(item => {
+                        item.indicator = wordGroup.groupName
                         if (getUnicodeStringLength(item.word) > 1 && !/[a-zA-Z0-9]+/.test(item.word)) { // 只判断词条，不判断单字
                             // TODO: 字为 unicode 时，字符长度为 2
                             if (item.code !== this.dictMap.decodeWord(item.word)) {
@@ -596,6 +597,7 @@ const app = {
                 // 分组模式时
                 this.dict.wordsOrigin.forEach(wordGroup => {
                     wordGroup.dict.forEach(item => {
+                        item.indicator = wordGroup.groupName
                         if (getUnicodeStringLength(item.word) === 1) {
                             if (item.code !== this.dictMap.decodeWordSingle(`${item.word}-${item.code.length}`)) {
                                 errorWords.push(item)
