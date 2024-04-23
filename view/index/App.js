@@ -48,7 +48,7 @@ const app = {
 
 
             targetDict: {}, // 要移动到的码表
-            showDropdown: false, // 显示移动词条窗口
+            isShowDropdown: false, // 显示移动词条窗口
             dropdownFileList: [
                 // {name: '拼音词库', path: 'pinyin_simp.dict.yaml'}
             ],
@@ -250,6 +250,23 @@ const app = {
         }
     },
     methods: {
+        // 显示 | 隐藏 移动到文件的列表
+        toggleFileListDropDown(){
+            if (this.isShowDropdown){
+                this.isShowDropdown = false
+            } else {
+                // 匹配跟当前码表一致的 file Index，只在分组模式时自动选择
+                if (this.dict.isGroupMode){
+                    this.dropdownFileList.forEach((item, index) => {
+                        if (item.path === this.dict.fileName){
+                            this.dropdownActiveFileIndex = index
+                            this.setDropdownActiveIndex(index)
+                        }
+                    })
+                }
+                this.isShowDropdown = true
+            }
+        },
         // 获取词库备份信息
         checkFileBackupExistence(){
             if (this.config.userInfo && this.config.userInfo.password && this.dict.fileName){ // config 和 当前词库内容都已经载入时才请求备份信息
@@ -987,7 +1004,7 @@ const app = {
         },
         // 复制 dropdown
         resetDropList(){
-            this.showDropdown = false
+            this.isShowDropdown = false
             this.dropdownActiveFileIndex = -1
             this.dropdownActiveGroupIndex = -1
             this.targetDict = {} // 清空次码表
@@ -1208,11 +1225,11 @@ const app = {
         },
         chosenWordIdArray(newValue){
             if (newValue.length === 0){
-                this.showDropdown = false
+                this.isShowDropdown = false
             }
             console.log('已选词条id: ', JSON.stringify(newValue))
         },
-        showDropdown(newValue){
+        isShowDropdown(newValue){
             if (!newValue){ // 窗口关闭时，重置 index
                 this.resetDropList()
             }
