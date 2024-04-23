@@ -153,6 +153,19 @@ $black-color-main: #81fffa;
     }
   }
   .word-item {
+    .checkbox-cell{
+      .checkbox-item{
+        width: $height-checkbox;
+        background-color: $black-bg;
+        border: 1px solid $black-color-border-input;
+        &.active{
+          border-color: $black-color-main;
+          &:after{
+            background-color: $black-color-main;
+          }
+        }
+      }
+    }
     &:hover {
       background: $black-bg-hover;
       .checkbox-cell {
@@ -169,6 +182,9 @@ $black-color-main: #81fffa;
     }
     .word {
     }
+    .indicator{
+      color: $black-color-main;
+    }
     .operation {
       .up, .down{
         &:hover{
@@ -177,6 +193,16 @@ $black-color-main: #81fffa;
         &:active{
           background-color: $black-bg-active;
         }
+      }
+    }
+    &:hover{
+      .checkbox-cell{
+        .checkbox-item{
+          border-color: $black-color-main !important;
+        }
+      }
+      .operation{
+        opacity: 1;
       }
     }
   }

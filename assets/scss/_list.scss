@@ -157,6 +157,13 @@ $border-color-checkbox: #d6d6d6;
     white-space: nowrap;
     font-size: $fz-list - 2;
   }
+  .indicator{
+    color: $color-main;
+    min-width: 50px;
+    flex-shrink: 0;
+    white-space: nowrap;
+    font-size: $fz-list - 2;
+  }
   .id{
     @extend .font-roboto;
     text-align: right;
@@ -199,7 +206,6 @@ $border-color-checkbox: #d6d6d6;
           @include box-shadow(inset 1px 1px 2px transparentize($color-main, 0.8) !important) ;
         }
       }
-
     }
     .operation{
       opacity: 1;
