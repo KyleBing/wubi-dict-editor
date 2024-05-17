@@ -62,7 +62,7 @@ function createMainWindow() {
             if (!err) {
                 console.log('saveFileSuccess')
                 try {
-                    applyRime() // 布署
+                    applyRime() // 部署
                 } catch (err) {
                     console.log('获取程序目录失败')
                 }
@@ -367,7 +367,7 @@ function showToolWindow() {
         fs.writeFile(filePath, fileConentString, {encoding: "utf8"}, err => {
             if (!err) {
                 console.log('saveFileSuccess')
-                // applyRime() // 布署
+                // applyRime() // 部署
                 toolWindow.webContents.send('saveFileSuccess')
             }
         })
@@ -840,7 +840,7 @@ function getDictFileList() {
     })
 }
 
-// 布署 Rime
+// 部署 Rime
 function applyRime() {
     let rimeBinDir = getRimeExecDir()
     console.log(path.join(rimeBinDir, 'WeaselDeployer.exe'))
