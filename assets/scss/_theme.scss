@@ -89,6 +89,9 @@ $black-color-main: #81fffa;
       .content{
         background-color: $black-body-bg;
       }
+      .tip{
+        color: $black-color-main;
+      }
 
       &::-webkit-scrollbar-thumb {
         border: none;
@@ -236,6 +239,9 @@ $black-color-main: #81fffa;
     background-color: $black-bg;
     border-top-color: $black-color-border-highlight;
     color: $black-color-text;
+    .tip{
+      text-shadow: 1px 1px 1px rgba(0,0,0,0.1), -1px -1px 0 black;
+    }
     .link {
       &:hover {
         color: $black-color-main !important;

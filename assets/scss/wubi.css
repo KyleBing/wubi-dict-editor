@@ -1773,6 +1773,9 @@ hr {
 .tool-panel:hover::-webkit-scrollbar-thumb {
   background-color: inherit;
 }
+.tool-panel .tip {
+  color: black;
+}
 .tool-panel section {
   margin-bottom: 15px;
 }
@@ -2079,6 +2082,9 @@ hr {
 .theme-dark .main-tool .tool-panel .content {
   background-color: #0f0f13;
 }
+.theme-dark .main-tool .tool-panel .tip {
+  color: #81fffa;
+}
 .theme-dark .main-tool .tool-panel::-webkit-scrollbar-thumb {
   border: none;
   background-color: #383838;
@@ -2193,6 +2199,9 @@ hr {
   background-color: #1c1f24;
   border-top-color: #383838;
   color: #e6e6e6;
+}
+.theme-dark .footer .tip {
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1), -1px -1px 0 black;
 }
 .theme-dark .footer .link:hover {
   color: #81fffa !important;
@@ -2689,6 +2698,9 @@ hr {
   .theme-auto .main-tool .tool-panel .content {
     background-color: #0f0f13;
   }
+  .theme-auto .main-tool .tool-panel .tip {
+    color: #81fffa;
+  }
   .theme-auto .main-tool .tool-panel::-webkit-scrollbar-thumb {
     border: none;
     background-color: #383838;
@@ -2803,6 +2815,9 @@ hr {
     background-color: #1c1f24;
     border-top-color: #383838;
     color: #e6e6e6;
+  }
+  .theme-auto .footer .tip {
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1), -1px -1px 0 black;
   }
   .theme-auto .footer .link:hover {
     color: #81fffa !important;
