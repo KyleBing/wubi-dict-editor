@@ -648,9 +648,14 @@ app.on('ready', () => {
     getDictFileList() // 读取目录中的所有码表文件
     createMenu() // 创建菜单
 
-    // Register a 'CommandOrControl+X' shortcut listener.
+    // Register a 'CommandOrControl+i' shortcut listener.
     const ret = globalShortcut.register('CommandOrControl+Shift+Alt+I', () => {
         console.log('ctrl + shift + alt + i is pressed')
+        mainWindow.show()
+    })
+    // Register a shortcut listener.
+    const retF9 = globalShortcut.register('F9', () => {
+        console.log('key F9 is pressed')
         mainWindow.show()
     })
 
