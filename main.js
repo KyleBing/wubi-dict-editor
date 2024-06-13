@@ -653,7 +653,15 @@ app.on('ready', () => {
         console.log('ctrl + shift + alt + i is pressed')
         mainWindow.show()
     })
+
+    // FOR YG777
     // Register a shortcut listener.
+    // const retF3 = globalShortcut.register('F3', () => {
+    //     console.log('key F3 is pressed')
+    //     mainWindow.show()
+    // })
+
+    // // Register a shortcut listener.
     const retF9 = globalShortcut.register('F9', () => {
         console.log('key F9 is pressed')
         mainWindow.show()
