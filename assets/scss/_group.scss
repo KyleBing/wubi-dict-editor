@@ -27,6 +27,7 @@ $catalog-pd-lr: 10px;
       height: $catalog-height - $catalog-pd-tb * 2;
     }
     .up, .down{
+      border: 1px solid transparent;
       flex-shrink: 0;
       opacity: 0;
       cursor: pointer;

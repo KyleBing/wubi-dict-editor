@@ -225,6 +225,12 @@ $black-color-main: #81fffa;
     color: $black-color-text;
     border-right-color: $black-color-border !important;
     .catalog-item {
+      .up, .down{
+        &:hover{
+          border-color: black;
+          background-color: black;
+        }
+      }
       &:hover {
         background-color: $black-bg-hover !important;
       }

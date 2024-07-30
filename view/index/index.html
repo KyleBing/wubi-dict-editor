@@ -40,6 +40,7 @@
             </div>
         </div>
     </div>
+
     <!--搜索框-->
     <div class="search-bar" v-if="dict">
         <div class="btn btn-primary" @click="applyRime">部署</div>
@@ -205,14 +206,16 @@
                          @click.stop="setGroupId(groupIndex)"
                          v-for="(group, groupIndex) in dict.wordsOrigin"
                          :key="groupIndex">
-                        <div v-if="config && config.theme === 'black'" class="up" @click.stop="catalogMove(group.id, 'up')">
+                        <div v-if="config && config.theme === 'black'" class="up"
+                             @click.stop="catalogMove(group.id, 'up')">
                             <img src="../../assets/img/up_white.svg" alt="move up"></div>
                         <div v-else class="up" @click.stop="catalogMove(group.id, 'up')">
                             <img src="../../assets/img/up.svg" alt="move up"></div>
 
                         <div class="catalog-title">{{group.groupName || '- 未命名 -'}}</div>
 
-                        <div v-if="config && config.theme === 'black'" class="down" @click.stop="catalogMove(group.id, 'down')">
+                        <div v-if="config && config.theme === 'black'" class="down"
+                             @click.stop="catalogMove(group.id, 'down')">
                             <img src="../../assets/img/down_white.svg" alt="move down"></div>
                         <div v-else class="down" @click.stop="catalogMove(group.id, 'down')">
                             <img src="../../assets/img/down.svg" alt="move down"></div>
