@@ -791,8 +791,14 @@ const app = {
             if(this.config.autoDeployOnDelete){ this.saveToFile(this.dict) }
         },
 
-        // 词条位置移动
-        move(wordId, direction){
+        /**
+         * 词条位置移动
+         * @param wordId 词条 id
+         * @param direction 方向
+         * @param isSwitchPriority  是否调换两个词条的 Priority
+         * @returns {string}
+         */
+        move(wordId, direction, isSwitchPriority){
             if (this.dict.isGroupMode){
                 // group 时，移动 调换 word 位置，是直接调动的 wordsOrigin 中的word
                 // 因为 group 时数据为： [{word, word},{word,word}]，是 wordGroup 的索引
@@ -805,6 +811,12 @@ const app = {
                                 if (j !==0){
                                     group.dict[j] = group.dict[j - 1]
                                     group.dict[j - 1] = tempItem
+                                    if (isSwitchPriority){
+                                        // 调换两个词的权重值
+                                        let tempPriority = group.dict[j].priority
+                                        group.dict[j].priority = group.dict[j - 1].priority
+                                        group.dict[j - 1].priority = tempPriority
+                                    }
                                     return ''
                                 } else {
                                     console.log('已到顶')
@@ -814,6 +826,12 @@ const app = {
                                 if (j+1 !== group.dict.length){
                                     group.dict[j] = group.dict[j + 1]
                                     group.dict[j + 1] = tempItem
+                                    if (isSwitchPriority) {
+                                        // 调换两个词的权重值
+                                        let tempPriority = group.dict[j].priority
+                                        group.dict[j].priority = group.dict[j + 1].priority
+                                        group.dict[j + 1].priority = tempPriority
+                                    }
                                     return ''
                                 } else {
                                     console.log('已到底')
@@ -834,6 +852,12 @@ const app = {
                                 this.dict.exchangePositionInOrigin(tempItem, this.words[i-1]) // 调换 wordsOrigin 中的词条位置
                                 this.words[i] = this.words[i - 1]
                                 this.words[i - 1] = tempItem
+                                if (isSwitchPriority) {
+                                    // 调换两个词的权重值
+                                    let tempPriority = this.words[i].priority
+                                    this.words[i].priority = this.words[i - 1].priority
+                                    this.words[i - 1].priority = tempPriority
+                                }
                                 return ''
                             } else {
                                 console.log('已到顶')
@@ -844,6 +868,12 @@ const app = {
                                 this.dict.exchangePositionInOrigin(tempItem, this.words[i+1]) // 调换 wordsOrigin 中的词条位置
                                 this.words[i] = this.words[i + 1]
                                 this.words[i + 1] = tempItem
+                                if (isSwitchPriority) {
+                                    // 调换两个词的权重值
+                                    let tempPriority = this.words[i].priority
+                                    this.words[i].priority = this.words[i + 1].priority
+                                    this.words[i + 1].priority = tempPriority
+                                }
                                 return ''
                             } else {
                                 console.log('已到底')
@@ -856,14 +886,14 @@ const app = {
         },
 
         // 上移词条
-        moveUp(id){
-            this.tips.push(this.move(id, 'up'))
+        moveUp(id, isSwitchPriority){
+            this.tips.push(this.move(id, 'up', isSwitchPriority))
             let temp = this.words.pop()
             this.words.push(temp)
         },
         // 下移词条
-        moveDown(id){
-            this.tips.push(this.move(id, 'down'))
+        moveDown(id, isSwitchPriority){
+            this.tips.push(this.move(id, 'down', isSwitchPriority))
             let temp = this.words.pop()
             this.words.push(temp)
         },

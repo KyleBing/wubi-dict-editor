@@ -641,7 +641,7 @@
   font-size: 11px;
 }
 .word-item .operation {
-  width: 100px;
+  width: 110px;
   flex-grow: 0;
   flex-shrink: 0;
   opacity: 0.2;
@@ -650,7 +650,7 @@
 }
 .word-item .operation .up, .word-item .operation .down {
   cursor: pointer;
-  padding: 5px 6px;
+  padding: 5px 4px;
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
   border-radius: 2px;

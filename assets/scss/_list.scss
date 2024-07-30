@@ -172,7 +172,7 @@ $border-color-checkbox: #d6d6d6;
     font-size: $fz-list - 2;
   }
   .operation{
-    width: 100px;
+    width: 110px;
     flex-grow: 0;
     flex-shrink: 0;
     opacity: 0.2;
@@ -181,7 +181,7 @@ $border-color-checkbox: #d6d6d6;
     justify-content: flex-end;
     .up, .down{
       cursor: pointer;
-      padding: 5px 6px;
+      padding: 5px 4px;
       @include border-radius(2px);
       img{
         display: block;

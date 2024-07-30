@@ -234,16 +234,20 @@
                                        v-model="group.groupName"
                                        @keydown.enter="group.isEditingTitle = false" />
                                 <div class="operation">
-                                    <div class="btn btn-sm btn-alt-primary" @click="group.isEditingTitle = false">保存</div>
+                                    <div class="btn btn-sm btn-alt-primary"
+                                         @click="group.isEditingTitle = false">保存</div>
                                 </div>
                             </template>
                             <template v-else>
                                 <h3 :key="groupIndex"
                                 >{{ group.groupName }}</h3>
                                 <div class="operation" >
-                                    <div class="btn btn-sm btn-alt-primary" @click="group.isEditingTitle = true">编辑</div>
-                                    <div v-if="activeGroupId === -1" class="btn btn-sm btn-alt-primary" @click="addGroupBeforeId(groupIndex)">添加分组</div>
-                                    <div class="btn btn-sm btn-alt-roseo" @click="deleteGroup(group.id)">删除</div>
+                                    <div class="btn btn-sm btn-alt-primary"
+                                         @click="group.isEditingTitle = true">编辑</div>
+                                    <div v-if="activeGroupId === -1" class="btn btn-sm btn-alt-primary"
+                                         @click="addGroupBeforeId(groupIndex)">添加分组</div>
+                                    <div class="btn btn-sm btn-alt-roseo"
+                                         @click="deleteGroup(group.id)">删除</div>
                                 </div>
                             </template>
                             <!--                        <p class="tip" v-if="activeGroupId === groupIndex">+  新词将添加到该分组</p>-->
@@ -266,14 +270,49 @@
                                 <div v-if="IS_IN_DEVELOP" class="id">{{ index + 1 }}</div>
                                 <div class="id">{{ item.id }}</div>
                                 <div class="operation">
-                                    <div v-if="config.theme === 'black'" class="up" @click.stop="moveUp(item.id)"><img src="../../assets/img/up_white.svg" alt="move up"></div>
-                                    <div v-else class="up" @click.stop="moveUp(item.id)"><img src="../../assets/img/up.svg" alt="move up"></div>
-                                    <div v-if="config.theme === 'black'" class="down" @click.stop="moveDown(item.id)"><img src="../../assets/img/down_white.svg" alt="move down"></div>
-                                    <div v-else class="down" @click.stop="moveDown(item.id)"><img src="../../assets/img/down.svg" alt="move down"></div>
-                                    <div v-if="config.theme === 'black'" class="up" @click.stop="editWord(item)"><img src="../../assets/img/edit_white.svg" alt="edit"></div>
-                                    <div v-else class="up" @click.stop="editWord(item)"><img src="../../assets/img/edit.svg" alt="edit"></div>
-                                    <div v-if="config.theme === 'black'" class="down" @click.stop="deleteWord(item.id)"><img src="../../assets/img/delete_white.svg" alt="delete"></div>
-                                    <div v-else class="down" @click.stop="deleteWord(item.id)"><img src="../../assets/img/delete.svg" alt="delete"></div>
+                                <!-- 不要去隐藏头部的上移按钮，会使按钮位置错位-->
+
+                                <!--普通调换位置-->
+                                    <div v-if="config.theme === 'black'" class="up" @click.stop="moveUp(item.id)" title="上移">
+                                        <img src="../../assets/img/up_white.svg" alt="上移" >
+                                    </div>
+                                    <div v-else class="up" @click.stop="moveUp(item.id)" title="上移">
+                                        <img src="../../assets/img/up.svg" alt="上移" >
+                                    </div>
+                                    <div v-if="config.theme === 'black'" class="down" @click.stop="moveDown(item.id)" title="下移">
+                                        <img src="../../assets/img/down_white.svg" alt="下移" >
+                                    </div>
+                                    <div v-else class="down" @click.stop="moveDown(item.id)" title="下移">
+                                        <img src="../../assets/img/down.svg" alt="下移" >
+                                    </div>
+
+                                <!--保留权重调换位置-->
+                                    <div v-if="config.theme === 'black'" class="up" @click.stop="moveUp(item.id, true)" title="调换权重上移">
+                                        <img src="../../assets/img/up_white.svg" alt="调换权重上移" >
+                                    </div>
+                                    <div v-else class="up" @click.stop="moveUp(item.id, true)" title="调换权重上移">
+                                        <img src="../../assets/img/up.svg" alt="调换权重上移" >
+                                    </div>
+                                    <div v-if="config.theme === 'black'" class="down" @click.stop="moveDown(item.id, true)" title="调换权重下移">
+                                        <img src="../../assets/img/down_white.svg" alt="调换权重下移" >
+                                    </div>
+                                    <div v-else class="down" @click.stop="moveDown(item.id, true)" title="调换权重下移">
+                                        <img src="../../assets/img/down.svg" alt="调换权重下移" >
+                                    </div>
+
+
+                                    <div v-if="config.theme === 'black'" class="up" @click.stop="editWord(item)" title="编辑">
+                                        <img src="../../assets/img/edit_white.svg" alt="编辑" >
+                                    </div>
+                                    <div v-else class="up" @click.stop="editWord(item)" title="编辑">
+                                        <img src="../../assets/img/edit.svg" alt="编辑" >
+                                    </div>
+                                    <div v-if="config.theme === 'black'" class="down" @click.stop="deleteWord(item.id)" title="删除">
+                                        <img src="../../assets/img/delete_white.svg" alt="删除" >
+                                    </div>
+                                    <div v-else class="down" @click.stop="deleteWord(item.id)" title="删除">
+                                        <img src="../../assets/img/delete.svg" alt="删除" >
+                                    </div>
                                 </div>
                             </div>
                         </div>
