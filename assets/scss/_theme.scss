@@ -15,6 +15,18 @@ $black-btn-bg-hover: lighten(black, 40%);
 $black-color-main: #81fffa;
 
 @mixin dark-mode(){
+  .radio-list{
+    .radio-list-item{
+      &.active{
+        color: $black-color-main;
+      }
+      &:hover{
+      }
+    }
+  }
+
+
+
   // 暗黑模式下的滚动条样式
   ::-webkit-scrollbar {
   }

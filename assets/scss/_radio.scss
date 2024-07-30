@@ -2,7 +2,7 @@
   display: flex;
   justify-content: flex-start;
   flex-flow: row wrap;
-  &-item{
+  .radio-list-item{
     color: $text-subtitle;
     @extend .btn-like;
     margin-right: 5px;

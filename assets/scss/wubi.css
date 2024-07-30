@@ -23,10 +23,10 @@
   font-family: "Comfortaa-v30", Roboto, SansSerif;
 }
 
-.btn-like, .modal-panel .modal-close, .radio-list-item, .footer-icon {
+.btn-like, .modal-panel .modal-close, .radio-list .radio-list-item, .footer-icon {
   cursor: pointer;
 }
-.btn-like:active, .modal-panel .modal-close:active, .radio-list-item:active, .footer-icon:active {
+.btn-like:active, .modal-panel .modal-close:active, .radio-list .radio-list-item:active, .footer-icon:active {
   transform: translateY(2px);
 }
 
@@ -1914,15 +1914,15 @@ hr {
   justify-content: flex-start;
   flex-flow: row wrap;
 }
-.radio-list-item {
+.radio-list .radio-list-item {
   color: #848484;
   margin-right: 5px;
 }
-.radio-list-item.active {
+.radio-list .radio-list-item.active {
   font-weight: bold;
   color: #000;
 }
-.radio-list-item:hover {
+.radio-list .radio-list-item:hover {
   font-weight: bold;
 }
 
@@ -2017,6 +2017,9 @@ hr {
   /*CONFIG*/
   /*BUTTONS*/
   /*TOOL*/
+}
+.theme-dark .radio-list .radio-list-item.active {
+  color: #81fffa;
 }
 .theme-dark ::-webkit-scrollbar-track {
   background-color: rgba(0, 0, 0, 0);
@@ -2633,6 +2636,9 @@ hr {
     /*CONFIG*/
     /*BUTTONS*/
     /*TOOL*/
+  }
+  .theme-auto .radio-list .radio-list-item.active {
+    color: #81fffa;
   }
   .theme-auto ::-webkit-scrollbar-track {
     background-color: rgba(0, 0, 0, 0);
