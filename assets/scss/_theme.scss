@@ -266,9 +266,10 @@ $black-color-main: #81fffa;
   }
   .file-list {
     color: $black-color-text;
-    background-color: $black-bg;
-    border-color: #00448e;
-    &-item {
+    background-color: $black-bg-hover;
+    box-shadow: 2px 2px 15px black;
+    //border-color: #00448e;
+    .file-list-item {
       border-bottom-color: $black-color-border;
       &:hover {
         background-color: $black-bg-highlight;

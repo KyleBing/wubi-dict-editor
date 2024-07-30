@@ -3,10 +3,10 @@ $bg-dropdown-highlight: transparentize($bg-dropdown, 0.95);
 
 .dropdown{
   position: relative;
-  &-link{
+  .dropdown-link{
 
   }
-  &-body{
+  .dropdown-body{
     z-index: 100;
     position: absolute;
     top: 30px;
@@ -19,7 +19,7 @@ $bg-dropdown-highlight: transparentize($bg-dropdown, 0.95);
 
 .file-list{
   margin-left: 15px;
-  max-height: 400px;
+  max-height: 600px;
   //border: 1px solid lighten($bg-dropdown, 20%);
   @include border-radius($radius);
   overflow: hidden;
@@ -30,7 +30,7 @@ $bg-dropdown-highlight: transparentize($bg-dropdown, 0.95);
   &:first-child{
     margin-left: 0;
   }
-  &-item{
+  .file-list-item{
     min-width: 100px;
     @extend .unselectable;
     text-align: center;
