@@ -131,7 +131,7 @@ const app = {
 
         // 载入主码表
         ipcRenderer.on('ToolWindow:setMainDict', (event, filename, res) => {
-            this.dictMain = new Dict(res, filename)
+            this.dictMain = new Dict(res, filename, '', true)
             console.log('dictMain载入完成，包含词条：',this.dictMain.dictSetExceptCharacter.size)
         })
 

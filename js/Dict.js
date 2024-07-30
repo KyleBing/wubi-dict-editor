@@ -8,7 +8,13 @@ const EOL = '\n'
 
 
 class Dict {
-    constructor(fileContent, fileName, filePath, header, ) {
+    /**
+     * @param fileContent  词库内容
+     * @param fileName
+     * @param filePath
+     * @param isForceProcessInUngroupMode 按照非分组模式读取词库
+     */
+    constructor(fileContent, fileName, filePath, isForceProcessInUngroupMode) {
         this.dictTypeName = 'Dict'
         this.filePath = filePath // 文件路径
         this.fileName = fileName // 文件名字
@@ -20,7 +26,6 @@ class Dict {
         this.dictSetExceptCharacter = new Set() // 所有词组的 set
 
 
-
         let indexEndOfHeader = fileContent.indexOf('...')
         if (indexEndOfHeader < 0){
             console.log('文件格式错误，没有 ... 这一行')
@@ -29,7 +34,14 @@ class Dict {
             this.header = fileContent.substring(0, this.indexEndOfHeader)
             this.isGroupMode = this.header.includes('dict_grouped: true') // 根据有没有这一段文字进行判断，是否为分组形式的码表
             let body = fileContent.substring(this.indexEndOfHeader)
-            this.wordsOrigin = this.isGroupMode? this.getDictWordsInGroupMode(body): this.getDictWordsInNormalMode(body)
+
+            if (isForceProcessInUngroupMode) {
+                this.wordsOrigin = this.getDictWordsInNormalMode(body)
+            } else if (this.isGroupMode) {
+                this.wordsOrigin = this.getDictWordsInGroupMode(body)
+            } else {
+                this.wordsOrigin = this.getDictWordsInNormalMode(body)
+            }
             // console.log('处理后的词条：',this.wordsOrigin)
         }
     }

@@ -1264,7 +1264,7 @@ select option {
   position: absolute;
   z-index: 9999;
   top: 30px;
-  width: 400px;
+  max-width: 600px;
   left: 0;
   background-color: white;
   -webkit-border-radius: 3px;

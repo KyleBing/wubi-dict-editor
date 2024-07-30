@@ -14,7 +14,7 @@ const CONFIG_FILE_PATH = 'wubi-dict-editor' // 配置文件存放的目录
 
 const DEFAULT_CONFIG = {
     initFileName: 'wubi86_jidian_user.dict.yaml' ,  // 初始文件信息
-    baseURL: 'http://kylebing.cn/portal/',         // BASE_URL
+    baseURL: 'http://kylebing.cn/portal/',          // BASE_URL
     autoDeployOnAdd: false ,                        // 添词后 是否自动部署
     autoDeployOnDelete: false ,                     // 删词后 是否自动部署
     autoDeployOnEdit: false ,                       // 编辑词条后 是否自动部署
@@ -27,7 +27,8 @@ const DEFAULT_CONFIG = {
     hasSetDictMap: false ,                          // 是否已经设置字典码表文件
     isToolPanelShowing: true,                       // index.html 工具面板是否展开
     fileNameList: [],                               // 匹配文件名，显示自定义码表文件的名字
-    // [{ "name": "luna_pinyin.sogou", "path": "luna_pinyin.sogou.dict.yaml" }]
+        // [{ "name": "luna_pinyin.sogou", "path": "luna_pinyin.sogou.dict.yaml" }]
+    mainDictFileName: 'wubi86_jidian.dict.yaml',    // 主词库文件名 v1.28
 }
 
 const SYNC_MAX_WORD_COUNT = 40000

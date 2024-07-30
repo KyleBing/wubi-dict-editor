@@ -74,14 +74,14 @@ const app = {
         ipcRenderer.on('ConfigWindow:ResponseConfigFile', (event, config) => {
             console.log('获取配置成功')
             this.config = config
+
+            // v1.27 添加 mainDictFileName 字段
+            if (!config.hasOwnProperty('mainDictFileName')) this.$set(this.config, 'mainDictFileName', 'wubi86_jidian.dict.yaml')
+
             // v1.15 添加 rimeExecDir 字段
-            if (config.hasOwnProperty('rimeExecDir')){
+            if (!config.hasOwnProperty('rimeExecDir')) this.$set(this.config, 'rimeExecDir', '')
 
-            } else {
-                this.$set(this.config, 'rimeExecDir', '')
-            }
             this.userInfo.email = config.userInfo && config.userInfo.email
-
             // after config is loaded, then request for fileList
             ipcRenderer.send('requestFileList')
         })
@@ -124,6 +124,9 @@ const app = {
         },
         setInitFile(file){
             this.config.initFileName = file.path
+        },
+        setMainDictFile(file){
+            this.config.mainDictFileName = file.path
         },
         setDictMap(){
             ipcRenderer.send('ConfigWindow:SetDictMapFile')

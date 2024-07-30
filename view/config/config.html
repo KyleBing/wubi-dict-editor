@@ -77,9 +77,29 @@
         </div>
     </section>
 
+    <section v-if="config && config.fileNameList">
+        <div class="section-title">
+            <h3>4. 指定主码表文件</h3>
+            <div class="desc">自定义指定你的主码表文件，在搜索词条展示已存在词条时有用。设置完成后重启程序后生效。</div>
+        </div>
+        <div class="section-content">
+            <div class="config-file-list">
+                <div @click="setMainDictFile(file)"
+                     :class="['config-file-list-item', {active: file.path === config.mainDictFileName}]"
+                     v-for="(file, index) in config.fileNameList"
+                     :key="index"
+                     v-if="config.fileNameList"
+                >
+                    <div class="name">{{file.name}}</div>
+                    <div class="path">{{file.path}}</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <section>
         <div class="section-title">
-            <h3>4. 回车动作</h3>
+            <h3>5. 回车动作</h3>
             <div class="desc">定义搜索框中按回车键的动作</div>
         </div>
         <div class="section-content">
@@ -108,7 +128,7 @@
 
     <section>
         <div class="section-title">
-            <h3>5. 搜索</h3>
+            <h3>6. 搜索</h3>
             <div class="desc">搜索匹配的内容</div>
         </div>
         <div class="section-content">
@@ -155,7 +175,7 @@
 
     <section>
         <div class="section-title">
-            <h3>6. 选取输入法配置文件目录</h3>
+            <h3>7. 选取输入法配置文件目录</h3>
             <div class="desc">工具自动读取的输入法配置文件目录</div>
         </div>
         <div class="section-content">
@@ -169,7 +189,7 @@
 
     <section>
         <div class="section-title">
-            <h3>7. 选取输入法程序目录 ( 适用于 Windows )</h3>
+            <h3>8. 选取输入法程序目录 ( 适用于 Windows )</h3>
             <div class="desc">程序安装在了什么位置，用于自动部署</div>
         </div>
         <div class="section-content">
@@ -182,7 +202,7 @@
     </section>
     <section>
         <div class="section-title">
-            <h3>8. 选择参考码表</h3>
+            <h3>9. 选择参考码表</h3>
             <div class="desc">添加新词时、批量生成编码时，使用的码表，格式：前词后码，tab 分隔。</div>
             <div class="desc">正常的 Rime 码表文件都能正常使用，有多字也无所谓，程序会自动只选取单字部分使用。</div>
             <div class="desc">默认情况下，程序使用 wubi86_jidian.dict.yaml 这个文件作为参考码表。</div>
@@ -198,7 +218,7 @@
 
     <section>
         <div class="section-title">
-            <h3>9. 主题</h3>
+            <h3>10. 主题</h3>
             <div class="desc">切换主题</div>
         </div>
         <div class="section-content">
@@ -236,7 +256,7 @@
 
     <section>
         <div class="section-title">
-            <h3>10. 请求地址</h3>
+            <h3>11. 请求地址</h3>
             <div class="desc">数据交互的线上地址</div>
         </div>
         <div class="section-content">
@@ -251,7 +271,7 @@
 
     <section>
         <div class="section-title">
-            <h3>11. 同步</h3>
+            <h3>12. 同步</h3>
             <div class="desc">同步用户词库，账号请前往 <a target="_blank" href="http://kylebing.cn/diary">http://kylebing.cn/diary</a> 注册</div>
         </div>
         <div class="section-content">

@@ -153,7 +153,8 @@ const app = {
 
         // 载入主码表
         ipcRenderer.on('setMainDict', (event, filename, res) => {
-            this.dictMain = new Dict(res, filename)
+            this.dictMain = new Dict(res, filename, '', true)
+            console.log('主码表词条数量：', this.dictMain.wordsOrigin.length)
         })
 
         // 配置文件保存后，向主窗口更新配置文件内容
@@ -247,6 +248,11 @@ const app = {
         // 当前载入的是否为 主 码表
         isInMainDict(){
             return this.dict.fileName === 'wubi86_jidian.dict.yaml'
+        },
+        // 文件名字列表
+        fileNameListMap(){
+            // [{ "name": "luna_pinyin.sogou", "path": "luna_pinyin.sogou.dict.yaml" }]
+            return new Map(this.config.fileNameList.map(item => [item.path, item.name]))
         }
     },
     methods: {
@@ -1223,8 +1229,9 @@ const app = {
             this.code = newValue.replaceAll(/[^A-Za-z ]/g, '') // input.code 只允许输入字母
             // 主码表中的词
             let wordsMainDictRedundancy = this.dictMain.wordsOrigin.filter(item => item.code === newValue)
+
             wordsMainDictRedundancy = wordsMainDictRedundancy.map(item => {
-                item.origin = '主码表' // 标记主码表来源
+                item.origin = this.fileNameListMap.get(this.config.mainDictFileName) // 标记主码表来源
                 return item
             })
 

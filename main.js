@@ -96,7 +96,8 @@ function createMainWindow() {
 
     // 监听载入主文件内容的请求
     ipcMain.on('loadMainDict', event => {
-        let mainDictFileName = 'wubi86_jidian.dict.yaml'
+        let config = readConfigFile()
+        let mainDictFileName = config.mainDictFileName || DEFAULT_CONFIG.mainDictFileName
         fs.readFile(path.join(getRimeConfigDir(), mainDictFileName), {encoding: 'utf-8'}, (err, res) => {
             if (err) {
                 console.log(err)
