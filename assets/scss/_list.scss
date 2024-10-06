@@ -70,7 +70,6 @@ $height-checkbox: 14px;
 $border-color-checkbox: #d6d6d6;
 
 .word-item{
-  @extend .unselectable;
   height: $height-word-item;
   align-items: center;
   display: flex;
