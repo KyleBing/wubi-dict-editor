@@ -17,6 +17,24 @@ class Word{
         this.note = note || ''
         this.indicator = indicator
     }
+    toCodeComparableString(){
+        return this.code + '\t' + this.priority + '\t' + this.note
+    }
+
+    /**
+     * 判断词条优先级是否高于另一个词条
+     * @param word
+     */
+    isPriorityAbove(word){
+        if (this.code < word.code){
+            return true
+        } else if (this.code === word.code) {
+            return this.priority > word.priority // code 一样时，权重大的优先
+        } else {
+            return false
+        }
+    }
+
     toComparableString(){
         return this.word + '\t' + this.code + '\t' + this.id  + '\t' + this.priority + '\t' + this.note
     }

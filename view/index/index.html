@@ -188,14 +188,14 @@
                                         <img src="../../assets/img/up_white.svg" alt="调换权重上移">
                                     </div>
                                     <div v-else class="up" @click.stop="moveUp(item.id, true)" title="调换权重上移">
-                                        <img src="../../assets/img/up.svg" alt="调换权重上移">
+                                        <img src="../../assets/img/up_alt.svg" alt="调换权重上移">
                                     </div>
                                     <div v-if="config.theme === 'black'" class="down"
                                          @click.stop="moveDown(item.id, true)" title="调换权重下移">
                                         <img src="../../assets/img/down_white.svg" alt="调换权重下移">
                                     </div>
                                     <div v-else class="down" @click.stop="moveDown(item.id, true)" title="调换权重下移">
-                                        <img src="../../assets/img/down.svg" alt="调换权重下移">
+                                        <img src="../../assets/img/down_alt.svg" alt="调换权重下移">
                                     </div>
 
                                     <div v-if="config.theme === 'black'" class="up" @click.stop="editWord(item)">
@@ -317,13 +317,13 @@
                                         <img src="../../assets/img/up_white.svg" alt="调换权重上移" >
                                     </div>
                                     <div v-else class="up" @click.stop="moveUp(item.id, true)" title="调换权重上移">
-                                        <img src="../../assets/img/up.svg" alt="调换权重上移" >
+                                        <img src="../../assets/img/up_alt.svg" alt="调换权重上移" >
                                     </div>
                                     <div v-if="config.theme === 'black'" class="down" @click.stop="moveDown(item.id, true)" title="调换权重下移">
                                         <img src="../../assets/img/down_white.svg" alt="调换权重下移" >
                                     </div>
                                     <div v-else class="down" @click.stop="moveDown(item.id, true)" title="调换权重下移">
-                                        <img src="../../assets/img/down.svg" alt="调换权重下移" >
+                                        <img src="../../assets/img/down_alt.svg" alt="调换权重下移" >
                                     </div>
 
 
@@ -422,7 +422,7 @@
                 </section>
 
                 <section>
-                    <div class="title">查重 - 全部</div>
+                    <div class="title">词条查重 - 全部</div>
                     <div class="content">
                         <div class="btn-list">
                             <div class="btn-item">
@@ -435,7 +435,7 @@
                     </div>
                 </section>
                 <section>
-                    <div class="title">查重 - 多余部分</div>
+                    <div class="title">词条查重 - 多余部分</div>
                     <div class="content">
                         <div class="btn-list">
                             <div class="btn-item">
@@ -447,6 +447,17 @@
                         </div>
                     </div>
                 </section>
+                <section>
+                    <div class="title">编码查重 - 与单字重码的词条</div>
+                    <div class="content">
+                        <div class="btn-list">
+                            <div class="btn-item">
+                                <div class="btn btn-primary" @click="checkRepeatedWordWithSameCode()">查重</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
                 <section>
                     <div class="title">查错</div>
                     <div class="content">

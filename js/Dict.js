@@ -153,8 +153,12 @@ class Dict {
         console.log(`Sort 用时 ${new Date().getTime() - startPoint} ms`)
     }
 
-    // 查重，返回重复定义的字词
-    // includeCharacter 当包含单字时
+    /**
+     * 查重，返回重复定义的字词，非编码
+     * @param filterSingleCharacter 当包含单字时
+     * @param isWithAllRepeatWord
+     * @returns {*[]}
+     */
     getRepetitionWords(filterSingleCharacter, isWithAllRepeatWord){
         let startPoint = new Date().getTime()
         let wordMap = new Map()
@@ -256,6 +260,54 @@ class Dict {
         console.log('处理之后的：', repetitionWords)
         return repetitionWords
     }
+
+
+    /**
+     * 获取与单字重码的词条
+     * @returns {*[]}
+     */
+    getRepeatedWordsWithSameCode(){
+        let startPoint = new Date().getTime()
+        let codeMap = new Map()
+        let repetitionWords = []
+
+        // 生成单字 code map
+        this.wordsOrigin
+            .filter(word => getUnicodeStringLength(word.word) === 1)
+            .forEach(word => {
+                codeMap.set(word.code, word)
+            })
+
+        this.wordsOrigin.forEach(word => {
+            if (codeMap.has(word.code) && getUnicodeStringLength(word.word) > 1){
+                repetitionWords.push(word) // 添加词条
+                let matchedWord = codeMap.get(word.code)
+                if (matchedWord) repetitionWords.push(matchedWord) // 同时添加跟这个词条相同编码的单字
+            }
+        })
+
+        // 排序
+        repetitionWords.sort((a, b) => {
+            // console.log(a.word + a.code, b.word + b.code)
+            return (a.isPriorityAbove(b))  ? -1 : 1
+        })
+        for (let i = 0; i < repetitionWords.length - 1; i++) {
+            if (repetitionWords[i].id === repetitionWords[i + 1].id ) {
+                repetitionWords.splice(i,1)
+                i = i - 1
+            }
+        }
+
+        console.log('重复词条数量:未去重之前 ', repetitionWords.length)
+
+        console.log(`查重完成，用时 ${new Date().getTime() - startPoint} ms`)
+        console.log('词条字典数量: ', codeMap.size)
+        console.log('重复词条数量: ', repetitionWords.length)
+        console.log('重复 + 词条字典 = ', repetitionWords.length + codeMap.size)
+        console.log('处理之后的：', repetitionWords)
+        return repetitionWords
+    }
+
 
     /**
      * 给所有词条添加权重

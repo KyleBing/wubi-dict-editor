@@ -554,9 +554,14 @@ const app = {
         },
 
         // 查重
-        checkRepetition(includeCharacter, isWithAllRepeatWord){
+        checkRepetition(includeCharacter, isWithAllRepeatWord, isWithAllType){
             this.setGroupId(-1) // 高亮分组定位到 【全部】
-            this.words = this.dict.getRepetitionWords(includeCharacter, isWithAllRepeatWord)
+            this.words = this.dict.getRepetitionWords(includeCharacter, isWithAllRepeatWord, isWithAllType)
+        },
+
+        // 查询所有与单字重复的词条
+        checkRepeatedWordWithSameCode(){
+            this.words = this.dict.getRepeatedWordsWithSameCode()
         },
 
         // 词组编码查错
