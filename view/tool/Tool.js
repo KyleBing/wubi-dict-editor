@@ -221,6 +221,7 @@ const app = {
                 case 'wc': type = '一词一码';break;
                 case 'cw': type = '一码一词';break;
                 case 'w': type = '纯词';break;
+                case 'rime_auto': type = 'Rime格式';break;
             }
             let seperater = ''
             switch (this.seperatorSave){

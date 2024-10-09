@@ -212,6 +212,12 @@ class DictOther {
                 })
                 console.log(`词条文本已生成，用时 ${new Date().getTime() - startPoint} ms`)
                 return fileContentString
+            case 'rime_auto':
+                this.wordsOrigin.forEach(word => {
+                    fileContentString = fileContentString.concat(word.toFileString(seperator, false), EOL)
+                })
+                console.log(`词条文本已生成，用时 ${new Date().getTime() - startPoint} ms`)
+                return fileContentString
         }
     }
 

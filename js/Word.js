@@ -54,9 +54,9 @@ class Word{
     }
     toFileString(seperator, codeFirst){
         if (codeFirst){
-            return this.code + seperator + this.word
+            return this.code + seperator + this.word + seperator + this.priority
         } else {
-            return this.word + seperator + this.code
+            return this.word + seperator + this.code + seperator + this.priority
         }
     }
     setCode(code){
