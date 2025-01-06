@@ -149,7 +149,7 @@ const app = {
 
         // 获取并设置字典文件
         ipcRenderer.on('setDictMap', (event, fileContent, fileName, filePath) => {
-            this.dictMap = new DictMap(fileContent, fileName, filePath)
+            this.dictMap = new DictMap(null, fileContent)
         })
         ipcRenderer.send('getDictMap')
 
@@ -207,8 +207,10 @@ const app = {
 
         generateCodeForAllWords(){
             this.dict.wordsOrigin.forEach(word => {
+                console.log(word)
                 word.setCode(this.dictMap.decodeWord(word.word))
             })
+            console.log(this.dictMap)
             this.refreshShowingWords()
             this.tips.push('编码生成完成')
         },
