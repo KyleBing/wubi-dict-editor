@@ -1027,12 +1027,11 @@ const app = {
             console.log('words transferring：', JSON.stringify(wordsTransferring))
 
             if (this.dict.fileName === this.targetDict.fileName){ // 如果是同词库移动
-                this.targetDict.deleteWords(this.chosenWordIds, true) // 删除移动的词条
-                this.targetDict.addWordsInOrder(wordsTransferring, this.dropdownActiveGroupIndex)
-                console.log('after insert:( main:wordOrigin ):\n ', JSON.stringify(this.targetDict.wordsOrigin))
-                // 如果在同码表中移动：如，从一个分组移到别一个分组
-                // 只保存 dictSecond 内容，重新载入 dict 内容
-                this.saveToFile(this.targetDict)
+                // 同文件内移动时，必须直接操作当前 dict，避免 targetDict 与当前内存状态不一致导致“删不掉又新增”。
+                this.dict.deleteWords(this.chosenWordIds, true) // 删除移动的词条
+                this.dict.addWordsInOrder(wordsTransferring, this.dropdownActiveGroupIndex)
+                console.log('after insert:( main:wordOrigin ):\n ', JSON.stringify(this.dict.wordsOrigin))
+                this.saveToFile(this.dict)
                 this.reloadCurrentDict()
             } else {
                 this.targetDict.addWordsInOrder(wordsTransferring, this.dropdownActiveGroupIndex)

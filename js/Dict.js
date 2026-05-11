@@ -402,7 +402,7 @@ class Dict {
         words.forEach(word => {
             let insetPosition = null // 插入位置 index
             for (let i=0; i<dictWords.length-1; i++){ // -1 为了避免下面 i+1 为 undefined
-                if (word.code >= dictWords[i]  && word.code <= dictWords[i+1].code){
+                if (word.code >= dictWords[i].code  && word.code <= dictWords[i+1].code){
                     insetPosition = i + 1
                     break
                 }
@@ -411,7 +411,7 @@ class Dict {
                 insetPosition = dictWords.length
             }
             let wordInsert = word.clone() // 断开与别一个 dict 的引用链接，新建一个 word 对象，不然两个 dict 引用同一个 word
-            wordInsert.id = dictWords.length + 1 // 给新的 words 一个新的唯一 id
+            wordInsert.id = this.lastIndex++ // 使用全局递增 id，避免跨分组出现重复 id
             dictWords.splice(insetPosition, 0, wordInsert)
         })
     }
