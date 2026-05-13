@@ -6,6 +6,8 @@
     color: $text-subtitle;
     @extend .btn-like;
     margin-right: 5px;
+    margin-bottom: 5px;
+
     &.active{
       font-weight: bold;
       color: $text-main;
