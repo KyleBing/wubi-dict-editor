@@ -1,3 +1,8 @@
+// Windows Squirrel 安装/更新时自动退出，避免重复启动
+if (require('electron-squirrel-startup')) {
+    require('electron').app.quit()
+}
+
 const {app, globalShortcut, BrowserWindow, Menu, ipcMain, shell, dialog, net, Notification} = require('electron')
 const {exec} = require('child_process')
 const fs = require('fs')
@@ -17,6 +22,7 @@ const {
 } = require('./js/Global')
 const plist = require("plist")
 const wubiApi = require("./js/wubiApi")
+const { getRimeExecDir: resolveRimeExecDir, WEASEL_DEPLOYER, normalizeConfiguredExecDir } = require('./js/RimeExecResolver')
 
 let mainWindow // 主窗口
 let fileList = [] // 文件目录列表，用于移动词条
@@ -27,7 +33,7 @@ function createMainWindow() {
     mainWindow = new BrowserWindow({
         width,
         height,
-        icon: __dirname + '/assets/appIcon/appicon.ico', // windows icon
+        icon: __dirname + '/assets/img/appIcon/appIcon.ico', // windows icon
         // icon: __dirname + '/assets/appIcon/linux.png', // linux icon
         webPreferences: {
             nodeIntegration: true,
@@ -90,6 +96,17 @@ function createMainWindow() {
                 console.log(err)
             } else {
                 mainWindow.webContents.send('setTargetDict', filename, filePath, res)
+            }
+        })
+    })
+
+    ipcMain.on('MainWindow:LoadPinyinDict', (event, filename) => {
+        let filePath = path.join(getRimeConfigDir(), filename)
+        fs.readFile(filePath, {encoding: 'utf-8'}, (err, res) => {
+            if (err) {
+                mainWindow.webContents.send('MainWindow:PinyinDictLoadError', err.message)
+            } else {
+                mainWindow.webContents.send('MainWindow:PinyinDictLoaded', filename, filePath, res)
             }
         })
     })
@@ -256,7 +273,10 @@ function createMainWindow() {
     })
     // 载入文件内容
     ipcMain.on('MainWindow:ApplyRime', event => {
-        applyRime()
+        const result = applyRime()
+        if (mainWindow) {
+            mainWindow.send('MainWindow:ApplyRime:Result', result)
+        }
     })
 }
 
@@ -268,7 +288,7 @@ function showToolWindow() {
     toolWindow = new BrowserWindow({
         width,
         height,
-        icon: __dirname + '/assets/appIcon/appicon.ico', // windows icon
+        icon: __dirname + '/assets/img/appIcon/appIcon.ico', // windows icon
         webPreferences: {
             nodeIntegration: true,
             contextIsolation: false
@@ -457,7 +477,7 @@ function createConfigWindow() {
     configWindow = new BrowserWindow({
         width,
         height,
-        icon: __dirname + '/assets/appIcon/appicon.ico', // windows icon
+        icon: __dirname + '/assets/img/appIcon/appIcon.ico', // windows icon
         webPreferences: {
             nodeIntegration: true,
             contextIsolation: false
@@ -571,9 +591,23 @@ function createConfigWindow() {
         let rimeExecDir = dialog.showOpenDialogSync(configWindow, {
             properties: ['openDirectory'] // 选择文件夹
         })
-        if (rimeExecDir) {
-            configWindow.send('ConfigWindow:ChosenRimeExecDir', rimeExecDir)
+        if (rimeExecDir && rimeExecDir[0]) {
+            const normalized = normalizeConfiguredExecDir(rimeExecDir[0])
+            if (normalized) {
+                configWindow.send('ConfigWindow:ChosenRimeExecDir', [normalized])
+            } else {
+                configWindow.send('ConfigWindow:ChosenRimeExecDir:Invalid', '所选目录中未找到 WeaselDeployer.exe')
+            }
         }
+    })
+
+    ipcMain.on('ConfigWindow:ResolveRimeExecDir', event => {
+        const config = readConfigFile()
+        const resolved = getRimeExecDir(config && config.rimeExecDir)
+        configWindow.send('ConfigWindow:ResolvedRimeExecDir', {
+            configured: (config && config.rimeExecDir) || '',
+            resolved: resolved || '',
+        })
     })
 
     // 选取编码字典文件
@@ -856,23 +890,36 @@ function getDictFileList() {
 
 // 部署 Rime
 function applyRime() {
-    let rimeBinDir = getRimeExecDir()
-    console.log(path.join(rimeBinDir, 'WeaselDeployer.exe'))
+    const config = readConfigFile()
+    const rimeBinDir = getRimeExecDir(config && config.rimeExecDir)
+    if (!rimeBinDir) {
+        const message = '未找到 WeaselDeployer.exe，请在设置中指定输入法程序目录'
+        console.log(message)
+        return { success: false, message }
+    }
+
     switch (os.platform()) {
-        case 'darwin':
-            // macOS
-            exec(`"${rimeBinDir}/Squirrel" --reload`, error => {
-                console.log(error)
+        case 'darwin': {
+            const squirrelPath = path.join(rimeBinDir, 'Squirrel')
+            exec(`"${squirrelPath}" --reload`, error => {
+                if (error) {
+                    console.log(error)
+                }
             })
-            break
-        case 'win32':
-            // windows
-            let execFilePath = path.join(rimeBinDir, 'WeaselDeployer.exe')
+            return { success: true, message: '已触发部署', execDir: rimeBinDir }
+        }
+        case 'win32': {
+            const execFilePath = path.join(rimeBinDir, WEASEL_DEPLOYER)
+            console.log(execFilePath)
             exec(`"${execFilePath}" /deploy`, err => {
                 if (err) {
                     console.log(err)
                 }
             })
+            return { success: true, message: '已触发部署', execDir: rimeBinDir }
+        }
+        default:
+            return { success: false, message: '当前系统不支持自动部署' }
     }
 }
 
@@ -906,34 +953,12 @@ function getAppConfigDir() {
     return path.join(os.homedir(), CONFIG_FILE_PATH)
 }
 
-// 返回  Rime 可执行文件夹
-function getRimeExecDir() {
-    switch (os.platform()) {
-        case 'aix':
-            break
-        case 'darwin':
-            // macOS
-            return path.join('/Library/Input Methods/Squirrel.app', 'Contents/MacOS')
-        case 'freebsd':
-            break
-        case 'linux':
-            break
-        case 'openbsd':
-            break
-        case 'sunos':
-            break
-        case 'win32':
-            // windows
-            let configContent = readConfigFile()
-            if (configContent.rimeExecDir) { // 如果存在已配置的程序目录，使用它
-                return configContent.rimeExecDir
-            } else {
-                const PATH_RIME_BIN_WIN = 'C:/Program Files (x86)/Rime'
-                let execDirEntries = fs.readdirSync(PATH_RIME_BIN_WIN, {withFileTypes: true})
-                execDirEntries.sort((a,b) => a.name > b.name?1:-1)
-                let rimeDirEntries = execDirEntries.filter(item => item.name.includes('weasel')) // 过滤带 weasel 字符的文件夹
-                return path.join(PATH_RIME_BIN_WIN, rimeDirEntries[rimeDirEntries.length - 1].name)
-            }
-    }
+// 返回 Rime 可执行文件夹
+function getRimeExecDir(configRimeExecDir) {
+    const config = readConfigFile()
+    const configuredDir = configRimeExecDir !== undefined
+        ? configRimeExecDir
+        : (config && config.rimeExecDir) || ''
+    return resolveRimeExecDir(os.platform(), configuredDir)
 }
 

@@ -61,9 +61,14 @@ $height-word-item: 24px;
     }
   }
 }
-.word-list{
-  padding-bottom: 20px;
+.group-list-scroller{
+  width: 100%;
 }
+
+.group-list-scroller .group-header{
+  margin-bottom: 0;
+}
+
 
 $checkbox-shadow: false;
 $height-checkbox: 14px;
@@ -76,6 +81,7 @@ $border-color-checkbox: #d6d6d6;
   justify-content: flex-start;
   position: relative;
   padding: 0 20px;
+  @extend .unselectable;
   &.active{
     background-color: $color-main;
   }

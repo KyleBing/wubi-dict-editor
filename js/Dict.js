@@ -2,6 +2,7 @@
 const Word = require("./Word")
 const WordGroup = require("./WordGroup")
 const {shakeDom, log, shakeDomFocus, getUnicodeStringLength} = require('./Utility')
+const {parseDictFile, serializeDictYaml, dictToPlainObject} = require('./dictParseCore')
 
 const os = require('os')
 const EOL = '\n'
@@ -13,37 +14,76 @@ class Dict {
      * @param fileName
      * @param filePath
      * @param isForceProcessInUngroupMode 按照非分组模式读取词库
+     * @param parsed  Worker 预解析结果
      */
-    constructor(fileContent, fileName, filePath, isForceProcessInUngroupMode) {
+    constructor(fileContent, fileName, filePath, isForceProcessInUngroupMode, parsed) {
         this.dictTypeName = 'Dict'
-        this.filePath = filePath // 文件路径
-        this.fileName = fileName // 文件名字
-        this.header = null // 文件头部内容
-        this.wordsOrigin = [] // 文件词条数组，groupMode 的时候，是 WordGroup Array，否则是 Word Array
-        this.lastIndex = 0 // 最后一个Word Index 的值，用于新添加词时，作为唯一的 id 传入
-        this.lastGroupIndex = 0 // 最后一个WordGroup Index 的值，用于新添加词时，作为唯一的 id 传入
-        this.isGroupMode = false // 识别码表是否为分组形式的
-        this.dictSetExceptCharacter = new Set() // 所有词组的 set
+        this.filePath = filePath || ''
+        this.fileName = fileName || ''
+        this.header = null
+        this.wordsOrigin = []
+        this.lastIndex = 0
+        this.lastGroupIndex = 0
+        this.isGroupMode = false
+        this.dictSetExceptCharacter = new Set()
+        this._codeIndex = new Map()
 
-
-        let indexEndOfHeader = fileContent.indexOf('...')
-        if (indexEndOfHeader < 0){
-            console.log('文件格式错误，没有 ... 这一行')
-        } else {
-            this.indexEndOfHeader = indexEndOfHeader + 3
-            this.header = fileContent.substring(0, this.indexEndOfHeader)
-            this.isGroupMode = this.header.includes('dict_grouped: true') // 根据有没有这一段文字进行判断，是否为分组形式的码表
-            let body = fileContent.substring(this.indexEndOfHeader)
-
-            if (isForceProcessInUngroupMode) {
-                this.wordsOrigin = this.getDictWordsInNormalMode(body)
-            } else if (this.isGroupMode) {
-                this.wordsOrigin = this.getDictWordsInGroupMode(body)
-            } else {
-                this.wordsOrigin = this.getDictWordsInNormalMode(body)
-            }
-            // console.log('处理后的词条：',this.wordsOrigin)
+        if (parsed) {
+            this.applyParsed(parsed, fileName, filePath)
+        } else if (fileContent) {
+            this.applyParsed(parseDictFile(fileContent, isForceProcessInUngroupMode), fileName, filePath)
         }
+    }
+
+    static fromParsed(parsed, fileName, filePath) {
+        return new Dict(null, fileName, filePath, false, parsed)
+    }
+
+    applyParsed(parsed, fileName, filePath) {
+        this.fileName = fileName || parsed.fileName || this.fileName
+        this.filePath = filePath || parsed.filePath || this.filePath
+        this.header = parsed.header
+        this.indexEndOfHeader = parsed.indexEndOfHeader
+        this.isGroupMode = parsed.isGroupMode
+        this.lastIndex = parsed.lastIndex
+        this.lastGroupIndex = parsed.lastGroupIndex
+        this.dictSetExceptCharacter = new Set(parsed.dictSetExceptCharacter || [])
+
+        if (parsed.isGroupMode) {
+            this.wordsOrigin = parsed.wordsOrigin.map(group => new WordGroup(
+                group.id,
+                group.groupName,
+                group.dict.map(w => new Word(w.id, w.code, w.word, w.priority, w.note, w.indicator || ''))
+            ))
+        } else {
+            this.wordsOrigin = parsed.wordsOrigin.map(w => new Word(
+                w.id, w.code, w.word, w.priority, w.note, w.indicator || ''
+            ))
+        }
+        this.buildCodeIndex()
+    }
+
+    buildCodeIndex() {
+        this._codeIndex = new Map()
+        const addWord = (word) => {
+            if (!this._codeIndex.has(word.code)) {
+                this._codeIndex.set(word.code, [])
+            }
+            this._codeIndex.get(word.code).push(word)
+        }
+        if (this.isGroupMode) {
+            this.wordsOrigin.forEach(group => group.dict.forEach(addWord))
+        } else {
+            this.wordsOrigin.forEach(addWord)
+        }
+    }
+
+    getWordsByCode(code) {
+        return this._codeIndex.get(code) || []
+    }
+
+    toPlainObject() {
+        return dictToPlainObject(this)
     }
     // 总的词条数量
     get countDictOrigin(){
@@ -55,84 +95,6 @@ class Dict {
             return countOrigin
         } else {
             return this.wordsOrigin.length
-        }
-    }
-
-    // 返回所有 word
-    getDictWordsInNormalMode(fileContent){
-        let startPoint = new Date().getTime()
-        fileContent = fileContent.replace(/\r\n/g,'\n')
-        let lines = fileContent.split(EOL) // 拆分词条与编码成单行
-        this.lastIndex = lines.length
-        let linesValid = lines.filter(item => item.indexOf('\t') > -1) // 选取包含 \t 的行
-        let words = []
-        linesValid.forEach((item, index) => {
-            let currentWord = getWordFromLine(index, item)
-            this.dictSetExceptCharacter.add(currentWord.word)
-            words.push(currentWord) // 获取词条
-         })
-        console.log(`处理yaml码表文件：完成，共：${words.length } ${this.isGroupMode? '组': '条'}，用时 ${new Date().getTime() - startPoint} ms`)
-        return words
-    }
-
-    removeDoubleReturn(fileContent){
-        if (fileContent.indexOf('\n\n') > -1){
-            fileContent = fileContent.replace(/\n\n/g, '\n')
-            this.removeDoubleReturn(fileContent)
-        } else {
-            // fileContent = fileContent.replace(/##/g, '\n##')
-            return fileContent
-        }
-    }
-
-    // 返回 word 分组
-    getDictWordsInGroupMode(fileContent){
-        // console.log(fileContent)
-        let startPoint = new Date().getTime()
-        fileContent = fileContent.replace(/\r\n/g,'\n')
-        let lines = fileContent.split(EOL) // 拆分词条与编码成单行
-        let wordsGroup = [] // 总分组
-        let temp = null // 第一个分组
-        let lastItemIsEmptyLine = false // 上一条是空，用于循环中判断是否需要新起一个 WordGroup
-        this.lastIndex = lines.length
-        lines.forEach((item, index) => {
-            if (item.startsWith('##')) { // 注释分组
-                if (temp && temp.groupName) { // 如果上一个已经有名字了，说明需要保存
-                    wordsGroup.push(temp)
-                }
-                temp = new WordGroup(this.lastGroupIndex++, item.substring(3).trim())
-                lastItemIsEmptyLine = false
-            } else if (item.indexOf('\t') > -1) { // 是词条
-                if (!temp){ // 第一行是词条时，没有分组名时
-                    temp = new WordGroup(this.lastGroupIndex++)
-                }
-                temp.dict.push(getWordFromLine(index, item))
-                lastItemIsEmptyLine = false
-            } else if (item.startsWith('#')) { // 注释
-                console.log(item)
-                lastItemIsEmptyLine = false
-            } else {
-                // 为空行时
-                if (lastItemIsEmptyLine){
-                    // 上行和本行都是空行
-                } else {
-                    if (temp){
-                        temp.groupName = temp.groupName || '未命名'
-                        wordsGroup.push(temp)
-                        temp = new WordGroup(this.lastGroupIndex++)
-                    }
-                }
-                lastItemIsEmptyLine = true
-            }
-        })
-        console.log(`处理yaml码表文件：完成，共：${wordsGroup.length } ${this.isGroupMode? '组': '条'}，用时 ${new Date().getTime() - startPoint} ms`)
-        if (temp){
-            if (temp.dict.length > 0){
-                wordsGroup.push(temp) // 加上最后一个
-            }
-            return wordsGroup
-        } else {
-            return [] // 文件内容为空时
         }
     }
 
@@ -151,6 +113,7 @@ class Dict {
             this.wordsOrigin.sort((a,b) => a.code < b.code ? -1: 1)
         }
         console.log(`Sort 用时 ${new Date().getTime() - startPoint} ms`)
+        this.buildCodeIndex()
     }
 
     /**
@@ -361,7 +324,8 @@ class Dict {
         } else {
             this.addWordToDictInOrder(word)
         }
-        this.lastIndex = this.lastIndex + 1 // 新加的词添加后， lastIndex + 1
+        this.lastIndex = this.lastIndex + 1
+        this.buildCodeIndex()
     }
 
     // 依次序添加 words
@@ -375,6 +339,7 @@ class Dict {
             })
         }
         console.log(`添加 ${words.length } 条词条到指定码表, 用时 ${new Date().getTime() - startPoint} ms`)
+        this.buildCodeIndex()
     }
 
     // 依次序添加 word
@@ -392,6 +357,7 @@ class Dict {
         let wordInsert = word.clone() // 断开与别一个 dict 的引用链接，新建一个 word 对象，不然两个 dict 引用同一个 word
         wordInsert.setId(this.lastIndex++) // 给新的 words 一个新的唯一 id
         this.wordsOrigin.splice(insetPosition, 0, wordInsert)
+        this.buildCodeIndex()
     }
 
 
@@ -414,6 +380,7 @@ class Dict {
             wordInsert.id = this.lastIndex++ // 使用全局递增 id，避免跨分组出现重复 id
             dictWords.splice(insetPosition, 0, wordInsert)
         })
+        this.buildCodeIndex()
     }
 
 
@@ -434,6 +401,7 @@ class Dict {
         } else {
             this.wordsOrigin = this.wordsOrigin.filter(item => !wordIdSet.has(item.id))
         }
+        this.buildCodeIndex()
     }
 
     addGroupBeforeId(groupIndex){
@@ -447,29 +415,7 @@ class Dict {
     }
     // 转为 yaml String
     toYamlString(){
-        let yamlBody = ''
-        if (this.isGroupMode){
-            // 为了避免最后多出的空格，改用 join
-            let tempGroupString =
-                this.wordsOrigin
-                    .map(group => {
-                        let tempGroupString = ''
-                        tempGroupString = tempGroupString + `## ${group.groupName}${EOL}` // + groupName
-                        let groupWordsYamlStringArray = group.dict.map(item => item.toYamlString())
-                        return tempGroupString + groupWordsYamlStringArray.join(EOL)
-                    })
-                    .join(EOL + EOL)
-            yamlBody = yamlBody + tempGroupString // 每组的末尾加个空行
-            return this.header + EOL + yamlBody
-        } else {
-            let yamlBody =
-                this.wordsOrigin
-                    .map(item => {
-                        return item.toYamlString()
-                    })
-                    .join(EOL)
-            return this.header + EOL + yamlBody
-        }
+        return serializeDictYaml(this.toPlainObject())
     }
 
 
@@ -494,14 +440,4 @@ class Dict {
 
 }
 
-// 从一条词条字符串中获取 word 对象
-function getWordFromLine(index, lineStr){
-    let wordArray = lineStr.split('\t')
-    let code = wordArray[1]
-    code = code.replaceAll('\r', '') // 消除 v1.07 版本的错误
-    let word = wordArray[0]
-    let priority = wordArray[2]
-    let note = wordArray[3]
-    return new Word(index, code, word, priority, note)
-}
 module.exports =  Dict

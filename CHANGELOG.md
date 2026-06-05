@@ -1,3 +1,19 @@
+## v1.32 `2026-06-05`
+- 性能：码表解析/保存改 Worker 异步处理，加载与保存不再阻塞界面
+- 性能：编码索引 + 编码输入 250ms 防抖，查重码查询更快
+- 性能：搜索不再 clone 全部分组数据
+- 性能：分组模式使用虚拟列表（dynamic-scroller）展示大码表
+- 新增：选中词条添加到拼音词库（设置页指定目标词库，按字数 + 拼音编码顺序插入）
+- 新增：统一 `showTip` 提示方法，支持自定义显示时长与进度提示
+- 优化：拼音词库添加过程显示按钮状态与底部进度 tip
+- 优化：底部 tip 单行显示，超出部分省略号
+- 优化：Weasel 部署程序目录自动查找（多版本 semver 比较、双 Program Files 路径、`where` 命令）
+- 优化：设置页显示自动检测到的 Weasel 路径；选择目录时校验 `WeaselDeployer.exe`
+- 优化：Electron Forge 7 打包配置（`forge.config.js`、macOS entitlements、镜像 `.npmrc` / `.yarnrc`）
+- fix：Shift 连选时文字被选中、分组筛选模式下连选失效
+- fix：分组模式列表为空（dynamic-scroller 标签与 refreshShowingWords 数组错误）
+- fix：码表加载提示不再写入 tips 队列
+
 ## v1.31 `2026-05-11`
 - fix 同词库不同组改变分组的时候，词条可能重复的问题
 

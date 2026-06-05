@@ -10,18 +10,17 @@ const Vue  = require('../../node_modules/vue/dist/vue.common.prod')
 
 const {ipcRenderer} = require('electron')
 const VirtualScroller = require('vue-virtual-scroller')
+const { TipMixin } = require('../../js/TipMixin')
 
 
 // Vue 2
 const app = {
     el: '#app',
+    mixins: [TipMixin],
     components: {RecycleScroller: VirtualScroller.RecycleScroller},
     data() {
         return {
             IS_IN_DEVELOP: IS_IN_DEVELOP, // 是否为开发模式，html 使用
-
-            tips: [], // 提示信息
-            tipTimeoutHandler: null, // time out handler
 
             dict: {
                 deep: true
@@ -100,7 +99,7 @@ const app = {
             this.fileName = fileName
             this.dict = new DictOther(fileContent, fileName, filePath, this.seperatorRead, this.dictFormatRead)
             this.fileNameSave = this.filePathSave()
-            this.tips.push('载入完成')
+            this.showTip('载入完成')
             // 载入新码表时，清除 word 保存 code
             this.word = ''
             this.refreshShowingWords()
@@ -109,7 +108,7 @@ const app = {
         })
         ipcRenderer.on('saveFileSuccess', () => {
             this.labelOfSaveBtn = '保存成功'
-            this.tips.push('保存成功')
+            this.showTip('保存成功')
             this.$refs.domBtnSave.classList.add('btn-green')
             setTimeout(()=>{
                 this.$refs.domBtnSave.classList.remove('btn-green')
@@ -178,16 +177,6 @@ const app = {
     },
 
     methods: {
-        tipNotice(){
-            if (!this.tipTimeoutHandler && this.tips.length > 0){
-                this.tipTimeoutHandler = setTimeout(()=>{
-                    this.tips.shift()
-                    clearTimeout(this.tipTimeoutHandler)
-                    this.tipTimeoutHandler = null
-                    this.tipNotice()
-                }, 2000)
-            }
-        },
         // 确定编辑词条
         confirmEditWord(){
             this.wordEditing = null
@@ -212,7 +201,7 @@ const app = {
             })
             console.log(this.dictMap)
             this.refreshShowingWords()
-            this.tips.push('编码生成完成')
+            this.showTip('编码生成完成')
         },
         // 生成保存文件的文件名
         filePathSave(withFullPath){
@@ -271,6 +260,11 @@ const app = {
         loadDictFile(){
             ipcRenderer.send('ToolWindow:chooseDictFile')
         },
+        onWordMouseDown(event){
+            if (event.shiftKey) {
+                event.preventDefault()
+            }
+        },
         select(index, wordId, event){
             if (event.shiftKey){
                 if (this.lastChosenWordIndex !== null){
@@ -313,7 +307,7 @@ const app = {
         sort(){
             let startPoint = new Date().getTime()
             this.words.sort((a,b) => a.code < b.code ? -1: 1)
-            this.tips.push('排序完成')
+            this.showTip('排序完成')
             console.log(`排序用时 ${new Date().getTime() - startPoint} ms`)
         },
 
@@ -408,7 +402,7 @@ const app = {
                 this.chosenWordIdArray = [...this.chosenWordIds.values()]
             } else {
                 // 提示不能同时选择太多内容
-                this.tips.push('不能同时选择大于 1000条 的词条内容')
+                this.showTip('不能同时选择大于 1000条 的词条内容')
                 shakeDom(this.$refs.domBtnSelectAll)
             }
         },
@@ -502,13 +496,13 @@ const app = {
 
         // 上移词条
         moveUp(id){
-            this.tips.push(this.move(id, 'up'))
+            this.showTip(this.move(id, 'up'))
             let temp = this.words.pop()
             this.words.push(temp)
         },
         // 下移词条
         moveDown(id){
-            this.tips.push(this.move(id, 'down'))
+            this.showTip(this.move(id, 'down'))
             let temp = this.words.pop()
             this.words.push(temp)
         },
@@ -595,7 +589,7 @@ const app = {
             this.deleteWords() // 删除当前词库已移动的词条
             this.saveToFile(this.targetDict, true)
             this.saveToFile(this.dict, true)
-            this.tips.push('移动成功')
+            this.showTip('移动成功')
             this.resetDropList()
         },
         // 复制 dropdown
@@ -617,14 +611,11 @@ const app = {
                 wordsSelected = this.dict.wordsOrigin.filter(item => this.chosenWordIds.has(item.id))
                 ipcRenderer.send('ToolWindow:ExportSelectionToPlistFile', wordsSelected)
             } else {
-                this.tips.push('没有任何词条')
+                this.showTip('没有任何词条')
             }
         },
     },
     watch: {
-        tips(){
-            this.tipNotice()
-        },
         code(newValue){
             this.code = newValue.replaceAll(/[^A-Za-z ]/g, '') // input.code 只允许输入字母
         },

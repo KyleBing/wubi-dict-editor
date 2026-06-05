@@ -18,6 +18,8 @@ const app = {
                 password: ''
             },
             loginTip: '',
+            loginTipTimeoutHandler: null,
+            resolvedRimeExecDir: '',
         }
     },
     mounted() {
@@ -62,11 +64,11 @@ const app = {
         ipcRenderer.on('ConfigWindow:ResponseLogin', (event, resOfLogin) => {
             if (resOfLogin.success){
                 console.log('登录成功', resOfLogin.data)
-                this.tipNotice('登录成功')
+                this.showTip('登录成功')
                 this.$set(this.config, 'userInfo', resOfLogin.data)
             } else {
                 console.log('登录失败', resOfLogin.message)
-                this.tipNotice('登录失败')
+                this.showTip('登录失败')
             }
         })
 
@@ -77,6 +79,7 @@ const app = {
 
             // v1.27 添加 mainDictFileName 字段
             if (!config.hasOwnProperty('mainDictFileName')) this.$set(this.config, 'mainDictFileName', 'wubi86_jidian.dict.yaml')
+            if (!config.hasOwnProperty('pinyinDictFileName')) this.$set(this.config, 'pinyinDictFileName', 'pinyin_simp.dict.yaml')
 
             // v1.15 添加 rimeExecDir 字段
             if (!config.hasOwnProperty('rimeExecDir')) this.$set(this.config, 'rimeExecDir', '')
@@ -84,6 +87,9 @@ const app = {
             this.userInfo.email = config.userInfo && config.userInfo.email
             // after config is loaded, then request for fileList
             ipcRenderer.send('requestFileList')
+            if (process.platform === 'win32') {
+                this.refreshResolvedRimeExecDir()
+            }
         })
 
         ipcRenderer.send('ConfigWindow:RequestConfigFile')
@@ -95,6 +101,13 @@ const app = {
         // 选取 rime 程序目录后保存
         ipcRenderer.on('ConfigWindow:ChosenRimeExecDir', (event, dir) => {
             this.config.rimeExecDir = dir[0]
+            this.refreshResolvedRimeExecDir()
+        })
+        ipcRenderer.on('ConfigWindow:ChosenRimeExecDir:Invalid', (event, message) => {
+            this.showTip(message)
+        })
+        ipcRenderer.on('ConfigWindow:ResolvedRimeExecDir', (event, info) => {
+            this.resolvedRimeExecDir = info.resolved || ''
         })
 
         // 字典文件保存后
@@ -115,9 +128,22 @@ const app = {
         }
     },
     methods: {
-        tipNotice(msg){
-            this.loginTip = msg
-            setTimeout(()=>{this.loginTip = ''}, 3000)
+        /**
+         * @param {string} message
+         * @param {number} [duration=3000] 显示时长（毫秒）
+         */
+        showTip(message, duration = 3000) {
+            if (!message) {
+                return
+            }
+            if (this.loginTipTimeoutHandler) {
+                clearTimeout(this.loginTipTimeoutHandler)
+            }
+            this.loginTip = String(message)
+            this.loginTipTimeoutHandler = setTimeout(() => {
+                this.loginTip = ''
+                this.loginTipTimeoutHandler = null
+            }, duration)
         },
         login(){
             ipcRenderer.send('ConfigWindow:Login', this.userInfo)
@@ -127,6 +153,9 @@ const app = {
         },
         setMainDictFile(file){
             this.config.mainDictFileName = file.path
+        },
+        setPinyinDictFile(file){
+            this.config.pinyinDictFileName = file.path
         },
         setDictMap(){
             ipcRenderer.send('ConfigWindow:SetDictMapFile')
@@ -142,6 +171,10 @@ const app = {
         },
         clearRimeExecDir(){
             this.config.rimeExecDir = ''
+            this.refreshResolvedRimeExecDir()
+        },
+        refreshResolvedRimeExecDir(){
+            ipcRenderer.send('ConfigWindow:ResolveRimeExecDir')
         },
     },
     watch: {

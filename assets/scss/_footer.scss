@@ -16,6 +16,12 @@
     color: $cyan;
     font-weight: bold;
     text-shadow: 1px 1px 1px rgba(0,0,0,0.1), -1px -1px 0 white;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+    flex: 1 1 auto;
+    text-align: right;
   }
 
   .footer-left{
@@ -58,6 +64,10 @@
   .footer-right{
     display: flex;
     justify-content: flex-end;
+    align-items: center;
+    min-width: 0;
+    flex: 1 1 auto;
+    margin-left: 16px;
   }
 
 }

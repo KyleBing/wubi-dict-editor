@@ -4,6 +4,8 @@ const {IS_IN_DEVELOP, BASE_URL} = require('../../js/Global')
 const Dict = require('../../js/Dict')
 const DictMap = require('../../js/DictMap')
 const Word = require('../../js/Word')
+const {parseDictAsync, serializeDictAsync} = require('../../js/dictWorkerClient')
+const {prepareWordsForPinyinDictAsync, addWordsToPinyinDictInOrderAsync} = require('../../js/PinyinDictHelper')
 const Vue  = require('../../node_modules/vue/dist/vue.common.prod')
 
 const {ipcRenderer, net} = require('electron')
@@ -11,17 +13,20 @@ const VirtualScroller = require('vue-virtual-scroller')
 const WordGroup = require("../../js/WordGroup");
 
 const wubiApi = require("../../js/wubiApi")
+const { TipMixin } = require('../../js/TipMixin')
 
 // Vue 2
 const app = {
     el: '#app',
-    components: {RecycleScroller: VirtualScroller.RecycleScroller},
+    mixins: [TipMixin],
+    components: {
+        RecycleScroller: VirtualScroller.RecycleScroller,
+        DynamicScroller: VirtualScroller.DynamicScroller,
+        DynamicScrollerItem: VirtualScroller.DynamicScrollerItem,
+    },
     data() {
         return {
             IS_IN_DEVELOP, // 是否为开发模式，html 使用
-
-            tips: [], // 提示信息
-            tipTimeoutHandler: null, // time out handler
 
             dict: {},  // 当前词库对象 Dict
             dictMain: {}, // 主码表 Dict
@@ -45,9 +50,14 @@ const app = {
             chosenWordIds: new Set(),
             chosenWordIdArray: [], // 对应上面的 set 内容
             lastChosenWordIndex: null, // 最后一次选中的 index
+            lastChosenGroupIndex: null, // 分组模式下最后一次选中的 groupIndex
 
 
             targetDict: {}, // 要移动到的码表
+            pinyinDict: null, // 拼音词库缓存
+            pendingAddToPinyin: false,
+            isPinyinAddBusy: false,
+            pinyinAddPhase: '', // loading | preparing | inserting | saving
             isShowDropdown: false, // 显示移动词条窗口
             dropdownFileList: [
                 // {name: '拼音词库', path: 'pinyin_simp.dict.yaml'}
@@ -70,6 +80,9 @@ const app = {
             dictBackupInfo: null,  // 当前词库在线上的备份信息
             isDeleteAfterUpload: false, // 上传词条后是否在本地删除对应的词条
 
+            isDictLoading: false,
+            codeDebounceTimer: null,
+
         }
     },
     mounted() {
@@ -84,18 +97,7 @@ const app = {
         })
         // 载入主要操作码表文件
         ipcRenderer.on('showFileContent', (event, fileName, filePath, res) => {
-            // 过滤移动到的文件列表，不显示正在显示的这个码表
-            // this.dropdownFileList = this.dropdownFileList.filter(item => item.path !== fileName)
-            this.dict = new Dict(res, fileName, filePath)
-            // 载入新码表时，清除 word 保存 code
-            this.word = ''
-            this.refreshShowingWords()
-            // this.search() // 配置项：切换码表是否自动搜索
-            ipcRenderer.send('loadMainDict') // 请求主码表文件
-            this.tips.push('已载入码表')
-
-            // net
-            this.checkFileBackupExistence()
+            this.loadDictFromContent(res, fileName, filePath)
         })
         ipcRenderer.on('saveFileSuccess', () => {
             this.labelOfSaveBtn = '保存成功'
@@ -109,7 +111,10 @@ const app = {
         // 配置相关
         ipcRenderer.on('MainWindow:ResponseConfigFile', (event, config) => {
             this.config = config
-            this.activeGroupId = config.chosenGroupIndex // 首次载入时，定位到上次选中的分组
+            if (!config.hasOwnProperty('pinyinDictFileName')) {
+                this.$set(this.config, 'pinyinDictFileName', 'pinyin_simp.dict.yaml')
+            }
+            this.activeGroupId = Number(config.chosenGroupIndex) // 首次载入时，定位到上次选中的分组
             console.log('窗口载入时获取到的 config 文件：', config)
 
             // request for file list
@@ -148,17 +153,27 @@ const app = {
 
         // 载入目标码表
         ipcRenderer.on('setTargetDict', (event, fileName, filePath, res) => {
-            this.targetDict = new Dict(res, fileName, filePath)
+            this.loadDictFromContent(res, fileName, filePath, false, 'targetDict')
+        })
+
+        ipcRenderer.on('MainWindow:PinyinDictLoaded', (event, fileName, filePath, res) => {
+            this.loadDictFromContent(res, fileName, filePath, false, 'pinyinDict')
+        })
+        ipcRenderer.on('MainWindow:PinyinDictLoadError', (event, message) => {
+            this.finishPinyinAdd()
+            this.showTip(`载入拼音词库失败：${message}`)
         })
 
         // 载入主码表
         ipcRenderer.on('setMainDict', (event, filename, res) => {
-            this.dictMain = new Dict(res, filename, '', true)
-            console.log('主码表词条数量：', this.dictMain.wordsOrigin.length)
+            this.loadDictFromContent(res, filename, '', true, 'dictMain')
         })
 
         // 配置文件保存后，向主窗口更新配置文件内容
         ipcRenderer.on('updateConfigFile', (event, config) => {
+            if (this.config.pinyinDictFileName !== config.pinyinDictFileName) {
+                this.pinyinDict = null
+            }
             this.config = config
         })
 
@@ -176,18 +191,11 @@ const app = {
         ipcRenderer.on('MainWindow:sync.get:INCREASE:SUCCESS', (event, res) => {
             console.log(res)
             if (res.data === ''){
-                this.tips.push('该词库以前未同步过')
-                ipcRenderer.send('MainWindow:sync.save',
-                    {
-                        fileName: this.dict.fileName,
-                        fileContentYaml: this.dict.toYamlString(),
-                        wordCount: this.dict.countDictOrigin,
-                        userInfo: this.config.userInfo
-                    }
-                )
+                this.showTip('该词库以前未同步过')
+                this.sendDictYamlForSync()
                 console.log('MainWindow:sync.save')
             } else {
-                this.tips.push('下载成功')
+                this.showTip('下载成功')
                 this.dictSync = new Dict(res.data.content, res.data.title)
                 this.syncDictWords()
                 console.log(this.dictSync)
@@ -199,9 +207,9 @@ const app = {
             console.log('MainWindow:sync.get:OVERWRITE:SUCCESS')
             console.log(res)
             if (res.data === ''){
-                this.tips.push('该词库未同步过')
+                this.showTip('该词库未同步过')
             } else {
-                this.tips.push('下载成功')
+                this.showTip('下载成功')
                 let filePath = this.dict.filePath
                 this.dict = new Dict(res.data.content, res.data.title, this.dict.filePath)
                 this.refreshShowingWords()
@@ -213,14 +221,20 @@ const app = {
         ipcRenderer.on('MainWindow:sync.save:SUCCESS', (event, res) => {
             // 更新备份状态信息
             this.checkFileBackupExistence()
-            this.tips.push('上传成功')
+            this.showTip('上传成功')
             console.log('MainWindow:sync.save:SUCCESS')
             console.log(res)
         })
 
         // 同步： 保存失败
         ipcRenderer.on('MainWindow:sync.save:FAIL', (event, message) => {
-            this.tips.push(message)
+            this.showTip(message)
+        })
+
+        ipcRenderer.on('MainWindow:ApplyRime:Result', (event, result) => {
+            if (result && result.message) {
+                this.showTip(result.message, result.success ? 2000 : 4000)
+            }
         })
 
 
@@ -253,9 +267,128 @@ const app = {
         fileNameListMap(){
             // [{ "name": "luna_pinyin.sogou", "path": "luna_pinyin.sogou.dict.yaml" }]
             return new Map(this.config.fileNameList.map(item => [item.path, item.name]))
-        }
+        },
+        groupFlatItems(){
+            if (!this.dict || !this.dict.isGroupMode || !this.words || this.words.length === 0) {
+                return []
+            }
+            const items = []
+            this.words.forEach((group, groupIndex) => {
+                if (!group || !group.dict) {
+                    return
+                }
+                items.push({
+                    uid: `header-${group.id}-${groupIndex}`,
+                    type: 'header',
+                    group,
+                    groupIndex,
+                })
+                group.dict.forEach((item, index) => {
+                    items.push({
+                        uid: `word-${item.id}`,
+                        type: 'word',
+                        item,
+                        index,
+                        groupIndex,
+                    })
+                })
+            })
+            return items
+        },
+        pinyinAddButtonLabel(){
+            if (!this.isPinyinAddBusy) {
+                return '添加到拼音词库'
+            }
+            const labels = {
+                loading: '载入拼音词库...',
+                preparing: '正在转换拼音...',
+                inserting: '正在插入词条...',
+                saving: '正在保存...',
+            }
+            return labels[this.pinyinAddPhase] || '处理中...'
+        },
     },
     methods: {
+        loadDictFromContent(fileContent, fileName, filePath, isForceProcessInUngroupMode = false, targetKey = 'dict'){
+            if (targetKey === 'dict') {
+                this.isDictLoading = true
+            }
+            return parseDictAsync(fileContent, isForceProcessInUngroupMode)
+                .then(parsed => {
+                    const dict = Dict.fromParsed(parsed, fileName, filePath)
+                    if (targetKey === 'dictMain') {
+                        this.dictMain = dict
+                        console.log('主码表词条数量：', this.dictMain.wordsOrigin.length)
+                    } else if (targetKey === 'targetDict') {
+                        this.targetDict = dict
+                    } else if (targetKey === 'pinyinDict') {
+                        this.pinyinDict = dict
+                        if (this.pendingAddToPinyin) {
+                            this.pendingAddToPinyin = false
+                            const wordsSelected = this.getSelectedWords()
+                            this.updatePinyinAddProgress('preparing', `正在转换拼音（0/${wordsSelected.length}）...`)
+                            this.applyAddToPinyinDict(wordsSelected)
+                        }
+                    } else {
+                        this.dict = dict
+                        this.word = ''
+                        this.refreshShowingWords()
+                        ipcRenderer.send('loadMainDict')
+                        this.checkFileBackupExistence()
+                    }
+                })
+                .catch(err => {
+                    console.error(err)
+                    if (targetKey === 'pinyinDict') {
+                        this.finishPinyinAdd()
+                        this.showTip(`载入拼音词库失败：${err.message}`)
+                    } else {
+                        this.showTip(`载入失败：${err.message}`)
+                    }
+                })
+                .finally(() => {
+                    if (targetKey === 'dict') {
+                        this.isDictLoading = false
+                    }
+                })
+        },
+        matchesSearch(item, code, word){
+            switch (this.config.searchMethod){
+                case "code": return item.code.includes(code)
+                case "phrase": return item.word.includes(word)
+                case "both": return item.code.includes(code) && item.word.includes(word)
+                case "any": return item.code.includes(code) || item.word.includes(word)
+                default: return item.code.includes(code) || item.word.includes(word)
+            }
+        },
+        buildSearchGroupView(groupItem, code, word){
+            const dict = groupItem.dict.filter(item => this.matchesSearch(item, code, word))
+            if (dict.length === 0) {
+                return null
+            }
+            return {
+                id: groupItem.id,
+                groupName: groupItem.groupName,
+                dict,
+                isEditingTitle: false,
+            }
+        },
+        updateWordsRedundancy(code){
+            const normalizedCode = code.replaceAll(/[^A-Za-z ]/g, '')
+            if (!normalizedCode) {
+                this.wordsRedundancy = []
+                return
+            }
+            const wordsMainDictRedundancy = (this.dictMain?.getWordsByCode(normalizedCode) || []).map(item => {
+                item.origin = this.fileNameListMap.get(this.config.mainDictFileName)
+                return item
+            })
+            const wordsCurrentDictRedundancy = (this.dict?.getWordsByCode(normalizedCode) || []).map(item => {
+                item.origin = '当前码表'
+                return item
+            })
+            this.wordsRedundancy = wordsMainDictRedundancy.concat(wordsCurrentDictRedundancy)
+        },
         // 显示 | 隐藏 移动到文件的列表
         toggleFileListDropDown(){
             if (this.isShowDropdown){
@@ -341,14 +474,14 @@ const app = {
                         message = message + `，已存在词条 ${res.data.existCount} 条`
                     }
                     // 上传成功
-                    this.tips.push(res.message, message)
+                    this.showTip([res.message, message])
                     if (this.isDeleteAfterUpload){
                         // 删除已经上传的词条
                         this.deleteWords()
                     }
                 })
                 .catch(err => {
-                    this.tips.push(err.message)
+                    this.showTip(err.message)
                 })
         },
 
@@ -359,7 +492,7 @@ const app = {
                 wubiApi
                     .pullExtraDict(this.config.userInfo, this.config.baseURL)
                     .then(res => {
-                        this.tips.push('获取线上分类扩展词库内容成功')
+                        this.showTip('获取线上分类扩展词库内容成功')
 
                         // 使用线上的更新数据更新到当前分类扩展词库中
                         let wordGroups = []
@@ -383,10 +516,10 @@ const app = {
                         this.refreshShowingWords()
                     })
                     .catch(err => {
-                        this.tips.push(err.message)
+                        this.showTip(err.message)
                     })
             } else {
-                this.tips.push('未登录用户，请先前往配置页面登录')
+                this.showTip('未登录用户，请先前往配置页面登录')
             }
         },
 
@@ -409,16 +542,6 @@ const app = {
             ipcRenderer.send('MainWindow:LoadFile', file.path)
         },
 
-        tipNotice(){
-            if (!this.tipTimeoutHandler && this.tips.length > 0){
-                    this.tipTimeoutHandler = setTimeout(()=>{
-                        this.tips.shift()
-                        clearTimeout(this.tipTimeoutHandler)
-                        this.tipTimeoutHandler = null
-                        this.tipNotice()
-                }, 2000)
-            }
-        },
         // 确定编辑词条
         confirmEditWord(){
             this.wordEditing = null
@@ -437,11 +560,30 @@ const app = {
             this.wordEditing = word
         },
 
+        // 当前列表中用于 Shift 连选的词条数组
+        getWordListForSelect(groupIndex){
+            if (!this.dict.isGroupMode) {
+                return this.words
+            }
+            if (this.activeGroupId !== -1) {
+                return this.words[0]?.dict || []
+            }
+            if (groupIndex >= 0 && this.words[groupIndex]) {
+                return this.words[groupIndex].dict
+            }
+            return []
+        },
         // 选择操作
-        select(index, wordId, event){
+        onWordMouseDown(event){
+            if (event.shiftKey) {
+                event.preventDefault()
+            }
+        },
+        select(groupIndex, index, wordId, event){
+            const wordList = this.getWordListForSelect(groupIndex)
             if (event.shiftKey){
-                if (this.lastChosenWordIndex !== null){
-                    let a,b // 判断大小，调整大小顺序
+                if (this.lastChosenWordIndex !== null && this.lastChosenGroupIndex === groupIndex){
+                    let a, b
                     if (index > this.lastChosenWordIndex){
                         a = this.lastChosenWordIndex
                         b = index
@@ -449,31 +591,26 @@ const app = {
                         b = this.lastChosenWordIndex
                         a = index
                     }
-
-                    if (this.dict.isGroupMode){
-                        // TODO: select batch words cross group
-                        if (this.activeGroupId !== -1){
-                            for (let i=a; i<=b; i++){
-                                this.chosenWordIds.add(this.dict.wordsOrigin[this.activeGroupId].dict[i].id)
-                            }
-                        } else {
-                            this.tips.push('只能在单组内进行批量选择')
-                        }
-                    } else {
-                        for (let i=a; i<=b; i++){
-                            this.chosenWordIds.add(this.words[i].id)
+                    for (let i = a; i <= b; i++){
+                        if (wordList[i]) {
+                            this.chosenWordIds.add(wordList[i].id)
                         }
                     }
+                } else {
+                    this.showTip('请先在当前分组内点击一条词条，再按住 Shift 连选')
                 }
-                this.lastChosenWordIndex = null // shift 选择后，最后一个id定义为没有
+                this.lastChosenWordIndex = null
+                this.lastChosenGroupIndex = null
 
             } else {
                 if (this.chosenWordIds.has(wordId)){
                     this.chosenWordIds.delete(wordId)
                     this.lastChosenWordIndex = null
+                    this.lastChosenGroupIndex = null
                 } else {
                     this.chosenWordIds.add(wordId)
                     this.lastChosenWordIndex = index
+                    this.lastChosenGroupIndex = groupIndex
                 }
             }
             this.chosenWordIdArray = [...this.chosenWordIds.values()]
@@ -520,31 +657,12 @@ const app = {
             let startPoint = new Date().getTime()
             if (this.code || this.word){
                 if (this.dict.isGroupMode){
-                    this.words = []
-                    this.dict.wordsOrigin.forEach(groupItem => {
-                        let tempGroupItem = groupItem.clone() // 不能直接使用原 groupItem，不然会改变 wordsOrigin 的数据
-                        tempGroupItem.dict = tempGroupItem.dict.filter(item => {
-                            switch (this.config.searchMethod){
-                                case "code": return item.code.includes(this.code);
-                                case "phrase": return item.word.includes(this.word);
-                                case "both": return item.code.includes(this.code) && item.word.includes(this.word)
-                                case "any": return item.code.includes(this.code) || item.word.includes(this.word)
-                            }
-                        })
-                        if (tempGroupItem.dict.length > 0){ // 当前分组中有元素，添加到结果中
-                            this.words.push(tempGroupItem)
-                        }
-                    })
+                    this.words = this.dict.wordsOrigin
+                        .map(groupItem => this.buildSearchGroupView(groupItem, this.code, this.word))
+                        .filter(Boolean)
                     console.log('用时: ', new Date().getTime() - startPoint, 'ms')
                 } else {
-                    this.words = this.dict.wordsOrigin.filter(item => { // 获取包含 code 的记录
-                        switch (this.config.searchMethod){
-                            case "code": return item.code.includes(this.code);
-                            case "phrase": return item.word.includes(this.word);
-                            case "both": return item.code.includes(this.code) && item.word.includes(this.word)
-                            case "any": return item.code.includes(this.code) || item.word.includes(this.word)
-                        }
-                    })
+                    this.words = this.dict.wordsOrigin.filter(item => this.matchesSearch(item, this.code, this.word))
                     console.log(`${this.code} ${this.word}: ` ,'搜索出', this.words.length, '条，', '用时: ', new Date().getTime() - startPoint, 'ms')
                 }
 
@@ -709,7 +827,7 @@ const app = {
         },
         // 设置当前显示的 分组
         setGroupId(groupId){ // groupId 全部的 id 是 -1
-            this.activeGroupId = groupId
+            this.activeGroupId = Number(groupId)
             this.refreshShowingWords()
             this.config.chosenGroupIndex = groupId
             ipcRenderer.send('saveConfigFileFromMainWindow', JSON.stringify(this.config))
@@ -718,15 +836,17 @@ const app = {
         refreshShowingWords(){
             this.chosenWordIds.clear()
             this.chosenWordIdArray = []
+            this.lastChosenWordIndex = null
+            this.lastChosenGroupIndex = null
             console.log('已选中的 groupIndex: ',this.activeGroupId, typeof this.activeGroupId)
             if (this.dict.isGroupMode){
-                if (this.activeGroupId === -1){
+                if (Number(this.activeGroupId) === -1){
                     this.words = [...this.dict.wordsOrigin]
                 } else {
                     if (this.activeGroupId > this.dict.wordsOrigin.length - 1) {
                         this.activeGroupId = this.dict.wordsOrigin.length - 1
                     }
-                    this.words = new Array(this.dict.wordsOrigin[this.activeGroupId])
+                    this.words = [this.dict.wordsOrigin[this.activeGroupId]]
                 }
             } else {
                 this.words = [...this.dict.wordsOrigin]
@@ -751,9 +871,35 @@ const app = {
         },
 
         // 保存内容到文件
-        saveToFile(dict){
-            console.log('save to: ',dict.fileName)
-            ipcRenderer.send('saveFile', dict.fileName, dict.toYamlString())
+        saveToFile(dict, options = {}){
+            const { updateSaveButton = true } = options
+            console.log('save to: ', dict.fileName)
+            const previousLabel = this.labelOfSaveBtn
+            if (updateSaveButton) {
+                this.labelOfSaveBtn = '保存中...'
+            }
+            return serializeDictAsync(dict)
+                .then(yamlString => {
+                    ipcRenderer.send('saveFile', dict.fileName, yamlString)
+                })
+                .catch(err => {
+                    console.error(err)
+                    this.showTip(`保存失败：${err.message}`)
+                    if (updateSaveButton) {
+                        this.labelOfSaveBtn = previousLabel
+                    }
+                    throw err
+                })
+        },
+        sendDictYamlForSync(){
+            return serializeDictAsync(this.dict).then(yamlString => {
+                ipcRenderer.send('MainWindow:sync.save', {
+                    fileName: this.dict.fileName,
+                    fileContentYaml: yamlString,
+                    wordCount: this.dict.countDictOrigin,
+                    userInfo: this.config.userInfo
+                })
+            })
         },
         // 选中全部展示的词条
         selectAll(){
@@ -772,7 +918,7 @@ const app = {
                 this.chosenWordIdArray = [...this.chosenWordIds.values()]
             } else {
                 // 提示不能同时选择太多内容
-                this.tips.push('不能同时选择大于 十万 条的词条内容')
+                this.showTip('不能同时选择大于 十万 条的词条内容')
                 shakeDom(this.$refs.domBtnSelectAll)
             }
         },
@@ -898,13 +1044,13 @@ const app = {
 
         // 上移词条
         moveUp(id, isSwitchPriority){
-            this.tips.push(this.move(id, 'up', isSwitchPriority))
+            this.showTip(this.move(id, 'up', isSwitchPriority))
             let temp = this.words.pop()
             this.words.push(temp)
         },
         // 下移词条
         moveDown(id, isSwitchPriority){
-            this.tips.push(this.move(id, 'down', isSwitchPriority))
+            this.showTip(this.move(id, 'down', isSwitchPriority))
             let temp = this.words.pop()
             this.words.push(temp)
         },
@@ -1014,16 +1160,100 @@ const app = {
             })
         },
         // 将选中的词条移动到指定码表
-        moveWordsToTargetDict(){
-            let wordsTransferring = [] // 被转移的 [Word]
+        getSelectedWords(){
+            let wordsSelected = []
             if (this.dict.isGroupMode){
-                this.dict.wordsOrigin.forEach((group, index) => {
-                    let matchedWords = group.dict.filter(item => this.chosenWordIds.has(item.id))
-                    wordsTransferring = wordsTransferring.concat(matchedWords)
+                this.dict.wordsOrigin.forEach(group => {
+                    wordsSelected = wordsSelected.concat(group.dict.filter(item => this.chosenWordIds.has(item.id)))
                 })
             } else {
-                wordsTransferring = this.dict.wordsOrigin.filter(item => this.chosenWordIds.has(item.id))
+                wordsSelected = this.dict.wordsOrigin.filter(item => this.chosenWordIds.has(item.id))
             }
+            return wordsSelected
+        },
+        beginPinyinAdd(phase, progressTip){
+            this.isPinyinAddBusy = true
+            this.pinyinAddPhase = phase
+            this.setProgressTip(progressTip)
+        },
+        updatePinyinAddProgress(phase, progressTip){
+            this.pinyinAddPhase = phase
+            this.setProgressTip(progressTip)
+        },
+        finishPinyinAdd(){
+            this.isPinyinAddBusy = false
+            this.pinyinAddPhase = ''
+            this.pendingAddToPinyin = false
+            this.clearProgressTip()
+        },
+        addSelectionToPinyinDict(){
+            if (this.isPinyinAddBusy) {
+                return
+            }
+            if (!this.config.pinyinDictFileName) {
+                this.showTip('请先在设置中指定拼音词库')
+                return
+            }
+            if (this.dict.fileName === this.config.pinyinDictFileName) {
+                this.showTip('拼音词库不能与当前码表相同')
+                return
+            }
+            const wordsSelected = this.getSelectedWords()
+            if (wordsSelected.length === 0) {
+                return
+            }
+            if (this.pinyinDict && this.pinyinDict.fileName === this.config.pinyinDictFileName) {
+                this.beginPinyinAdd('preparing', `正在转换拼音（0/${wordsSelected.length}）...`)
+                this.applyAddToPinyinDict(wordsSelected)
+                return
+            }
+            this.pendingAddToPinyin = true
+            this.beginPinyinAdd('loading', '正在载入拼音词库...')
+            ipcRenderer.send('MainWindow:LoadPinyinDict', this.config.pinyinDictFileName)
+        },
+        async applyAddToPinyinDict(wordsSelected){
+            try {
+                const { toAdd, skipped, failed } = await prepareWordsForPinyinDictAsync(
+                    wordsSelected,
+                    this.pinyinDict,
+                    this.pinyinDict.lastIndex,
+                    (current, total, message) => this.updatePinyinAddProgress('preparing', message)
+                )
+                if (toAdd.length === 0) {
+                    this.finishPinyinAdd()
+                    if (failed.length) {
+                        this.showTip(`无法生成拼音：${failed.join('、')}`)
+                    } else if (skipped.length) {
+                        this.showTip(`词条已存在于拼音词库：${skipped.join('、')}`)
+                    }
+                    return
+                }
+                const groupIndex = this.pinyinDict.isGroupMode ? 0 : -1
+                await addWordsToPinyinDictInOrderAsync(
+                    this.pinyinDict,
+                    toAdd,
+                    groupIndex,
+                    (current, total, message) => this.updatePinyinAddProgress('inserting', message)
+                )
+                this.updatePinyinAddProgress('saving', '正在保存拼音词库...')
+                await this.saveToFile(this.pinyinDict, { updateSaveButton: false })
+                this.finishPinyinAdd()
+                let msg = `已添加 ${toAdd.length} 条到拼音词库`
+                if (skipped.length) {
+                    msg += `，跳过 ${skipped.length} 条已存在`
+                }
+                if (failed.length) {
+                    msg += `，${failed.length} 条无法生成拼音`
+                }
+                this.showTip(msg)
+            } catch (err) {
+                console.error(err)
+                this.finishPinyinAdd()
+                this.showTip(`添加到拼音词库失败：${err.message}`)
+            }
+        },
+        moveWordsToTargetDict(){
+            let wordsTransferring = this.getSelectedWords()
             console.log('words transferring：', JSON.stringify(wordsTransferring))
 
             if (this.dict.fileName === this.targetDict.fileName){ // 如果是同词库移动
@@ -1041,7 +1271,7 @@ const app = {
                 this.saveToFile(this.targetDict)
                 this.saveToFile(this.dict)
             }
-            this.tips.push('移动成功')
+            this.showTip('移动成功')
             this.resetDropList()
         },
         // 复制 dropdown
@@ -1062,16 +1292,7 @@ const app = {
 
         // 导出选中词条到 plist 文件
         exportSelectionToPlist(){
-            let wordsSelected = [] // 被选中的 [Word]
-            if (this.dict.isGroupMode){
-                this.dict.wordsOrigin.forEach((group, index) => {
-                    let matchedWords = group.dict.filter(item => this.chosenWordIds.has(item.id))
-                    wordsSelected = wordsSelected.concat(matchedWords)
-                })
-            } else {
-                wordsSelected = this.dict.wordsOrigin.filter(item => this.chosenWordIds.has(item.id))
-            }
-            ipcRenderer.send('MainWindow:ExportSelectionToPlistFile', wordsSelected)
+            ipcRenderer.send('MainWindow:ExportSelectionToPlistFile', this.getSelectedWords())
         },
 
        /*
@@ -1098,25 +1319,17 @@ const app = {
                 )
                 console.log('MainWindow:sync.get:INCREASE')
             } else {
-                this.tips.push('未登录，请先前往配置页面登录')
+                this.showTip('未登录，请先前往配置页面登录')
             }
         },
 
         // 上传当前词库内容
         syncUploadCurrentDict(){
             if (this.config.hasOwnProperty('userInfo')){
-                ipcRenderer.send(
-                    'MainWindow:sync.save',
-                    {
-                        fileName: this.dict.fileName,
-                        fileContentYaml: this.dict.toYamlString(),
-                        wordCount: this.dict.countDictOrigin,
-                        userInfo: this.config.userInfo
-                    }
-                )
+                this.sendDictYamlForSync()
                 console.log('MainWindow:sync.save')
             } else {
-                this.tips.push('未登录，请先前往配置页面登录')
+                this.showTip('未登录，请先前往配置页面登录')
             }
         },
 
@@ -1132,7 +1345,7 @@ const app = {
                 )
                 console.log('MainWindow:sync.get:OVERWRITE')
             } else {
-                this.tips.push('未登录，请先前往配置页面登录')
+                this.showTip('未登录，请先前往配置页面登录')
             }
         },
 
@@ -1213,49 +1426,20 @@ const app = {
             this.refreshShowingWords() // 刷新显示的词条
             let afterWordCount = this.dict.countDictOrigin
             console.log(`本地新增 ${afterWordCount - originWordCount} 条记录`)
-            this.tips.push(`本地新增 ${afterWordCount - originWordCount} 条记录`)
-            ipcRenderer.send('MainWindow:sync.save',
-                {
-                    fileName: this.dict.fileName,
-                    fileContentYaml: this.dict.toYamlString(),
-                    wordCount: this.dict.countDictOrigin,
-                    userInfo: this.config.userInfo
-                }
-            )
+            this.showTip(`本地新增 ${afterWordCount - originWordCount} 条记录`)
+            this.sendDictYamlForSync()
             console.log('MainWindow:sync.save')
         }
     },
     watch: {
-        tips(){
-          this.tipNotice()
-        },
         code(newValue){
-            this.code = newValue.replaceAll(/[^A-Za-z ]/g, '') // input.code 只允许输入字母
-            // 主码表中的词
-            let wordsMainDictRedundancy = this.dictMain.wordsOrigin.filter(item => item.code === newValue)
-
-            wordsMainDictRedundancy = wordsMainDictRedundancy.map(item => {
-                item.origin = this.fileNameListMap.get(this.config.mainDictFileName) // 标记主码表来源
-                return item
-            })
-
-            // 用户词库中的词
-            let wordsCurrentDictRedundancy = []
-            if (this.dict.isGroupMode){
-                this.dict.wordsOrigin.forEach(wordGroup => {
-                    wordsCurrentDictRedundancy.push(...wordGroup.dict.filter(item => item.code === newValue))
-                })
-            } else {
-                wordsCurrentDictRedundancy = this.dict.wordsOrigin.filter(item => item.code === newValue)
+            this.code = newValue.replaceAll(/[^A-Za-z ]/g, '')
+            if (this.codeDebounceTimer) {
+                clearTimeout(this.codeDebounceTimer)
             }
-
-            wordsCurrentDictRedundancy = wordsCurrentDictRedundancy.map(item => {
-                item.origin = '当前码表' // 标记主码表来源
-                return item
-            })
-
-
-            this.wordsRedundancy = wordsMainDictRedundancy.concat(wordsCurrentDictRedundancy)
+            this.codeDebounceTimer = setTimeout(() => {
+                this.updateWordsRedundancy(this.code)
+            }, 250)
         },
         word(newValue, oldValue){
             if (/[a-z]/i.test(newValue)){
@@ -1276,6 +1460,9 @@ const app = {
             if (!newValue){ // 窗口关闭时，重置 index
                 this.resetDropList()
             }
+        },
+        'config.pinyinDictFileName'(){
+            this.pinyinDict = null
         },
         config: (newValue) => {
             switch (newValue.theme){
