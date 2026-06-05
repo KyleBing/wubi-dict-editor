@@ -130,17 +130,19 @@ $border-color-checkbox: #d6d6d6;
   .code{
     //@extend .font-roboto;
     line-height: $height-word-item;
-    min-width: 15%;
+    flex: 0 0 100px;
     padding-right: 20px;
     color: $text-title;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
   .word{
     padding-right: 10px;
     line-height: $height-word-item;
-    flex-shrink: 0;
-    flex-grow: 1;
-    max-width: 60%;
-    overflow-x: hidden;
+    flex: 1 1 0;
+    min-width: 0;
+    overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
   }
@@ -156,10 +158,11 @@ $border-color-checkbox: #d6d6d6;
   }
   .note{
     color: $text-subtitle;
-    min-width: 50px;
-    flex-shrink: 0;
+    flex: 0 0 80px;
     padding-right: 10px;
+    overflow: hidden;
     white-space: nowrap;
+    text-overflow: ellipsis;
     font-size: $fz-list - 2;
   }
   .indicator{
@@ -172,7 +175,7 @@ $border-color-checkbox: #d6d6d6;
     @extend .font-roboto;
     text-align: right;
     padding-right: 10px;
-    width: $fz-list * 4 + 20;
+    flex: 0 0 $fz-list * 4 + 20;
     color: $text-subtitle;
     font-size: $fz-list - 2;
   }

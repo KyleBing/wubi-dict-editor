@@ -11,6 +11,7 @@ const { version: appVersion } = JSON.parse(
   readFileSync(path.join(__dirname, 'package.json'), 'utf8')
 );
 
+const displayName = '五笔码表助手';
 const iconBase = path.join(__dirname, 'assets/img/appIcon/appIcon');
 const entitlements = path.join(__dirname, 'entitlements.mac.plist');
 const hasAppleCert = Boolean(process.env.APPLE_SIGNING_IDENTITY);
@@ -28,8 +29,8 @@ module.exports = {
     asar: true,
     overwrite: true,
     extendInfo: {
-      CFBundleDisplayName: '五笔码表助手',
-      CFBundleName: '五笔码表助手',
+      CFBundleDisplayName: displayName,
+      CFBundleName: displayName,
       CFBundleLocalizations: ['zh_CN', 'en'],
     },
     win32metadata: {
@@ -75,11 +76,18 @@ module.exports = {
       name: '@electron-forge/maker-dmg',
       platforms: ['darwin'],
       config: {
+        title: displayName,
         background: path.join(__dirname, 'assets/img/tool_panel_open.png'),
         format: 'ULFO',
         iconSize: 80,
-        contents: [
-          { x: 130, y: 220, type: 'file', path: 'WubiDictEditor.app' },
+        contents: (opts) => [
+          {
+            x: 130,
+            y: 220,
+            type: 'file',
+            path: opts.appPath,
+            name: `${displayName}.app`,
+          },
           { x: 410, y: 220, type: 'link', path: '/Applications' },
         ],
       },
@@ -93,7 +101,7 @@ module.exports = {
         authors: 'KyleBing',
         description: '五笔码表管理工具',
         // 安装包显示名仍用中文
-        title: '五笔码表助手',
+        title: displayName,
       },
     },
     {

@@ -134,7 +134,8 @@ $black-color-main: #81fffa;
       label{
         color: white;
       }
-      input{
+      input,
+      textarea{
         border-color: $black-color-border-highlight ;
         width: 100%;
         &:focus{

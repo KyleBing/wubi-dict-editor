@@ -55,17 +55,36 @@
       align-items: center;
       display: flex;
       flex-flow: row nowrap;
+      &:has(textarea){
+        align-items: flex-start;
+        label{
+          padding-top: 6px;
+        }
+      }
       label{
         color: $text-main;
         text-align: center;
         width: 50px;
+        flex-shrink: 0;
       }
-      input{
+      input,
+      textarea{
+        border: 1px solid $border-color-input-modal;
+        @include border-radius($radius);
+        font-size: inherit;
+        font-family: inherit;
         border-color: $border-color-input-modal;
         flex-grow: 1;
         &:focus{
           border-color: $color-main;
+          outline: none;
         }
+      }
+      textarea{
+        min-height: 80px;
+        line-height: 1.5;
+        padding: 6px 8px;
+        resize: vertical;
       }
     }
 
