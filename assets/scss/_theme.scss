@@ -131,12 +131,16 @@ $black-color-main: #81fffa;
       color: $black-color-text;
     }
     .modal-body{
+      background-color: $black-bg;
+      color: $black-color-text;
       label{
-        color: white;
+        color: $black-color-text;
       }
       input,
       textarea{
-        border-color: $black-color-border-highlight ;
+        background-color: $black-body-bg;
+        color: $black-color-text;
+        border-color: $black-color-border-highlight;
         width: 100%;
         &:focus{
           border-color: $black-color-main;
@@ -163,6 +167,10 @@ $black-color-main: #81fffa;
         background-color: $black-bg-highlight;
       }
     }
+  }
+  // 分组虚拟列表：词条行在 .group 外，需单独设置文字色
+  .group-list-scroller {
+    color: $black-color-text;
   }
   .operation{
     .up, .down{
@@ -197,6 +205,12 @@ $black-color-main: #81fffa;
       color: $black-color-text-subtitle;
     }
     .word {
+      color: $black-color-text;
+    }
+    .priority,
+    .note,
+    .id {
+      color: $black-color-text-subtitle;
     }
     .indicator{
       color: $black-color-main;
@@ -335,6 +349,19 @@ $black-color-main: #81fffa;
       }
     }
   }
+  // 命名码表文件列表
+  .rename-file-list {
+    .rename-file-list-item {
+      border-bottom-color: $black-color-border;
+      .filepath {
+        color: $black-color-text-subtitle;
+      }
+      &:hover {
+        background-color: $black-bg-highlight;
+        border-bottom-color: transparent;
+      }
+    }
+  }
   .login-user-info {
     background-color: $black-bg;
     border-color: $black-color-border;
@@ -374,7 +401,7 @@ $black-color-main: #81fffa;
       background-color: $green;
     }
   }
-  input, select {
+  input, textarea, select {
     &::-webkit-input-placeholder{
       color: rgba(255,255,255,0.3);
     }
@@ -399,7 +426,8 @@ $black-color-main: #81fffa;
       background-color: $black-color-main;
     }
   }
-  input {
+  input,
+  textarea {
     background-color: $black-body-bg;
     border-color: $black-color-border-input;
   }

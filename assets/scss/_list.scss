@@ -63,6 +63,8 @@ $height-word-item: 24px;
 }
 .group-list-scroller{
   width: 100%;
+  // 虚拟列表词条不再包在 .group 内，需在此设置默认文字色
+  color: $text-main;
 }
 
 .group-list-scroller .group-header{
