@@ -9,315 +9,375 @@
 
 <div v-cloak id="app" class="container">
 
-    <section v-if="config && config.fileNameList">
-        <div class="section-title">
-            <h3>1. 选择初始文件</h3>
-            <div class="desc">程序打开时，自动载入的码表文件</div>
+    <nav class="config-category-nav radio-list">
+        <div v-for="category in categories"
+             :key="category.id"
+             :class="['radio-list-item', {active: activeCategory === category.id}]"
+             @click="activeCategory = category.id">
+            {{ category.label }}
         </div>
-        <div class="section-content">
-            <div class="config-file-list">
-                <div @click="setInitFile(file)"
-                     :class="['config-file-list-item', {active: file.path === config.initFileName}]"
-                     v-for="(file, index) in config.fileNameList"
-                     :key="index"
-                     v-if="config.fileNameList"
-                >
-                    <div class="name">{{file.name}}</div>
-                    <div class="path">{{file.path}}</div>
-                </div>
-            </div>
-        </div>
-    </section>
+    </nav>
 
-    <section v-if="config && config.fileNameList">
-        <div class="section-title">
-            <h3>2. 命名码表文件</h3>
-            <div class="desc">个性化配置文件名称，修改后，请重启软件</div>
-        </div>
-        <div class="section-content">
-            <div class="rename-file-list">
-                <div
-                    class="rename-file-list-item"
-                    v-for="(file, index) in config.fileNameList" :key="index"
-                    v-if="config.fileNameList">
-                    <input v-model="file.name"/>
-                    <div class="filepath">{{ file.path }}</div>
-                </div>
-            </div>
-        </div>
-    </section>
+    <div class="config-category-body">
 
-    <section>
-        <div class="section-title">
-            <h3>3. 自动部署</h3>
-            <div class="desc">添加新用户词之后，是否保存，是否自动部署</div>
-        </div>
-        <div class="section-content">
-            <div class="check-item">
-                <div class="label">加词后，自动保存并部署输入法</div>
-                <div class="audio-switch">
-                    <input v-model="config.autoDeployOnAdd" checked type="checkbox" id="autoDeployAdd">
-                    <label for="autoDeployAdd"></label>
-                </div>
-            </div>
-            <div class="check-item">
-                <div class="label">删词后，自动保存并部署输入法</div>
-                <div class="audio-switch">
-                    <input v-model="config.autoDeployOnDelete" checked type="checkbox" id="autoDeployDelete">
-                    <label for="autoDeployDelete"></label>
-                </div>
-            </div>
-            <div class="check-item">
-                <div class="label">编辑词后，自动保存并部署输入法</div>
-                <div class="audio-switch">
-                    <input v-model="config.autoDeployOnEdit" checked type="checkbox" id="autoDeployEdit">
-                    <label for="autoDeployEdit"></label>
-                </div>
-            </div>
-        </div>
-    </section>
+        <!-- 码表 -->
+        <template v-if="activeCategory === 'dict'">
 
-    <section v-if="config && config.fileNameList">
-        <div class="section-title">
-            <h3>4. 指定主码表文件</h3>
-            <div class="desc">自定义指定你的主码表文件，在搜索词条展示已存在词条时有用。设置完成后重启程序后生效。</div>
-        </div>
-        <div class="section-content">
-            <div class="config-file-list">
-                <div @click="setMainDictFile(file)"
-                     :class="['config-file-list-item', {active: file.path === config.mainDictFileName}]"
-                     v-for="(file, index) in config.fileNameList"
-                     :key="index"
-                     v-if="config.fileNameList"
-                >
-                    <div class="name">{{file.name}}</div>
-                    <div class="path">{{file.path}}</div>
+            <section v-if="config && config.fileNameList">
+                <div class="section-title">
+                    <h3>初始文件</h3>
+                    <div class="desc">程序打开时，自动载入的码表文件</div>
                 </div>
-            </div>
-        </div>
-    </section>
-
-    <section v-if="config && config.fileNameList">
-        <div class="section-title">
-            <h3>5. 指定拼音词库</h3>
-            <div class="desc">选中词条「添加到拼音词库」时写入的目标文件，按拼音词库原有编码顺序插入。</div>
-        </div>
-        <div class="section-content">
-            <div class="config-file-list">
-                <div @click="setPinyinDictFile(file)"
-                     :class="['config-file-list-item', {active: file.path === config.pinyinDictFileName}]"
-                     v-for="(file, index) in config.fileNameList"
-                     :key="'pinyin-' + index"
-                     v-if="config.fileNameList"
-                >
-                    <div class="name">{{file.name}}</div>
-                    <div class="path">{{file.path }}</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section>
-        <div class="section-title">
-            <h3>6. 回车动作</h3>
-            <div class="desc">定义搜索框中按回车键的动作</div>
-        </div>
-        <div class="section-content">
-            <div class="check-list">
-                <div class="check-item">
-                    <div class="checkbox-cell">
-                        <input value="add"
-                               v-model="config.enterKeyBehavior"
-                               name="enterKey" id="radioAddNew" type="radio">
-                        <label class="radio" for="radioAddNew"></label>
+                <div class="section-content">
+                    <div class="config-file-list">
+                        <div @click="setInitFile(file)"
+                             :class="['config-file-list-item', {active: file.path === config.initFileName}]"
+                             v-for="(file, index) in config.fileNameList"
+                             :key="index"
+                             v-if="config.fileNameList"
+                        >
+                            <div class="name">{{file.name}}</div>
+                            <div class="path">{{file.path}}</div>
+                        </div>
                     </div>
-                    <div class="label">添加新词</div>
                 </div>
-                <div class="check-item">
-                    <div class="checkbox-cell">
-                        <input value="search"
-                               v-model="config.enterKeyBehavior"
-                               name="enterKey" id="radioSearch" type="radio">
-                        <label class="radio" for="radioSearch"></label>
-                    </div>
-                    <div class="label">搜索</div>
-                </div>
-            </div>
-        </div>
-    </section>
+            </section>
 
-    <section>
-        <div class="section-title">
-            <h3>7. 搜索</h3>
-            <div class="desc">搜索匹配的内容</div>
-        </div>
-        <div class="section-content">
-            <div class="check-list">
-                <div class="check-item">
-                    <div class="checkbox-cell">
-                        <input value="code"
-                               v-model="config.searchMethod"
-                               name="searchMethod" id="radioSearchCode" type="radio">
-                        <label class="radio" for="radioSearchCode"></label>
-                    </div>
-                    <div class="label">编码</div>
+            <section v-if="config && config.fileNameList">
+                <div class="section-title">
+                    <h3>命名码表文件</h3>
+                    <div class="desc">个性化配置文件名称，修改后，请重启软件</div>
                 </div>
-                <div class="check-item">
-                    <div class="checkbox-cell">
-                        <input value="phrase"
-                               v-model="config.searchMethod"
-                               name="searchMethod" id="radioSearchPhrase" type="radio">
-                        <label class="radio" for="radioSearchPhrase"></label>
+                <div class="section-content">
+                    <div class="rename-file-list">
+                        <div
+                            class="rename-file-list-item"
+                            v-for="(file, index) in config.fileNameList" :key="index"
+                            v-if="config.fileNameList">
+                            <input v-model="file.name"/>
+                            <div class="filepath">{{ file.path }}</div>
+                        </div>
                     </div>
-                    <div class="label">词条</div>
                 </div>
-                <div class="check-item">
-                    <div class="checkbox-cell">
-                        <input value="both"
-                               v-model="config.searchMethod"
-                               name="searchMethod" id="radioSearchBoth" type="radio">
-                        <label class="radio" for="radioSearchBoth"></label>
-                    </div>
-                    <div class="label">编码 和 词条</div>
-                </div>
-                <div class="check-item">
-                    <div class="checkbox-cell">
-                        <input value="any"
-                               v-model="config.searchMethod"
-                               name="searchMethod" id="radioSearchAny" type="radio">
-                        <label class="radio" for="radioSearchAny"></label>
-                    </div>
-                    <div class="label">编码 或 词条</div>
-                </div>
-            </div>
-        </div>
-    </section>
+            </section>
 
-    <section>
-        <div class="section-title">
-            <h3>8. 选取输入法配置文件目录</h3>
-            <div class="desc">工具自动读取的输入法配置文件目录</div>
-        </div>
-        <div class="section-content">
-            <div class="check-item">
-                <p>{{config.rimeHomeDir || '默认目录'}}</p>
-                <div class="btn btn-primary" @click="chooseRimeHomeDir">选择目录</div>
-                <div v-if="config.rimeHomeDir" class="btn btn-orange" @click="clearRimeHomeDir">清除设置</div>
-            </div>
-        </div>
-    </section>
-
-    <section>
-        <div class="section-title">
-            <h3>9. 选取输入法程序目录 ( 适用于 Windows )</h3>
-            <div class="desc">程序安装在了什么位置，用于自动部署。未手动指定时，会自动查找最新版本的 weasel 目录。</div>
-        </div>
-        <div class="section-content">
-            <div class="check-item">
-                <p>{{config.rimeExecDir || '未手动指定'}}</p>
-                <p v-if="!config.rimeExecDir && resolvedRimeExecDir">自动检测：{{ resolvedRimeExecDir }}</p>
-                <p v-if="!config.rimeExecDir && !resolvedRimeExecDir">自动检测：未找到 WeaselDeployer.exe</p>
-                <div class="btn btn-primary" @click="chooseRimeExecDir">选择目录</div>
-                <div v-if="config.rimeExecDir" class="btn btn-orange" @click="clearRimeExecDir">清除设置</div>
-            </div>
-        </div>
-    </section>
-    <section>
-        <div class="section-title">
-            <h3>10. 选择参考码表</h3>
-            <div class="desc">添加新词时、批量生成编码时，使用的码表，格式：前词后码，tab 分隔。</div>
-            <div class="desc">正常的 Rime 码表文件都能正常使用，有多字也无所谓，程序会自动只选取单字部分使用。</div>
-            <div class="desc">默认情况下，程序使用 wubi86_jidian.dict.yaml 这个文件作为参考码表。</div>
-            <div class="desc">可以载入任意版本的五笔码表文件，这样就能生成对应版本的五笔编码了。</div>
-        </div>
-        <div class="section-content">
-            <div class="check-item">
-                <p>{{config.hasSetDictMap? '已添加码表文件': '请选择码表文件'}}</p>
-                <div class="btn btn-primary" @click="setDictMap">选择文件</div>
-            </div>
-        </div>
-    </section>
-
-    <section>
-        <div class="section-title">
-            <h3>11. 主题</h3>
-            <div class="desc">切换主题</div>
-        </div>
-        <div class="section-content">
-            <div class="check-list">
-                <div class="check-item">
-                    <div class="checkbox-cell">
-                        <input value="black"
-                               v-model="config.theme"
-                               name="theme" id="themeBlack" type="radio">
-                        <label class="radio" for="themeBlack"></label>
+            <section v-if="config && config.fileNameList">
+                <div class="section-title">
+                    <h3>主码表文件</h3>
+                    <div class="desc">自定义指定你的主码表文件，在搜索词条展示已存在词条时有用。设置完成后重启程序后生效。</div>
+                </div>
+                <div class="section-content">
+                    <div class="config-file-list">
+                        <div @click="setMainDictFile(file)"
+                             :class="['config-file-list-item', {active: file.path === config.mainDictFileName}]"
+                             v-for="(file, index) in config.fileNameList"
+                             :key="index"
+                             v-if="config.fileNameList"
+                        >
+                            <div class="name">{{file.name}}</div>
+                            <div class="path">{{file.path}}</div>
+                        </div>
                     </div>
-                    <div class="label">暗黑</div>
                 </div>
-                <div class="check-item">
-                    <div class="checkbox-cell">
-                        <input value="white"
-                               v-model="config.theme"
-                               name="theme" id="themeWhite" type="radio">
-                        <label class="radio" for="themeWhite"></label>
-                    </div>
-                    <div class="label">明亮</div>
-                </div>
-                <div class="check-item">
-                    <div class="checkbox-cell">
-                        <input value="auto"
-                               v-model="config.theme"
-                               name="theme" id="themeAuto" type="radio">
-                        <label class="radio" for="themeAuto"></label>
-                    </div>
-                    <div class="label">跟随系统</div>
-                </div>
-            </div>
-        </div>
-    </section>
+            </section>
 
-    <section>
-        <div class="section-title">
-            <h3>12. 请求地址</h3>
-            <div class="desc">数据交互的线上地址</div>
-        </div>
-        <div class="section-content">
-            <div class="login-panel">
-                <div class="input-item">
-                    <label for="email">请求地址</label>
-                    <input ref="editInputWord" style="width: 300px" id="email" type="text" v-model.lazy="config.baseURL" >
+            <section v-if="config && config.fileNameList">
+                <div class="section-title">
+                    <h3>拼音词库</h3>
+                    <div class="desc">选中词条「添加到拼音词库」时写入的目标文件，按拼音词库原有编码顺序插入。</div>
                 </div>
-            </div>
-        </div>
-    </section>
+                <div class="section-content">
+                    <div class="config-file-list">
+                        <div @click="setPinyinDictFile(file)"
+                             :class="['config-file-list-item', {active: file.path === config.pinyinDictFileName}]"
+                             v-for="(file, index) in config.fileNameList"
+                             :key="'pinyin-' + index"
+                             v-if="config.fileNameList"
+                        >
+                            <div class="name">{{file.name}}</div>
+                            <div class="path">{{file.path }}</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
-    <section>
-        <div class="section-title">
-            <h3>13. 同步</h3>
-            <div class="desc">同步用户词库，账号请前往 <a target="_blank" href="http://kylebing.cn/diary">http://kylebing.cn/diary</a> 注册</div>
-        </div>
-        <div class="section-content">
-            <div class="login-panel">
-                <div class="input-item">
-                    <label for="email">Email</label>
-                    <input ref="editInputWord" id="email" type="text" v-model="userInfo.email" >
+            <section>
+                <div class="section-title">
+                    <h3>参考码表</h3>
+                    <div class="desc">添加新词时、批量生成编码时，使用的码表，格式：前词后码，tab 分隔。</div>
+                    <div class="desc">正常的 Rime 码表文件都能正常使用，有多字也无所谓，程序会自动只选取单字部分使用。</div>
+                    <div class="desc">默认情况下，程序使用 wubi86_jidian.dict.yaml 这个文件作为参考码表。</div>
+                    <div class="desc">可以载入任意版本的五笔码表文件，这样就能生成对应版本的五笔编码了。</div>
                 </div>
-                <div class="input-item ml-3">
-                    <label for="password">密码</label>
-                    <input ref="editInputWord" id="password" type="password" v-model="userInfo.password" >
+                <div class="section-content">
+                    <div class="check-item">
+                        <p>{{config.hasSetDictMap? '已添加码表文件': '请选择码表文件'}}</p>
+                        <div class="btn btn-primary" @click="setDictMap">选择文件</div>
+                    </div>
                 </div>
-                <div class="btn btn-primary ml-3" @click="login">登录</div>
-                <div class="login-tip">{{loginTip}}</div>
-            </div>
-            <!-- 已登录的用户信息 -->
-            <div class="login-user-info" v-if="config.userInfo">
-                <div class="login-user-info-item"><div class="label">uid: </div><div class="uid">{{config.userInfo.uid}}</div></div>
-                <div class="login-user-info-item"><div class="label">nickname: </div><div class="nickname">{{config.userInfo.nickname}}</div></div>
-                <div class="login-user-info-item"><div class="label">email: </div><div class="email">{{config.userInfo.email}}</div></div>
-                <div class="login-user-info-item"><div class="label">token: </div><div class="token">{{config.userInfo.password}}</div></div>
-            </div>
-        </div>
-    </section>
+            </section>
+
+        </template>
+
+        <!-- 输入法 -->
+        <template v-if="activeCategory === 'ime'">
+
+            <section>
+                <div class="section-title">
+                    <h3>自动部署</h3>
+                    <div class="desc">添加新用户词之后，是否保存，是否自动部署</div>
+                </div>
+                <div class="section-content">
+                    <div class="check-item">
+                        <div class="label">加词后，自动保存并部署输入法</div>
+                        <div class="audio-switch">
+                            <input v-model="config.autoDeployOnAdd" checked type="checkbox" id="autoDeployAdd">
+                            <label for="autoDeployAdd"></label>
+                        </div>
+                    </div>
+                    <div class="check-item">
+                        <div class="label">删词后，自动保存并部署输入法</div>
+                        <div class="audio-switch">
+                            <input v-model="config.autoDeployOnDelete" checked type="checkbox" id="autoDeployDelete">
+                            <label for="autoDeployDelete"></label>
+                        </div>
+                    </div>
+                    <div class="check-item">
+                        <div class="label">编辑词后，自动保存并部署输入法</div>
+                        <div class="audio-switch">
+                            <input v-model="config.autoDeployOnEdit" checked type="checkbox" id="autoDeployEdit">
+                            <label for="autoDeployEdit"></label>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="section-title">
+                    <h3>输入法配置目录</h3>
+                    <div class="desc">工具自动读取的输入法配置文件目录</div>
+                </div>
+                <div class="section-content">
+                    <div class="check-item">
+                        <p>{{config.rimeHomeDir || '默认目录'}}</p>
+                        <div class="btn btn-primary" @click="chooseRimeHomeDir">选择目录</div>
+                        <div v-if="config.rimeHomeDir" class="btn btn-orange" @click="clearRimeHomeDir">清除设置</div>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="section-title">
+                    <h3>输入法程序目录</h3>
+                    <div class="desc">适用于 Windows。程序安装在了什么位置，用于自动部署。未手动指定时，会自动查找最新版本的 weasel 目录。</div>
+                </div>
+                <div class="section-content">
+                    <div class="check-item">
+                        <p>{{config.rimeExecDir || '未手动指定'}}</p>
+                        <p v-if="!config.rimeExecDir && resolvedRimeExecDir">自动检测：{{ resolvedRimeExecDir }}</p>
+                        <p v-if="!config.rimeExecDir && !resolvedRimeExecDir">自动检测：未找到 WeaselDeployer.exe</p>
+                        <div class="btn btn-primary" @click="chooseRimeExecDir">选择目录</div>
+                        <div v-if="config.rimeExecDir" class="btn btn-orange" @click="clearRimeExecDir">清除设置</div>
+                    </div>
+                </div>
+            </section>
+
+        </template>
+
+        <!-- 操作 -->
+        <template v-if="activeCategory === 'behavior'">
+
+            <section>
+                <div class="section-title">
+                    <h3>回车动作</h3>
+                    <div class="desc">定义搜索框中按回车键的动作</div>
+                </div>
+                <div class="section-content">
+                    <div class="check-list">
+                        <div class="check-item">
+                            <div class="checkbox-cell">
+                                <input value="add"
+                                       v-model="config.enterKeyBehavior"
+                                       name="enterKey" id="radioAddNew" type="radio">
+                                <label class="radio" for="radioAddNew"></label>
+                            </div>
+                            <div class="label">添加新词</div>
+                        </div>
+                        <div class="check-item">
+                            <div class="checkbox-cell">
+                                <input value="search"
+                                       v-model="config.enterKeyBehavior"
+                                       name="enterKey" id="radioSearch" type="radio">
+                                <label class="radio" for="radioSearch"></label>
+                            </div>
+                            <div class="label">搜索</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="section-title">
+                    <h3>搜索</h3>
+                    <div class="desc">搜索匹配的内容</div>
+                </div>
+                <div class="section-content">
+                    <div class="check-list">
+                        <div class="check-item">
+                            <div class="checkbox-cell">
+                                <input value="code"
+                                       v-model="config.searchMethod"
+                                       name="searchMethod" id="radioSearchCode" type="radio">
+                                <label class="radio" for="radioSearchCode"></label>
+                            </div>
+                            <div class="label">编码</div>
+                        </div>
+                        <div class="check-item">
+                            <div class="checkbox-cell">
+                                <input value="phrase"
+                                       v-model="config.searchMethod"
+                                       name="searchMethod" id="radioSearchPhrase" type="radio">
+                                <label class="radio" for="radioSearchPhrase"></label>
+                            </div>
+                            <div class="label">词条</div>
+                        </div>
+                        <div class="check-item">
+                            <div class="checkbox-cell">
+                                <input value="both"
+                                       v-model="config.searchMethod"
+                                       name="searchMethod" id="radioSearchBoth" type="radio">
+                                <label class="radio" for="radioSearchBoth"></label>
+                            </div>
+                            <div class="label">编码 和 词条</div>
+                        </div>
+                        <div class="check-item">
+                            <div class="checkbox-cell">
+                                <input value="any"
+                                       v-model="config.searchMethod"
+                                       name="searchMethod" id="radioSearchAny" type="radio">
+                                <label class="radio" for="radioSearchAny"></label>
+                            </div>
+                            <div class="label">编码 或 词条</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </template>
+
+        <!-- 外观 -->
+        <template v-if="activeCategory === 'appearance'">
+
+            <section>
+                <div class="section-title">
+                    <h3>主题</h3>
+                    <div class="desc">切换主题</div>
+                </div>
+                <div class="section-content">
+                    <div class="check-list">
+                        <div class="check-item">
+                            <div class="checkbox-cell">
+                                <input value="black"
+                                       v-model="config.theme"
+                                       name="theme" id="themeBlack" type="radio">
+                                <label class="radio" for="themeBlack"></label>
+                            </div>
+                            <div class="label">暗黑</div>
+                        </div>
+                        <div class="check-item">
+                            <div class="checkbox-cell">
+                                <input value="white"
+                                       v-model="config.theme"
+                                       name="theme" id="themeWhite" type="radio">
+                                <label class="radio" for="themeWhite"></label>
+                            </div>
+                            <div class="label">明亮</div>
+                        </div>
+                        <div class="check-item">
+                            <div class="checkbox-cell">
+                                <input value="auto"
+                                       v-model="config.theme"
+                                       name="theme" id="themeAuto" type="radio">
+                                <label class="radio" for="themeAuto"></label>
+                            </div>
+                            <div class="label">跟随系统</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="section-title">
+                    <h3>字体大小</h3>
+                    <div class="desc">调整界面整体字号，其它文字大小会随之联动</div>
+                </div>
+                <div class="section-content">
+                    <div class="check-list">
+                        <div class="check-item" v-for="size in fontSizeOptions" :key="size">
+                            <div class="checkbox-cell">
+                                <input :value="size"
+                                       v-model.number="config.fontSize"
+                                       name="fontSize"
+                                       :id="'fontSize' + size"
+                                       type="radio">
+                                <label class="radio" :for="'fontSize' + size"></label>
+                            </div>
+                            <div class="label">{{ size }}px</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </template>
+
+        <!-- 同步 -->
+        <template v-if="activeCategory === 'sync'">
+
+            <section>
+                <div class="section-title">
+                    <h3>请求地址</h3>
+                    <div class="desc">数据交互的线上地址</div>
+                </div>
+                <div class="section-content">
+                    <div class="login-panel">
+                        <div class="input-item">
+                            <label for="baseURL">请求地址</label>
+                            <input ref="editInputWord" style="width: 300px" id="baseURL" type="text" v-model.lazy="config.baseURL" >
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="section-title">
+                    <h3>账号登录</h3>
+                    <div class="desc">同步用户词库，账号请前往 <a target="_blank" href="http://kylebing.cn/diary">http://kylebing.cn/diary</a> 注册</div>
+                </div>
+                <div class="section-content">
+                    <div class="login-panel">
+                        <div class="input-item">
+                            <label for="email">Email</label>
+                            <input ref="editInputWord" id="email" type="text" v-model="userInfo.email" >
+                        </div>
+                        <div class="input-item ml-3">
+                            <label for="password">密码</label>
+                            <input ref="editInputWord" id="password" type="password" v-model="userInfo.password" >
+                        </div>
+                        <div class="btn btn-primary ml-3" @click="login">登录</div>
+                        <div class="login-tip">{{loginTip}}</div>
+                    </div>
+                    <div class="login-user-info" v-if="config.userInfo">
+                        <div class="login-user-info-item"><div class="label">uid: </div><div class="uid">{{config.userInfo.uid}}</div></div>
+                        <div class="login-user-info-item"><div class="label">nickname: </div><div class="nickname">{{config.userInfo.nickname}}</div></div>
+                        <div class="login-user-info-item"><div class="label">email: </div><div class="email">{{config.userInfo.email}}</div></div>
+                        <div class="login-user-info-item"><div class="label">token: </div><div class="token">{{config.userInfo.password}}</div></div>
+                    </div>
+                </div>
+            </section>
+
+        </template>
+
+    </div>
 </div>
 
 <script src="Config.js"></script>

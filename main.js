@@ -360,10 +360,11 @@ function showToolWindow() {
     // 选取码表文件目录
     ipcMain.on('ToolWindow:chooseDictFile', event => {
         let dictFilePath = dialog.showOpenDialogSync(toolWindow, {
+            defaultPath: getRimeConfigDir(),
             filters: [
                 {name: 'Text', extensions: ['text', 'txt', 'yaml']},
             ],
-            properties: ['openFile'] // 选择文件
+            properties: ['openFile', 'showHiddenFiles'],
         })
         console.log(dictFilePath)
         if (dictFilePath) {
@@ -579,7 +580,8 @@ function createConfigWindow() {
     // 选取配置文件目录
     ipcMain.on('ConfigWindow:ChooseRimeHomeDir', event => {
         let rimeHomeDir = dialog.showOpenDialogSync(configWindow, {
-            properties: ['openDirectory'] // 选择文件夹
+            defaultPath: getRimeConfigDir(),
+            properties: ['openDirectory', 'showHiddenFiles'],
         })
         if (rimeHomeDir) {
             configWindow.send('ConfigWindow:ChosenRimeHomeDir', rimeHomeDir)
@@ -588,8 +590,10 @@ function createConfigWindow() {
 
     // 选取输入法程序目录
     ipcMain.on('ConfigWindow:ChooseRimeExecDir', event => {
+        const config = readConfigFile()
         let rimeExecDir = dialog.showOpenDialogSync(configWindow, {
-            properties: ['openDirectory'] // 选择文件夹
+            defaultPath: getRimeExecDir(config && config.rimeExecDir) || os.homedir(),
+            properties: ['openDirectory', 'showHiddenFiles'],
         })
         if (rimeExecDir && rimeExecDir[0]) {
             const normalized = normalizeConfiguredExecDir(rimeExecDir[0])
@@ -618,7 +622,7 @@ function createConfigWindow() {
             filters: [
                 {name: '码表文件', extensions: ['text', 'txt', 'yaml']},
             ],
-            properties: ['openFile'] // 选择文件夹
+            properties: ['openFile', 'showHiddenFiles'],
         })
         if (dictMapPathArray && dictMapPathArray.length > 0) {
             let filePath = dictMapPathArray[0]

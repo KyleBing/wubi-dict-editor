@@ -1,5 +1,6 @@
 const {shakeDom, shakeDomFocus, log, dateFormatter, getUnicodeStringLength} = require('../../js/Utility')
-const {IS_IN_DEVELOP, BASE_URL} = require('../../js/Global')
+const {IS_IN_DEVELOP, BASE_URL, DEFAULT_CONFIG} = require('../../js/Global')
+const { applyAppearance, normalizeFontSize } = require('../../js/appearance')
 
 const Dict = require('../../js/Dict')
 const DictMap = require('../../js/DictMap')
@@ -114,6 +115,10 @@ const app = {
             if (!config.hasOwnProperty('pinyinDictFileName')) {
                 this.$set(this.config, 'pinyinDictFileName', 'pinyin_simp.dict.yaml')
             }
+            if (!config.hasOwnProperty('fontSize')) {
+                this.$set(this.config, 'fontSize', normalizeFontSize(DEFAULT_CONFIG.fontSize))
+            }
+            applyAppearance(this.config)
             this.activeGroupId = Number(config.chosenGroupIndex) // 首次载入时，定位到上次选中的分组
             console.log('窗口载入时获取到的 config 文件：', config)
 
@@ -175,6 +180,7 @@ const app = {
                 this.pinyinDict = null
             }
             this.config = config
+            applyAppearance(this.config)
         })
 
         // 获取网络请求返回的数据
@@ -1476,23 +1482,7 @@ const app = {
             this.pinyinDict = null
         },
         config: (newValue) => {
-            switch (newValue.theme){
-                case "auto":
-                    document.documentElement.classList.add('theme-auto');
-                    document.documentElement.classList.remove('theme-dark');
-                    document.documentElement.classList.remove('theme-white');
-                    break;
-                case "black":
-                    document.documentElement.classList.remove('theme-auto');
-                    document.documentElement.classList.add('theme-dark');
-                    document.documentElement.classList.remove('theme-white');
-                    break;
-                case "white":
-                    document.documentElement.classList.remove('theme-auto');
-                    document.documentElement.classList.remove('theme-dark');
-                    document.documentElement.classList.add('theme-white');
-                    break;
-            }
+            applyAppearance(newValue)
         }
     }
 }

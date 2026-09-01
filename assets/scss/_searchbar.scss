@@ -19,7 +19,7 @@
 
 .notice{
   margin-left: 20px;
-  font-size: $fz-notice;
+  font-size: var(--fz-notice);
   color: $text-subtitle;
 }
 

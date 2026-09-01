@@ -13,7 +13,7 @@ $height-word-item: 24px;
 }
 
 .group{
-  font-size: $fz-list;
+  font-size: var(--fz-list);
   color: $text-main;
   .group-header{
     padding: 5px 10px 5px 35px;
@@ -38,7 +38,7 @@ $height-word-item: 24px;
     }
     h3{
       //flex-grow: 1;
-      font-size: $fz-list + 1;
+      font-size: calc(var(--fz-list) + 1px);
       line-height: $height-input + 2;
       margin-right: 10px;
     }
@@ -57,7 +57,7 @@ $height-word-item: 24px;
     .tip{
       flex-grow: 1;
       text-align: right;
-      font-size: $fz-list - 2;
+      font-size: calc(var(--fz-list) - 2px);
     }
   }
 }
@@ -156,7 +156,7 @@ $border-color-checkbox: #d6d6d6;
     padding-right: 10px;
     text-align: right;
     color: $text-subtitle;
-    font-size: $fz-list - 2;
+    font-size: calc(var(--fz-list) - 2px);
   }
   .note{
     color: $text-subtitle;
@@ -165,21 +165,21 @@ $border-color-checkbox: #d6d6d6;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    font-size: $fz-list - 2;
+    font-size: calc(var(--fz-list) - 2px);
   }
   .indicator{
     color: $color-main;
     flex-shrink: 0;
     white-space: nowrap;
-    font-size: $fz-list - 2;
+    font-size: calc(var(--fz-list) - 2px);
   }
   .id{
     @extend .font-roboto;
     text-align: right;
     padding-right: 10px;
-    flex: 0 0 $fz-list * 4 + 20;
+    flex: 0 0 calc(var(--fz-list) * 4 + 20px);
     color: $text-subtitle;
-    font-size: $fz-list - 2;
+    font-size: calc(var(--fz-list) - 2px);
   }
   .operation{
     width: 130px;

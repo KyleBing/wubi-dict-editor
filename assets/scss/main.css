@@ -1,4 +1,14 @@
 @import "reset.css";
+:root {
+  --fz-main: 13px;
+  --fz-notice: calc(var(--fz-main) - 1px);
+  --fz-title: calc(var(--fz-main) + 3px);
+  --fz-list: calc(var(--fz-main) + 1px);
+  --fz-button: var(--fz-main);
+  --fz-small: calc(var(--fz-main) - 1px);
+  --fz-modal: calc(var(--fz-main) + 1px);
+}
+
 @font-face {
   font-family: "Roboto-v27-light";
   src: url("../fonts/Robotov27-light.woff2");
@@ -30,7 +40,7 @@
   transform: translateY(2px);
 }
 
-.unselectable, .schema-list .schema-list-item, .config-file-list .config-file-list-item, .file-list .file-list-item, .catalog-list .catalog-item, .footer .footer-left .link-list .link, .btn, .word-item .operation, .word-item {
+.unselectable, .schema-list .schema-list-item, .config .config-category-nav, .config-file-list .config-file-list-item, .file-list .file-list-item, .catalog-list .catalog-item, .footer .footer-left .link-list .link, .btn, .word-item .operation, .word-item {
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -483,7 +493,7 @@
 }
 
 .group {
-  font-size: 13px;
+  font-size: var(--fz-list);
   color: #000;
 }
 .group .group-header {
@@ -511,7 +521,7 @@
   margin-right: 10px;
 }
 .group .group-header h3 {
-  font-size: 14px;
+  font-size: calc(var(--fz-list) + 1px);
   line-height: 26px;
   margin-right: 10px;
 }
@@ -534,7 +544,7 @@
 .group .group-header .tip {
   flex-grow: 1;
   text-align: right;
-  font-size: 11px;
+  font-size: calc(var(--fz-list) - 2px);
 }
 
 .group-list-scroller {
@@ -624,7 +634,7 @@
   padding-right: 10px;
   text-align: right;
   color: #848484;
-  font-size: 11px;
+  font-size: calc(var(--fz-list) - 2px);
 }
 .word-item .note {
   color: #848484;
@@ -633,20 +643,20 @@
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  font-size: 11px;
+  font-size: calc(var(--fz-list) - 2px);
 }
 .word-item .indicator {
   color: #FF2D70;
   flex-shrink: 0;
   white-space: nowrap;
-  font-size: 11px;
+  font-size: calc(var(--fz-list) - 2px);
 }
 .word-item .id {
   text-align: right;
   padding-right: 10px;
-  flex: 0 0 72px;
+  flex: 0 0 calc(var(--fz-list) * 4 + 20px);
   color: #848484;
-  font-size: 11px;
+  font-size: calc(var(--fz-list) - 2px);
 }
 .word-item .operation {
   width: 130px;
@@ -704,7 +714,7 @@
   justify-content: center;
   align-items: center;
   text-align: center;
-  font-size: 12px;
+  font-size: var(--fz-button);
   color: inherit;
   line-height: 20px;
   cursor: pointer;
@@ -755,7 +765,7 @@
 }
 
 .btn-sm {
-  font-size: 11px;
+  font-size: calc(var(--fz-button) - 1px);
   line-height: 14px;
   padding: 2px 3px;
 }
@@ -1189,7 +1199,7 @@ input[type=radio]:checked + label.radio:after {
 
 .notice {
   margin-left: 20px;
-  font-size: 11px;
+  font-size: var(--fz-notice);
   color: #848484;
 }
 
@@ -1326,7 +1336,7 @@ select option {
   bottom: 0;
   border-top: 1px solid #eee;
   padding: 0 15px;
-  font-size: 12px;
+  font-size: var(--fz-button);
   display: flex;
   height: 30px;
   align-items: center;
@@ -1593,8 +1603,40 @@ select option {
   flex-shrink: 0;
 }
 
+.config {
+  height: 100vh;
+  overflow: hidden;
+}
 .config .container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
   padding: 10px 25px;
+  overflow: hidden;
+}
+.config .config-category-nav {
+  flex-shrink: 0;
+  z-index: 10;
+  margin-bottom: 20px;
+  padding: 10px 0;
+  background-color: white;
+  border-bottom: 1px solid #e6e6e6;
+}
+.config .config-category-nav .radio-list-item {
+  cursor: pointer;
+  padding: 4px 12px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+}
+.config .config-category-nav .radio-list-item.active {
+  color: white;
+  background-color: #FF2D70;
+}
+.config .config-category-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
 }
 .config section {
   margin-bottom: 30px;
@@ -1604,11 +1646,11 @@ select option {
 }
 .config section .section-title h3 {
   font-weight: bold;
-  font-size: 15px;
+  font-size: var(--fz-title);
   margin-bottom: 3px;
 }
 .config section .section-title .desc {
-  font-size: 12px;
+  font-size: var(--fz-button);
   color: #848484;
 }
 .config section .section-title .desc a {
@@ -1799,7 +1841,7 @@ hr {
   margin-bottom: 15px;
 }
 .tool-panel section .title {
-  font-size: 12px;
+  font-size: var(--fz-button);
   margin-bottom: 5px;
   font-weight: bold;
   color: #333;
@@ -1874,7 +1916,7 @@ hr {
   margin-bottom: 5px;
 }
 .readme .readme-item p {
-  font-size: 11px;
+  font-size: var(--fz-notice);
   color: #848484;
   line-height: 1.5;
 }
@@ -1998,12 +2040,12 @@ hr {
   background-color: #f9f9f9;
   text-align: center;
   font-weight: bold;
-  font-size: 15px;
+  font-size: var(--fz-title);
   line-height: 1.5;
 }
 .modal-panel .modal-body {
   padding: 20px 25px;
-  font-size: 13px;
+  font-size: var(--fz-modal);
 }
 .modal-panel .modal-body .input-item {
   align-items: center;
@@ -2297,6 +2339,14 @@ hr {
 .theme-dark .checkbox-cell .checkbox-item {
   background-color: #383f4a;
   border-color: #383f4a;
+}
+.theme-dark .config .config-category-nav {
+  background-color: #1c1f24;
+  border-bottom-color: #272b32;
+}
+.theme-dark .config .config-category-nav .radio-list-item.active {
+  color: black;
+  background-color: #81fffa;
 }
 .theme-dark .config section {
   margin-bottom: 30px;
@@ -2951,6 +3001,14 @@ hr {
     background-color: #383f4a;
     border-color: #383f4a;
   }
+  .theme-auto .config .config-category-nav {
+    background-color: #1c1f24;
+    border-bottom-color: #272b32;
+  }
+  .theme-auto .config .config-category-nav .radio-list-item.active {
+    color: black;
+    background-color: #81fffa;
+  }
   .theme-auto .config section {
     margin-bottom: 30px;
   }
@@ -3362,7 +3420,7 @@ hr {
 }
 
 body {
-  font-size: 12px;
+  font-size: var(--fz-main);
   background-color: white;
 }
 
@@ -3396,6 +3454,8 @@ body {
 }
 
 .backup-info {
-  font-size: 11px;
+  font-size: var(--fz-small);
   color: #848484;
 }
+
+/*# sourceMappingURL=main.css.map */

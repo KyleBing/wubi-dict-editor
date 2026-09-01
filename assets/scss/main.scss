@@ -20,7 +20,7 @@
 @import "theme";
 
 body{
-  font-size: $fz-main;
+  font-size: var(--fz-main);
   background-color: white;
 }
 
@@ -57,6 +57,6 @@ body{
 }
 
 .backup-info{
-  font-size: $fz-small;
+  font-size: var(--fz-small);
   color: $text-subtitle;
 }

@@ -45,7 +45,7 @@ $btns: (
   justify-content: center;
   align-items: center;
   text-align: center;
-  font-size: $fz-button;
+  font-size: var(--fz-button);
   color: inherit;
   line-height: $height-btn - $btn-padding-tb * 2;
   cursor: pointer;
@@ -78,7 +78,7 @@ $btn-sm-padding-lr: 3px;
 
 
 .btn-sm {
-  font-size: $fz-button - 1;
+  font-size: calc(var(--fz-button) - 1px);
   line-height: $height-btn-sm - $btn-sm-padding-tb * 2;
   padding: $btn-sm-padding-tb $btn-sm-padding-lr ;
 }

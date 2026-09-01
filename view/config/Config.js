@@ -2,6 +2,7 @@ const Vue  = require('../../node_modules/vue/dist/vue.common.prod')
 const {ipcRenderer} = require('electron')
 const {log} = require('../../js/Utility')
 const { IS_IN_DEVELOP, CONFIG_FILE_PATH, CONFIG_FILE_NAME, DEFAULT_CONFIG } =  require('../../js/Global')
+const { applyAppearance, normalizeFontSize } = require('../../js/appearance')
 const os = require('os')
 const DictMap = require('../../js/DictMap')
 
@@ -12,6 +13,15 @@ const app = {
     data() {
         return {
             config: DEFAULT_CONFIG,
+            activeCategory: 'dict',
+            categories: [
+                { id: 'dict', label: '码表' },
+                { id: 'ime', label: '输入法' },
+                { id: 'behavior', label: '操作' },
+                { id: 'appearance', label: '外观' },
+                { id: 'sync', label: '同步' },
+            ],
+            fontSizeOptions: [12, 13, 14, 15, 16],
             dictMapContent: '', // 字典文件内容
             userInfo: {
                 email:'',
@@ -83,6 +93,9 @@ const app = {
 
             // v1.15 添加 rimeExecDir 字段
             if (!config.hasOwnProperty('rimeExecDir')) this.$set(this.config, 'rimeExecDir', '')
+
+            if (!config.hasOwnProperty('fontSize')) this.$set(this.config, 'fontSize', normalizeFontSize(DEFAULT_CONFIG.fontSize))
+            applyAppearance(this.config)
 
             this.userInfo.email = config.userInfo && config.userInfo.email
             // after config is loaded, then request for fileList
@@ -180,23 +193,7 @@ const app = {
     watch: {
         config: {
             handler(newValue) {
-                switch (newValue.theme){
-                    case "auto":
-                        document.documentElement.classList.add('theme-auto');
-                        document.documentElement.classList.remove('theme-dark');
-                        document.documentElement.classList.remove('theme-white');
-                        break;
-                    case "black":
-                        document.documentElement.classList.remove('theme-auto');
-                        document.documentElement.classList.add('theme-dark');
-                        document.documentElement.classList.remove('theme-white');
-                        break;
-                    case "white":
-                        document.documentElement.classList.remove('theme-auto');
-                        document.documentElement.classList.remove('theme-dark');
-                        document.documentElement.classList.add('theme-white');
-                        break;
-                }
+                applyAppearance(newValue)
                 ipcRenderer.send('ConfigWindow:RequestSaveConfig', JSON.stringify(this.config))
             },
             deep: true

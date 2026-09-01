@@ -1,5 +1,6 @@
 const {shakeDom, shakeDomFocus, log, shuffle} = require('../../js/Utility')
 const {IS_IN_DEVELOP} = require('../../js/Global')
+const { applyAppearance } = require('../../js/appearance')
 const path = require('path')
 
 const Dict = require('../../js/Dict')
@@ -137,6 +138,7 @@ const app = {
         // 配置相关
         ipcRenderer.on('ToolWindow:ResponseConfigFile', (event, config) => {
             this.config = config
+            applyAppearance(this.config)
             console.log('窗口载入时获取到的 config 文件：', config)
         })
         ipcRenderer.send('ToolWindow:RequestConfigFile')
@@ -144,6 +146,7 @@ const app = {
         // 配置文件保存后，向主窗口更新配置文件内容
         ipcRenderer.on('updateConfigFile', (event, config) => {
             this.config = config
+            applyAppearance(this.config)
         })
 
         // 获取并设置字典文件
@@ -651,16 +654,7 @@ const app = {
             }
         },
         config: (newValue) => {
-            switch (newValue.theme){
-                case "auto":
-                    document.documentElement.classList.add('auto-mode');
-                    document.documentElement.classList.remove('dark-mode');
-                    break;
-                case "black":
-                    document.documentElement.classList.add('dark-mode');
-                    document.documentElement.classList.remove('auto-mode');
-                    break;
-            }
+            applyAppearance(newValue)
         }
     },
 }

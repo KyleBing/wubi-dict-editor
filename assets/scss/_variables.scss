@@ -27,14 +27,15 @@ $bg-panel-tool: #f9f9f9;
 $bg-scroll-thumb: #cdcdcd;
 
 
-$fz-main: 12px;
-$fz-notice: $fz-main - 1;
-$fz-big: 20 * 12 / $fz-main;
-$fz-title: $fz-main + 3;
-$fz-list: $fz-main + 1;
-$fz-button: $fz-main;
-$fz-small: $fz-main - 1 ;
-$fz-modal: $fz-main + 1;
+:root {
+  --fz-main: 13px;
+  --fz-notice: calc(var(--fz-main) - 1px);
+  --fz-title: calc(var(--fz-main) + 3px);
+  --fz-list: calc(var(--fz-main) + 1px);
+  --fz-button: var(--fz-main);
+  --fz-small: calc(var(--fz-main) - 1px);
+  --fz-modal: calc(var(--fz-main) + 1px);
+}
 
 
 $color-primary    : #409EFF;

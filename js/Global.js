@@ -23,7 +23,8 @@ const DEFAULT_CONFIG = {
     rimeExecDir: '' ,                               // 输入法程序主目录
     searchMethod: 'both' ,                          // 搜索匹配的内容  code | phrase | both | any
     chosenGroupIndex: -1 ,                          // 列表中选定的分组 id
-    theme: 'auto' ,                                 // auto 跟随系统 | black
+    theme: 'auto' ,                                 // auto 跟随系统 | black | white
+    fontSize: 13 ,                                  // 界面基础字号（px）
     hasSetDictMap: false ,                          // 是否已经设置字典码表文件
     isToolPanelShowing: true,                       // index.html 工具面板是否展开
     fileNameList: [],                               // 匹配文件名，显示自定义码表文件的名字

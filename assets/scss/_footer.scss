@@ -5,7 +5,7 @@
   bottom: 0;
   border-top: 1px solid $border-color;
   padding: 0 15px;
-  font-size: $fz-button;
+  font-size: var(--fz-button);
   display: flex;
   height: 30px;
   align-items: center;

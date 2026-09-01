@@ -43,7 +43,7 @@ hr{
   section{
     margin-bottom: 15px;
     .title{
-      font-size: $fz-button;
+      font-size: var(--fz-button);
       margin-bottom: 5px;
       font-weight: bold;
       color: $text-title;
@@ -105,7 +105,7 @@ hr{
       margin-bottom: 5px;
     }
     p{
-      font-size: $fz-notice;
+      font-size: var(--fz-notice);
       color: $text-subtitle;
       line-height: 1.5;
       i{

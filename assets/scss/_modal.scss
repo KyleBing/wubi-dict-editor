@@ -45,12 +45,12 @@
     background-color: $bg-panel-tool;
     text-align: center;
     font-weight: bold;
-    font-size: $fz-title;
+    font-size: var(--fz-title);
     line-height: 1.5;
   }
   .modal-body{
     padding: 20px 25px;
-    font-size: $fz-modal;
+    font-size: var(--fz-modal);
     .input-item{
       align-items: center;
       display: flex;

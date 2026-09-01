@@ -310,6 +310,14 @@ $black-color-main: #81fffa;
 
   /*CONFIG*/
   .config {
+    .config-category-nav {
+      background-color: $black-bg;
+      border-bottom-color: $black-color-border;
+      .radio-list-item.active {
+        color: black;
+        background-color: $black-color-main;
+      }
+    }
     section {
       margin-bottom: 30px;
       .section-title {
