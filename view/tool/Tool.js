@@ -173,6 +173,11 @@ const app = {
         // 当前载入的是否为 主 码表
         isInMainDict(){
             return this.dict.fileName === 'wubi86_jidian.dict.yaml'
+        },
+        // 移动词条时的目标码表列表（不含主码表）
+        moveTargetFileList(){
+            const mainDictFileName = this.config?.mainDictFileName || 'wubi86_jidian.dict.yaml'
+            return this.dropdownFileList.filter(item => item.path !== mainDictFileName)
         }
     },
 
@@ -302,7 +307,7 @@ const app = {
             this.dropdownActiveFileIndex = fileIndex
             this.dropdownActiveGroupIndex = -1 // 切换文件列表时，复位分组 fileIndex
             // this.dictSecond = {} // 立即清空次码表，分组列表也会立即消失，不会等下面的码表加载完成再清空
-            ipcRenderer.send('ToolWindow:LoadTargetDict', this.dropdownFileList[fileIndex].path) // 载入当前 index 的文件内容
+            ipcRenderer.send('ToolWindow:LoadTargetDict', this.moveTargetFileList[fileIndex].path) // 载入当前 index 的文件内容
         },
         sort(){
             let startPoint = new Date().getTime()

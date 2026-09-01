@@ -268,6 +268,17 @@ const app = {
             // [{ "name": "luna_pinyin.sogou", "path": "luna_pinyin.sogou.dict.yaml" }]
             return new Map(this.config.fileNameList.map(item => [item.path, item.name]))
         },
+        // 移动词条时的目标码表列表（不含主码表，但保留当前码表以便同文件内分组移动）
+        moveTargetFileList(){
+            const mainDictFileName = this.config?.mainDictFileName
+            const currentFileName = this.dict?.fileName
+            return this.dropdownFileList.filter(item => {
+                if (item.path === currentFileName) {
+                    return true
+                }
+                return !mainDictFileName || item.path !== mainDictFileName
+            })
+        },
         groupFlatItems(){
             if (!this.dict || !this.dict.isGroupMode || !this.words || this.words.length === 0) {
                 return []
@@ -396,7 +407,7 @@ const app = {
             } else {
                 // 匹配跟当前码表一致的 file Index，只在分组模式时自动选择
                 if (this.dict.isGroupMode){
-                    this.dropdownFileList.forEach((item, index) => {
+                    this.moveTargetFileList.forEach((item, index) => {
                         if (item.path === this.dict.fileName){
                             this.dropdownActiveFileIndex = index
                             this.setDropdownActiveIndex(index)
@@ -624,7 +635,7 @@ const app = {
             this.dropdownActiveFileIndex = fileIndex
             this.dropdownActiveGroupIndex = -1 // 切换文件列表时，复位分组 fileIndex
             // this.dictSecond = {} // 立即清空次码表，分组列表也会立即消失，不会等下面的码表加载完成再清空
-            ipcRenderer.send('MainWindow:LoadSecondDict', this.dropdownFileList[fileIndex].path) // 载入当前 index 的文件内容
+            ipcRenderer.send('MainWindow:LoadSecondDict', this.moveTargetFileList[fileIndex].path) // 载入当前 index 的文件内容
         },
         addPriority(){
             this.dict.addCommonPriority()
@@ -1260,9 +1271,9 @@ const app = {
                 // 同文件内移动时，必须直接操作当前 dict，避免 targetDict 与当前内存状态不一致导致“删不掉又新增”。
                 this.dict.deleteWords(this.chosenWordIds, true) // 删除移动的词条
                 this.dict.addWordsInOrder(wordsTransferring, this.dropdownActiveGroupIndex)
+                this.refreshShowingWords()
                 console.log('after insert:( main:wordOrigin ):\n ', JSON.stringify(this.dict.wordsOrigin))
                 this.saveToFile(this.dict)
-                this.reloadCurrentDict()
             } else {
                 this.targetDict.addWordsInOrder(wordsTransferring, this.dropdownActiveGroupIndex)
                 this.words = [...this.dict.wordsOrigin]

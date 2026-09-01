@@ -58,10 +58,10 @@
                  v-show="chosenWordIdArray.length > 0"
                  @click.capture="toggleFileListDropDown()">移动到...            </div>
             <div class="dropdown-body" v-show="isShowDropdown">
-                <div class="file-list shadow" v-if="dropdownFileList.length > 0">
+                <div class="file-list shadow" v-if="moveTargetFileList.length > 0">
                     <div :class="['file-list-item', {active: fileIndex === dropdownActiveFileIndex}]"
                          @click="setDropdownActiveIndex(fileIndex)"
-                         v-for="(file, fileIndex) in dropdownFileList"
+                         v-for="(file, fileIndex) in moveTargetFileList"
                          :key="fileIndex">
                         <div>{{ file.name }}</div>
                     </div>
