@@ -27,12 +27,14 @@ $bg-panel-tool: #f9f9f9;
 $bg-scroll-thumb: #cdcdcd;
 
 
-$fz-big: 20px;
-$fz-title: 15px;
-$fz-list: 13px;
-$fz-button: 12px;
-$fz-small: 11px;
-$fz-modal: 13px;
+$fz-main: 12px;
+$fz-notice: $fz-main - 1;
+$fz-big: 20 * 12 / $fz-main;
+$fz-title: $fz-main + 3;
+$fz-list: $fz-main + 1;
+$fz-button: $fz-main;
+$fz-small: $fz-main - 1 ;
+$fz-modal: $fz-main + 1;
 
 
 $color-primary    : #409EFF;
