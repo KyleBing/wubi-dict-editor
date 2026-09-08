@@ -12,7 +12,9 @@ const app = {
     el: '#app',
     data() {
         return {
-            config: DEFAULT_CONFIG,
+            // 必须拷贝：不能直接引用 DEFAULT_CONFIG，否则未加载完成时可能把默认 http 写回配置文件
+            config: JSON.parse(JSON.stringify(DEFAULT_CONFIG)),
+            configLoaded: false,
             activeCategory: 'dict',
             categories: [
                 { id: 'dict', label: '码表' },
@@ -85,19 +87,24 @@ const app = {
         // RESPONSE OF CONFIG
         ipcRenderer.on('ConfigWindow:ResponseConfigFile', (event, config) => {
             console.log('获取配置成功')
-            this.config = config
+            this.configLoaded = false
+            // 磁盘配置优先，缺省字段用默认值补齐（不会用默认 baseURL 覆盖已有 https 配置）
+            this.config = Object.assign({}, JSON.parse(JSON.stringify(DEFAULT_CONFIG)), config)
 
             // v1.27 添加 mainDictFileName 字段
-            if (!config.hasOwnProperty('mainDictFileName')) this.$set(this.config, 'mainDictFileName', 'wubi86_jidian.dict.yaml')
-            if (!config.hasOwnProperty('pinyinDictFileName')) this.$set(this.config, 'pinyinDictFileName', 'pinyin_simp.dict.yaml')
+            if (!this.config.hasOwnProperty('mainDictFileName')) this.$set(this.config, 'mainDictFileName', 'wubi86_jidian.dict.yaml')
+            if (!this.config.hasOwnProperty('pinyinDictFileName')) this.$set(this.config, 'pinyinDictFileName', 'pinyin_simp.dict.yaml')
 
             // v1.15 添加 rimeExecDir 字段
-            if (!config.hasOwnProperty('rimeExecDir')) this.$set(this.config, 'rimeExecDir', '')
+            if (!this.config.hasOwnProperty('rimeExecDir')) this.$set(this.config, 'rimeExecDir', '')
 
-            if (!config.hasOwnProperty('fontSize')) this.$set(this.config, 'fontSize', normalizeFontSize(DEFAULT_CONFIG.fontSize))
+            if (!this.config.hasOwnProperty('fontSize')) this.$set(this.config, 'fontSize', normalizeFontSize(DEFAULT_CONFIG.fontSize))
             applyAppearance(this.config)
 
-            this.userInfo.email = config.userInfo && config.userInfo.email
+            this.userInfo.email = this.config.userInfo && this.config.userInfo.email
+            this.$nextTick(() => {
+                this.configLoaded = true
+            })
             // after config is loaded, then request for fileList
             ipcRenderer.send('requestFileList')
             if (process.platform === 'win32') {
@@ -194,6 +201,8 @@ const app = {
         config: {
             handler(newValue) {
                 applyAppearance(newValue)
+                // 配置从未磁盘加载完成前不写回，避免默认值覆盖用户的 baseURL
+                if (!this.configLoaded) return
                 ipcRenderer.send('ConfigWindow:RequestSaveConfig', JSON.stringify(this.config))
             },
             deep: true

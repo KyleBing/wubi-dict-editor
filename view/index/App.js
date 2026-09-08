@@ -111,6 +111,8 @@ const app = {
 
         // 配置相关
         ipcRenderer.on('MainWindow:ResponseConfigFile', (event, config) => {
+            const prevBaseURL = this.config && this.config.baseURL
+            const prevUid = this.config && this.config.userInfo && this.config.userInfo.uid
             this.config = config
             if (!config.hasOwnProperty('pinyinDictFileName')) {
                 this.$set(this.config, 'pinyinDictFileName', 'pinyin_simp.dict.yaml')
@@ -125,9 +127,11 @@ const app = {
             // request for file list
             ipcRenderer.send('GetFileList')
 
-            // 载入配置文件之后，请求网络数据
-            // network
-            if (this.config.userInfo){
+            // 仅在登录态或 baseURL 变化时请求分类，避免配置每次保存都重复打 list
+            const uid = this.config.userInfo && this.config.userInfo.uid
+            const baseURLChanged = this.config.baseURL !== prevBaseURL
+            const userChanged = uid !== prevUid
+            if (this.config.userInfo && (userChanged || baseURLChanged || !this.categories.length)) {
                 this.getOnlineCategories()
             }
             this.checkFileBackupExistence()

@@ -1,7 +1,7 @@
 const IS_IN_DEVELOP = false // 生产
 // const IS_IN_DEVELOP = true // 开发
 
-const DEFAULT_BASE_URL = 'http://kylebing.cn/portal/'
+const DEFAULT_BASE_URL = 'https://kylebing.cn/portal/'
 // const DEFAULT_BASE_URL = 'http://localhost:3000/'
 
 const IS_REQUEST_LOCAL = false // 同步请求，请求线上
@@ -12,9 +12,17 @@ const CONFIG_FILE_NAME = 'config.json' // 配置文件 文件名
 const CONFIG_DICT_MAP_FILE_NAME = 'dict_map.txt' // 编码生成用的字典码表文件
 const CONFIG_FILE_PATH = 'wubi-dict-editor' // 配置文件存放的目录
 
+/** 统一处理配置里的 baseURL：优先用配置，并保证末尾有 / */
+function resolveBaseURL(baseURL) {
+    let base = String(baseURL || DEFAULT_BASE_URL).trim()
+    if (!base) base = DEFAULT_BASE_URL
+    if (!base.endsWith('/')) base += '/'
+    return base
+}
+
 const DEFAULT_CONFIG = {
     initFileName: 'wubi86_jidian_user.dict.yaml' ,  // 初始文件信息
-    baseURL: 'http://kylebing.cn/portal/',          // BASE_URL
+    baseURL: 'https://kylebing.cn/portal/',          // BASE_URL
     autoDeployOnAdd: false ,                        // 添词后 是否自动部署
     autoDeployOnDelete: false ,                     // 删词后 是否自动部署
     autoDeployOnEdit: false ,                       // 编辑词条后 是否自动部署
@@ -37,6 +45,6 @@ const SYNC_MAX_WORD_COUNT = 40000
 
 
 module.exports = {
-    DEFAULT_BASE_URL, IS_REQUEST_LOCAL, IS_IN_DEVELOP, CONFIG_FILE_NAME,
+    DEFAULT_BASE_URL, resolveBaseURL, IS_REQUEST_LOCAL, IS_IN_DEVELOP, CONFIG_FILE_NAME,
     CONFIG_FILE_PATH, DEFAULT_CONFIG, CONFIG_DICT_MAP_FILE_NAME, SYNC_MAX_WORD_COUNT
 }

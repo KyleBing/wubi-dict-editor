@@ -3,7 +3,7 @@ if (require('electron-squirrel-startup')) {
     require('electron').app.quit()
 }
 
-const {app, globalShortcut, BrowserWindow, Menu, ipcMain, shell, dialog, net, Notification} = require('electron')
+const {app, globalShortcut, BrowserWindow, Menu, ipcMain, shell, dialog, net, Notification, session} = require('electron')
 const {exec} = require('child_process')
 const fs = require('fs')
 const os = require('os')
@@ -11,7 +11,7 @@ const url = require("url")
 const path = require("path")
 const {shakeDom, log, shakeDomFocus, dateFormatter, unicodeBase64Encode, unicodeBase64Decode} = require('./js/Utility')
 const {
-    DEFAULT_BASE_URL,
+    resolveBaseURL,
     IS_REQUEST_LOCAL,
     IS_IN_DEVELOP,
     CONFIG_FILE_PATH,
@@ -522,8 +522,8 @@ function createConfigWindow() {
 
         let config = readConfigFile()
 
-        // 1. 新建 net.request 请求
-        let baseURL = config.baseURL || DEFAULT_BASE_URL // 当配置文件中没有值时，使用默认值
+        // 1. 新建 net.request 请求（优先使用配置里的 baseURL）
+        let baseURL = resolveBaseURL(config && config.baseURL)
 
         const request = net.request({
             headers: {
@@ -532,7 +532,7 @@ function createConfigWindow() {
             method: 'POST',
             url: IS_REQUEST_LOCAL ?
                 'http://localhost:3000/user/login' :
-                `${baseURL}/user/login`
+                `${baseURL}user/login`
         })
         // 2. 通过 request.write() 方法，发送的 post 请求数据需要先进行序列化，变成纯文本的形式
         request.write(JSON.stringify(requestData))
@@ -676,13 +676,36 @@ function readConfigFile() {
     let configPath = path.join(os.homedir(), CONFIG_FILE_PATH)
     try { // 捕获读取文件时的错误，如果有配置文件 返回其内容，如果没有，返回  false
         let result = fs.readFileSync(path.join(configPath, CONFIG_FILE_NAME), {encoding: 'utf-8'})
-        return JSON.parse(result)
+        return Object.assign({}, DEFAULT_CONFIG, JSON.parse(result))
     } catch (err) {
-        return DEFAULT_CONFIG
+        return Object.assign({}, DEFAULT_CONFIG)
     }
 }
 
-app.on('ready', () => {
+app.on('ready', async () => {
+    // list 曾被错误缓存为「https → http」的 301，与服务器「http → https」形成死循环
+    try {
+        const filter = { urls: ['*://kylebing.cn/*'] }
+        session.defaultSession.webRequest.onHeadersReceived(filter, (details, callback) => {
+            const headers = details.responseHeaders || {}
+            if (details.statusCode >= 300 && details.statusCode < 400 && details.url.startsWith('https://')) {
+                const locationKey = Object.keys(headers).find(k => k.toLowerCase() === 'location')
+                if (locationKey) {
+                    const raw = headers[locationKey]
+                    const loc = Array.isArray(raw) ? raw[0] : raw
+                    if (typeof loc === 'string' && loc.startsWith('http://')) {
+                        const upgraded = 'https://' + loc.slice('http://'.length)
+                        headers[locationKey] = Array.isArray(raw) ? [upgraded] : upgraded
+                    }
+                }
+            }
+            callback({ responseHeaders: headers })
+        })
+        await session.defaultSession.clearCache()
+    } catch (e) {
+        console.log('session cache/redirect guard setup failed', e)
+    }
+
     createMainWindow()
     getDictFileList() // 读取目录中的所有码表文件
     createMenu() // 创建菜单
