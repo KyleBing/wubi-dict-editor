@@ -57,6 +57,13 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Rebuild macOS DMG native modules
+        if: runner.os == 'macOS'
+        run: |
+          npm rebuild macos-alias fs-xattr || true
+          # appdmg 依赖的原生模块在部分 runner 上需要重编
+          npm rebuild appdmg || true
+
       - name: Make distributables
         env:
           # 可选：在仓库 Settings → Secrets 配置后启用正式签名/公证

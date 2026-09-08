@@ -70,15 +70,17 @@ module.exports = {
   makers: [
     {
       name: '@electron-forge/maker-zip',
-      platforms: ['darwin', 'win32'],
+      platforms: ['darwin', 'win32', 'linux'],
     },
     {
       name: '@electron-forge/maker-dmg',
       platforms: ['darwin'],
       config: {
-        title: displayName,
-        background: path.join(__dirname, 'assets/img/tool_panel_open.png'),
-        format: 'ULFO',
+        // 避免固定文件名冲突；不用过小的背景图（原 tool_panel_open.png 仅 46x30）
+        name: `${displayName}-${appVersion}`,
+        overwrite: true,
+        format: 'UDZO',
+        icon: `${iconBase}.icns`,
         iconSize: 80,
         contents: (opts) => [
           {
@@ -111,13 +113,18 @@ module.exports = {
         options: {
           maintainer: 'kylebing@163.com',
           homepage: 'https://github.com/KyleBing/wubi-dict-editor',
+          icon: path.join(__dirname, 'assets/img/appIcon/appIcon.png'),
         },
       },
     },
     {
       name: '@electron-forge/maker-rpm',
       platforms: ['linux'],
-      config: {},
+      config: {
+        options: {
+          icon: path.join(__dirname, 'assets/img/appIcon/appIcon.png'),
+        },
+      },
     },
   ],
   hooks: {
