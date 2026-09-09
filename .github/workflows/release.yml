@@ -25,22 +25,35 @@ jobs:
             os: macos-14
             platform: darwin
             arch: arm64
+            targets: '@electron-forge/maker-zip'
           - name: macOS x64
             os: macos-13
             platform: darwin
             arch: x64
+            targets: '@electron-forge/maker-zip'
           - name: Windows x64
             os: windows-latest
             platform: win32
             arch: x64
+            targets: '@electron-forge/maker-zip,@electron-forge/maker-squirrel'
           - name: Linux x64
             os: ubuntu-22.04
             platform: linux
             arch: x64
+            targets: '@electron-forge/maker-zip,@electron-forge/maker-deb'
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Use official npm/electron mirrors on CI
+        shell: bash
+        run: |
+          # GitHub-hosted runners 用官方源更稳；仓库 .npmrc 的 npmmirror 面向国内本机
+          cat > .npmrc <<'EOF'
+          registry=https://registry.npmjs.org/
+          fund=false
+          EOF
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -52,16 +65,13 @@ jobs:
         if: runner.os == 'Linux'
         run: |
           sudo apt-get update
-          sudo apt-get install -y fakeroot dpkg rpm
+          sudo apt-get install -y fakeroot dpkg
 
       - name: Install dependencies
         run: npm ci
 
-      - name: Rebuild macOS DMG native modules
-        if: runner.os == 'macOS'
-        run: |
-          npm rebuild macos-alias fs-xattr --build-from-source
-          node -e "require('macos-alias'); console.log('macos-alias ok')"
+      - name: Verify forge config
+        run: node -e "const c=require('./forge.config.js'); console.log('makers', c.makers.map(m=>m.name))"
 
       - name: Make distributables
         env:
@@ -69,26 +79,9 @@ jobs:
           APPLE_ID: ${{ secrets.APPLE_ID }}
           APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
           APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
-        shell: bash
         run: |
-          set -euo pipefail
-          echo "node $(node -v) npm $(npm -v) platform=${{ matrix.platform }} arch=${{ matrix.arch }}"
-          case "${{ matrix.platform }}" in
-            darwin)
-              # zip 稳定；dmg 依赖原生模块，失败不阻断发布
-              npx electron-forge make --platform=darwin --arch=${{ matrix.arch }} --targets=@electron-forge/maker-zip
-              npx electron-forge make --platform=darwin --arch=${{ matrix.arch }} --targets=@electron-forge/maker-dmg \
-                || echo "::warning::DMG failed; zip artifact is still available"
-              ;;
-            linux)
-              # rpm 在部分 runner 上易失败；zip + deb 足够分发
-              npx electron-forge make --platform=linux --arch=${{ matrix.arch }} \
-                --targets=@electron-forge/maker-zip,@electron-forge/maker-deb
-              ;;
-            *)
-              npx electron-forge make --platform=${{ matrix.platform }} --arch=${{ matrix.arch }}
-              ;;
-          esac
+          echo "node $(node -v) platform=${{ matrix.platform }} arch=${{ matrix.arch }} targets=${{ matrix.targets }}"
+          npx electron-forge make --platform=${{ matrix.platform }} --arch=${{ matrix.arch }} --targets=${{ matrix.targets }}
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4

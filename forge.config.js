@@ -117,15 +117,6 @@ module.exports = {
         },
       },
     },
-    {
-      name: '@electron-forge/maker-rpm',
-      platforms: ['linux'],
-      config: {
-        options: {
-          icon: path.join(__dirname, 'assets/img/appIcon/appIcon.png'),
-        },
-      },
-    },
   ],
   hooks: {
     postMake: async (_forgeConfig, makeResults) => {
