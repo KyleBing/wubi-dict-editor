@@ -174,24 +174,24 @@
                                 <div class="id">{{ item.id }}</div>
                                 <div class="operation">
 
-                                    <div v-if="config.theme === 'black'" class="up" @click.stop="moveUp(item.id)" title="上移">
+                                    <div v-if="isDarkTheme" class="up" @click.stop="moveUp(item.id)" title="上移">
                                         <img src="../../assets/img/up_white.svg" alt="上移"></div>
                                     <div v-else class="up" @click.stop="moveUp(item.id)" title="上移">
                                         <img src="../../assets/img/up.svg" alt="上移"></div>
-                                    <div v-if="config.theme === 'black'" class="down" @click.stop="moveDown(item.id)" title="下移">
+                                    <div v-if="isDarkTheme" class="down" @click.stop="moveDown(item.id)" title="下移">
                                         <img src="../../assets/img/down_white.svg" alt="下移"></div>
                                     <div v-else class="down" @click.stop="moveDown(item.id)" title="下移">
                                         <img src="../../assets/img/down.svg" alt="下移"></div>
 
                                     <!--保留权重调换位置-->
-                                    <div v-if="config.theme === 'black'" class="up"
+                                    <div v-if="isDarkTheme" class="up"
                                          @click.stop="moveUp(item.id, true)" title="调换权重上移">
                                         <img src="../../assets/img/up_white.svg" alt="调换权重上移">
                                     </div>
                                     <div v-else class="up" @click.stop="moveUp(item.id, true)" title="调换权重上移">
                                         <img src="../../assets/img/up_alt.svg" alt="调换权重上移">
                                     </div>
-                                    <div v-if="config.theme === 'black'" class="down"
+                                    <div v-if="isDarkTheme" class="down"
                                          @click.stop="moveDown(item.id, true)" title="调换权重下移">
                                         <img src="../../assets/img/down_white.svg" alt="调换权重下移">
                                     </div>
@@ -199,11 +199,11 @@
                                         <img src="../../assets/img/down_alt.svg" alt="调换权重下移">
                                     </div>
 
-                                    <div v-if="config.theme === 'black'" class="up" @click.stop="editWord(item)">
+                                    <div v-if="isDarkTheme" class="up" @click.stop="editWord(item)">
                                         <img src="../../assets/img/edit_white.svg" alt="edit"></div>
                                     <div v-else class="up" @click.stop="editWord(item)">
                                         <img src="../../assets/img/edit.svg" alt="edit"></div>
-                                    <div v-if="config.theme === 'black'" class="down" @click.stop="deleteWord(item.id)">
+                                    <div v-if="isDarkTheme" class="down" @click.stop="deleteWord(item.id)">
                                         <img src="../../assets/img/delete_white.svg" alt="delete"></div>
                                     <div v-else class="down" @click.stop="deleteWord(item.id)">
                                         <img src="../../assets/img/delete.svg" alt="delete"></div>
@@ -233,7 +233,7 @@
                          @click.stop="setGroupId(groupIndex)"
                          v-for="(group, groupIndex) in dict.wordsOrigin"
                          :key="groupIndex">
-                        <div v-if="config && config.theme === 'black'" class="up"
+                        <div v-if="isDarkTheme" class="up"
                              @click.stop="catalogMove(group.id, 'up')">
                             <img src="../../assets/img/up_white.svg" alt="move up"></div>
                         <div v-else class="up" @click.stop="catalogMove(group.id, 'up')">
@@ -241,7 +241,7 @@
 
                         <div class="catalog-title">{{group.groupName || '- 未命名 -'}}</div>
 
-                        <div v-if="config && config.theme === 'black'" class="down"
+                        <div v-if="isDarkTheme" class="down"
                              @click.stop="catalogMove(group.id, 'down')">
                             <img src="../../assets/img/down_white.svg" alt="move down"></div>
                         <div v-else class="down" @click.stop="catalogMove(group.id, 'down')">
@@ -308,29 +308,29 @@
                                     <div v-if="IS_IN_DEVELOP" class="id">{{ item.index + 1 }}</div>
                                     <div class="id">{{ item.item.id }}</div>
                                     <div class="operation">
-                                        <div v-if="config.theme === 'black'" class="up" @click.stop="moveUp(item.item.id)" title="上移">
+                                        <div v-if="isDarkTheme" class="up" @click.stop="moveUp(item.item.id)" title="上移">
                                             <img src="../../assets/img/up_white.svg" alt="上移"></div>
                                         <div v-else class="up" @click.stop="moveUp(item.item.id)" title="上移">
                                             <img src="../../assets/img/up.svg" alt="上移"></div>
-                                        <div v-if="config.theme === 'black'" class="down" @click.stop="moveDown(item.item.id)" title="下移">
+                                        <div v-if="isDarkTheme" class="down" @click.stop="moveDown(item.item.id)" title="下移">
                                             <img src="../../assets/img/down_white.svg" alt="下移"></div>
                                         <div v-else class="down" @click.stop="moveDown(item.item.id)" title="下移">
                                             <img src="../../assets/img/down.svg" alt="下移"></div>
-                                        <div v-if="config.theme === 'black'" class="up"
+                                        <div v-if="isDarkTheme" class="up"
                                              @click.stop="moveUp(item.item.id, true)" title="调换权重上移">
                                             <img src="../../assets/img/up_white.svg" alt="调换权重上移"></div>
                                         <div v-else class="up" @click.stop="moveUp(item.item.id, true)" title="调换权重上移">
                                             <img src="../../assets/img/up_alt.svg" alt="调换权重上移"></div>
-                                        <div v-if="config.theme === 'black'" class="down"
+                                        <div v-if="isDarkTheme" class="down"
                                              @click.stop="moveDown(item.item.id, true)" title="调换权重下移">
                                             <img src="../../assets/img/down_white.svg" alt="调换权重下移"></div>
                                         <div v-else class="down" @click.stop="moveDown(item.item.id, true)" title="调换权重下移">
                                             <img src="../../assets/img/down_alt.svg" alt="调换权重下移"></div>
-                                        <div v-if="config.theme === 'black'" class="up" @click.stop="editWord(item.item)" title="编辑">
+                                        <div v-if="isDarkTheme" class="up" @click.stop="editWord(item.item)" title="编辑">
                                             <img src="../../assets/img/edit_white.svg" alt="编辑"></div>
                                         <div v-else class="up" @click.stop="editWord(item.item)" title="编辑">
                                             <img src="../../assets/img/edit.svg" alt="编辑"></div>
-                                        <div v-if="config.theme === 'black'" class="down" @click.stop="deleteWord(item.item.id)" title="删除">
+                                        <div v-if="isDarkTheme" class="down" @click.stop="deleteWord(item.item.id)" title="删除">
                                             <img src="../../assets/img/delete_white.svg" alt="删除"></div>
                                         <div v-else class="down" @click.stop="deleteWord(item.item.id)" title="删除">
                                             <img src="../../assets/img/delete.svg" alt="删除"></div>

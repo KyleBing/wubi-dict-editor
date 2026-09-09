@@ -1,6 +1,6 @@
 const {shakeDom, shakeDomFocus, log, shuffle} = require('../../js/Utility')
 const {IS_IN_DEVELOP} = require('../../js/Global')
-const { applyAppearance } = require('../../js/appearance')
+const { applyAppearance, systemPrefersDark } = require('../../js/appearance')
 const path = require('path')
 
 const Dict = require('../../js/Dict')
@@ -53,6 +53,9 @@ const app = {
             dropdownActiveGroupIndex: -1, // 选中的分组 ID
 
             config: {}, // 全局配置
+            systemPrefersDark: systemPrefersDark(),
+            _colorSchemeMedia: null,
+            _onColorSchemeChange: null,
 
             // 码表配置
             seperatorRead: '\t', // 分隔符
@@ -159,8 +162,42 @@ const app = {
         onresize = ()=>{
             this.heightContent = innerHeight - 47 - 20 - 10 + 3
         }
+
+        if (window.matchMedia) {
+            this._colorSchemeMedia = window.matchMedia('(prefers-color-scheme: dark)')
+            this._onColorSchemeChange = (event) => {
+                this.systemPrefersDark = event.matches
+            }
+            this.systemPrefersDark = this._colorSchemeMedia.matches
+            if (this._colorSchemeMedia.addEventListener) {
+                this._colorSchemeMedia.addEventListener('change', this._onColorSchemeChange)
+            } else if (this._colorSchemeMedia.addListener) {
+                this._colorSchemeMedia.addListener(this._onColorSchemeChange)
+            }
+        }
+    },
+    beforeDestroy() {
+        if (!this._colorSchemeMedia || !this._onColorSchemeChange) {
+            return
+        }
+        if (this._colorSchemeMedia.removeEventListener) {
+            this._colorSchemeMedia.removeEventListener('change', this._onColorSchemeChange)
+        } else if (this._colorSchemeMedia.removeListener) {
+            this._colorSchemeMedia.removeListener(this._onColorSchemeChange)
+        }
     },
     computed: {
+        isDarkTheme(){
+            switch (this.config && this.config.theme) {
+                case 'black':
+                    return true
+                case 'white':
+                    return false
+                case 'auto':
+                default:
+                    return this.systemPrefersDark
+            }
+        },
         // 当前显示的 words 数量
         wordsCount(){
             if (this.dict.isGroupMode){

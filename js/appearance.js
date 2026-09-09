@@ -10,6 +10,24 @@ function normalizeFontSize(fontSize) {
     return Math.min(FONT_SIZE_MAX, Math.max(FONT_SIZE_MIN, Math.round(size)))
 }
 
+function systemPrefersDark() {
+    return typeof window !== 'undefined'
+        && window.matchMedia
+        && window.matchMedia('(prefers-color-scheme: dark)').matches
+}
+
+function isDarkTheme(theme) {
+    switch (theme) {
+        case 'black':
+            return true
+        case 'white':
+            return false
+        case 'auto':
+        default:
+            return systemPrefersDark()
+    }
+}
+
 function applyTheme(theme) {
     const root = document.documentElement
     root.classList.remove('theme-auto', 'theme-dark', 'theme-white')
@@ -44,6 +62,8 @@ module.exports = {
     FONT_SIZE_MIN,
     FONT_SIZE_MAX,
     normalizeFontSize,
+    systemPrefersDark,
+    isDarkTheme,
     applyTheme,
     applyFontSize,
     applyAppearance,

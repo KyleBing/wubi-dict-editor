@@ -1,6 +1,6 @@
 const {shakeDom, shakeDomFocus, log, dateFormatter, getUnicodeStringLength} = require('../../js/Utility')
 const {IS_IN_DEVELOP, BASE_URL, DEFAULT_CONFIG} = require('../../js/Global')
-const { applyAppearance, normalizeFontSize } = require('../../js/appearance')
+const { applyAppearance, normalizeFontSize, systemPrefersDark } = require('../../js/appearance')
 
 const Dict = require('../../js/Dict')
 const DictMap = require('../../js/DictMap')
@@ -67,6 +67,9 @@ const app = {
             dropdownActiveGroupIndex: -1, // 选中的分组 ID
 
             config: {}, // 全局配置
+            systemPrefersDark: systemPrefersDark(), // 系统是否偏好暗黑模式
+            _colorSchemeMedia: null,
+            _onColorSchemeChange: null,
 
             dictMap: null, // main 返回的 dictMap，用于解码词条
 
@@ -255,8 +258,44 @@ const app = {
         onresize = ()=>{
             this.heightContent = innerHeight - 47 - 20 - 10 + 3
         }
+
+        // 跟随系统主题时，系统亮暗切换后同步图标颜色
+        if (window.matchMedia) {
+            this._colorSchemeMedia = window.matchMedia('(prefers-color-scheme: dark)')
+            this._onColorSchemeChange = (event) => {
+                this.systemPrefersDark = event.matches
+            }
+            this.systemPrefersDark = this._colorSchemeMedia.matches
+            if (this._colorSchemeMedia.addEventListener) {
+                this._colorSchemeMedia.addEventListener('change', this._onColorSchemeChange)
+            } else if (this._colorSchemeMedia.addListener) {
+                this._colorSchemeMedia.addListener(this._onColorSchemeChange)
+            }
+        }
+    },
+    beforeDestroy() {
+        if (!this._colorSchemeMedia || !this._onColorSchemeChange) {
+            return
+        }
+        if (this._colorSchemeMedia.removeEventListener) {
+            this._colorSchemeMedia.removeEventListener('change', this._onColorSchemeChange)
+        } else if (this._colorSchemeMedia.removeListener) {
+            this._colorSchemeMedia.removeListener(this._onColorSchemeChange)
+        }
     },
     computed: {
+        // 当前是否为暗黑界面（含跟随系统）
+        isDarkTheme(){
+            switch (this.config && this.config.theme) {
+                case 'black':
+                    return true
+                case 'white':
+                    return false
+                case 'auto':
+                default:
+                    return this.systemPrefersDark
+            }
+        },
         // 当前显示的 words 数量
         wordsCount(){
             if (this.dict.isGroupMode){
