@@ -1,3 +1,6 @@
+## v1.36 `2026-09-08`
+- fix GitHub Actions 多平台打包（Linux 缺 png 图标、macOS DMG 原生模块、CI 改为 zip 优先）
+
 ## v1.35 `2026-09-08`
 - fix 同步请求 https/http 301 死循环（清理错误 disk cache，阻止 https 降级到 http）
 - fix 默认请求地址改为 https，配置优先于写死默认值

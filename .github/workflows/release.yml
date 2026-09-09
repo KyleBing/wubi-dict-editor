@@ -60,18 +60,35 @@ jobs:
       - name: Rebuild macOS DMG native modules
         if: runner.os == 'macOS'
         run: |
-          npm rebuild macos-alias fs-xattr || true
-          # appdmg 依赖的原生模块在部分 runner 上需要重编
-          npm rebuild appdmg || true
+          npm rebuild macos-alias fs-xattr --build-from-source
+          node -e "require('macos-alias'); console.log('macos-alias ok')"
 
       - name: Make distributables
         env:
-          # 可选：在仓库 Settings → Secrets 配置后启用正式签名/公证
           APPLE_SIGNING_IDENTITY: ${{ secrets.APPLE_SIGNING_IDENTITY }}
           APPLE_ID: ${{ secrets.APPLE_ID }}
           APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
           APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
-        run: npx electron-forge make --platform=${{ matrix.platform }} --arch=${{ matrix.arch }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "node $(node -v) npm $(npm -v) platform=${{ matrix.platform }} arch=${{ matrix.arch }}"
+          case "${{ matrix.platform }}" in
+            darwin)
+              # zip 稳定；dmg 依赖原生模块，失败不阻断发布
+              npx electron-forge make --platform=darwin --arch=${{ matrix.arch }} --targets=@electron-forge/maker-zip
+              npx electron-forge make --platform=darwin --arch=${{ matrix.arch }} --targets=@electron-forge/maker-dmg \
+                || echo "::warning::DMG failed; zip artifact is still available"
+              ;;
+            linux)
+              # rpm 在部分 runner 上易失败；zip + deb 足够分发
+              npx electron-forge make --platform=linux --arch=${{ matrix.arch }} \
+                --targets=@electron-forge/maker-zip,@electron-forge/maker-deb
+              ;;
+            *)
+              npx electron-forge make --platform=${{ matrix.platform }} --arch=${{ matrix.arch }}
+              ;;
+          esac
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
