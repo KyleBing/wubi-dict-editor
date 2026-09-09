@@ -65,7 +65,7 @@ jobs:
         if: runner.os == 'Linux'
         run: |
           sudo apt-get update
-          sudo apt-get install -y fakeroot dpkg
+          sudo apt-get install -y fakeroot dpkg zip unzip
 
       - name: Install dependencies
         run: npm ci
@@ -79,9 +79,24 @@ jobs:
           APPLE_ID: ${{ secrets.APPLE_ID }}
           APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
           APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+        shell: bash
         run: |
+          set -euo pipefail
           echo "node $(node -v) platform=${{ matrix.platform }} arch=${{ matrix.arch }} targets=${{ matrix.targets }}"
-          npx electron-forge make --platform=${{ matrix.platform }} --arch=${{ matrix.arch }} --targets=${{ matrix.targets }}
+          # 把 targets 放进引号，避免 shell 解析 @
+          npm exec -- electron-forge make \
+            --platform="${{ matrix.platform }}" \
+            --arch="${{ matrix.arch }}" \
+            --targets="${{ matrix.targets }}" \
+            2>&1 | tee forge-make.log
+
+      - name: Upload forge log on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: forge-log-${{ matrix.platform }}-${{ matrix.arch }}
+          path: forge-make.log
+          if-no-files-found: ignore
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
