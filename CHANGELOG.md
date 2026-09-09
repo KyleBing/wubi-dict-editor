@@ -1,3 +1,6 @@
+## v1.37 `2026-09-09`
+- fix GitHub Actions 自动多平台打包并发布 Release（含各系统下载说明）
+
 ## v1.36 `2026-09-08`
 - fix GitHub Actions 多平台打包（Linux 缺 png 图标、macOS DMG 原生模块、CI 改为 zip 优先）
 

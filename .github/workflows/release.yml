@@ -26,8 +26,9 @@ jobs:
             platform: darwin
             arch: arm64
             targets: '@electron-forge/maker-zip'
+          # 在 arm64 runner 上交叉打 x64，避免 macos-13 排队过久
           - name: macOS x64
-            os: macos-13
+            os: macos-14
             platform: darwin
             arch: x64
             targets: '@electron-forge/maker-zip'
@@ -49,7 +50,6 @@ jobs:
       - name: Use official npm/electron mirrors on CI
         shell: bash
         run: |
-          # GitHub-hosted runners 用官方源更稳；仓库 .npmrc 的 npmmirror 面向国内本机
           cat > .npmrc <<'EOF'
           registry=https://registry.npmjs.org/
           fund=false
@@ -88,7 +88,6 @@ jobs:
           set -euo pipefail
           echo "node $(node -v) platform=${{ matrix.platform }} arch=${{ matrix.arch }}"
           if [ "${{ matrix.platform }}" = "linux" ]; then
-            # zip / deb 分开打，避免 deb 失败拖垮 zip
             npm exec -- electron-forge make --platform=linux --arch=x64 --targets=@electron-forge/maker-zip 2>&1 | tee forge-make.log
             npm exec -- electron-forge make --platform=linux --arch=x64 --targets=@electron-forge/maker-deb --skip-package 2>&1 | tee -a forge-make.log \
               || echo "::warning::deb maker failed; zip artifact is still available"
@@ -120,7 +119,8 @@ jobs:
     name: Publish GitHub Release
     needs: build
     runs-on: ubuntu-latest
-    if: startsWith(github.ref, 'refs/tags/')
+    # 任一平台成功即可发版；不要被单个排队/失败的 job 卡住
+    if: always() && startsWith(github.ref, 'refs/tags/') && !cancelled()
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -129,24 +129,45 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           path: release-assets
+          merge-multiple: true
+        continue-on-error: true
 
       - name: Flatten artifacts
+        id: flatten
         shell: bash
         run: |
+          set -euo pipefail
           mkdir -p dist
           find release-assets -type f \
             \( -name '*.dmg' -o -name '*.zip' -o -name '*.exe' -o -name '*.nupkg' -o -name '*.deb' -o -name '*.rpm' -o -name 'RELEASES' \) \
-            -print -exec cp -f {} dist/ \;
-          ls -lah dist
+            -print -exec cp -f {} dist/ \; || true
+          ls -lah dist || true
+          count=$(find dist -type f | wc -l | tr -d ' ')
+          echo "count=$count" >> "$GITHUB_OUTPUT"
+          if [ "$count" = "0" ]; then
+            echo "No release assets found"
+            exit 1
+          fi
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ github.ref_name }}
-          name: ${{ github.ref_name }}
+          name: 五笔码表助手 ${{ github.ref_name }}
           draft: false
           generate_release_notes: true
           files: dist/*
           fail_on_unmatched_files: true
+          body: |
+            ## 下载说明
+
+            | 系统 | 下载文件 | 说明 |
+            |------|----------|------|
+            | **macOS Apple Silicon**（M1/M2/M3/M4） | `WubiDictEditor-darwin-arm64-*.zip` | 解压后打开 `.app`；若被拦截执行 `xattr -cr WubiDictEditor.app` |
+            | **macOS Intel** | `WubiDictEditor-darwin-x64-*.zip` | 同上 |
+            | **Windows 64 位** | `WubiDictEditor-*-Setup.exe` 或 `WubiDictEditor-win32-x64-*.zip` | 优先用 Setup 安装包；zip 为绿色版 |
+            | **Linux** | `*.deb` 或 `WubiDictEditor-linux-x64-*.zip` | Debian/Ubuntu 用 deb；其他发行版可用 zip |
+
+            > 当前 mac 包为 ad-hoc 签名（未配置 Apple 开发者证书时）。若提示无法打开：右键 → 打开，或执行上面的 `xattr` 命令。
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
