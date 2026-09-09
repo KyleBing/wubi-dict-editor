@@ -384,20 +384,12 @@ class Dict {
     }
 
 
-    // 删除词条
-    deleteWords(wordIdSet, isDeleteInSelf){ // isDeleteInSelf 在移动词条到自己分组时使用，不删除空的分组
+    // 删除词条（分组模式下保留空分组）
+    deleteWords(wordIdSet){
         if (this.isGroupMode){
-            let deleteGroupIds = [] // 记录 words 为 0 的 group，最后删除分组
-            this.wordsOrigin.forEach((group, index) => {
+            this.wordsOrigin.forEach((group) => {
                 group.dict = group.dict.filter(item => !wordIdSet.has(item.id))
-                if (group.dict.length === 0){
-                    deleteGroupIds.push(index)
-                }
             })
-            // config: 是否删除空的分组
-            if (!isDeleteInSelf){
-                this.wordsOrigin = this.wordsOrigin.filter((group, index) => !deleteGroupIds.includes(index))
-            }
         } else {
             this.wordsOrigin = this.wordsOrigin.filter(item => !wordIdSet.has(item.id))
         }

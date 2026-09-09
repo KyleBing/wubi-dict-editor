@@ -12,7 +12,7 @@
     <!--词条编辑窗口-->
     <div class="edit-modal modal" v-if="wordEditing">
         <div class="modal-panel">
-            <div class="modal-close" @click="wordEditing = null"><img src="../../assets/img/delete_white.svg" alt="close"></div>
+            <div class="modal-close" @click="closeEditWord"><img src="../../assets/img/delete_white.svg" alt="close"></div>
             <div class="modal-header">
                 <div class="id">{{wordEditing.id}}</div>
             </div>
@@ -32,6 +32,21 @@
                 <div class="input-item mt-1">
                     <label for="note">备注</label>
                     <input ref="editInputNote" id="note" type="text" v-model="wordEditing.note" >
+                </div>
+                <div class="same-code-list">
+                    <div class="same-code-list-title">同编码词条<span v-if="editingSameCodeWords.length > 0">（{{ editingSameCodeWords.length }}）</span></div>
+                    <div v-if="editingSameCodeSearching" class="same-code-list-empty">正在搜索所有可解析词库...</div>
+                    <div v-else-if="!wordEditing.code" class="same-code-list-empty">请输入编码</div>
+                    <div v-else-if="editingSameCodeSearched && editingSameCodeWords.length === 0" class="same-code-list-empty unique">编码唯一</div>
+                    <div v-else-if="editingSameCodeWords.length > 0" class="same-code-list-body">
+                        <div class="same-code-list-item" v-for="item in editingSameCodeWords" :key="item.id">
+                            <span class="word">{{ item.word }}</span>
+                            <span class="code">{{ item.code }}</span>
+                            <span class="origin" :class="{ current: item.fileName === dict.fileName }">{{ item.origin }}</span>
+                            <span class="priority" v-if="item.priority">{{ item.priority }}</span>
+                            <span class="note" v-if="item.note">{{ item.note }}</span>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">
@@ -229,7 +244,7 @@
                          @click="setGroupId(-1)">
                         <div class="catalog-title">全部</div>
                     </div>
-                    <div :class="['catalog-item', {active: groupIndex === activeGroupId}]"
+                    <div :class="['catalog-item', {active: groupIndex === activeGroupId, empty: !(group.dict && group.dict.length)}]"
                          @click.stop="setGroupId(groupIndex)"
                          v-for="(group, groupIndex) in dict.wordsOrigin"
                          :key="groupIndex">
@@ -239,7 +254,10 @@
                         <div v-else class="up" @click.stop="catalogMove(group.id, 'up')">
                             <img src="../../assets/img/up.svg" alt="move up"></div>
 
-                        <div class="catalog-title">{{group.groupName || '- 未命名 -'}}</div>
+                        <div class="catalog-title">
+                            <span class="catalog-name">{{group.groupName || '- 未命名 -'}}</span>
+                            <span v-if="!(group.dict && group.dict.length)" class="empty-badge">空</span>
+                        </div>
 
                         <div v-if="isDarkTheme" class="down"
                              @click.stop="catalogMove(group.id, 'down')">
@@ -401,7 +419,7 @@
                         <div class="d-flex al-center pt-1 pb-1">
                             <input type="checkbox" v-model="isDeleteAfterUpload" id="isDeleteAfterUpload">
                             <label class="checkbox mr-1" for="isDeleteAfterUpload"></label>
-                            <div class="tip">上传后删除本地对应的词条</div>
+                            <div class="tip">上传后删除本地词条</div>
                         </div>
                         <div class="btn-item mt-2">
                             <div class="btn btn-roseo mb-1" @click="uploadChosenWordsToServer">确定上传</div>

@@ -146,6 +146,36 @@ $black-color-main: #81fffa;
           border-color: $black-color-main;
         }
       }
+      .same-code-list{
+        border-top-color: $black-color-border;
+        .same-code-list-title{
+          color: $black-color-text-subtitle;
+        }
+        .same-code-list-empty{
+          color: $black-color-text-comment;
+          &.unique{
+            color: $color-success;
+          }
+        }
+        .same-code-list-item{
+          .word{
+            color: $black-color-text;
+          }
+          .code{
+            color: $black-color-main;
+          }
+          .origin{
+            color: $color-success;
+            &.current{
+              color: $color-primary;
+            }
+          }
+          .priority,
+          .note{
+            color: $black-color-text-comment;
+          }
+        }
+      }
     }
     .modal-footer{
       border-color: $black-color-border;
@@ -246,12 +276,23 @@ $black-color-main: #81fffa;
           background-color: black;
         }
       }
+      &.empty:not(.active){
+        color: $black-color-text-comment;
+        .empty-badge{
+          border-color: $black-color-text-comment;
+          color: $black-color-text-comment;
+        }
+      }
       &:hover {
         background-color: $black-bg-hover !important;
       }
       &.active {
         color: black !important;
         background-color: $black-color-main !important;
+        .empty-badge{
+          border-color: rgba(0,0,0,0.35);
+          color: rgba(0,0,0,0.55);
+        }
       }
     }
   }

@@ -278,6 +278,11 @@ function createMainWindow() {
             mainWindow.send('MainWindow:ApplyRime:Result', result)
         }
     })
+    // 在所有可解析词库中搜索同编码词条
+    ipcMain.on('MainWindow:SearchSameCode', (event, code) => {
+        const results = searchSameCodeInAllDicts(code)
+        event.sender.send('MainWindow:SearchSameCode:Result', code, results)
+    })
 }
 
 let toolWindow
@@ -913,6 +918,69 @@ function getDictFileList() {
             fileList.sort((a, b) => a.name > b.name ? 1 : -1)
         }
     })
+}
+
+// 同步刷新码表文件列表（搜索同编码时兜底）
+function refreshDictFileListSync() {
+    try {
+        const rimeFolderPath = getRimeConfigDir()
+        const filePaths = fs.readdirSync(rimeFolderPath)
+        fileList = filePaths
+            .filter(item => item.indexOf('.dict.yaml') > 0)
+            .map(item => ({
+                name: getLabelNameFromFileName(item),
+                path: item
+            }))
+            .sort((a, b) => a.name > b.name ? 1 : -1)
+    } catch (err) {
+        console.log(err)
+    }
+}
+
+// 在所有可解析（含 ... 头部分隔）的词库中搜索指定编码
+function searchSameCodeInAllDicts(code) {
+    if (!code) {
+        return []
+    }
+    if (!fileList || fileList.length === 0) {
+        refreshDictFileListSync()
+    }
+    const results = []
+    const rimeDir = getRimeConfigDir()
+    for (const file of fileList) {
+        const filePath = path.join(rimeDir, file.path)
+        const content = readFileFromDisk(filePath)
+        if (!content) {
+            continue
+        }
+        const headerEnd = content.indexOf('...')
+        if (headerEnd < 0) {
+            continue // 无法解析，跳过
+        }
+        const body = content.substring(headerEnd + 3)
+        const lines = body.split(/\r?\n/)
+        for (let i = 0; i < lines.length; i++) {
+            const line = lines[i]
+            if (line.indexOf('\t') < 0) {
+                continue
+            }
+            const parts = line.split('\t')
+            const lineCode = (parts[1] || '').replace(/\r/g, '')
+            if (lineCode !== code) {
+                continue
+            }
+            results.push({
+                id: `${file.path}:${i}`,
+                word: parts[0],
+                code: lineCode,
+                priority: parts[2] || '',
+                note: (parts[3] || '').replace(/\r/g, ''),
+                origin: file.name,
+                fileName: file.path,
+            })
+        }
+    }
+    return results
 }
 
 // 部署 Rime

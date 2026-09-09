@@ -18,7 +18,7 @@
   overflow: hidden;
   margin-bottom: 80px;
   background-color: white;
-  width: 350px;
+  width: 380px;
   position: relative;
   .modal-close{
     position: absolute;
@@ -85,6 +85,63 @@
         line-height: 1.5;
         padding: 6px 8px;
         resize: vertical;
+      }
+    }
+    .same-code-list{
+      margin-top: 14px;
+      border-top: 1px solid $border-color;
+      padding-top: 10px;
+      .same-code-list-title{
+        font-size: var(--fz-small);
+        color: $text-subtitle;
+        margin-bottom: 6px;
+      }
+      .same-code-list-empty{
+        font-size: var(--fz-small);
+        color: $text-comment;
+        padding: 4px 0 2px;
+        line-height: 1.5;
+        &.unique{
+          color: $color-success;
+        }
+      }
+      .same-code-list-body{
+        max-height: 160px;
+        overflow-y: auto;
+      }
+      .same-code-list-item{
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: baseline;
+        gap: 12px;
+        padding: 3px 0;
+        line-height: 1.4;
+        .word{
+          color: $text-main;
+          font-weight: 500;
+          flex-shrink: 0;
+        }
+        .code{
+          color: $color-primary;
+          font-family: Menlo, Monaco, Consolas, monospace;
+          flex-shrink: 0;
+        }
+        .origin{
+          color: $color-success;
+          font-size: var(--fz-small);
+          flex-shrink: 0;
+          &.current{
+            color: $color-primary;
+          }
+        }
+        .priority,
+        .note{
+          color: $text-comment;
+          font-size: var(--fz-small);
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
       }
     }
 

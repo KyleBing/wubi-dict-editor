@@ -12,7 +12,7 @@
     <!--词条编辑窗口-->
     <div class="edit-modal modal" v-if="wordEditing">
         <div class="modal-panel">
-            <div class="modal-close" @click="wordEditing = null"><img src="../../assets/img/delete_white.svg" alt="close"></div>
+            <div class="modal-close" @click="closeEditWord"><img src="../../assets/img/delete_white.svg" alt="close"></div>
             <div class="modal-header">
                 <div class="id">{{wordEditing.id}}</div>
             </div>
@@ -24,6 +24,20 @@
                 <div class="input-item mt-1">
                     <label for="code">编码</label>
                     <input ref="editInputCode" id="code" type="text" v-model="wordEditing.code" >
+                </div>
+                <div class="same-code-list">
+                    <div class="same-code-list-title">同编码词条<span v-if="editingSameCodeWords.length > 0">（{{ editingSameCodeWords.length }}）</span></div>
+                    <div v-if="editingSameCodeSearching" class="same-code-list-empty">正在搜索所有可解析词库...</div>
+                    <div v-else-if="!wordEditing.code" class="same-code-list-empty">请输入编码</div>
+                    <div v-else-if="editingSameCodeSearched && editingSameCodeWords.length === 0" class="same-code-list-empty unique">编码唯一</div>
+                    <div v-else-if="editingSameCodeWords.length > 0" class="same-code-list-body">
+                        <div class="same-code-list-item" v-for="item in editingSameCodeWords" :key="item.id">
+                            <span class="word">{{ item.word }}</span>
+                            <span class="code">{{ item.code }}</span>
+                            <span class="origin">{{ item.origin }}</span>
+                            <span class="priority" v-if="item.priority">{{ item.priority }}</span>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">

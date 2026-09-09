@@ -74,6 +74,11 @@ const app = {
             dictMap: null, // main 返回的 dictMap，用于解码词条
 
             wordEditing: null, // 正在编辑的词条
+            editingWordSnapshot: null, // 打开编辑时的原始词条快照（用于排除自身）
+            editingSameCodeWords: [], // 所有词库中的同编码词条
+            editingSameCodeSearching: false,
+            editingSameCodeSearched: false,
+            editingSameCodeDebounceTimer: null,
 
             // 同步词库
             dictSync: null,
@@ -248,6 +253,35 @@ const app = {
             if (result && result.message) {
                 this.showTip(result.message, result.success ? 2000 : 4000)
             }
+        })
+
+        ipcRenderer.on('MainWindow:SearchSameCode:Result', (event, code, results) => {
+            if (!this.wordEditing || code !== this.wordEditing.code) {
+                return
+            }
+            const snapshot = this.editingWordSnapshot
+            const currentFileName = this.dict && this.dict.fileName
+            this.editingSameCodeWords = (results || []).filter(item => {
+                if (!snapshot) {
+                    return true
+                }
+                // 排除当前正在编辑的这条（按打开时的词条+编码+文件）
+                return !(
+                    item.fileName === snapshot.fileName &&
+                    item.word === snapshot.word &&
+                    item.code === snapshot.code
+                )
+            }).map(item => {
+                const displayName = this.fileNameListMap.get(item.fileName)
+                if (displayName) {
+                    item.origin = displayName
+                } else if (item.fileName === currentFileName) {
+                    item.origin = '当前码表'
+                }
+                return item
+            })
+            this.editingSameCodeSearching = false
+            this.editingSameCodeSearched = true
         })
 
 
@@ -602,9 +636,21 @@ const app = {
             ipcRenderer.send('MainWindow:LoadFile', file.path)
         },
 
+        // 关闭编辑词条面板
+        closeEditWord(){
+            this.wordEditing = null
+            this.editingWordSnapshot = null
+            this.editingSameCodeWords = []
+            this.editingSameCodeSearching = false
+            this.editingSameCodeSearched = false
+            if (this.editingSameCodeDebounceTimer) {
+                clearTimeout(this.editingSameCodeDebounceTimer)
+                this.editingSameCodeDebounceTimer = null
+            }
+        },
         // 确定编辑词条
         confirmEditWord(){
-            this.wordEditing = null
+            this.closeEditWord()
             if(this.config.autoDeployOnEdit) this.saveToFile(this.dict) // 根据配置，是否在编辑后保存码表文件
         },
         // 生成编辑词条的编码
@@ -618,6 +664,32 @@ const app = {
         // 编辑词条
         editWord(word){
             this.wordEditing = word
+            this.editingWordSnapshot = {
+                fileName: this.dict && this.dict.fileName,
+                word: word.word,
+                code: word.code,
+            }
+            this.searchEditingSameCodeWords()
+        },
+        // 搜索所有可解析词库中的同编码词条
+        searchEditingSameCodeWords(){
+            if (!this.wordEditing || !this.wordEditing.code) {
+                this.editingSameCodeWords = []
+                this.editingSameCodeSearching = false
+                this.editingSameCodeSearched = !!this.wordEditing
+                return
+            }
+            this.editingSameCodeSearching = true
+            this.editingSameCodeSearched = false
+            ipcRenderer.send('MainWindow:SearchSameCode', this.wordEditing.code)
+        },
+        scheduleSearchEditingSameCodeWords(){
+            if (this.editingSameCodeDebounceTimer) {
+                clearTimeout(this.editingSameCodeDebounceTimer)
+            }
+            this.editingSameCodeDebounceTimer = setTimeout(() => {
+                this.searchEditingSameCodeWords()
+            }, 250)
         },
 
         // 当前列表中用于 Shift 连选的词条数组
@@ -1318,7 +1390,7 @@ const app = {
 
             if (this.dict.fileName === this.targetDict.fileName){ // 如果是同词库移动
                 // 同文件内移动时，必须直接操作当前 dict，避免 targetDict 与当前内存状态不一致导致“删不掉又新增”。
-                this.dict.deleteWords(this.chosenWordIds, true) // 删除移动的词条
+                this.dict.deleteWords(this.chosenWordIds) // 删除移动的词条
                 this.dict.addWordsInOrder(wordsTransferring, this.dropdownActiveGroupIndex)
                 this.refreshShowingWords()
                 console.log('after insert:( main:wordOrigin ):\n ', JSON.stringify(this.dict.wordsOrigin))
@@ -1509,6 +1581,16 @@ const app = {
                     this.code = this.dictMap.decodeWord(newValue)
                 }
             }
+        },
+        'wordEditing.code'(newCode, oldCode){
+            if (!this.wordEditing) {
+                return
+            }
+            // 打开编辑时赋值会触发一次（oldCode 为 undefined），已由 editWord 主动搜索，避免重复闪烁
+            if (oldCode === undefined) {
+                return
+            }
+            this.scheduleSearchEditingSameCodeWords()
         },
         chosenWordIdArray(newValue){
             if (newValue.length === 0){

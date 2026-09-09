@@ -88,6 +88,11 @@ const app = {
             dictSetExceptCharacter: null, // 主码表，除了单字之外的所有词条 set
 
             wordEditing: null, // 正在编辑的词条
+            editingWordSnapshot: null,
+            editingSameCodeWords: [],
+            editingSameCodeSearching: false,
+            editingSameCodeSearched: false,
+            editingSameCodeDebounceTimer: null,
         }
     },
     mounted() {
@@ -158,6 +163,25 @@ const app = {
         })
         ipcRenderer.send('getDictMap')
 
+        ipcRenderer.on('MainWindow:SearchSameCode:Result', (event, code, results) => {
+            if (!this.wordEditing || code !== this.wordEditing.code) {
+                return
+            }
+            const snapshot = this.editingWordSnapshot
+            this.editingSameCodeWords = (results || []).filter(item => {
+                if (!snapshot) {
+                    return true
+                }
+                return !(
+                    item.fileName === snapshot.fileName &&
+                    item.word === snapshot.word &&
+                    item.code === snapshot.code
+                )
+            })
+            this.editingSameCodeSearching = false
+            this.editingSameCodeSearched = true
+        })
+
         this.addKeyboardListener()
         onresize = ()=>{
             this.heightContent = innerHeight - 47 - 20 - 10 + 3
@@ -222,9 +246,21 @@ const app = {
     },
 
     methods: {
+        // 关闭编辑词条面板
+        closeEditWord(){
+            this.wordEditing = null
+            this.editingWordSnapshot = null
+            this.editingSameCodeWords = []
+            this.editingSameCodeSearching = false
+            this.editingSameCodeSearched = false
+            if (this.editingSameCodeDebounceTimer) {
+                clearTimeout(this.editingSameCodeDebounceTimer)
+                this.editingSameCodeDebounceTimer = null
+            }
+        },
         // 确定编辑词条
         confirmEditWord(){
-            this.wordEditing = null
+            this.closeEditWord()
         },
         // 生成编辑词条的编码
         generateCodeForWordEdit(){
@@ -237,6 +273,31 @@ const app = {
         // 编辑词条
         editWord(word){
             this.wordEditing = word
+            this.editingWordSnapshot = {
+                fileName: this.dict && this.dict.fileName,
+                word: word.word,
+                code: word.code,
+            }
+            this.searchEditingSameCodeWords()
+        },
+        searchEditingSameCodeWords(){
+            if (!this.wordEditing || !this.wordEditing.code) {
+                this.editingSameCodeWords = []
+                this.editingSameCodeSearching = false
+                this.editingSameCodeSearched = !!this.wordEditing
+                return
+            }
+            this.editingSameCodeSearching = true
+            this.editingSameCodeSearched = false
+            ipcRenderer.send('MainWindow:SearchSameCode', this.wordEditing.code)
+        },
+        scheduleSearchEditingSameCodeWords(){
+            if (this.editingSameCodeDebounceTimer) {
+                clearTimeout(this.editingSameCodeDebounceTimer)
+            }
+            this.editingSameCodeDebounceTimer = setTimeout(() => {
+                this.searchEditingSameCodeWords()
+            }, 250)
         },
 
         generateCodeForAllWords(){
@@ -672,6 +733,16 @@ const app = {
                     this.code = this.dictMap.decodeWord(newValue)
                 }
             }
+        },
+        'wordEditing.code'(newCode, oldCode){
+            if (!this.wordEditing) {
+                return
+            }
+            // 打开编辑时赋值会触发一次（oldCode 为 undefined），已由 editWord 主动搜索，避免重复闪烁
+            if (oldCode === undefined) {
+                return
+            }
+            this.scheduleSearchEditingSameCodeWords()
         },
         seperatorSave(){
             this.fileNameSave = this.filePathSave()
