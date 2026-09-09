@@ -2,8 +2,8 @@
 
 | 系统 | 下载文件 | 说明 |
 |------|----------|------|
-| **macOS Apple Silicon**（M1/M2/M3/M4） | `WubiDictEditor-darwin-arm64-*.zip` | 解压后打开 `.app` |
-| **macOS Intel** | `WubiDictEditor-darwin-x64-*.zip` | 解压后打开 `.app` |
+| **macOS Apple Silicon**（M1/M2/M3/M4） | `五笔码表助手-darwin-arm64-*.zip` | 解压后打开 `五笔码表助手.app` |
+| **macOS Intel** | `五笔码表助手-darwin-x64-*.zip` | 解压后打开 `五笔码表助手.app` |
 | **Windows 64 位** | `WubiDictEditor-*-Setup.exe`（推荐）或 `WubiDictEditor-win32-x64-*.zip` | Setup 为安装包；zip 为绿色版 |
 | **Linux** | `*.deb` 或 `WubiDictEditor-linux-x64-*.zip` | Debian/Ubuntu 用 deb；其他发行版可用 zip |
 
@@ -15,5 +15,5 @@
 2. 或在终端执行：
 
 ```bash
-xattr -cr WubiDictEditor.app
+xattr -cr 五笔码表助手.app
 ```

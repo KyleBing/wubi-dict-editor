@@ -12,6 +12,10 @@ const { version: appVersion } = JSON.parse(
 );
 
 const displayName = '五笔码表助手';
+const asciiName = 'WubiDictEditor';
+// macOS 使用中文 .app 名；Windows / Linux 可执行文件仍用 ASCII，避免安装器与路径问题
+const isDarwin = process.platform === 'darwin';
+const appName = isDarwin ? displayName : asciiName;
 const iconBase = path.join(__dirname, 'assets/img/appIcon/appIcon');
 const entitlements = path.join(__dirname, 'entitlements.mac.plist');
 const hasAppleCert = Boolean(process.env.APPLE_SIGNING_IDENTITY);
@@ -20,9 +24,8 @@ const hasAppleCert = Boolean(process.env.APPLE_SIGNING_IDENTITY);
 module.exports = {
   packagerConfig: {
     appVersion,
-    // 使用 ASCII 名称作为 .app / .exe，避免中文路径导致签名与 Gatekeeper 异常
-    name: 'WubiDictEditor',
-    executableName: 'WubiDictEditor',
+    name: appName,
+    executableName: appName,
     appBundleId: 'cn.kylebing.wubi-dict-editor',
     appCopyright: 'kylebing@163.com',
     icon: iconBase,
@@ -34,11 +37,11 @@ module.exports = {
       CFBundleLocalizations: ['zh_CN', 'en'],
     },
     win32metadata: {
-      ProductName: '五笔码表助手',
+      ProductName: displayName,
       CompanyName: 'kylebing.cn',
       FileDescription: '五笔码表助手 for 小狼毫',
     },
-    ...(process.platform === 'darwin'
+    ...(isDarwin
       ? hasAppleCert
         ? {
             osxSign: {
@@ -98,7 +101,7 @@ module.exports = {
       name: '@electron-forge/maker-squirrel',
       platforms: ['win32'],
       config: {
-        name: 'WubiDictEditor',
+        name: asciiName,
         setupIcon: path.join(__dirname, 'assets/img/appIcon/appIcon.ico'),
         authors: 'KyleBing',
         description: '五笔码表管理工具',
@@ -114,8 +117,8 @@ module.exports = {
           maintainer: 'kylebing@163.com',
           homepage: 'https://github.com/KyleBing/wubi-dict-editor',
           icon: path.join(__dirname, 'assets/img/appIcon/appIcon.png'),
-          // 与 packagerConfig.executableName 保持一致
-          bin: 'WubiDictEditor',
+          // 与 packagerConfig.executableName（非 darwin）保持一致
+          bin: asciiName,
           name: 'wubi-dict-editor',
           productName: displayName,
         },
@@ -129,11 +132,11 @@ module.exports = {
         result.artifacts.forEach((artifact) => console.log(`   ${artifact}`));
       });
 
-      if (process.platform === 'darwin' && !hasAppleCert) {
+      if (isDarwin && !hasAppleCert) {
         console.log('\n⚠️  macOS 未配置正式签名（.env 中 APPLE_SIGNING_IDENTITY）');
         console.log('   用户首次打开若被拦截，请任选其一：');
         console.log('   1. 右键 app → 打开');
-        console.log('   2. 终端执行: xattr -cr "/path/to/WubiDictEditor.app"');
+        console.log(`   2. 终端执行: xattr -cr "/path/to/${displayName}.app"`);
         console.log('   正式分发请配置 .env.example 中的 Apple 签名与公证\n');
       }
 
