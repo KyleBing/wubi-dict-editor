@@ -114,6 +114,10 @@ module.exports = {
           maintainer: 'kylebing@163.com',
           homepage: 'https://github.com/KyleBing/wubi-dict-editor',
           icon: path.join(__dirname, 'assets/img/appIcon/appIcon.png'),
+          // 与 packagerConfig.executableName 保持一致
+          bin: 'WubiDictEditor',
+          name: 'wubi-dict-editor',
+          productName: displayName,
         },
       },
     },

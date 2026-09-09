@@ -86,13 +86,19 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          echo "node $(node -v) platform=${{ matrix.platform }} arch=${{ matrix.arch }} targets=${{ matrix.targets }}"
-          # 把 targets 放进引号，避免 shell 解析 @
-          npm exec -- electron-forge make \
-            --platform="${{ matrix.platform }}" \
-            --arch="${{ matrix.arch }}" \
-            --targets="${{ matrix.targets }}" \
-            2>&1 | tee forge-make.log
+          echo "node $(node -v) platform=${{ matrix.platform }} arch=${{ matrix.arch }}"
+          if [ "${{ matrix.platform }}" = "linux" ]; then
+            # zip / deb 分开打，避免 deb 失败拖垮 zip
+            npm exec -- electron-forge make --platform=linux --arch=x64 --targets=@electron-forge/maker-zip 2>&1 | tee forge-make.log
+            npm exec -- electron-forge make --platform=linux --arch=x64 --targets=@electron-forge/maker-deb --skip-package 2>&1 | tee -a forge-make.log \
+              || echo "::warning::deb maker failed; zip artifact is still available"
+          else
+            npm exec -- electron-forge make \
+              --platform="${{ matrix.platform }}" \
+              --arch="${{ matrix.arch }}" \
+              --targets="${{ matrix.targets }}" \
+              2>&1 | tee forge-make.log
+          fi
 
       - name: Upload forge log on failure
         if: failure()
