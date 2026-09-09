@@ -4,8 +4,8 @@
 |------|----------|------|
 | **macOS Apple Silicon**（M1/M2/M3/M4） | `五笔码表助手-darwin-arm64-*.zip` | 解压后打开 `五笔码表助手.app` |
 | **macOS Intel** | `五笔码表助手-darwin-x64-*.zip` | 解压后打开 `五笔码表助手.app` |
-| **Windows 64 位** | `WubiDictEditor-*-Setup.exe`（推荐）或 `WubiDictEditor-win32-x64-*.zip` | Setup 为安装包；zip 为绿色版 |
-| **Linux** | `*.deb` 或 `WubiDictEditor-linux-x64-*.zip` | Debian/Ubuntu 用 deb；其他发行版可用 zip |
+| **Windows 64 位** | `五笔码表助手-Setup.exe`（推荐）或 `五笔码表助手-win32-x64-*.zip` | Setup 为安装包；zip 为绿色版 |
+| **Linux** | `*.deb` 或 `五笔码表助手-linux-x64-*.zip` | Debian/Ubuntu 用 deb；其他发行版可用 zip |
 
 ## macOS 无法打开时
 

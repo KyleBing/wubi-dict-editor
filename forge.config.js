@@ -12,20 +12,19 @@ const { version: appVersion } = JSON.parse(
 );
 
 const displayName = '五笔码表助手';
-const asciiName = 'WubiDictEditor';
-// macOS 使用中文 .app 名；Windows / Linux 可执行文件仍用 ASCII，避免安装器与路径问题
-const isDarwin = process.platform === 'darwin';
-const appName = isDarwin ? displayName : asciiName;
+// Squirrel / NuGet 包名只能用 ASCII
+const squirrelPackageName = 'WubiDictEditor';
 const iconBase = path.join(__dirname, 'assets/img/appIcon/appIcon');
 const entitlements = path.join(__dirname, 'entitlements.mac.plist');
 const hasAppleCert = Boolean(process.env.APPLE_SIGNING_IDENTITY);
+const isDarwin = process.platform === 'darwin';
 
 /** @type {import('@electron-forge/shared-types').ForgeConfig} */
 module.exports = {
   packagerConfig: {
     appVersion,
-    name: appName,
-    executableName: appName,
+    name: displayName,
+    executableName: displayName,
     appBundleId: 'cn.kylebing.wubi-dict-editor',
     appCopyright: 'kylebing@163.com',
     icon: iconBase,
@@ -101,11 +100,11 @@ module.exports = {
       name: '@electron-forge/maker-squirrel',
       platforms: ['win32'],
       config: {
-        name: asciiName,
+        name: squirrelPackageName,
+        setupExe: `${displayName}-Setup.exe`,
         setupIcon: path.join(__dirname, 'assets/img/appIcon/appIcon.ico'),
         authors: 'KyleBing',
         description: '五笔码表管理工具',
-        // 安装包显示名仍用中文
         title: displayName,
       },
     },
@@ -117,8 +116,8 @@ module.exports = {
           maintainer: 'kylebing@163.com',
           homepage: 'https://github.com/KyleBing/wubi-dict-editor',
           icon: path.join(__dirname, 'assets/img/appIcon/appIcon.png'),
-          // 与 packagerConfig.executableName（非 darwin）保持一致
-          bin: asciiName,
+          // 与 packagerConfig.executableName 保持一致
+          bin: displayName,
           name: 'wubi-dict-editor',
           productName: displayName,
         },
