@@ -158,16 +158,6 @@ jobs:
           generate_release_notes: true
           files: dist/*
           fail_on_unmatched_files: true
-          body: |
-            ## 下载说明
-
-            | 系统 | 下载文件 | 说明 |
-            |------|----------|------|
-            | **macOS Apple Silicon**（M1/M2/M3/M4） | `WubiDictEditor-darwin-arm64-*.zip` | 解压后打开 `.app`；若被拦截执行 `xattr -cr WubiDictEditor.app` |
-            | **macOS Intel** | `WubiDictEditor-darwin-x64-*.zip` | 同上 |
-            | **Windows 64 位** | `WubiDictEditor-*-Setup.exe` 或 `WubiDictEditor-win32-x64-*.zip` | 优先用 Setup 安装包；zip 为绿色版 |
-            | **Linux** | `*.deb` 或 `WubiDictEditor-linux-x64-*.zip` | Debian/Ubuntu 用 deb；其他发行版可用 zip |
-
-            > 当前 mac 包为 ad-hoc 签名（未配置 Apple 开发者证书时）。若提示无法打开：右键 → 打开，或执行上面的 `xattr` 命令。
+          body_path: docs/release-notes.md
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

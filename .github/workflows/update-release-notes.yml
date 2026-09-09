@@ -1,0 +1,38 @@
+name: Update Release Notes
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'docs/release-notes.md'
+      - '.github/workflows/update-release-notes.yml'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Release tag to update (empty = latest)'
+        required: false
+        default: ''
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Update release notes
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          TAG="${{ github.event.inputs.tag }}"
+          if [ -z "$TAG" ]; then
+            TAG=$(gh release list --repo "${{ github.repository }}" --limit 1 --json tagName --jq '.[0].tagName')
+          fi
+          echo "Updating release notes for $TAG"
+          gh release edit "$TAG" \
+            --repo "${{ github.repository }}" \
+            --notes-file docs/release-notes.md
