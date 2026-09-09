@@ -70,6 +70,10 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Ensure Linux deb maker dependency
+        if: runner.os == 'Linux'
+        run: npm install --no-save electron-installer-debian@^3.2.0
+
       - name: Verify forge config
         run: node -e "const c=require('./forge.config.js'); console.log('makers', c.makers.map(m=>m.name))"
 
