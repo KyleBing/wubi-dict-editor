@@ -1,3 +1,7 @@
+## v1.4.0 `2026-09-11`
+- 适配 portal-go JWT 鉴权：`Authorization: Bearer <token>`，登录使用 `data.token`，支持 `X-Access-Token` 续签
+- 修复：配置页 JWT token 过长撑破布局
+
 ## v1.3.19 `2026-09-11`
 - 修复：配置页登录态 JWT token 过长撑破布局，改为容器内换行显示
 
