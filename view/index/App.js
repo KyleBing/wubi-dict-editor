@@ -556,7 +556,7 @@ const app = {
         },
         // 获取词库备份信息
         checkFileBackupExistence(){
-            if (this.config.userInfo && this.config.userInfo.password && this.dict.fileName){ // config 和 当前词库内容都已经载入时才请求备份信息
+            if (this.config.userInfo && this.config.userInfo.token && this.dict.fileName){ // config 和 当前词库内容都已经载入时才请求备份信息
                 wubiApi
                     .checkDictFileBackupExistence(this.config.userInfo, {
                         fileName: this.dict.fileName
@@ -635,7 +635,7 @@ const app = {
 
         // 下载线上扩展词库到本地
         updateExtraDict(){
-            if (this.config.userInfo.password){
+            if (this.config.userInfo.token){
                 console.log('config: ', this.config)
                 wubiApi
                     .pullExtraDict(this.config.userInfo, this.config.baseURL)
@@ -1492,7 +1492,7 @@ const app = {
 
         // 是否已登录（含 token）
         ensureLoggedIn(){
-            if (this.config && this.config.userInfo && this.config.userInfo.password && this.config.userInfo.uid) {
+            if (this.config && this.config.userInfo && this.config.userInfo.token && this.config.userInfo.uid) {
                 return true
             }
             this.showTip('未登录，请先前往配置页面登录')

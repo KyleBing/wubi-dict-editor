@@ -77,8 +77,8 @@ const app = {
             if (resOfLogin.success){
                 console.log('登录成功', resOfLogin.data)
                 this.showTip('登录成功')
+                // 登录返回 data.token（JWT），不再含 password
                 this.$set(this.config, 'userInfo', resOfLogin.data)
-                // 登录成功后清空密码输入框，token 已写入 userInfo
                 this.userInfo.password = ''
             } else {
                 console.log('登录失败', resOfLogin.message)

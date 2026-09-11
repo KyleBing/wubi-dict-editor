@@ -247,6 +247,11 @@ function createMainWindow() {
         return wubiApi.pullDictFileContent(userInfo,{
             title: dictName,
         }, config.baseURL)
+            .then(res => {
+                // 主进程收到的 userInfo 是 IPC 拷贝，续签后需写回配置
+                persistRenewedUserToken(userInfo)
+                return res
+            })
     }
 
     // 保存至线上词库，如果存在覆盖它
@@ -271,6 +276,7 @@ function createMainWindow() {
                         wordCount: wordCount,
                     }, config.baseURL)
                 .then(res => {
+                    persistRenewedUserToken(userInfo)
                     mainWindow.send('MainWindow:sync.save:SUCCESS', res.data)
                 })
                 .catch(err => {
@@ -691,6 +697,24 @@ function writeConfigFile(contentString) {
                 if (mainWindow) mainWindow.send('MainWindow:ResponseConfigFile', JSON.parse(contentString)) // 向窗口发送 config 内容
             }
         })
+}
+
+// 将续签 JWT 写回本地配置（主进程 API 用的是 IPC 拷贝的 userInfo）
+function persistRenewedUserToken(userInfo) {
+    if (!userInfo || !userInfo.token) {
+        return
+    }
+    const config = readConfigFile()
+    if (!config.userInfo || config.userInfo.token === userInfo.token) {
+        return
+    }
+    config.userInfo.token = userInfo.token
+    const contentString = JSON.stringify(config)
+    writeConfigFile(contentString)
+    // 配置窗也刷新，避免仍显示旧 token
+    if (configWindow) {
+        configWindow.send('ConfigWindow:ResponseConfigFile', JSON.parse(contentString))
+    }
 }
 
 function readConfigFile() {
