@@ -70,6 +70,11 @@ $btns: (
       @include transition(all 0s);
     }
   }
+  &.disabled{
+    opacity: 0.45;
+    pointer-events: none;
+    cursor: not-allowed;
+  }
 }
 
 $height-btn-sm: $height-input - 6;

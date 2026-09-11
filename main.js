@@ -199,6 +199,22 @@ function createMainWindow() {
     })
 
 
+    // 获取线上词库：对比差异（不解包后自动合并）
+    ipcMain.on('MainWindow:sync.get:COMPARE', (event, {fileName, userInfo}) => {
+        getOnlineDictContent(fileName, userInfo)
+            .then(res => {
+                if (res.data && res.data.content) {
+                    res.data.content = Buffer.from(res.data.content, "base64").toString()
+                }
+                mainWindow.send('MainWindow:sync.get:COMPARE:SUCCESS', res)
+            })
+            .catch(err => {
+                console.log(err)
+                const message = (err && err.message) || (err && err.data && err.data.message) || '拉取云端词库失败'
+                mainWindow.send('MainWindow:sync.get:COMPARE:FAIL', message)
+            })
+    })
+
     // 获取线上词库：增量同步本地词库
     ipcMain.on('MainWindow:sync.get:INCREASE', (event, {fileName, userInfo}) => {
         getOnlineDictContent(fileName, userInfo)

@@ -763,6 +763,11 @@
   -o-transition: all 0s;
   transition: all 0s;
 }
+.btn.disabled {
+  opacity: 0.45;
+  pointer-events: none;
+  cursor: not-allowed;
+}
 
 .btn-sm {
   font-size: calc(var(--fz-button) - 1px);
@@ -2185,6 +2190,116 @@ hr {
   min-width: 60px;
 }
 
+.sync-diff-panel {
+  width: 620px;
+  max-width: calc(100vw - 40px);
+}
+.sync-diff-panel .modal-body {
+  padding: 14px 18px 10px;
+}
+.sync-diff-panel .sync-diff-summary {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.sync-diff-panel .sync-diff-summary .sync-diff-summary-item {
+  flex: 1;
+  background: #f3f3f3;
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  border-radius: 6px;
+  padding: 8px 10px;
+}
+.sync-diff-panel .sync-diff-summary .sync-diff-summary-item .label {
+  font-size: var(--fz-small);
+  color: #848484;
+  margin-bottom: 2px;
+}
+.sync-diff-panel .sync-diff-summary .sync-diff-summary-item .value {
+  font-weight: bold;
+  color: #000;
+}
+.sync-diff-panel .sync-diff-summary .sync-diff-summary-item .value.muted {
+  color: #c2c2c2;
+  font-weight: normal;
+}
+.sync-diff-panel .sync-diff-tabs {
+  margin-bottom: 10px;
+}
+.sync-diff-panel .sync-diff-list {
+  max-height: 280px;
+  overflow-y: auto;
+  border: 1px solid #eee;
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  border-radius: 6px;
+  padding: 6px 8px;
+}
+.sync-diff-panel .sync-diff-list-item {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px;
+  padding: 4px 2px;
+  border-bottom: 1px dashed #eee;
+  font-size: var(--fz-small);
+  line-height: 1.4;
+}
+.sync-diff-panel .sync-diff-list-item:last-child {
+  border-bottom: none;
+}
+.sync-diff-panel .sync-diff-list-item .word {
+  font-weight: 500;
+  color: #000;
+}
+.sync-diff-panel .sync-diff-list-item .code {
+  color: #409EFF;
+  font-family: Menlo, Monaco, Consolas, monospace;
+}
+.sync-diff-panel .sync-diff-list-item .group {
+  color: #67C23A;
+}
+.sync-diff-panel .sync-diff-list-item .meta {
+  color: #c2c2c2;
+}
+.sync-diff-panel .sync-diff-list-item.changed {
+  display: block;
+}
+.sync-diff-panel .sync-diff-list-item.changed .side {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: baseline;
+  padding: 2px 0;
+}
+.sync-diff-panel .sync-diff-list-item.changed .side .tag {
+  font-size: 11px;
+  color: white;
+  background: #8E8E93;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  padding: 0 4px;
+}
+.sync-diff-panel .sync-diff-list-item.changed .side.local .tag {
+  background: #007AFF;
+}
+.sync-diff-panel .sync-diff-list-item.changed .side.remote .tag {
+  background: #FF9500;
+}
+.sync-diff-panel .sync-diff-remain,
+.sync-diff-panel .sync-diff-empty {
+  font-size: var(--fz-small);
+  color: #c2c2c2;
+  padding: 10px 4px;
+  text-align: center;
+}
+.sync-diff-panel .sync-diff-actions {
+  gap: 10px;
+  flex-wrap: wrap;
+  padding: 10px 12px;
+}
+
 .theme-dark {
   /*CONFIG*/
   /*BUTTONS*/
@@ -2333,6 +2448,27 @@ hr {
   background-color: #1c1f24;
   display: flex;
   justify-content: center;
+}
+.theme-dark .sync-diff-panel .sync-diff-summary-item {
+  background-color: #383f4a !important;
+}
+.theme-dark .sync-diff-panel .sync-diff-summary-item .label {
+  color: #b3b3b3;
+}
+.theme-dark .sync-diff-panel .sync-diff-summary-item .value {
+  color: #e6e6e6;
+}
+.theme-dark .sync-diff-panel .sync-diff-list {
+  border-color: #272b32;
+}
+.theme-dark .sync-diff-panel .sync-diff-list-item {
+  border-color: #272b32;
+}
+.theme-dark .sync-diff-panel .sync-diff-list-item .word {
+  color: #e6e6e6;
+}
+.theme-dark .sync-diff-panel .sync-diff-list-item .meta {
+  color: #8c8c8c;
 }
 .theme-dark .group {
   color: #e6e6e6;
@@ -3033,6 +3169,27 @@ hr {
     background-color: #1c1f24;
     display: flex;
     justify-content: center;
+  }
+  .theme-auto .sync-diff-panel .sync-diff-summary-item {
+    background-color: #383f4a !important;
+  }
+  .theme-auto .sync-diff-panel .sync-diff-summary-item .label {
+    color: #b3b3b3;
+  }
+  .theme-auto .sync-diff-panel .sync-diff-summary-item .value {
+    color: #e6e6e6;
+  }
+  .theme-auto .sync-diff-panel .sync-diff-list {
+    border-color: #272b32;
+  }
+  .theme-auto .sync-diff-panel .sync-diff-list-item {
+    border-color: #272b32;
+  }
+  .theme-auto .sync-diff-panel .sync-diff-list-item .word {
+    color: #e6e6e6;
+  }
+  .theme-auto .sync-diff-panel .sync-diff-list-item .meta {
+    color: #8c8c8c;
   }
   .theme-auto .group {
     color: #e6e6e6;

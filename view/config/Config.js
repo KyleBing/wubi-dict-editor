@@ -78,9 +78,11 @@ const app = {
                 console.log('登录成功', resOfLogin.data)
                 this.showTip('登录成功')
                 this.$set(this.config, 'userInfo', resOfLogin.data)
+                // 登录成功后清空密码输入框，token 已写入 userInfo
+                this.userInfo.password = ''
             } else {
                 console.log('登录失败', resOfLogin.message)
-                this.showTip('登录失败')
+                this.showTip(resOfLogin.message || '登录失败')
             }
         })
 
@@ -166,7 +168,21 @@ const app = {
             }, duration)
         },
         login(){
+            if (!this.userInfo.email || !this.userInfo.password) {
+                this.showTip('请填写邮箱和密码')
+                return
+            }
+            if (!this.config.baseURL) {
+                this.showTip('请先填写请求地址')
+                return
+            }
             ipcRenderer.send('ConfigWindow:Login', this.userInfo)
+        },
+        // 清除本地登录态
+        logout(){
+            this.$set(this.config, 'userInfo', null)
+            this.userInfo = { email: '', password: '' }
+            this.showTip('已退出登录')
         },
         setInitFile(file){
             this.config.initFileName = file.path

@@ -157,3 +157,94 @@
     }
   }
 }
+
+// 词库同步差异对比弹窗
+.sync-diff-panel{
+  width: 620px;
+  max-width: calc(100vw - 40px);
+  .modal-body{
+    padding: 14px 18px 10px;
+  }
+  .sync-diff-summary{
+    display: flex;
+    gap: 12px;
+    margin-bottom: 12px;
+    .sync-diff-summary-item{
+      flex: 1;
+      background: $bg-panel;
+      @include border-radius(6px);
+      padding: 8px 10px;
+      .label{
+        font-size: var(--fz-small);
+        color: $text-subtitle;
+        margin-bottom: 2px;
+      }
+      .value{
+        font-weight: bold;
+        color: $text-main;
+        &.muted{
+          color: $text-comment;
+          font-weight: normal;
+        }
+      }
+    }
+  }
+  .sync-diff-tabs{
+    margin-bottom: 10px;
+  }
+  .sync-diff-list{
+    max-height: 280px;
+    overflow-y: auto;
+    border: 1px solid $border-color;
+    @include border-radius(6px);
+    padding: 6px 8px;
+  }
+  .sync-diff-list-item{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 8px;
+    padding: 4px 2px;
+    border-bottom: 1px dashed $border-color;
+    font-size: var(--fz-small);
+    line-height: 1.4;
+    &:last-child{
+      border-bottom: none;
+    }
+    .word{ font-weight: 500; color: $text-main; }
+    .code{ color: $color-primary; font-family: Menlo, Monaco, Consolas, monospace; }
+    .group{ color: $color-success; }
+    .meta{ color: $text-comment; }
+    &.changed{
+      display: block;
+      .side{
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        align-items: baseline;
+        padding: 2px 0;
+        .tag{
+          font-size: 11px;
+          color: white;
+          background: $gray;
+          @include border-radius(3px);
+          padding: 0 4px;
+        }
+        &.local .tag{ background: $blue; }
+        &.remote .tag{ background: $orange; }
+      }
+    }
+  }
+  .sync-diff-remain,
+  .sync-diff-empty{
+    font-size: var(--fz-small);
+    color: $text-comment;
+    padding: 10px 4px;
+    text-align: center;
+  }
+  .sync-diff-actions{
+    gap: 10px;
+    flex-wrap: wrap;
+    padding: 10px 12px;
+  }
+}

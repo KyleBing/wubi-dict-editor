@@ -56,6 +56,87 @@
         </div>
     </div>
 
+    <!-- 词库同步差异对比 -->
+    <div class="sync-diff-modal modal" v-if="syncDiffVisible && syncDiffResult">
+        <div class="modal-panel sync-diff-panel">
+            <div class="modal-close" @click="closeSyncDiffPanel"><img src="../../assets/img/delete_white.svg" alt="close"></div>
+            <div class="modal-header">
+                <div class="id">线上 / 线下差异</div>
+            </div>
+            <div class="modal-body">
+                <div class="sync-diff-summary">
+                    <div class="sync-diff-summary-item">
+                        <div class="label">本地</div>
+                        <div class="value">{{ syncDiffResult.localCount }} 条</div>
+                    </div>
+                    <div class="sync-diff-summary-item">
+                        <div class="label">云端</div>
+                        <div class="value" v-if="syncDiffResult.hasRemote">{{ syncDiffResult.remoteCount }} 条</div>
+                        <div class="value muted" v-else>无备份</div>
+                    </div>
+                    <div class="sync-diff-summary-item">
+                        <div class="label">相同</div>
+                        <div class="value">{{ syncDiffResult.sameCount }} 条</div>
+                    </div>
+                </div>
+                <div class="sync-diff-tabs radio-list">
+                    <div :class="['radio-list-item', {active: syncDiffTab === 'onlyLocal'}]"
+                         @click="syncDiffTab = 'onlyLocal'">
+                        仅本地 {{ syncDiffResult.onlyLocal.length }}
+                    </div>
+                    <div :class="['radio-list-item', {active: syncDiffTab === 'onlyRemote'}]"
+                         @click="syncDiffTab = 'onlyRemote'">
+                        仅云端 {{ syncDiffResult.onlyRemote.length }}
+                    </div>
+                    <div :class="['radio-list-item', {active: syncDiffTab === 'changed'}]"
+                         @click="syncDiffTab = 'changed'">
+                        内容不同 {{ syncDiffResult.changed.length }}
+                    </div>
+                </div>
+                <div class="sync-diff-list" v-if="syncDiffPreviewTruncated.length > 0">
+                    <template v-if="syncDiffTab !== 'changed'">
+                        <div class="sync-diff-list-item" v-for="(item, index) in syncDiffPreviewTruncated" :key="item.key + '-' + index">
+                            <span class="word">{{ item.word }}</span>
+                            <span class="code">{{ item.code }}</span>
+                            <span class="group" v-if="item.groupName">{{ item.groupName }}</span>
+                            <span class="meta" v-if="item.priority || item.note">{{ item.priority }} {{ item.note }}</span>
+                        </div>
+                    </template>
+                    <template v-else>
+                        <div class="sync-diff-list-item changed" v-for="(pair, index) in syncDiffPreviewTruncated" :key="pair.local.key + '-c-' + index">
+                            <div class="side local">
+                                <span class="tag">本地</span>
+                                <span class="word">{{ pair.local.word }}</span>
+                                <span class="code">{{ pair.local.code }}</span>
+                                <span class="meta">{{ pair.local.priority }} {{ pair.local.note }}</span>
+                            </div>
+                            <div class="side remote">
+                                <span class="tag">云端</span>
+                                <span class="word">{{ pair.remote.word }}</span>
+                                <span class="code">{{ pair.remote.code }}</span>
+                                <span class="meta">{{ pair.remote.priority }} {{ pair.remote.note }}</span>
+                            </div>
+                        </div>
+                    </template>
+                    <div class="sync-diff-remain" v-if="syncDiffPreviewRemain > 0">还有 {{ syncDiffPreviewRemain }} 条未展示</div>
+                </div>
+                <div class="sync-diff-empty" v-else>
+                    <template v-if="syncDiffResult.isIdentical">本地与云端完全一致</template>
+                    <template v-else-if="!syncDiffResult.hasRemote">云端尚无该文件备份，可将本地上传</template>
+                    <template v-else>此分类无差异</template>
+                </div>
+            </div>
+            <div class="modal-footer sync-diff-actions">
+                <div class="btn btn-primary" @click="syncUploadCurrentDict" title="用本地完整覆盖云端">本地 → 云</div>
+                <div class="btn btn-primary"
+                     :class="{ disabled: !syncDiffResult.hasRemote }"
+                     @click="syncDownloadCurrentDict"
+                     title="用云端完整覆盖本地">本地 ← 云</div>
+                <div class="btn btn-green" @click="syncCurrentDict" title="把云端独有词条并入本地后再上传">本地 + 云</div>
+            </div>
+        </div>
+    </div>
+
     <!--搜索框-->
     <div class="search-bar" v-if="dict">
         <div class="btn btn-primary" @click="applyRime">部署</div>
@@ -430,6 +511,12 @@
                 <section>
                     <div class="title">同步</div>
                     <div class="content mb-1">
+                        <div class="backup-info" v-if="config.userInfo && config.userInfo.uid">
+                            <p>已登录：{{ config.userInfo.nickname || config.userInfo.email }}</p>
+                        </div>
+                        <div class="backup-info" v-else>未登录，请先在配置页登录</div>
+                    </div>
+                    <div class="content mb-1">
                         <div class="backup-info" v-if="dictBackupInfo">
                             <p>上次同步时间</p>
                             <p>{{dictBackupInfo.date_update_string}}</p>
@@ -440,6 +527,11 @@
                     <div class="content">
                         <div class="btn-list">
                             <div class="btn-item">
+                                <div class="btn btn-green mb-1"
+                                     :class="{ disabled: syncDiffLoading }"
+                                     @click="compareCurrentDictWithRemote">
+                                    {{ syncDiffLoading ? '对比中…' : '对比差异后同步' }}
+                                </div>
                                 <div class="btn btn-primary mb-1" @click="syncCurrentDict">本地 + 云：增量添加</div>
                                 <div class="btn btn-primary mb-1" @click="syncUploadCurrentDict">本地 → 云：覆盖云端</div>
                                 <div class="btn btn-primary mb-1" @click="syncDownloadCurrentDict">本地 ← 云：覆盖本地</div>

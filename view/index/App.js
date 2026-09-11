@@ -15,6 +15,10 @@ const WordGroup = require("../../js/WordGroup");
 
 const wubiApi = require("../../js/wubiApi")
 const { TipMixin } = require('../../js/TipMixin')
+const { compareDicts } = require('../../js/DictSyncDiff')
+
+// 同步对比列表最多展示条数，避免弹窗过重
+const SYNC_DIFF_PREVIEW_LIMIT = 80
 
 // Vue 2
 const app = {
@@ -82,6 +86,11 @@ const app = {
 
             // 同步词库
             dictSync: null,
+            syncDiffVisible: false, // 是否展示线上线下差异弹窗
+            syncDiffLoading: false, // 正在拉取线上词库做对比
+            syncDiffResult: null, // compareDicts 结果
+            syncDiffTab: 'onlyLocal', // onlyLocal | onlyRemote | changed
+            syncDiffPreviewLimit: SYNC_DIFF_PREVIEW_LIMIT,
 
             // 网络相关
             categories: [],
@@ -205,6 +214,34 @@ const app = {
             this.dictMap = new DictMap(null, fileContent)
         })
 
+        // 同步: 获取内容做对比（先看差异再决定方向）
+        ipcRenderer.on('MainWindow:sync.get:COMPARE:SUCCESS', (event, res) => {
+            this.syncDiffLoading = false
+            if (!res || res.data === '' || !res.data) {
+                this.dictSync = null
+                this.syncDiffResult = compareDicts(this.dict, null)
+                this.syncDiffTab = 'onlyLocal'
+                this.syncDiffVisible = true
+                this.showTip('云端尚无该词库备份')
+                return
+            }
+            this.dictSync = new Dict(res.data.content, res.data.title)
+            this.syncDiffResult = compareDicts(this.dict, this.dictSync)
+            // 优先展示有差异的 tab
+            if (this.syncDiffResult.onlyLocal.length) this.syncDiffTab = 'onlyLocal'
+            else if (this.syncDiffResult.onlyRemote.length) this.syncDiffTab = 'onlyRemote'
+            else if (this.syncDiffResult.changed.length) this.syncDiffTab = 'changed'
+            else this.syncDiffTab = 'onlyLocal'
+            this.syncDiffVisible = true
+            if (this.syncDiffResult.isIdentical) {
+                this.showTip('本地与云端一致')
+            }
+        })
+        ipcRenderer.on('MainWindow:sync.get:COMPARE:FAIL', (event, message) => {
+            this.syncDiffLoading = false
+            this.showTip(message || '拉取云端词库失败')
+        })
+
         // 同步: 获取内容 增量
         ipcRenderer.on('MainWindow:sync.get:INCREASE:SUCCESS', (event, res) => {
             console.log(res)
@@ -224,6 +261,7 @@ const app = {
         ipcRenderer.on('MainWindow:sync.get:OVERWRITE:SUCCESS', (event, res) => {
             console.log('MainWindow:sync.get:OVERWRITE:SUCCESS')
             console.log(res)
+            this.closeSyncDiffPanel()
             if (res.data === ''){
                 this.showTip('该词库未同步过')
             } else {
@@ -239,6 +277,7 @@ const app = {
         ipcRenderer.on('MainWindow:sync.save:SUCCESS', (event, res) => {
             // 更新备份状态信息
             this.checkFileBackupExistence()
+            this.closeSyncDiffPanel()
             this.showTip('上传成功')
             console.log('MainWindow:sync.save:SUCCESS')
             console.log(res)
@@ -318,6 +357,21 @@ const app = {
         }
     },
     computed: {
+        // 差异弹窗当前 tab 的预览列表
+        syncDiffPreviewList() {
+            if (!this.syncDiffResult) return []
+            const tab = this.syncDiffTab
+            if (tab === 'onlyLocal') return this.syncDiffResult.onlyLocal || []
+            if (tab === 'onlyRemote') return this.syncDiffResult.onlyRemote || []
+            if (tab === 'changed') return this.syncDiffResult.changed || []
+            return []
+        },
+        syncDiffPreviewTruncated() {
+            return this.syncDiffPreviewList.slice(0, this.syncDiffPreviewLimit)
+        },
+        syncDiffPreviewRemain() {
+            return Math.max(0, this.syncDiffPreviewList.length - this.syncDiffPreviewLimit)
+        },
         // 当前是否为暗黑界面（含跟随系统）
         isDarkTheme(){
             switch (this.config && this.config.theme) {
@@ -1430,55 +1484,109 @@ const app = {
        /*
         *
         * 同步功能过程：
-        * 1. 先获取线上已存在的当前文件名的内容
-        * 2-1. 如果有，获取并对比本地码表内容，增量合成一个新的
-        * 2-2. 如果没有，直接上传当前的本地内容
-        * 3. 上传新的词库内容
+        * 1. 先拉取线上内容并对比本地，展示差异
+        * 2. 用户根据差异选择方向：上传覆盖 / 下载覆盖 / 增量合并
+        * 3. 增量合并后再上传合成结果
         *
         */
 
-        // 同步功能开始
-        //
-        syncCurrentDict(){
-            if (this.config.hasOwnProperty('userInfo')){
-                // 获取线上已存在的码表数据
-                ipcRenderer.send(
-                    'MainWindow:sync.get:INCREASE',
-                    {
-                        fileName: this.dict.fileName,
-                        userInfo: this.config.userInfo
-                    }
-                )
-                console.log('MainWindow:sync.get:INCREASE')
-            } else {
-                this.showTip('未登录，请先前往配置页面登录')
+        // 是否已登录（含 token）
+        ensureLoggedIn(){
+            if (this.config && this.config.userInfo && this.config.userInfo.password && this.config.userInfo.uid) {
+                return true
             }
+            this.showTip('未登录，请先前往配置页面登录')
+            return false
+        },
+
+        closeSyncDiffPanel(){
+            this.syncDiffVisible = false
+            this.syncDiffLoading = false
+        },
+
+        // 先对比线上线下差异
+        compareCurrentDictWithRemote(){
+            if (!this.ensureLoggedIn()) return
+            if (!this.dict || !this.dict.fileName) {
+                this.showTip('请先载入码表文件')
+                return
+            }
+            this.syncDiffLoading = true
+            this.syncDiffVisible = false
+            this.syncDiffResult = null
+            ipcRenderer.send(
+                'MainWindow:sync.get:COMPARE',
+                {
+                    fileName: this.dict.fileName,
+                    userInfo: this.config.userInfo
+                }
+            )
+        },
+
+        // 同步功能开始（增量合并，可从差异弹窗确认后调用）
+        syncCurrentDict(){
+            if (!this.ensureLoggedIn()) return
+            // 若已有对比结果且云端为空，直接上传
+            if (this.syncDiffResult && !this.syncDiffResult.hasRemote) {
+                this.syncUploadCurrentDict()
+                return
+            }
+            // 若已拉取过 dictSync，直接合并，避免重复请求
+            if (this.dictSync && this.syncDiffVisible) {
+                this.syncDictWords()
+                return
+            }
+            ipcRenderer.send(
+                'MainWindow:sync.get:INCREASE',
+                {
+                    fileName: this.dict.fileName,
+                    userInfo: this.config.userInfo
+                }
+            )
+            console.log('MainWindow:sync.get:INCREASE')
         },
 
         // 上传当前词库内容
         syncUploadCurrentDict(){
-            if (this.config.hasOwnProperty('userInfo')){
-                this.sendDictYamlForSync()
-                console.log('MainWindow:sync.save')
-            } else {
-                this.showTip('未登录，请先前往配置页面登录')
-            }
+            if (!this.ensureLoggedIn()) return
+            this.sendDictYamlForSync()
+            console.log('MainWindow:sync.save')
         },
 
         // 下载当前词库名的内容，【 覆盖 】 本地词库
         syncDownloadCurrentDict(){
-            if (this.config.hasOwnProperty('userInfo')){
-                ipcRenderer.send(
-                    'MainWindow:sync.get:OVERWRITE',
-                    {
-                        fileName: this.dict.fileName,
-                        userInfo: this.config.userInfo
-                    }
-                )
-                console.log('MainWindow:sync.get:OVERWRITE')
-            } else {
-                this.showTip('未登录，请先前往配置页面登录')
+            if (!this.ensureLoggedIn()) return
+            if (this.syncDiffResult && !this.syncDiffResult.hasRemote) {
+                this.showTip('云端尚无备份，无法下载')
+                return
             }
+            // 若对比时已拉取内容，直接覆盖本地
+            if (this.dictSync && this.syncDiffVisible) {
+                this.applyRemoteDictOverwrite()
+                return
+            }
+            ipcRenderer.send(
+                'MainWindow:sync.get:OVERWRITE',
+                {
+                    fileName: this.dict.fileName,
+                    userInfo: this.config.userInfo
+                }
+            )
+            console.log('MainWindow:sync.get:OVERWRITE')
+        },
+
+        // 用已拉取的 dictSync 覆盖本地（不写盘，需用户点保存）
+        applyRemoteDictOverwrite(){
+            if (!this.dictSync) return
+            serializeDictAsync(this.dictSync).then(yamlString => {
+                this.dict = new Dict(yamlString, this.dictSync.fileName || this.dict.fileName, this.dict.filePath)
+                this.refreshShowingWords()
+                this.closeSyncDiffPanel()
+                this.showTip('已用云端覆盖本地（请保存）')
+            }).catch(err => {
+                console.log(err)
+                this.showTip('覆盖本地失败')
+            })
         },
 
         // 同步词库内容
@@ -1559,6 +1667,7 @@ const app = {
             let afterWordCount = this.dict.countDictOrigin
             console.log(`本地新增 ${afterWordCount - originWordCount} 条记录`)
             this.showTip(`本地新增 ${afterWordCount - originWordCount} 条记录`)
+            this.closeSyncDiffPanel()
             this.sendDictYamlForSync()
             console.log('MainWindow:sync.save')
         }

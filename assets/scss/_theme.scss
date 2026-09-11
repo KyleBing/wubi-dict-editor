@@ -185,6 +185,22 @@ $black-color-main: #81fffa;
     }
   }
 
+  .sync-diff-panel{
+    .sync-diff-summary-item{
+      background-color: $black-bg-highlight !important;
+      .label{ color: $black-color-text-subtitle; }
+      .value{ color: $black-color-text; }
+    }
+    .sync-diff-list{
+      border-color: $black-color-border;
+    }
+    .sync-diff-list-item{
+      border-color: $black-color-border;
+      .word{ color: $black-color-text; }
+      .meta{ color: $black-color-text-comment; }
+    }
+  }
+
 
   .group {
     color: $black-color-text;
