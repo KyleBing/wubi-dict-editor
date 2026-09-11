@@ -232,14 +232,27 @@ $height-switch: 14px;
   @include border-radius(5px);
   padding: 10px;
   border: 1px solid $border-color;
+  max-width: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
   &-item{
     display: flex;
     flex-flow: row nowrap;
     justify-content: flex-start;
+    align-items: flex-start;
+    min-width: 0;
     .label{
       width: 80px;
+      flex-shrink: 0;
       margin-right: 10px;
       color: $text-subtitle;
+    }
+    // JWT 等长文本：在容器内换行，不撑破布局
+    .uid, .nickname, .email, .token{
+      min-width: 0;
+      flex: 1;
+      overflow-wrap: anywhere;
+      word-break: break-all;
     }
   }
 }

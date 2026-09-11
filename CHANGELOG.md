@@ -1,3 +1,6 @@
+## v1.3.19 `2026-09-11`
+- 修复：配置页登录态 JWT token 过长撑破布局，改为容器内换行显示
+
 ## v1.3.18 `2026-09-11`
 - 适配 portal-go JWT 鉴权：请求改用 `Authorization: Bearer <token>`，登录使用返回的 `data.token`
 - 支持响应头 `X-Access-Token` 自动续签并写回本地配置

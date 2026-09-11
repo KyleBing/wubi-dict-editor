@@ -1821,16 +1821,31 @@ select option {
   border-radius: 5px;
   padding: 10px;
   border: 1px solid #eee;
+  max-width: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
 }
 .login-user-info-item {
   display: flex;
   flex-flow: row nowrap;
   justify-content: flex-start;
+  align-items: flex-start;
+  min-width: 0;
 }
 .login-user-info-item .label {
   width: 80px;
+  flex-shrink: 0;
   margin-right: 10px;
   color: #848484;
+}
+.login-user-info-item .uid,
+.login-user-info-item .nickname,
+.login-user-info-item .email,
+.login-user-info-item .token {
+  min-width: 0;
+  flex: 1;
+  overflow-wrap: anywhere;
+  word-break: break-all;
 }
 
 .tool-container {
