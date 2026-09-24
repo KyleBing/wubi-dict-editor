@@ -1,3 +1,6 @@
+## v1.4.1 `2026-09-24`
+- 云端词库改为直接同步 YAML 原文，不再做 base64 编解码
+
 ## v1.4.0 `2026-09-11`
 - 适配 portal-go JWT 鉴权：`Authorization: Bearer <token>`，登录使用 `data.token`，支持 `X-Access-Token` 续签
 - 修复：配置页 JWT token 过长撑破布局

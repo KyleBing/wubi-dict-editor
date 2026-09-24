@@ -203,9 +203,7 @@ function createMainWindow() {
     ipcMain.on('MainWindow:sync.get:COMPARE', (event, {fileName, userInfo}) => {
         getOnlineDictContent(fileName, userInfo)
             .then(res => {
-                if (res.data && res.data.content) {
-                    res.data.content = Buffer.from(res.data.content, "base64").toString()
-                }
+                // 云端 content 已是 YAML 原文
                 mainWindow.send('MainWindow:sync.get:COMPARE:SUCCESS', res)
             })
             .catch(err => {
@@ -219,9 +217,6 @@ function createMainWindow() {
     ipcMain.on('MainWindow:sync.get:INCREASE', (event, {fileName, userInfo}) => {
         getOnlineDictContent(fileName, userInfo)
             .then(res => {
-                if (res.data && res.data.content) {
-                    res.data.content = Buffer.from(res.data.content, "base64").toString()
-                }
                 mainWindow.send('MainWindow:sync.get:INCREASE:SUCCESS', res)
             })
             .catch(err => {
@@ -232,9 +227,6 @@ function createMainWindow() {
     ipcMain.on('MainWindow:sync.get:OVERWRITE', (event, {fileName, userInfo}) => {
         getOnlineDictContent(fileName, userInfo)
             .then(res => {
-                if (res.data && res.data.content) {
-                    res.data.content = Buffer.from(res.data.content, "base64").toString()
-                }
                 mainWindow.send('MainWindow:sync.get:OVERWRITE:SUCCESS', res)
             })
             .catch(err => {
@@ -258,11 +250,6 @@ function createMainWindow() {
     ipcMain.on('MainWindow:sync.save', (event, {fileName, fileContentYaml, wordCount, userInfo}) => {
         console.log('MainWindow:sync.save', fileName)
         if (fileContentYaml.length < SYNC_MAX_WORD_COUNT) { // 限制整个文件的大小
-            let finalContent = Buffer.from(fileContentYaml).toString('base64')
-            console.log('content size original: ', fileContentYaml.length)
-            console.log('content size escaped: ', (escape(fileContentYaml)).length)
-            console.log('content size unicodeEncode: ', finalContent.length)
-
             let config = readConfigFile() // 没有配置文件时，返回 false
 
             console.log('config: ', config)
@@ -271,7 +258,7 @@ function createMainWindow() {
                     userInfo,
                     {
                         title: fileName,
-                        content: finalContent, // 为了避免一些标点干扰出现的问题，直接全部转义，
+                        content: fileContentYaml, // 原文上传，服务端按 utf8mb4 存储
                         contentSize: fileContentYaml.length,
                         wordCount: wordCount,
                     }, config.baseURL)
