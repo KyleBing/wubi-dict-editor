@@ -18,6 +18,7 @@ module.exports = {
     // DICT
     // 查看当前文件是否存在备份
     checkDictFileBackupExistence(userInfo, requestData, baseURL) {return request(userInfo,'post', null, requestData, apiUrl(baseURL, 'wubi/dict/check-backup-exist'))},
+    dictMeta(userInfo, params, baseURL) {return request(userInfo,'get', params, null, apiUrl(baseURL, 'wubi/dict/meta'))},
     pullDictFileContent(userInfo, params, baseURL) {return request(userInfo,'get', params, null, apiUrl(baseURL, 'wubi/dict/pull'))},
     pushDictFileContent(userInfo, requestData, baseURL) {return request(userInfo,'put', null, requestData, apiUrl(baseURL, 'wubi/dict/push'))},
 }

@@ -218,6 +218,50 @@ function createMainWindow() {
             })
     })
 
+    // 自动同步的基线快照，放在用户数据目录，不进 Rime 配置目录。
+    function syncBaseFilePath(dictFilePath) {
+        const dir = path.join(app.getPath('userData'), 'sync-base')
+        fs.mkdirSync(dir, { recursive: true })
+        const encoded = Buffer.from(String(dictFilePath || 'default')).toString('base64').replace(/\//g, '_')
+        return path.join(dir, encoded + '.yaml')
+    }
+    ipcMain.handle('syncBase:load', (event, dictFilePath) => {
+        const filePath = syncBaseFilePath(dictFilePath)
+        if (!fs.existsSync(filePath)) return null
+        return fs.readFileSync(filePath, { encoding: 'utf8' })
+    })
+    ipcMain.handle('syncBase:save', (event, dictFilePath, yaml) => {
+        fs.writeFileSync(syncBaseFilePath(dictFilePath), yaml, { encoding: 'utf8' })
+        return true
+    })
+    function syncRevisionFilePath(dictFilePath) {
+        return syncBaseFilePath(dictFilePath) + '.rev'
+    }
+    ipcMain.handle('syncBase:loadRevision', (event, dictFilePath) => {
+        const filePath = syncRevisionFilePath(dictFilePath)
+        if (!fs.existsSync(filePath)) return 0
+        const text = fs.readFileSync(filePath, { encoding: 'utf8' }).trim()
+        const value = parseInt(text, 10)
+        return Number.isFinite(value) ? value : 0
+    })
+    ipcMain.handle('syncBase:saveRevision', (event, dictFilePath, revision) => {
+        fs.writeFileSync(syncRevisionFilePath(dictFilePath), String(revision), { encoding: 'utf8' })
+        return true
+    })
+
+    ipcMain.on('MainWindow:sync.meta', (event, {fileName, userInfo}) => {
+        let config = readConfigFile()
+        wubiApi.dictMeta(userInfo, { title: fileName }, config.baseURL)
+            .then(res => {
+                persistRenewedUserToken(userInfo)
+                mainWindow.send('MainWindow:sync.meta:SUCCESS', res)
+            })
+            .catch(err => {
+                const message = (err && err.message) || '读取版本失败'
+                mainWindow.send('MainWindow:sync.meta:FAIL', message)
+            })
+    })
+
     // 获取线上词库：增量同步本地词库
     ipcMain.on('MainWindow:sync.get:INCREASE', (event, {fileName, userInfo}) => {
         getOnlineDictContent(fileName, userInfo)
@@ -254,27 +298,35 @@ function createMainWindow() {
     }
 
     // 保存至线上词库，如果存在覆盖它
-    ipcMain.on('MainWindow:sync.save', (event, {fileName, fileContentYaml, wordCount, userInfo}) => {
+    ipcMain.on('MainWindow:sync.save', (event, {fileName, fileContentYaml, wordCount, userInfo, baseRevision}) => {
         console.log('MainWindow:sync.save', fileName)
         if (fileContentYaml.length < SYNC_MAX_WORD_COUNT) { // 限制整个文件的大小
             let config = readConfigFile() // 没有配置文件时，返回 false
 
             console.log('config: ', config)
+            const payload = {
+                title: fileName,
+                content: fileContentYaml, // 原文上传，服务端按 utf8mb4 存储
+                contentSize: fileContentYaml.length,
+                wordCount: wordCount,
+            }
+            // 自动同步带上合并时所基于的版本；手动覆盖不带，服务端整份写入。
+            if (Number.isFinite(baseRevision)) {
+                payload.baseRevision = baseRevision
+            }
             wubiApi
-                .pushDictFileContent(
-                    userInfo,
-                    {
-                        title: fileName,
-                        content: fileContentYaml, // 原文上传，服务端按 utf8mb4 存储
-                        contentSize: fileContentYaml.length,
-                        wordCount: wordCount,
-                    }, config.baseURL)
+                .pushDictFileContent(userInfo, payload, config.baseURL)
                 .then(res => {
                     persistRenewedUserToken(userInfo)
                     mainWindow.send('MainWindow:sync.save:SUCCESS', res.data)
                 })
                 .catch(err => {
-                    mainWindow.send('MainWindow:sync.save:FAIL', '上传失败')
+                    if (err && err.data && err.data.conflict) {
+                        mainWindow.send('MainWindow:sync.save:CONFLICT', err.data)
+                        return
+                    }
+                    const message = (err && err.message) || '上传失败'
+                    mainWindow.send('MainWindow:sync.save:FAIL', message)
                     console.log(err)
                 })
         } else {

@@ -15,7 +15,7 @@ const WordGroup = require("../../js/WordGroup");
 
 const wubiApi = require("../../js/wubiApi")
 const { TipMixin } = require('../../js/TipMixin')
-const { compareDicts } = require('../../js/DictSyncDiff')
+const { compareDicts, threeWayMerge, applyChosen, snapshotDict } = require('../../js/DictSyncDiff')
 
 // 同步对比列表最多展示条数，避免弹窗过重
 const SYNC_DIFF_PREVIEW_LIMIT = 80
@@ -106,6 +106,10 @@ const app = {
             autoSyncQuiet: false, // 这一轮拉取是自动同步，不弹差异窗
             autoSyncApplying: false, // 自动同步正在写回本地，避免保存后再触发一轮
             autoSyncUploadQuiet: false, // 自动同步的上传不弹「上传成功」
+            pendingSyncBaseYaml: null, // 上传成功后才写入的同步基线
+            syncRevision: 0, // 上次成功同步时的云端版本
+            syncBaseYaml: null,
+            autoSyncConflictRetry: false,
             autoSyncInterval: null,
             autoSyncDebounce: null,
 
@@ -317,6 +321,17 @@ const app = {
         ipcRenderer.on('MainWindow:sync.save:SUCCESS', (event, res) => {
             // 更新备份状态信息
             this.checkFileBackupExistence()
+            this.autoSyncRunning = false
+            if (res && res.revision) {
+                this.rememberSyncRevision(res.revision)
+            }
+            if (this.pendingSyncBaseYaml) {
+                const yaml = this.pendingSyncBaseYaml
+                this.pendingSyncBaseYaml = null
+                this.rememberSyncBase(yaml)
+            } else if (this.isUserDictFile()) {
+                this.rememberSyncBase(this.dict.toYamlString())
+            }
             if (this.autoSyncUploadQuiet) {
                 this.autoSyncUploadQuiet = false
                 if (!this.autoSyncStatus) this.autoSyncStatus = '已上传'
@@ -331,7 +346,44 @@ const app = {
 
         // 同步： 保存失败
         ipcRenderer.on('MainWindow:sync.save:FAIL', (event, message) => {
+            this.pendingSyncBaseYaml = null
+            if (this.autoSyncUploadQuiet) {
+                this.autoSyncUploadQuiet = false
+                this.autoSyncRunning = false
+                this.autoSyncStatus = message || '自动同步上传失败'
+                return
+            }
             this.showTip(message)
+        })
+        ipcRenderer.on('MainWindow:sync.save:CONFLICT', () => {
+            this.pendingSyncBaseYaml = null
+            if (!this.autoSyncUploadQuiet) {
+                this.showTip('云端已有更新，请重新对比后再上传')
+                return
+            }
+            this.autoSyncUploadQuiet = false
+            if (this.autoSyncConflictRetry) {
+                this.autoSyncConflictRetry = false
+                this.autoSyncRunning = false
+                this.autoSyncStatus = '自动同步：云端刚被别的设备写过，稍后重试'
+                return
+            }
+            this.autoSyncConflictRetry = true
+            this.autoSyncRunning = true
+            this.autoSyncQuiet = true
+            this.autoSyncStatus = '云端有更新，正在重新合并…'
+            ipcRenderer.send('MainWindow:sync.get:INCREASE', {
+                fileName: this.dict.fileName,
+                userInfo: this.config.userInfo
+            })
+        })
+        ipcRenderer.on('MainWindow:sync.meta:SUCCESS', (event, res) => {
+            this.onAutoSyncMeta(res)
+        })
+        ipcRenderer.on('MainWindow:sync.meta:FAIL', (event, message) => {
+            this.autoSyncQuiet = false
+            this.autoSyncRunning = false
+            this.autoSyncStatus = message || '自动同步失败'
         })
 
         ipcRenderer.on('MainWindow:ApplyRime:Result', (event, result) => {
@@ -529,8 +581,10 @@ const app = {
                         this.refreshShowingWords()
                         ipcRenderer.send('loadMainDict')
                         this.checkFileBackupExistence()
-                        // 打开用户词库时，如果开了自动同步就拉一次。
-                        this.scheduleAutoSync(2000)
+                        // 先记下打开时的内容当基线，后面的删除才能和云端区分开。
+                        this.ensureSyncBase(dict).finally(() => {
+                            this.scheduleAutoSync(2000)
+                        })
                     }
                 })
                 .catch(err => {
@@ -1128,14 +1182,18 @@ const app = {
                     throw err
                 })
         },
-        sendDictYamlForSync(){
+        sendDictYamlForSync(baseRevision){
             return serializeDictAsync(this.dict).then(yamlString => {
-                ipcRenderer.send('MainWindow:sync.save', {
+                const payload = {
                     fileName: this.dict.fileName,
                     fileContentYaml: yamlString,
                     wordCount: this.dict.countDictOrigin,
                     userInfo: this.config.userInfo
-                })
+                }
+                if (Number.isFinite(baseRevision)) {
+                    payload.baseRevision = baseRevision
+                }
+                ipcRenderer.send('MainWindow:sync.save', payload)
             })
         },
         // 选中全部展示的词条
@@ -1792,10 +1850,48 @@ const app = {
             this.autoSyncRunning = true
             this.autoSyncQuiet = true
             this.autoSyncStatus = '正在同步…'
+            // 先看版本，没变且本地没改就不拉全文。
+            ipcRenderer.send('MainWindow:sync.meta', {
+                fileName: this.dict.fileName,
+                userInfo: this.config.userInfo
+            })
+        },
+        onAutoSyncMeta(res) {
+            if (!this.autoSyncQuiet) return
+            const empty = !res || res.data === '' || !res.data
+            if (empty) {
+                this.autoSyncStatus = '云端还没有备份，正在上传'
+                this.autoSyncUploadQuiet = true
+                this.autoSyncQuiet = false
+                this.autoSyncRunning = false
+                this.sendDictYamlForSync(0)
+                return
+            }
+            const revision = Number(res.data.revision) || 0
+            const unchanged = revision > 0 && revision === this.syncRevision && this.localMatchesSyncBase()
+            if (unchanged) {
+                this.autoSyncQuiet = false
+                this.autoSyncRunning = false
+                this.autoSyncStatus = '自动同步：本地与云端一致'
+                return
+            }
+            if (revision > 0 && revision === this.syncRevision && this.syncBaseYaml) {
+                this.dictSync = new Dict(this.syncBaseYaml, this.dict.fileName, this.dict.filePath)
+                this.autoSyncQuiet = false
+                this.autoSyncRunning = false
+                this.applyAutoMergedDict(revision)
+                return
+            }
             ipcRenderer.send('MainWindow:sync.get:INCREASE', {
                 fileName: this.dict.fileName,
                 userInfo: this.config.userInfo
             })
+        },
+        localMatchesSyncBase() {
+            if (!this.syncBaseYaml || !this.dict) return false
+            const base = new Dict(this.syncBaseYaml, this.dict.fileName, this.dict.filePath)
+            const merged = threeWayMerge(base, this.dict, base)
+            return !merged.localChanged && !merged.needsUpload
         },
         finishAutoSyncPull(res) {
             this.autoSyncQuiet = false
@@ -1809,12 +1905,95 @@ const app = {
                 return
             }
             this.dictSync = new Dict(res.data.content, res.data.title)
-            const diff = compareDicts(this.dict, this.dictSync)
-            if (diff.isIdentical) {
-                this.autoSyncStatus = '本地与云端一致'
-                return
+            const revision = Number(res.data.revision) || 0
+            this.applyAutoMergedDict(revision)
+        },
+        applyAutoMergedDict(remoteRevision) {
+            const filePath = this.dict.filePath
+            const baseYaml = this.syncBaseYaml
+            try {
+                const baseDict = baseYaml ? new Dict(baseYaml, this.dict.fileName, filePath) : null
+                const merged = threeWayMerge(baseDict, this.dict, this.dictSync, {
+                    dropRemoteOnlyWithoutBase: !baseDict,
+                })
+                if (merged.localChanged) {
+                    applyChosen(this.dict, merged.chosen)
+                    this.refreshShowingWords()
+                    this.autoSyncApplying = true
+                    this.saveToFile(this.dict)
+                }
+                this.autoSyncStatus = this.autoSyncMergeStatus(merged)
+                const baseYamlNext = snapshotDict(this.dict, merged.nextChosen).toYamlString()
+                if (merged.needsUpload) {
+                    this.pendingSyncBaseYaml = baseYamlNext
+                    this.autoSyncUploadQuiet = true
+                    this.autoSyncRunning = true
+                    this.sendDictYamlForSync(remoteRevision)
+                    return
+                }
+                this.autoSyncConflictRetry = false
+                this.rememberSyncBase(baseYamlNext)
+                if (remoteRevision > 0) this.rememberSyncRevision(remoteRevision)
+            } catch (err) {
+                console.log(err)
+                this.autoSyncRunning = false
+                this.autoSyncStatus = `自动同步失败：${err.message || err}`
             }
-            this.syncDictWords({ quiet: true })
+        },
+        // 打开词库时如果还没有基线，用当时的文件内容记一份。删除发生在这之后才能被认出来。
+        ensureSyncBase(dict) {
+            if (!dict || dict.fileName !== USER_DICT_FILE_NAME || !dict.filePath) {
+                return Promise.resolve()
+            }
+            const yaml = dict.toYamlString()
+            const filePath = dict.filePath
+            return ipcRenderer.invoke('syncBase:loadRevision', filePath).then(revision => {
+                this.syncRevision = Number(revision) || 0
+                return ipcRenderer.invoke('syncBase:load', filePath)
+            }).then(existing => {
+                if (existing) {
+                    this.syncBaseYaml = existing
+                    return null
+                }
+                this.syncBaseYaml = yaml
+                return ipcRenderer.invoke('syncBase:save', filePath, yaml)
+            }).catch(err => {
+                console.log(err)
+            })
+        },
+        rememberSyncBase(yaml) {
+            if (!this.dict || !this.dict.filePath || !yaml) return
+            this.syncBaseYaml = yaml
+            ipcRenderer.invoke('syncBase:save', this.dict.filePath, yaml).catch(err => {
+                console.log(err)
+            })
+        },
+        rememberSyncRevision(revision) {
+            const value = Number(revision) || 0
+            if (!this.dict || !this.dict.filePath || value <= 0) return
+            this.syncRevision = value
+            this.autoSyncConflictRetry = false
+            ipcRenderer.invoke('syncBase:saveRevision', this.dict.filePath, value).catch(err => {
+                console.log(err)
+            })
+        },
+        autoSyncMergeStatus(merged) {
+            if (merged.conflicts.length) {
+                const names = merged.conflicts.slice(0, 3).map(item => item.word).join('、')
+                const suffix = merged.conflicts.length > 3 ? ` 等 ${merged.conflicts.length} 条` : ''
+                return `自动同步：${names}${suffix} 两边都改过，已保留本地，未上传`
+            }
+            if (merged.needsUpload && merged.removedByLocal > 0) {
+                return `自动同步：已同步删除 ${merged.removedByLocal} 条`
+            }
+            if (merged.needsUpload && merged.tookRemote > 0) {
+                return `自动同步：已收下云端 ${merged.tookRemote} 条，并上传本地改动`
+            }
+            if (merged.needsUpload) return '自动同步：已上传本地改动'
+            if (merged.tookRemote > 0 || merged.dropped > 0) {
+                return `自动同步：已更新本地，收下 ${merged.tookRemote} 条，删除 ${merged.dropped} 条`
+            }
+            return '自动同步：本地与云端一致'
         }
     },
     watch: {
