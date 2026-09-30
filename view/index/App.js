@@ -19,6 +19,10 @@ const { compareDicts } = require('../../js/DictSyncDiff')
 
 // 同步对比列表最多展示条数，避免弹窗过重
 const SYNC_DIFF_PREVIEW_LIMIT = 80
+// 只有这个文件走自动同步
+const USER_DICT_FILE_NAME = 'wubi86_jidian_user.dict.yaml'
+const AUTO_SYNC_INTERVAL_MS = 10 * 60 * 1000
+const AUTO_SYNC_AFTER_SAVE_MS = 3000
 
 // Vue 2
 const app = {
@@ -97,11 +101,22 @@ const app = {
             selectedCategoryId: 10, // 线上的 [ 通用词库 ]
             dictBackupInfo: null,  // 当前词库在线上的备份信息
             isDeleteAfterUpload: false, // 上传词条后是否在本地删除对应的词条
+            autoSyncStatus: '', // 用户词自动同步的最近结果
+            autoSyncRunning: false,
+            autoSyncQuiet: false, // 这一轮拉取是自动同步，不弹差异窗
+            autoSyncApplying: false, // 自动同步正在写回本地，避免保存后再触发一轮
+            autoSyncUploadQuiet: false, // 自动同步的上传不弹「上传成功」
+            autoSyncInterval: null,
+            autoSyncDebounce: null,
 
             isDictLoading: false,
             codeDebounceTimer: null,
 
         }
+    },
+    beforeDestroy() {
+        if (this.autoSyncInterval) clearInterval(this.autoSyncInterval)
+        if (this.autoSyncDebounce) clearTimeout(this.autoSyncDebounce)
     },
     mounted() {
         // 为了消除奇怪的界面高度显示问题
@@ -117,13 +132,21 @@ const app = {
         ipcRenderer.on('showFileContent', (event, fileName, filePath, res) => {
             this.loadDictFromContent(res, fileName, filePath)
         })
-        ipcRenderer.on('saveFileSuccess', () => {
+        ipcRenderer.on('saveFileSuccess', (event, filename) => {
             this.labelOfSaveBtn = '保存成功'
             this.$refs.domBtnSave.classList.add('btn-green')
             setTimeout(()=>{
                 this.$refs.domBtnSave.classList.remove('btn-green')
                 this.labelOfSaveBtn = '保存'
             }, 2000)
+            // 自动同步自己的写回不再排队，避免来回上传。
+            if (this.autoSyncApplying) {
+                this.autoSyncApplying = false
+                return
+            }
+            if (filename === USER_DICT_FILE_NAME) {
+                this.scheduleAutoSync(AUTO_SYNC_AFTER_SAVE_MS)
+            }
         })
 
         // 配置相关
@@ -131,6 +154,7 @@ const app = {
             const prevBaseURL = this.config && this.config.baseURL
             const prevUid = this.config && this.config.userInfo && this.config.userInfo.uid
             this.config = config
+            this.normalizeEditorConfig(this.config)
             if (!config.hasOwnProperty('pinyinDictFileName')) {
                 this.$set(this.config, 'pinyinDictFileName', 'pinyin_simp.dict.yaml')
             }
@@ -152,6 +176,7 @@ const app = {
                 this.getOnlineCategories()
             }
             this.checkFileBackupExistence()
+            this.ensureAutoSyncSchedule(false)
         })
         ipcRenderer.send('MainWindow:RequestConfigFile')
 
@@ -201,7 +226,9 @@ const app = {
                 this.pinyinDict = null
             }
             this.config = config
+            this.normalizeEditorConfig(this.config)
             applyAppearance(this.config)
+            this.ensureAutoSyncSchedule(false)
         })
 
         // 获取网络请求返回的数据
@@ -245,6 +272,10 @@ const app = {
         // 同步: 获取内容 增量
         ipcRenderer.on('MainWindow:sync.get:INCREASE:SUCCESS', (event, res) => {
             console.log(res)
+            if (this.autoSyncQuiet) {
+                this.finishAutoSyncPull(res)
+                return
+            }
             if (res.data === ''){
                 this.showTip('该词库以前未同步过')
                 this.sendDictYamlForSync()
@@ -255,6 +286,15 @@ const app = {
                 this.syncDictWords()
                 console.log(this.dictSync)
             }
+        })
+        ipcRenderer.on('MainWindow:sync.get:INCREASE:FAIL', (event, message) => {
+            if (this.autoSyncQuiet || this.autoSyncRunning) {
+                this.autoSyncQuiet = false
+                this.autoSyncRunning = false
+                this.autoSyncStatus = message || '自动同步失败'
+                return
+            }
+            this.showTip(message || '拉取云端词库失败')
         })
 
         // 同步: 获取内容 覆盖
@@ -277,6 +317,12 @@ const app = {
         ipcRenderer.on('MainWindow:sync.save:SUCCESS', (event, res) => {
             // 更新备份状态信息
             this.checkFileBackupExistence()
+            if (this.autoSyncUploadQuiet) {
+                this.autoSyncUploadQuiet = false
+                if (!this.autoSyncStatus) this.autoSyncStatus = '已上传'
+                console.log('MainWindow:sync.save:SUCCESS', res)
+                return
+            }
             this.closeSyncDiffPanel()
             this.showTip('上传成功')
             console.log('MainWindow:sync.save:SUCCESS')
@@ -483,6 +529,8 @@ const app = {
                         this.refreshShowingWords()
                         ipcRenderer.send('loadMainDict')
                         this.checkFileBackupExistence()
+                        // 打开用户词库时，如果开了自动同步就拉一次。
+                        this.scheduleAutoSync(2000)
                     }
                 })
                 .catch(err => {
@@ -640,8 +688,6 @@ const app = {
                 wubiApi
                     .pullExtraDict(this.config.userInfo, this.config.baseURL)
                     .then(res => {
-                        this.showTip('获取线上分类扩展词库内容成功')
-
                         // 使用线上的更新数据更新到当前分类扩展词库中
                         let wordGroups = []
                         let lastCategoryName = ''
@@ -660,8 +706,13 @@ const app = {
                                 }
                                 lastCategoryName = item.category_name
                             })
+                        this.dict.isGroupMode = true
                         this.dict.wordsOrigin = wordGroups
+                        this.dict.buildCodeIndex()
                         this.refreshShowingWords()
+                        // 拉取成功后写回当前扩展词库文件
+                        this.saveToFile(this.dict)
+                        this.showTip('已更新并保存扩展词库文件')
                     })
                     .catch(err => {
                         this.showTip(err.message)
@@ -1589,8 +1640,8 @@ const app = {
             })
         },
 
-        // 同步词库内容
-        syncDictWords(){
+        // 同步词库内容。quiet 为自动同步：不弹提示，有云端新词时写回文件。
+        syncDictWords(options = {}){
             // 原来的词条数量
             let originWordCount = this.dict.countDictOrigin
 
@@ -1665,11 +1716,105 @@ const app = {
             }
             this.refreshShowingWords() // 刷新显示的词条
             let afterWordCount = this.dict.countDictOrigin
-            console.log(`本地新增 ${afterWordCount - originWordCount} 条记录`)
-            this.showTip(`本地新增 ${afterWordCount - originWordCount} 条记录`)
+            const added = afterWordCount - originWordCount
+            console.log(`本地新增 ${added} 条记录`)
+            if (options.quiet) {
+                if (added > 0) {
+                    this.autoSyncStatus = `已并入云端 ${added} 条，并上传`
+                    this.autoSyncApplying = true
+                    this.saveToFile(this.dict)
+                } else {
+                    this.autoSyncStatus = '已上传本地改动'
+                }
+                this.autoSyncUploadQuiet = true
+                this.sendDictYamlForSync()
+                return
+            }
+            this.showTip(`本地新增 ${added} 条记录`)
             this.closeSyncDiffPanel()
             this.sendDictYamlForSync()
             console.log('MainWindow:sync.save')
+        },
+
+        // 旧配置没有这两个字段时，补上和现在一致的默认值。
+        normalizeEditorConfig(config) {
+            if (!config) return
+            if (!Object.prototype.hasOwnProperty.call(config, 'autoDeployOnSave')) {
+                this.$set(config, 'autoDeployOnSave', true)
+            }
+            if (!Object.prototype.hasOwnProperty.call(config, 'autoSyncUserDict')) {
+                this.$set(config, 'autoSyncUserDict', false)
+            }
+        },
+        persistEditorConfig() {
+            ipcRenderer.send('saveConfigFileFromMainWindow', JSON.stringify(this.config))
+        },
+        isUserDictFile() {
+            return !!(this.dict && this.dict.fileName === USER_DICT_FILE_NAME)
+        },
+        shouldAutoSyncUserDict() {
+            const user = this.config && this.config.userInfo
+            return !!(this.config && this.config.autoSyncUserDict && this.isUserDictFile() && user && user.uid)
+        },
+        onAutoSyncUserDictChange() {
+            this.persistEditorConfig()
+            this.ensureAutoSyncSchedule()
+        },
+        // 开关打开时维持 10 分钟一轮；刚打开或启动时已开着，会马上补一轮。
+        ensureAutoSyncSchedule() {
+            const enabled = !!(this.config && this.config.autoSyncUserDict)
+            if (enabled) {
+                if (!this.autoSyncInterval) {
+                    this.autoSyncInterval = setInterval(() => this.runAutoSync(), AUTO_SYNC_INTERVAL_MS)
+                    this.scheduleAutoSync(500)
+                }
+            } else if (this.autoSyncInterval) {
+                clearInterval(this.autoSyncInterval)
+                this.autoSyncInterval = null
+                if (this.autoSyncDebounce) {
+                    clearTimeout(this.autoSyncDebounce)
+                    this.autoSyncDebounce = null
+                }
+                this.autoSyncStatus = ''
+            }
+        },
+        scheduleAutoSync(delay) {
+            if (!this.shouldAutoSyncUserDict()) return
+            if (this.autoSyncDebounce) clearTimeout(this.autoSyncDebounce)
+            this.autoSyncDebounce = setTimeout(() => {
+                this.autoSyncDebounce = null
+                this.runAutoSync()
+            }, delay)
+        },
+        runAutoSync() {
+            if (!this.shouldAutoSyncUserDict()) return
+            if (this.autoSyncRunning) return
+            this.autoSyncRunning = true
+            this.autoSyncQuiet = true
+            this.autoSyncStatus = '正在同步…'
+            ipcRenderer.send('MainWindow:sync.get:INCREASE', {
+                fileName: this.dict.fileName,
+                userInfo: this.config.userInfo
+            })
+        },
+        finishAutoSyncPull(res) {
+            this.autoSyncQuiet = false
+            this.autoSyncRunning = false
+            if (!this.isUserDictFile()) return
+            const empty = !res || res.data === '' || !res.data
+            if (empty) {
+                this.autoSyncStatus = '云端还没有备份，正在上传'
+                this.autoSyncUploadQuiet = true
+                this.sendDictYamlForSync()
+                return
+            }
+            this.dictSync = new Dict(res.data.content, res.data.title)
+            const diff = compareDicts(this.dict, this.dictSync)
+            if (diff.isIdentical) {
+                this.autoSyncStatus = '本地与云端一致'
+                return
+            }
+            this.syncDictWords({ quiet: true })
         }
     },
     watch: {

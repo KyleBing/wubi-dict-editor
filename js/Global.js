@@ -26,6 +26,8 @@ const DEFAULT_CONFIG = {
     autoDeployOnAdd: false ,                        // 添词后 是否自动部署
     autoDeployOnDelete: false ,                     // 删词后 是否自动部署
     autoDeployOnEdit: false ,                       // 编辑词条后 是否自动部署
+    autoDeployOnSave: true ,                        // 保存后是否自动部署，默认保持原行为
+    autoSyncUserDict: false ,                       // 仅用户词库文件自动同步
     enterKeyBehavior: 'add' ,                       // add | search
     rimeHomeDir: '' ,                               // 配置文件主目录
     rimeExecDir: '' ,                               // 输入法程序主目录

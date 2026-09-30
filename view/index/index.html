@@ -510,11 +510,19 @@
 
                 <section>
                     <div class="title">同步</div>
-                    <div class="content mb-1">
-                        <div class="backup-info" v-if="config.userInfo && config.userInfo.uid">
-                            <p>已登录：{{ config.userInfo.nickname || config.userInfo.email }}</p>
+                    <div class="content mb-1" v-if="dict.fileName === 'wubi86_jidian_user.dict.yaml'">
+                        <div class="d-flex al-center pt-1 pb-1">
+                            <input type="checkbox" v-model="config.autoSyncUserDict" id="autoSyncUserDict" @change="onAutoSyncUserDictChange">
+                            <label class="checkbox mr-1" for="autoSyncUserDict"></label>
+                            <div class="tip">自动同步</div>
                         </div>
-                        <div class="backup-info" v-else>未登录，请先在配置页登录</div>
+                        <div class="backup-info">
+                            <p>仅这个用户词库。打开时、保存约 3 秒后、每 10 分钟，把云端多出的词并入本地并上传。</p>
+                            <p v-if="autoSyncStatus">{{ autoSyncStatus }}</p>
+                        </div>
+                    </div>
+                    <div class="content mb-1" v-if="!(config.userInfo && config.userInfo.uid)">
+                        <div class="backup-info">未登录，请先在配置页登录</div>
                     </div>
                     <div class="content mb-1">
                         <div class="backup-info" v-if="dictBackupInfo">

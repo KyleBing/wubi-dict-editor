@@ -67,12 +67,17 @@ function createMainWindow() {
         fs.writeFile(path.join(getRimeConfigDir(), filename), yamlString, {encoding: "utf8"}, err => {
             if (!err) {
                 console.log('saveFileSuccess')
-                try {
-                    applyRime() // 部署
-                } catch (err) {
-                    console.log('获取程序目录失败')
+                // 旧配置没有这个字段时仍部署，和以前的保存行为一致。
+                const savedConfig = readConfigFile()
+                const deployAfterSave = !savedConfig || savedConfig.autoDeployOnSave !== false
+                if (deployAfterSave) {
+                    try {
+                        applyRime()
+                    } catch (err) {
+                        console.log('获取程序目录失败')
+                    }
                 }
-                mainWindow.webContents.send('saveFileSuccess')
+                mainWindow.webContents.send('saveFileSuccess', filename)
             }
         })
     })
@@ -221,6 +226,8 @@ function createMainWindow() {
             })
             .catch(err => {
                 console.log(err)
+                const message = (err && err.message) || '拉取云端词库失败'
+                mainWindow.send('MainWindow:sync.get:INCREASE:FAIL', message)
             })
     })
     // 获取线上词库：覆盖本地词库

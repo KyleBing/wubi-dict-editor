@@ -4,6 +4,7 @@ const {log} = require('../../js/Utility')
 const { IS_IN_DEVELOP, CONFIG_FILE_PATH, CONFIG_FILE_NAME, DEFAULT_CONFIG } =  require('../../js/Global')
 const { applyAppearance, normalizeFontSize } = require('../../js/appearance')
 const os = require('os')
+const path = require('path')
 const DictMap = require('../../js/DictMap')
 
 
@@ -149,6 +150,28 @@ const app = {
             this.heightContent = innerHeight - 47 - 20 - 10 + 3
         }
     },
+    computed: {
+        // 当前系统下的两个词库目录，按钮直接写入配置。
+        shortcutHomes() {
+            const home = os.homedir()
+            if (process.platform === 'darwin') {
+                return {
+                    rime: path.join(home, 'Library', 'Rime'),
+                    meifeng: path.join(home, 'Library', 'Application Support', 'MeifengWubi', 'rime'),
+                }
+            }
+            if (process.platform === 'win32') {
+                return {
+                    rime: path.join(home, 'AppData', 'Roaming', 'Rime'),
+                    meifeng: path.join(home, 'AppData', 'Roaming', 'MeifengWubi', 'rime'),
+                }
+            }
+            return {
+                rime: path.join(home, '.config', 'ibus', 'rime'),
+                meifeng: path.join(home, '.config', 'MeifengWubi', 'rime'),
+            }
+        },
+    },
     methods: {
         /**
          * @param {string} message
@@ -198,6 +221,20 @@ const app = {
         },
         chooseRimeHomeDir(){
             ipcRenderer.send('ConfigWindow:ChooseRimeHomeDir')
+        },
+        // 一键切到当前系统的 Rime 目录或玫枫默认词库目录。
+        useShortcutHome(kind) {
+            const target = kind === 'meifeng' ? this.shortcutHomes.meifeng : this.shortcutHomes.rime
+            this.config.rimeHomeDir = target
+        },
+        isShortcutHome(kind) {
+            const current = this.config.rimeHomeDir
+            if (!current) return false
+            const target = kind === 'meifeng' ? this.shortcutHomes.meifeng : this.shortcutHomes.rime
+            if (process.platform === 'win32') {
+                return path.normalize(current).toLowerCase() === path.normalize(target).toLowerCase()
+            }
+            return path.normalize(current) === path.normalize(target)
         },
         chooseRimeExecDir(){
             ipcRenderer.send('ConfigWindow:ChooseRimeExecDir')

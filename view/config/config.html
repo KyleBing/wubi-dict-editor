@@ -125,7 +125,7 @@
             <section>
                 <div class="section-title">
                     <h3>自动部署</h3>
-                    <div class="desc">添加新用户词之后，是否保存，是否自动部署</div>
+                    <div class="desc">加词、删词、编辑后是否自动保存并部署；保存按钮是否顺带部署</div>
                 </div>
                 <div class="section-content">
                     <div class="check-item">
@@ -149,18 +149,27 @@
                             <label for="autoDeployEdit"></label>
                         </div>
                     </div>
+                    <div class="check-item">
+                        <div class="label">保存后，自动部署输入法</div>
+                        <div class="audio-switch">
+                            <input v-model="config.autoDeployOnSave" type="checkbox" id="autoDeploySave">
+                            <label for="autoDeploySave"></label>
+                        </div>
+                    </div>
                 </div>
             </section>
 
             <section>
                 <div class="section-title">
                     <h3>输入法配置目录</h3>
-                    <div class="desc">工具自动读取的输入法配置文件目录</div>
+                    <div class="desc">工具自动读取的输入法配置文件目录。下面两个按钮按当前系统填入对应目录。</div>
                 </div>
                 <div class="section-content">
                     <div class="check-item">
                         <p>{{config.rimeHomeDir || '默认目录'}}</p>
                         <div class="btn btn-primary" @click="chooseRimeHomeDir">选择目录</div>
+                        <div :class="['btn', isShortcutHome('rime') ? 'btn-green' : 'btn-blue']" :title="shortcutHomes.rime" @click="useShortcutHome('rime')">切到 Rime 目录</div>
+                        <div :class="['btn', isShortcutHome('meifeng') ? 'btn-green' : 'btn-blue']" :title="shortcutHomes.meifeng" @click="useShortcutHome('meifeng')">切到玫枫目录</div>
                         <div v-if="config.rimeHomeDir" class="btn btn-orange" @click="clearRimeHomeDir">清除设置</div>
                     </div>
                 </div>
