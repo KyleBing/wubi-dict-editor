@@ -1,7 +1,7 @@
 const Vue  = require('../../node_modules/vue/dist/vue.common.prod')
 const {ipcRenderer} = require('electron')
 const {log} = require('../../js/Utility')
-const { IS_IN_DEVELOP, CONFIG_FILE_PATH, CONFIG_FILE_NAME, DEFAULT_CONFIG } =  require('../../js/Global')
+const { IS_IN_DEVELOP, CONFIG_FILE_PATH, CONFIG_FILE_NAME, DEFAULT_CONFIG, migrateBaseURL } =  require('../../js/Global')
 const { applyAppearance, normalizeFontSize } = require('../../js/appearance')
 const os = require('os')
 const path = require('path')
@@ -93,6 +93,8 @@ const app = {
             this.configLoaded = false
             // 磁盘配置优先，缺省字段用默认值补齐（不会用默认 baseURL 覆盖已有 https 配置）
             this.config = Object.assign({}, JSON.parse(JSON.stringify(DEFAULT_CONFIG)), config)
+            // 老版本存的地址已下线，这里显示迁移后的地址，保存时自然写回
+            this.config.baseURL = migrateBaseURL(this.config.baseURL)
 
             // v1.27 添加 mainDictFileName 字段
             if (!this.config.hasOwnProperty('mainDictFileName')) this.$set(this.config, 'mainDictFileName', 'wubi86_jidian.dict.yaml')

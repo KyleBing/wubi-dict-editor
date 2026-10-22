@@ -1,3 +1,8 @@
+## v1.5.1 `2026-10-22`
+- 修复：旧版本保存的请求地址（`/portal/` 等已下线路径）会自动迁移到 `https://kylebing.cn/wubi/portal/` 并写回配置，不用再手动删 config.json
+- 修复：登录接口返回非 JSON（地址写错时的 404 / 301 纯文本）会让主进程直接崩溃，现在改为在配置页提示具体状态码
+- 修复：登录响应分多段返回时被逐段解析导致报错，改为收完整再解析
+
 ## v1.5.0 `2026-10-22`
 - 默认请求地址改为 `https://kylebing.cn/wubi/portal/`（五笔独立服务）
 - 注册地址改为 `https://kylebing.cn/wubi/manager/#/register`

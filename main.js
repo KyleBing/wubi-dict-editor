@@ -12,6 +12,7 @@ const path = require("path")
 const {shakeDom, log, shakeDomFocus, dateFormatter, unicodeBase64Encode, unicodeBase64Decode} = require('./js/Utility')
 const {
     resolveBaseURL,
+    migrateBaseURL,
     IS_REQUEST_LOCAL,
     IS_IN_DEVELOP,
     CONFIG_FILE_PATH,
@@ -612,16 +613,42 @@ function createConfigWindow() {
 
         // 3. 处理返回结果
         request.on('response', response => {
-            response.on('data', res => {
-                console.log(res.toString())
-                // res 是 Buffer 数据
-                // 通过 toString() 可以转为 String
-                // 详见： https://blog.csdn.net/KimBing/article/details/124299412
-                let data = JSON.parse(res.toString())
-                configWindow.send('ConfigWindow:ResponseLogin', data)
-            })
+            const statusCode = response.statusCode
+            // 响应体可能分多个 chunk 到达，先拼接再解析，避免半截 JSON 解析失败
+            let chunks = []
+            response.on('data', res => chunks.push(Buffer.from(res)))
             response.on('end', () => {
+                const body = Buffer.concat(chunks).toString('utf-8')
+                let data = null
+                try {
+                    data = JSON.parse(body)
+                } catch (err) {
+                    // 地址写错时服务器会回 404 / 301 的纯文本，这里不能抛异常，否则主进程直接崩
+                    console.log('登录响应不是 JSON', statusCode, body.slice(0, 200))
+                }
+                if (!data) {
+                    data = {
+                        success: false,
+                        message: statusCode && statusCode !== 200
+                            ? `登录接口不可用（HTTP ${statusCode}），请到「配置 → 同步」检查请求地址`
+                            : '登录返回内容无法解析，请检查请求地址',
+                        data: '',
+                    }
+                }
+                if (configWindow) configWindow.send('ConfigWindow:ResponseLogin', data)
             })
+        })
+
+        // 网络层失败同样只提示，不让主进程抛出未捕获异常
+        request.on('error', err => {
+            console.log('登录请求失败', err)
+            if (configWindow) {
+                configWindow.send('ConfigWindow:ResponseLogin', {
+                    success: false,
+                    message: `登录请求失败：${(err && err.message) || err}`,
+                    data: '',
+                })
+            }
         })
 
         // 4. 记得关闭请求
@@ -767,7 +794,19 @@ function readConfigFile() {
     let configPath = path.join(os.homedir(), CONFIG_FILE_PATH)
     try { // 捕获读取文件时的错误，如果有配置文件 返回其内容，如果没有，返回  false
         let result = fs.readFileSync(path.join(configPath, CONFIG_FILE_NAME), {encoding: 'utf-8'})
-        return Object.assign({}, DEFAULT_CONFIG, JSON.parse(result))
+        let config = Object.assign({}, DEFAULT_CONFIG, JSON.parse(result))
+        // 老版本存的请求地址（/portal/ 等）已经停了，改回当前默认并写回磁盘，
+        // 否则每次启动都拿旧地址请求，表现为接口 404 + 主进程 JSON.parse 崩溃
+        const migratedBaseURL = migrateBaseURL(config.baseURL)
+        if (migratedBaseURL !== config.baseURL) {
+            config.baseURL = migratedBaseURL
+            try {
+                fs.writeFileSync(path.join(configPath, CONFIG_FILE_NAME), JSON.stringify(config), {encoding: 'utf-8'})
+            } catch (err) { // 写回失败不影响本次使用
+                console.log('迁移请求地址后写回配置失败', err)
+            }
+        }
+        return config
     } catch (err) {
         return Object.assign({}, DEFAULT_CONFIG)
     }
