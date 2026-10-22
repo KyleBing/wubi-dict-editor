@@ -604,7 +604,7 @@ function createConfigWindow() {
             },
             method: 'POST',
             url: IS_REQUEST_LOCAL ?
-                'http://localhost:3000/user/login' :
+                'http://localhost:3001/wubi/portal/user/login' :
                 `${baseURL}user/login`
         })
         // 2. 通过 request.write() 方法，发送的 post 请求数据需要先进行序列化，变成纯文本的形式

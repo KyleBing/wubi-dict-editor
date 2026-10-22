@@ -59,7 +59,17 @@ Windows, macOS, Ubuntu
 ## 六、关于同步
 > 单个词库最大限制在 40000 字
 
-1. 请先前往 [https://kylebing.cn/diary/](https://kylebing.cn/diary/) 注册账号
+接口和账号都在 `kylebing.cn/wubi/` 下：
+
+| 用途 | 地址 |
+| --- | --- |
+| 默认请求地址 | `https://kylebing.cn/wubi/portal/` |
+| 注册 / 管理后台 | `https://kylebing.cn/wubi/manager/#/register` |
+| 说明站 | `https://kylebing.cn/wubi/`（不要用作接口前缀） |
+
+请求地址可以在 <kbd>配置</kbd> → <kbd>同步</kbd> 里改，默认已指向 `/wubi/portal/`；旧的 `/portal/wubi/` 不再兼容。
+
+1. 请先前往 [https://kylebing.cn/wubi/manager/#/register](https://kylebing.cn/wubi/manager/#/register) 注册账号
 2. 打开工具 <kbd>配置</kbd> → <kbd>同步</kbd>：设置请求地址并登录（可退出登录）
 3. 主界面工具面板推荐先点 <kbd>对比差异后同步</kbd>：查看仅本地 / 仅云端 / 内容不同，再决定方向
 4. 同步方向说明

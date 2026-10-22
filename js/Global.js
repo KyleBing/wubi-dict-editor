@@ -1,8 +1,9 @@
 const IS_IN_DEVELOP = false // 生产
 // const IS_IN_DEVELOP = true // 开发
 
-const DEFAULT_BASE_URL = 'https://kylebing.cn/portal/'
-// const DEFAULT_BASE_URL = 'http://localhost:3000/'
+// 五笔独立服务，nginx 把 /wubi/portal/ 反代到 portal-wubi（/wubi/ 根路径是文档站）
+const DEFAULT_BASE_URL = 'https://kylebing.cn/wubi/portal/'
+// const DEFAULT_BASE_URL = 'http://localhost:3001/wubi/portal/'
 
 const IS_REQUEST_LOCAL = false // 同步请求，请求线上
 // const IS_REQUEST_LOCAL = true // 同步请求，请求本地
@@ -22,7 +23,7 @@ function resolveBaseURL(baseURL) {
 
 const DEFAULT_CONFIG = {
     initFileName: 'wubi86_jidian_user.dict.yaml' ,  // 初始文件信息
-    baseURL: 'https://kylebing.cn/portal/',          // BASE_URL
+    baseURL: 'https://kylebing.cn/wubi/portal/',     // BASE_URL
     autoDeployOnAdd: false ,                        // 添词后 是否自动部署
     autoDeployOnDelete: false ,                     // 删词后 是否自动部署
     autoDeployOnEdit: false ,                       // 编辑词条后 是否自动部署
