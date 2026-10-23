@@ -301,14 +301,18 @@ function createMainWindow() {
     // 保存至线上词库，如果存在覆盖它
     ipcMain.on('MainWindow:sync.save', (event, {fileName, fileContentYaml, wordCount, userInfo, baseRevision}) => {
         console.log('MainWindow:sync.save', fileName)
-        if (fileContentYaml.length < SYNC_MAX_WORD_COUNT) { // 限制整个文件的大小
-            let config = readConfigFile() // 没有配置文件时，返回 false
-
+        let config = readConfigFile() // 没有配置文件时，返回 false
+        const charCount = [...(fileContentYaml || '')].length
+        const push = (maxChars) => {
+            if (charCount >= maxChars) {
+                mainWindow.send('MainWindow:sync.save:FAIL', `同步内容超过 ${maxChars} 字`)
+                return
+            }
             console.log('config: ', config)
             const payload = {
                 title: fileName,
                 content: fileContentYaml, // 原文上传，服务端按 utf8mb4 存储
-                contentSize: fileContentYaml.length,
+                contentSize: charCount,
                 wordCount: wordCount,
             }
             // 自动同步带上合并时所基于的版本；手动覆盖不带，服务端整份写入。
@@ -330,9 +334,13 @@ function createMainWindow() {
                     mainWindow.send('MainWindow:sync.save:FAIL', message)
                     console.log(err)
                 })
-        } else {
-            mainWindow.send('MainWindow:sync.save:FAIL', '同步内容超过 20000 字')
         }
+        wubiApi.getSystemConfig(config && config.baseURL)
+            .then(res => {
+                const n = res && res.data && Number(res.data.dict_sync_max_chars)
+                push(n > 0 ? n : SYNC_MAX_WORD_COUNT)
+            })
+            .catch(() => push(SYNC_MAX_WORD_COUNT))
     })
 
 

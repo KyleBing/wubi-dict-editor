@@ -7,6 +7,9 @@ function apiUrl(baseURL, path) {
 }
 
 module.exports = {
+    // 公开系统配置（含 dict_sync_max_chars），无需登录
+    getSystemConfig(baseURL) { return request(null, 'get', null, null, apiUrl(baseURL, 'system-config')) },
+
     // 下载线上扩展词库内容
     pullExtraDict(userInfo, baseURL) { return request(userInfo, 'post', null, null, apiUrl(baseURL, 'word/export-extra'))},
 
