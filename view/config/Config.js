@@ -6,6 +6,7 @@ const { applyAppearance, normalizeFontSize } = require('../../js/appearance')
 const os = require('os')
 const path = require('path')
 const DictMap = require('../../js/DictMap')
+const RegistrationApplyCopy = require('../../js/RegistrationApplyCopy')
 
 
 // Vue 2
@@ -33,6 +34,7 @@ const app = {
             loginTip: '',
             loginTipTimeoutHandler: null,
             resolvedRimeExecDir: '',
+            registerPaidNote: RegistrationApplyCopy.PAID_NOTE,
         }
     },
     mounted() {
@@ -172,6 +174,12 @@ const app = {
                 rime: path.join(home, '.config', 'ibus', 'rime'),
                 meifeng: path.join(home, '.config', 'MeifengWubi', 'rime'),
             }
+        },
+        registerApplyHref() {
+            return RegistrationApplyCopy.registerApplyHref(this.config.baseURL)
+        },
+        registerHref() {
+            return RegistrationApplyCopy.registerHref(this.config.baseURL)
         },
     },
     methods: {

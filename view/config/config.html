@@ -360,7 +360,14 @@
             <section>
                 <div class="section-title">
                     <h3>账号登录</h3>
-                    <div class="desc">同步用户词库，账号请前往 <a target="_blank" href="https://kylebing.cn/wubi/manager/#/register">https://kylebing.cn/wubi/manager/#/register</a> 注册</div>
+                    <div class="desc">
+                        <p>同步个人词库需先登录 portal 账号（与 Mac / Windows / iOS 输入法共用）。</p>
+                        <p>
+                            尚无账号：请先 <a target="_blank" :href="registerApplyHref">提交注册申请</a>，
+                            审核通过后会邮件附邀请码，再在 <a target="_blank" :href="registerHref">注册页</a> 完成注册与邮箱验证。
+                        </p>
+                        <p class="sync-register-fee-note">{{ registerPaidNote }}</p>
+                    </div>
                 </div>
                 <div class="section-content">
                     <div class="login-panel">

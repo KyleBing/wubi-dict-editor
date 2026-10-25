@@ -1689,6 +1689,16 @@ select option {
   font-size: var(--fz-button);
   color: #848484;
 }
+.config section .section-title .desc p {
+  margin: 0 0 6px;
+  line-height: 1.5;
+}
+.config section .section-title .desc p:last-child {
+  margin-bottom: 0;
+}
+.config section .section-title .desc .sync-register-fee-note {
+  color: #848484;
+}
 .config section .section-title .desc a {
   text-decoration: underline;
 }
