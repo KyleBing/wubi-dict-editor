@@ -9,7 +9,7 @@
 > 基于 electron 开发，支持 `macOS` `Windows` `Ubuntu` 多个平台 <br/>
 
 
-> 有其它问题，欢迎加群讨论: [878750538](https://jq.qq.com/?_wv=1027&k=st8cY2sI)
+> 有其它问题，欢迎加群讨论：QQ 群 `1064664481`
 
 
 ## 一、界面截图
