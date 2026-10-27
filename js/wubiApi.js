@@ -25,4 +25,10 @@ module.exports = {
     dictMeta(userInfo, params, baseURL) {return request(userInfo,'get', params, null, apiUrl(baseURL, 'dict/meta'))},
     pullDictFileContent(userInfo, params, baseURL) {return request(userInfo,'get', params, null, apiUrl(baseURL, 'dict/pull'))},
     pushDictFileContent(userInfo, requestData, baseURL) {return request(userInfo,'put', null, requestData, apiUrl(baseURL, 'dict/push'))},
+
+    // ACCOUNT
+    // 删除线上同步数据：只清空云端个人词库备份，账号保留
+    clearSyncData(userInfo, baseURL) {return request(userInfo, 'delete', null, null, apiUrl(baseURL, 'user/clear-sync-data'))},
+    // 注销账号：删除服务端全部用户数据，不可恢复
+    destroyAccount(userInfo, baseURL) {return request(userInfo, 'delete', null, null, apiUrl(baseURL, 'user/destroy-account'))},
 }

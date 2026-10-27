@@ -7,6 +7,7 @@ const os = require('os')
 const path = require('path')
 const DictMap = require('../../js/DictMap')
 const RegistrationApplyCopy = require('../../js/RegistrationApplyCopy')
+const wubiApi = require('../../js/wubiApi')
 
 
 // Vue 2
@@ -216,6 +217,63 @@ const app = {
             this.$set(this.config, 'userInfo', null)
             this.userInfo = { email: '', password: '' }
             this.showTip('已退出登录')
+        },
+        // 删除线上同步数据：只清空云端个人词库，账号保持登录；需输入完整账号邮箱确认
+        clearSyncData(){
+            const userInfo = this.config.userInfo
+            if (!userInfo || !userInfo.uid) {
+                this.showTip('请先登录')
+                return
+            }
+            if (!this.confirmByEmail(
+                '删除线上同步数据',
+                '云端备份的个人词库会被删除，同步次数归零。本机词库和账号资料不受影响，下次自动同步时会重新上传本机词库。',
+                userInfo.email
+            )) {
+                return
+            }
+            wubiApi.clearSyncData(userInfo, this.config.baseURL)
+                .then(res => this.showTip(res.message || '线上同步数据已删除'))
+                .catch(err => this.showTip((err && err.message) || '删除失败'))
+        },
+        // 注销账号：输入完整邮箱后在服务端删除全部用户数据，再清本地登录态
+        destroyAccount(){
+            const userInfo = this.config.userInfo
+            if (!userInfo || !userInfo.uid) {
+                this.showTip('请先登录')
+                return
+            }
+            if (!this.confirmByEmail(
+                '注销账号',
+                '注销会永久删除账号资料、云端个人词库、本人提交的词条、邀请码、邮箱验证记录和本人提交的注册申请。注销后无法登录，也无法恢复；本机词库仍保留在本地。',
+                userInfo.email
+            )) {
+                return
+            }
+            wubiApi.destroyAccount(userInfo, this.config.baseURL)
+                .then(res => {
+                    this.$set(this.config, 'userInfo', null)
+                    this.userInfo = { email: '', password: '' }
+                    this.showTip(res.message || '账号已注销')
+                })
+                .catch(err => this.showTip((err && err.message) || '注销失败'))
+        },
+        // 破坏性操作确认：必须完整输入当前账号邮箱，一致才继续
+        confirmByEmail(title, message, email){
+            const expected = String(email || '').trim()
+            if (!expected) {
+                this.showTip('没有读到账号邮箱，请重新登录后再试')
+                return false
+            }
+            const typed = prompt(`${title}\n\n${message}\n\n请输入账号邮箱 ${expected} 以确认。`)
+            if (typed === null) {
+                return false
+            }
+            if (typed.trim().toLowerCase() !== expected.toLowerCase()) {
+                this.showTip('邮箱不一致，操作已取消')
+                return false
+            }
+            return true
         },
         setInitFile(file){
             this.config.initFileName = file.path

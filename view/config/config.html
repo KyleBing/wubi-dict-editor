@@ -392,6 +392,24 @@
                 </div>
             </section>
 
+            <!-- 账号数据：删除线上同步数据 / 注销账号 -->
+            <section v-if="config.userInfo && config.userInfo.uid">
+                <div class="section-title">
+                    <h3>账号数据</h3>
+                    <div class="desc">
+                        <p><strong>删除线上同步数据</strong>：清空云端备份的个人词库，同步次数归零。本机词库、账号资料和已提交词条不受影响。</p>
+                        <p><strong>注销账号</strong>：永久删除账号及全部线上数据，包括账号资料、个人词库备份、本人提交的词条、邀请码、邮箱验证记录和本人提交的注册申请。注销后无法登录，也无法恢复；本机词库仍保留在本地。</p>
+                        <p>两项操作都需要完整输入账号邮箱后才能执行。</p>
+                    </div>
+                </div>
+                <div class="section-content">
+                    <div class="check-item">
+                        <div class="btn btn-orange" @click="clearSyncData">删除线上同步数据</div>
+                        <div class="btn btn-red ml-1" @click="destroyAccount">注销账号</div>
+                    </div>
+                </div>
+            </section>
+
         </template>
 
     </div>
